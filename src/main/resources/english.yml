@@ -1,0 +1,16 @@
+# Language configuration file
+
+# Plugin information
+authors-string: "Authors: "
+version-string: "Version: "
+apiversion-string: "API Version: "
+
+# General
+prefix: "&7[&bAuroraUniverse&7]"
+# DO NOT EDIT
+file-version: 1.0
+
+# MESSAGES
+# Plugin
+reloaded-message: "&aPlugin was successfully reloaded with new params!"
+access-denied-message: "&eYou have not permisson to do that!"

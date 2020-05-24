@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="AuroraUniverse">
+    <output-path>$USER_HOME$/Desktop/delete/server/plugins</output-path>
+    <root id="archive" name="AuroraUniverse.jar">
+      <element id="module-output" name="AUniverse.main" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/resources" />
+    </root>
+  </artifact>
+</component>

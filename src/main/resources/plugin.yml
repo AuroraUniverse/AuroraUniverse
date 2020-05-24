@@ -1,7 +1,15 @@
 name: AuroraUniverse
-version: @version@
+version: 1.0
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 api-version: 1.13
-authors: [karlov_m]
+author: karlov_m
 description: AuroraUniverse is a good plugin that provides a system of cities, wars, trade, countries and various ranks. A good, and most importantly confident solution for moving from Towny.
 website: etysoft.ru
+commands:
+  aun:
+    description: Main plugin command
+permissions:
+  aun.admin:
+    default: op
+    description: Allows all commands
+
