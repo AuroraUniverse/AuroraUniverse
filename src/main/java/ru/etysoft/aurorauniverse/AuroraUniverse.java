@@ -6,7 +6,7 @@ public final class AuroraUniverse extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic1фывыфв
+        // Plugin startup logic1фывыфвg
 
     }
 
