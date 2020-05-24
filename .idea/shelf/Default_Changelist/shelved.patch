@@ -1,0 +1,18 @@
+Index: src/main/java/ru/etysoft/aurorauniverse/AuroraUniverse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ru.etysoft.aurorauniverse;\r\n\r\nimport org.bukkit.plugin.java.JavaPlugin;\r\n\r\npublic final class AuroraUniverse extends JavaPlugin {\r\n\r\n    @Override\r\n    public void onEnable() {\r\n        // Plugin startup logic1фывыфвg\r\n\r\n    }\r\n\r\n    @Override\r\n    public void onDisable() {\r\n        // Plugin shutdown logic\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/ru/etysoft/aurorauniverse/AuroraUniverse.java	(date 1590301690000)
++++ src/main/java/ru/etysoft/aurorauniverse/AuroraUniverse.java	(date 1590301771285)
+@@ -6,7 +6,7 @@
+ 
+     @Override
+     public void onEnable() {
+-        // Plugin startup logic1фывыфвg
++        // Plugin startup logic1фывыфвgs
+ 
+     }
+ 
