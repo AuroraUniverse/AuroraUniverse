@@ -19,6 +19,14 @@ public class Messaging {
 
     }
 
+
+    public static void towninfo(CommandSender p, Town town)
+    {
+        p.sendMessage(">> " + ChatColor.AQUA + town.getName() + ChatColor.GRAY);
+        p.sendMessage(AuroraUniverse.getLanguage().getString("town-mayor") + ChatColor.AQUA + town.getMayor().getName());
+        p.sendMessage(AuroraUniverse.getLanguage().getString("town-residents") +town.getMembersCount()  + "): " + ChatColor.AQUA + town.getMembersList());
+        p.sendMessage(AuroraUniverse.getLanguage().getString("town-chunks") + ChatColor.AQUA +town.getChunksCount());
+    }
     //Simple send color message with prefix
     public static void mess(String message, CommandSender sender)
     {

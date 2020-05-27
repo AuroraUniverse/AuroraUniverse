@@ -3,4 +3,4 @@
 # Name of language file: russian.yml, english.yml or {yourlang}.yml (EN and RU are currently translated)
 language-file: "russian.yml"
 # DO NOT EDIT
-file-version: 1.0
+file-version: 1.1

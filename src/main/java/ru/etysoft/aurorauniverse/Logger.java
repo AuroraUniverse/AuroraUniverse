@@ -10,6 +10,9 @@ public class Logger {
         Bukkit.getConsoleSender().sendMessage(fun.cstring(AuroraUniverse.prefix + " " + s));
     }
 
-
+    public static void warning(String s)
+    {
+        Bukkit.getConsoleSender().sendMessage(fun.cstring(AuroraUniverse.prefix + "&e " + s));
+    }
 
 }

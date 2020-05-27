@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 1.0
+version: 1.1
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 api-version: 1.13
 author: karlov_m
@@ -8,8 +8,19 @@ website: etysoft.ru
 commands:
   aun:
     description: Main plugin command
+  t:
+    description: Town command
 permissions:
   aun.admin:
     default: op
+    children:
+      aun.info: true
+      aun.edittown: true
     description: Allows all commands
+  aun.info:
+    default: op
+    description: Allows all commands
+  aun.edittown:
+    default: op
+    description:  Can place and break blocks in towns
 
