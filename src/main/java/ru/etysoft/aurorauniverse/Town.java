@@ -27,6 +27,37 @@ public class Town {
     public boolean build = false;
     public boolean destroy = false;
     private Chunk mainchunk = null;
+    private double townbank = 0;
+
+    public Town()
+    {
+
+    }
+
+    public double getBank()
+    {
+        return townbank;
+    }
+
+   public void depositBank(double d)
+    {
+        townbank = townbank + d;
+    }
+
+    public boolean withdrawBank(double d)
+    {
+        if(townbank - d >= 0)
+        {
+            townbank = townbank - d;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
 
     public Town(String name2, Resident mayor2, Chunk homeblock) throws TownException {
         if(!mayor2.hasTown()) {

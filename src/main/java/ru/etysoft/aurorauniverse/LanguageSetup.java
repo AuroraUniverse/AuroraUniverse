@@ -35,6 +35,12 @@ public class LanguageSetup {
         l.addDefault("town-mayor", "Mayor: ");
         l.addDefault("town-residents", "Residents(");
         l.addDefault("town-chunks", "Chunks: ");
+        l.addDefault("town-pages", "Show %s page from %y");
+        l.addDefault("town-balance", "Bank: ");
+        l.addDefault("town-deposit", "Successfully deposited %s to the town bank");
+        l.addDefault("town-withdraw", "Successfully withdrawed %s from the town bank");
+        l.addDefault("town-cantwithdraw", "Can't withdraw %s from the town bank");
+        l.addDefault("town-cantdeposit", "Can't deposit %s to the town bank");
         l.addDefault("e1", "You can't PvP here!");
         l.addDefault("e2", "wrong name");
         l.addDefault("e3", "town with name %s already exists");
@@ -42,6 +48,8 @@ public class LanguageSetup {
         l.addDefault("e5", "chunk don't belong to the town");
         l.addDefault("town-welcome", "Welcome to the town %s");
         l.addDefault("world", "You have entered the world! Be careful!");
+
+
 
         return  l;
     }

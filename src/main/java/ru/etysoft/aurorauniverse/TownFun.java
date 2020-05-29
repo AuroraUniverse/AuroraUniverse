@@ -24,7 +24,17 @@ public class TownFun {
     }
 
 
-
+     public static boolean isTownExists(String s)
+     {
+         if(AuroraUniverse.townlist.containsKey(s))
+         {
+             return  true;
+         }
+         else
+         {
+             return false;
+         }
+     }
 
 
     public static boolean hasMyTown(Chunk chunk, Town town)

@@ -26,11 +26,20 @@ public class Messaging {
         p.sendMessage(AuroraUniverse.getLanguage().getString("town-mayor") + ChatColor.AQUA + town.getMayor().getName());
         p.sendMessage(AuroraUniverse.getLanguage().getString("town-residents") +town.getMembersCount()  + "): " + ChatColor.AQUA + town.getMembersList());
         p.sendMessage(AuroraUniverse.getLanguage().getString("town-chunks") + ChatColor.AQUA +town.getChunksCount());
+        p.sendMessage(AuroraUniverse.getLanguage().getString("town-balance") + ChatColor.AQUA +town.getBank());
     }
     //Simple send color message with prefix
     public static void mess(String message, CommandSender sender)
     {
-        sender.sendMessage(fun.cstring(AuroraUniverse.prefix + " " + message));
+        if(AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getBoolean("use-prefix"))
+        {
+            sender.sendMessage(fun.cstring(AuroraUniverse.prefix + " " + message));
+        }
+        else
+        {
+            sender.sendMessage(fun.cstring("&b" + message));
+        }
+
     }
 
 

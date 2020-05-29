@@ -102,11 +102,18 @@ public class Listener implements org.bukkit.event.Listener {
         TownFun.createResident(e.getPlayer());
     }
 
+
     @EventHandler
     public void PlayerMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
         Chunk isNewChunk = player.getLocation().getChunk();
-
+        if(TownFun.getResident(player) == null)
+        {
+            if(AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getBoolean("kick-noresidents")) {
+                player.kickPlayer("Can't find Resident.");
+                Logger.warning("Kicked player " + player.getName() + ": can't find Resident with that name.");
+            }
+        }
         if(player.getLocation().getChunk()!=isNewChunk){
          //   player.sendMessage("Change chunk!" + event.getTo().getChunk());
         }

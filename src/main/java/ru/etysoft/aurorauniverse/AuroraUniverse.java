@@ -1,5 +1,7 @@
 package ru.etysoft.aurorauniverse;
 
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -12,9 +14,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.etysoft.aurorauniverse.economy.EconomyCore;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,6 +37,12 @@ public final class AuroraUniverse extends JavaPlugin {
     public static Map<Chunk, Region> alltownblocks = new ConcurrentHashMap<>();
     public static Map<String, Resident> residentlist = new ConcurrentHashMap<>();
     public static int minTownBlockDistanse = 1;
+    public EconomyCore economyCore;
+
+    public EconomyCore getEconomy()
+    {
+        return  economyCore;
+    }
 
     @Override
     public void onEnable() {
@@ -63,7 +74,6 @@ public final class AuroraUniverse extends JavaPlugin {
 
 
                         if (!language.getString("file-version").equals(this.getDescription().getVersion())) {
-
                             warnings = warnings + "\n&eOutdated language file!";
                             haswarnings = true;
                         }
@@ -90,6 +100,7 @@ public final class AuroraUniverse extends JavaPlugin {
             haswarnings = true;
         }
 
+        // LISTENERS
         Logger.info("Initializing listeners...");
         try
         {
@@ -100,6 +111,24 @@ public final class AuroraUniverse extends JavaPlugin {
             warnings = warnings + "\n&cLISTENERS ERROR: " + e.getMessage();
             haswarnings = true;
         }
+        try
+        {
+            economyCore = new EconomyCore();
+
+        }
+        catch (Exception e){}
+        // ECONOMY
+        if (!setupEconomy()) {
+
+            warnings = warnings + "\nCan't find Vault! Economy can't start!.";
+            return;
+        }
+        else
+        {
+
+        }
+
+
        if(!haswarnings)
        {
            //If no warnings
@@ -149,7 +178,7 @@ public final class AuroraUniverse extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
-
+        LanguageSetup.setup(language);
 
         if(ok)
         {
@@ -170,6 +199,15 @@ public final class AuroraUniverse extends JavaPlugin {
             return "Looks like you tried to use new language file, but that file doesn't exists. Using english.yml";
         }
 
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        getServer().getServicesManager().register(Economy.class, economyCore, this, ServicePriority.Highest);
+        Logger.info("Economy has been registered.");
+        return true;
     }
 
     @Override
@@ -220,29 +258,47 @@ public final class AuroraUniverse extends JavaPlugin {
             if(args.length > 0) {
                 if (args[0].equalsIgnoreCase("new")) {
                     if (args.length > 1) {
-                        Player pl = (Player) sender;
-                        StringBuilder name = new StringBuilder();
-                        for (String arg :
-                                args) {
-                            if (!arg.equals(args[0])) {
-                                name.append(arg).append(" ");
-                            }
-                        }
                         try {
-                            Town newtown = new Town(name.toString(), TownFun.getResident(pl), pl.getLocation().getChunk());
-                            newtown.townspawn = pl.getLocation();
-                            townlist.put(newtown.name, newtown);
+                            Player pl = (Player) sender;
+                            StringBuilder name = new StringBuilder();
+                            for (String arg :
+                                    args) {
+                                if (!arg.equals(args[0])) {
+                                    name.append(arg).append(" ");
+                                }
+                            }
+                            try {
+                                Town newtown = new Town(name.toString(), TownFun.getResident(pl), pl.getLocation().getChunk());
+                                newtown.townspawn = pl.getLocation();
+                                townlist.put(newtown.name, newtown);
 
-                            alltownblocks.putAll(newtown.getTownChunks());
-                            Messaging.mess(language.getString("town-created-message").replace("%s", name), sender);
+                                alltownblocks.putAll(newtown.getTownChunks());
+                                Messaging.mess(language.getString("town-created-message").replace("%s", name), sender);
 
-                            TownFun.getResident(pl).lastwild = false;
-                        } catch (TownException e) {
-                            Messaging.mess(language.getString("town-cantcreate-message").replace("%s", e.getMessageErr()), pl);
+                                TownFun.getResident(pl).lastwild = false;
+                            } catch (TownException e) {
+                                Messaging.mess(language.getString("town-cantcreate-message").replace("%s", e.getMessageErr()), pl);
+                            }
+                        } catch (Exception e)
+                        {
+
+                            if(!(sender instanceof Player))
+                            {
+                                Town newtown = new Town();
+
+
+                                townlist.put(args[1], newtown);
+                            }
+                            else
+                            {
+                                Messaging.mess("Error!", sender);
+                            }
                         }
                     } else {
                         // TODO: no argument message
+                        Messaging.mess(language.getString("no-arguments"), sender);
                     }
+
                     return true;
                 } else if (args[0].equalsIgnoreCase("delete")) {
 
@@ -285,7 +341,51 @@ public final class AuroraUniverse extends JavaPlugin {
 
 
                     return true;
+                } else if (args[0].equalsIgnoreCase("list")) {
+                    Player pl = (Player) sender;
+                    pl.sendMessage(fun.cstring(language.getString("town-list")));
+                    int page = 1;
+                    if(args.length > 1)
+                    {
+                        try
+                        {
+                            page = Integer.parseInt(args[1]);
+                        }
+                       catch (Exception e)
+                       {
+                           Messaging.mess(language.getString("no-arguments"), sender);
+                       }
+                    }
+                    final int[] i = {1};
+                    int finalPage = page;
+                   double d = Double.parseDouble("" + townlist.size());
+                    double maxPage = Math.ceil((double) d / 10f);
+                    townlist.forEach((name, town) -> {
 
+                       if(i[0] != (10 * finalPage) + 1)
+                       {
+                           if(i[0] > maxPage - 1) {
+                               try
+                               {
+                                   pl.sendMessage(ChatColor.AQUA + name + ChatColor.GOLD + "(" + town.getMembersCount() + ", " + town.getMayor().getName() + ")");
+                               }
+                               catch (Exception e)
+                               {
+                                   e.printStackTrace();
+                                   pl.sendMessage(name);
+                               }
+
+
+
+
+                           }
+                       }
+                        i[0]++;
+                   });
+
+                  Messaging.mess(language.getString("town-pages").replace("%s", String.valueOf(page)).replace("%y", townlist.size() + ""), pl);
+
+                    return true;
                 } else if (args[0].equalsIgnoreCase("claim")) {
                     Player pl = (Player) sender;
                     Resident resident = TownFun.getResident(pl);
@@ -343,7 +443,93 @@ public final class AuroraUniverse extends JavaPlugin {
                         // TODO: permissions claim
                     }
                     return true;
+                } else if (args[0].equalsIgnoreCase("deposit")) {
+                    if(args.length > 1)
+                    {
+                        Player pl = (Player) sender;
+                        Resident resident = TownFun.getResident(pl);
+                        if (resident.hasTown()) {
+                            Town t = resident.getTown();
+                            t.removeResident(resident);
+                            double d = 0;
+                            try {
+                                d = Double.valueOf(args[1]);
 
+                            } catch (Exception e)
+                            {
+                                Messaging.mess(language.getString("no-arguments"), sender);
+                                return true;
+                            }
+                            if(resident.takeBalance(d))
+                            {
+                                EconomyResponse r = economyCore.bankDeposit(t.getName(), d);
+                                if(r.type == EconomyResponse.ResponseType.SUCCESS)
+                                {
+                                    Messaging.mess(language.getString("town-deposit").replace("%s", d + ""), pl);
+
+                                }
+                                else
+                                {
+                                    Messaging.mess("Deposit error: " + r.errorMessage, pl);
+                                }
+                            }
+                           else
+                            {
+                                Messaging.mess(language.getString("town-cantdeposit").replace("%s", d + ""), pl);
+                            }
+                            // TODO: permissions claim
+                        }
+                        else
+                        {
+                            Messaging.mess(language.getString("town-dont-belong"), sender);
+                        }
+                    }
+                    else
+                    {
+                        Messaging.mess(language.getString("no-arguments"), sender);
+                    }
+
+                    return true;
+                } else if (args[0].equalsIgnoreCase("withdraw")) {
+                    if(args.length > 1)
+                    {
+                        Player pl = (Player) sender;
+                        Resident resident = TownFun.getResident(pl);
+                        if (resident.hasTown()) {
+                            Town t = resident.getTown();
+                            t.removeResident(resident);
+                            double d = 0;
+                            try {
+                                d = Double.valueOf(args[1]);
+
+                            } catch (Exception e)
+                            {
+                                Messaging.mess(language.getString("no-arguments"), sender);
+                                return true;
+                            }
+                            EconomyResponse r = economyCore.bankWithdraw(t.getName(), d);
+                            if(r.type == EconomyResponse.ResponseType.SUCCESS)
+                            {
+                                Messaging.mess(language.getString("town-withdraw").replace("%s", d + ""), pl);
+                                resident.giveBalance(d);
+                            }
+                            else
+                            {
+                                Messaging.mess(language.getString("town-cantwithdraw").replace("%s", d + ""), pl);
+                            }
+                            // TODO: permissions claim
+                        }
+                        else
+                        {
+                            Messaging.mess(language.getString("town-dont-belong"), sender);
+                        }
+                    }
+                    else
+                    {
+                        Messaging.mess(language.getString("no-arguments"), sender);
+                    }
+
+                    return true;
                 } else if (args[0].equalsIgnoreCase("set")) {
                     if (args.length > 1) {
                         if (args[1].equalsIgnoreCase("spawn")) {
@@ -446,14 +632,20 @@ public final class AuroraUniverse extends JavaPlugin {
                                     }
                                 } else {
                                     //TODO: resident don't belong to town
+                                    Messaging.mess(language.getString("town-dont-belong"), sender);
                                 }
                             }
                     } else {
                         // TODO: no argument message
+                            Messaging.mess(language.getString("no-arguments"), sender);
                     }
 
 
                     return true;
+                }
+              else
+                {
+                    Messaging.mess(language.getString("no-arguments"), sender);
                 }
             }
             else
@@ -468,6 +660,7 @@ public final class AuroraUniverse extends JavaPlugin {
                 else
                 {
                     //TODO: no town message
+                    Messaging.mess(language.getString("town-dont-belong"), sender);
                 }
 
             }
