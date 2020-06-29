@@ -1,70 +1,91 @@
 package ru.etysoft.aurorauniverse;
 
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.Configuration;
+import org.bukkit.Chunk;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.event.Event;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.etysoft.aurorauniverse.commands.PluginCommands;
+import ru.etysoft.aurorauniverse.commands.TownCommands;
+import ru.etysoft.aurorauniverse.economy.EconomyCore;
+import ru.etysoft.aurorauniverse.listeners.PluginListener;
+import ru.etysoft.aurorauniverse.listeners.ProtectionListener;
+import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.LanguageSetup;
+import ru.etysoft.aurorauniverse.utils.Timer;
+import ru.etysoft.aurorauniverse.world.Town;
+import ru.etysoft.aurorauniverse.world.Region;
+import ru.etysoft.aurorauniverse.world.Resident;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class AuroraUniverse extends JavaPlugin {
+
+    public static Map<String, Town> townlist = new ConcurrentHashMap<>();
+    public static Map<Chunk, Region> alltownblocks = new ConcurrentHashMap<>();
+    public static Map<String, Resident> residentlist = new ConcurrentHashMap<>();
+    public static int minTownBlockDistanse = 1;
+    public static boolean debugmode = true;
+
+    private static String warnings = "";
+    private static String prefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "AuroraUniverse" + ChatColor.GRAY +"]" + ChatColor.RESET;
+    private EconomyCore economyCore;
+    private static AuroraUniverse instance;
+    private File languagefile;
+    private static FileConfiguration language;
+    private static boolean haswarnings = false;
+
+
+    public EconomyCore getEconomy()
+    {
+        return  economyCore;
+    }
 
     @Override
     public void onEnable() {
         Logger.info(">> &bAuroraUniverse &r" + getDescription().getVersion() + " by " + getDescription().getAuthors() + "<<");
-        boolean haswarnings = false;
-        String warnings = "";
+        Timer timer = new Timer();
+        instance = this;
         try {
-            //Utilities for warning system
-
-
-            //CONFIGURATION LOAD
             Logger.info("Loading configuration...");
-
             saveDefaultConfig();
-            String w1 = createLanguageFile();
+            String w1 = setupLanguageFile();
             if (!w1.equals("ok")) {
-                warnings = warnings + "\n" + w1;
-                haswarnings = true;
+                addWarning(w1);
             }
-            prefix = fun.cstring(language.getString("prefix"));
+            prefix = AuroraConfiguration.getColorString("prefix");
             if (getConfig().contains("file-version")) {
                 try {
                     if (!getConfig().getString("file-version").equals(this.getDescription().getVersion())) {
-
-                        warnings = warnings + "\n&eOutdated configuration file!";
-                        haswarnings = true;
+                        addWarning("&eOutdated configuration file!");
                     }
                     if (language.contains("file-version")) {
 
 
-                        if (!language.getString("file-version").equals(this.getDescription().getVersion())) {
-
-                            warnings = warnings + "\n&eOutdated language file!";
-                            haswarnings = true;
+                        if (!AuroraConfiguration.getColorString("file-version").equals(this.getDescription().getVersion())) {
+                            addWarning("&eOutdated language file!");
                         }
                     } else {
-                        warnings = warnings + "\n&eCan't find file-version in language file! You can add it manually with new params and plugin version(" + getDescription().getVersion() + ")";
-                        haswarnings = true;
+                        addWarning("&eCan't find file-version in language file! You can add it manually with new params and plugin version(" + getDescription().getVersion() + ")");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    warnings = warnings + "\n&eERROR: " + e.getMessage();
-                    haswarnings = true;
+                    addWarning("&eERROR: " + e.getMessage());
                 }
             } else {
-                warnings = warnings + "\n&eCan't find file-version in config.yml!";
-                haswarnings = true;
+                addWarning("&eCan't find file-version in config.yml!");
             }
             if (haswarnings) {
                 Logger.info("&eConfiguration loaded with warnings.");
@@ -72,70 +93,105 @@ public final class AuroraUniverse extends JavaPlugin {
         }
         catch (Exception e)
         {
-            warnings = warnings + "\n&cCONFIGURATION ERROR(Probably language file is outdated): " + e.getMessage();
-            haswarnings = true;
+            addWarning("&cCONFIGURATION ERROR(Probably language file is outdated): " + e.getMessage());
+            if(AuroraConfiguration.getDebugMode())
+            {
+                Logger.debug("Configuration error: ");
+                e.printStackTrace();
+            }
         }
+
+        // LISTENERS
+        Logger.info("Initializing listeners and commands...");
+        try
+        {
+            registerListeners();
+            registerCommands();
+
+
+        }
+        catch (Exception e)
+        {
+            addWarning("&cLISTENERS ERROR: " + e.getMessage());
+        }
+        try
+        {
+            economyCore = new EconomyCore();
+        }
+        catch (Exception e){
+            if(AuroraConfiguration.getDebugMode())
+            {
+                Logger.debug("Can't create EconomyCore:");
+                e.printStackTrace();
+            }
+        }
+        // ECONOMY
+        if (!setupEconomy()) {
+            addWarning("Can't find Vault! Economy can't start!.");
+            return;
+        }
+
 
        if(!haswarnings)
        {
            //If no warnings
-           Logger.info("AuroraUniverse successfully enabled!");
+           Logger.info("AuroraUniverse successfully enabled in " + timer.getStringSeconds().substring(0, 4) + " seconds!");
        }
        else
        {
            //Some warnings catched
-           Logger.info("&cAuroraUniverse was enabled with warnings: &e" + warnings);
+           Logger.info("&cAuroraUniverse was enabled with warnings in " + timer.getStringSeconds().substring(0, 4) + " seconds: &e" + warnings);
        }
+        if(AuroraConfiguration.getDebugMode())
+        {
+            Logger.debug("You running AuroraUniverse in debug mode (more console messages)");
+        }
 
     }
 
-    public static FileConfiguration getLanguage() {
-        return language;
-    }
-
-    private File languagefile;
-    private static FileConfiguration language;
-    private String createLanguageFile() {
-      boolean ok = true;
-        languagefile = new File(getDataFolder(), getConfig().getString("language-file"));
+    public String setupLanguageFile() {
+        boolean ok = true;
+        languagefile = new File( AuroraUniverse.getInstance().getDataFolder(),  AuroraUniverse.getInstance().getConfig().getString("language-file"));
         if (!languagefile.exists()) {
             try
             {
                 languagefile.getParentFile().mkdirs();
-                saveResource(getConfig().getString("language-file"), false);
+                AuroraUniverse.getInstance().saveResource(AuroraUniverse.getInstance().getConfig().getString("language-file"), false);
             }
-           catch (Exception e)
-           {
-               saveResource("english.yml", false);
-               languagefile = new File(getDataFolder(), "english.yml");
-               languagefile.getParentFile().mkdirs();
+            catch (Exception e)
+            {
+                AuroraUniverse.getInstance().saveResource("english.yml", false);
+                languagefile = new File( AuroraUniverse.getInstance().getDataFolder(), "english.yml");
+                languagefile.getParentFile().mkdirs();
 
 
 
 
 
 
-              ok = false;
-           }
+                ok = false;
+            }
         }
 
         language = new YamlConfiguration();
         try {
-           language.load(languagefile);
+            language.load(languagefile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+        LanguageSetup.setup(language);
+
         if(ok)
         {
             return "ok";
         }
         else
         {
-            File file2 = new File(getDataFolder(), getConfig().getString("language-file"));
+            File file2 = new File( AuroraUniverse.getInstance().getDataFolder(), AuroraUniverse.getInstance().getConfig().getString("language-file"));
 
             try
             {
-                Files.copy(getResource("english.yml"), Paths.get(file2.getAbsolutePath()));
+                Files.copy(AuroraUniverse.getInstance().getResource("english.yml"), Paths.get(file2.getAbsolutePath()));
             }
             catch (Exception e2)
             {
@@ -146,47 +202,93 @@ public final class AuroraUniverse extends JavaPlugin {
 
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(label.equalsIgnoreCase("aun"))
-        {
-
-            if(args.length > 0)
-            {
-                //Has arguments
-
-                //RELOAD COMMAND
-                if(args[0].equalsIgnoreCase("reload"))
-                {
-                    if(sender.hasPermission("aun.admin"))
-                    {
-                        reloadConfig();
-                        onEnable();
-                        Messaging.mess(language.getString("reloaded-message"), sender);
-
-                    }
-                    else
-                    {
-                        //Haven't permission
-                        Messaging.mess(language.getString("access-denied-message"), sender);
-                        Logger.info(sender.getName() + " tried to use RELOAD command. Access denied.");
-                    }
-
-
-                    return  true;
-                }
-            }
-            else
-            {
-                //No arguments message
-              Messaging.plinfo(sender, this);
-                return  true;
-            }
-        }
-        return false;
+    public static String getWarnings()
+    {
+        return warnings;
     }
 
-    public static String prefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "AuroraUniverse" + ChatColor.GRAY +"]" + ChatColor.RESET;
+
+    private void addWarning(String s)
+    {
+        haswarnings = true;
+        warnings += "\n" + s;
+    }
+
+    public static String getPrefix()
+    {
+        return prefix;
+    }
+
+    public static void callEvent(Event event) {
+        Bukkit.getPluginManager().callEvent(event);
+    }
+
+    public static Map<String, Town> getTownlist()
+    {
+        return townlist;
+    }
+
+    public static Map<Chunk, Region> getTownBlocks()
+    {
+        return alltownblocks;
+    }
+
+    public static AuroraUniverse getInstance()
+    {
+        return instance;
+    }
+
+    public static FileConfiguration getLanguage() {
+        return language;
+    }
+
+    private void registerCommands()
+    {
+        registerCommand("auntown", new TownCommands());
+        registerCommand("aurorauniverse", new PluginCommands());
+    }
+
+    private void registerListeners()
+    {
+       registerListener(new PluginListener());
+        registerListener(new ProtectionListener());
+    }
+
+
+    private boolean registerCommand(String name, CommandExecutor executor) {
+        try
+        {
+            PluginCommand command = getCommand(name);
+            command.setExecutor(executor);
+            if(AuroraConfiguration.getDebugMode())
+            {
+                Logger.debug("Registered command &b/" + name);
+            }
+            return true;
+        }
+       catch (Exception e)
+       {
+           Logger.error("Can't register /" + name + " command!");
+           return false;
+       }
+    }
+
+    private void registerListener(org.bukkit.event.Listener listener) {
+        if(AuroraConfiguration.getDebugMode())
+        {
+            Logger.debug("Registered listener &b" + listener.getClass().getSimpleName());
+        }
+        getServer().getPluginManager().registerEvents(listener, this);
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        getServer().getServicesManager().register(Economy.class, economyCore, this, ServicePriority.Highest);
+        Logger.info("Economy has been registered.");
+        return true;
+    }
 
     //Disabling
     @Override

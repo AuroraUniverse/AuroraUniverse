@@ -8,9 +8,52 @@ apiversion-string: "API Version: "
 # General
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
-file-version: 1.0
+file-version: 0.1.0.0
 
 # MESSAGES
 # Plugin
 reloaded-message: "&aPlugin was successfully reloaded with new params!"
+no-arguments: "&cWrong arguments! "
 access-denied-message: "&eYou have not permisson to do that!"
+
+# TOWNS
+# %s - is a variable (example: town name, error message etc.)
+town-created-message: "You successfuly created town with name %s"
+town-cantcreate-message: "&cCan't create town: %s "
+town-deleted-message: "Your town was successfully deleted"
+town-teleported-to-spawn: "You have been teleported to the town spawn"
+town-dont-belong: "You don't belong to town!"
+town-claim: "Successfully claimed new chunk!"
+town-cantclaim: "Can't claim a new chunk!"
+town-unclaim: "Successfully unclaimed a townchunk!"
+town-cantunclaim: "Can't unclaim a townchunk!"
+town-leave: "You successfully leave town with name %s"
+town-setspawn: "New spawnpoint set!"
+town-cantsetspawn: "Can't set town spawnpoint!"
+town-kick: "Resident %s has kicked from the town"
+town-invite: "Resident %s has added to the town"
+town-pvpon: "Now town has PvP enabled"
+town-pvpoff: "Now town has PvP disabled"
+town-pvp: "You can't PvP here!"
+town-block-place: "You can't place blocks here!"
+town-block-break: "You can't break blocks here!"
+town-mayor: "Mayor: "
+town-residents: "Residents("
+town-chunks: "Chunks: "
+town-pages: "Show %s page from %y"
+town-balance: "Bank: "
+town-deposit: "Successfully deposited %s to the town bank"
+town-withdraw: "Successfully withdrawed %s from the town bank"
+town-cantwithdraw: "Can't withdraw %s from the town bank"
+town-cantdeposit: "Can't deposit %s to the town bank"
+
+# Town errors:
+e1: "town on this chunk already exists"
+e2: "wrong name"
+e3: "town with name %s already exists"
+e4: "already in town"
+e5: "chunk don't belong to the town"
+
+# Chunk notifications
+town-welcome: "Welcome to the town %s"
+world: "You have entered the world! Be careful!"

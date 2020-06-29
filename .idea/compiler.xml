@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="AUniverse.main" target="1.8" />
       <module name="AUniverse.test" target="1.8" />
+      <module name="Aurora.main" target="1.8" />
+      <module name="Aurora.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

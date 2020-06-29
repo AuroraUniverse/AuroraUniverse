@@ -1,10 +1,11 @@
-package ru.etysoft.aurorauniverse;
+package ru.etysoft.aurorauniverse.utils;
 
 import org.bukkit.ChatColor;
+import ru.etysoft.aurorauniverse.Logger;
 
-public class fun {
+public class ColorCodes {
     //Convert string with color codes to chatcolor string
-    public static String cstring(String text)
+    public static String toColor(String text)
     {
         try
         {
