@@ -4,20 +4,20 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Residents;
-import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
+import ru.etysoft.aurorauniverse.permissions.Group;
+import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
-import ru.etysoft.aurorauniverse.world.Resident;
 
-public class PluginListener implements org.bukkit.event.Listener {
+public class PluginListener implements Listener {
 
     @EventHandler
     public void Join(PlayerJoinEvent event)
@@ -31,17 +31,16 @@ public class PluginListener implements org.bukkit.event.Listener {
                   Messaging.mess("&7Please review the issues and make sure they are permanent. &fOnly administrators can see this message.", event.getPlayer());
               }
         }
+        Residents.createResident(event.getPlayer());
+        Group group = AuroraPermissions.getGroup(Residents.getResident(event.getPlayer()).getPermissonGroupName());
+        AuroraPermissions.setPermissons(event.getPlayer(), group);
     }
-
-
-
 
     @EventHandler
-    public void Login(PlayerJoinEvent e)
+    public void Quit(PlayerQuitEvent event)
     {
-        Residents.createResident(e.getPlayer());
+        AuroraPermissions.removePermissons(event.getPlayer());
     }
-
 
     @EventHandler
     public void PlayerMove(PlayerMoveEvent event){

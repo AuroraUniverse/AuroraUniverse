@@ -1,0 +1,13 @@
+###############################
+###### AuroraPermissions ######
+###############################
+
+# No town permissions
+newbies:
+
+town:
+  groups:
+    resident:
+
+    mayor:
+    # Here you can add your custom permission group

@@ -3,16 +3,15 @@ package ru.etysoft.aurorauniverse.economy;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
-import ru.etysoft.aurorauniverse.*;
+import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Residents;
-import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.world.Resident;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class EconomyCore implements Economy {
+public class AuroraEconomy implements Economy {
 
     private static Map<String, Bank> banklist = new ConcurrentHashMap<>();
 

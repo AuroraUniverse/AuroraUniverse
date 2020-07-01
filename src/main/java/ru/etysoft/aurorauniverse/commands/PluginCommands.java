@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Messages;
+import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
@@ -39,8 +40,12 @@ public class PluginCommands implements CommandExecutor {
     public void reload(CommandSender sender, String[] args) {
         if(Permissions.isAdmin(sender, true))
         {
+            Logger.debug("Reloading configuration...");
             AuroraUniverse.getInstance().reloadConfig();
             Messaging.mess(Messages.reload(), sender);
+            Logger.debug("Reloading permission system...");
+            AuroraPermissions.clear();
+            AuroraPermissions.initialize();
         }
         else
         {

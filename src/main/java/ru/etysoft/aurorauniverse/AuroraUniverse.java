@@ -14,15 +14,16 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.etysoft.aurorauniverse.commands.PluginCommands;
 import ru.etysoft.aurorauniverse.commands.TownCommands;
-import ru.etysoft.aurorauniverse.economy.EconomyCore;
+import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
 import ru.etysoft.aurorauniverse.listeners.PluginListener;
 import ru.etysoft.aurorauniverse.listeners.ProtectionListener;
+import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.LanguageSetup;
 import ru.etysoft.aurorauniverse.utils.Timer;
-import ru.etysoft.aurorauniverse.world.Town;
 import ru.etysoft.aurorauniverse.world.Region;
 import ru.etysoft.aurorauniverse.world.Resident;
+import ru.etysoft.aurorauniverse.world.Town;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,16 +42,16 @@ public final class AuroraUniverse extends JavaPlugin {
 
     private static String warnings = "";
     private static String prefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "AuroraUniverse" + ChatColor.GRAY +"]" + ChatColor.RESET;
-    private EconomyCore economyCore;
+    private AuroraEconomy auroraEconomy;
     private static AuroraUniverse instance;
     private File languagefile;
     private static FileConfiguration language;
     private static boolean haswarnings = false;
 
 
-    public EconomyCore getEconomy()
+    public AuroraEconomy getEconomy()
     {
-        return  economyCore;
+        return auroraEconomy;
     }
 
     @Override
@@ -58,6 +59,7 @@ public final class AuroraUniverse extends JavaPlugin {
         Logger.info(">> &bAuroraUniverse &r" + getDescription().getVersion() + " by " + getDescription().getAuthors() + "<<");
         Timer timer = new Timer();
         instance = this;
+
         try {
             Logger.info("Loading configuration...");
             saveDefaultConfig();
@@ -72,8 +74,6 @@ public final class AuroraUniverse extends JavaPlugin {
                         addWarning("&eOutdated configuration file!");
                     }
                     if (language.contains("file-version")) {
-
-
                         if (!AuroraConfiguration.getColorString("file-version").equals(this.getDescription().getVersion())) {
                             addWarning("&eOutdated language file!");
                         }
@@ -107,16 +107,22 @@ public final class AuroraUniverse extends JavaPlugin {
         {
             registerListeners();
             registerCommands();
-
-
         }
         catch (Exception e)
         {
             addWarning("&cLISTENERS ERROR: " + e.getMessage());
         }
+        Logger.info("Initializing AuroraPemissions...");
+        try {
+            AuroraPermissions.initialize();
+        } catch (Exception e) {
+            addWarning("&cAPERMS ERROR: " + e.getMessage());
+        }
+
+        Logger.info("Initializing AuroraEconomy...");
         try
         {
-            economyCore = new EconomyCore();
+            auroraEconomy = new AuroraEconomy();
         }
         catch (Exception e){
             if(AuroraConfiguration.getDebugMode())
@@ -125,7 +131,6 @@ public final class AuroraUniverse extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        // ECONOMY
         if (!setupEconomy()) {
             addWarning("Can't find Vault! Economy can't start!.");
             return;
@@ -285,7 +290,7 @@ public final class AuroraUniverse extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
-        getServer().getServicesManager().register(Economy.class, economyCore, this, ServicePriority.Highest);
+        getServer().getServicesManager().register(Economy.class, auroraEconomy, this, ServicePriority.Highest);
         Logger.info("Economy has been registered.");
         return true;
     }

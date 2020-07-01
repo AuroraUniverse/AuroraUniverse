@@ -9,16 +9,25 @@ public class Resident {
     private String nickname;
     private boolean lastwild = true;
     private String lasttownname = null;
-
     private String townname = null;
     private Bank bank;
+    private String permissonGroup;
 
 
     public Resident(String name)
     {
         nickname = name;
+        permissonGroup = "newbies";
         bank = new Bank(nickname,  AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getDouble("start-balance"), nickname);
         AuroraUniverse.getInstance().getEconomy().addBank(bank);
+    }
+
+    public void setPermissonGroup(String AuroraPermissonGroup) {
+        this.permissonGroup = AuroraPermissonGroup;
+    }
+
+    public String getPermissonGroupName() {
+        return permissonGroup;
     }
 
     public double getBalance()
