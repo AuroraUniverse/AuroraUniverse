@@ -13,16 +13,116 @@ commands:
     description: Town command
     aliases: [town, t]
 permissions:
+
+  ########################################
+  #                                      #
+  #         Aurora Plugin Perms          #
+  #                                      #
+  ########################################
+
   aun.admin:
     default: op
     children:
       aun.info: true
       aun.edittown: true
     description: Allows all commands
+
   aun.info:
     default: op
     description: Get information
-  aun.edittown:
+
+  ########################################
+  #                                      #
+  #          Town permissions            #
+  #                                      #
+  ########################################
+
+  town.create:
     default: op
-    description:  Can place and break blocks in towns
+    description:  Create a town
+
+  town.delete:
+    default: op
+    description:  Delete a town
+
+  town.residents.invite:
+    default: op
+    description:  Invite new residents
+
+  town.residents.kick:
+    default: op
+    description:  Kick a resident
+
+  town.leave:
+    default: op
+    description:  Leave town
+
+  town.deposit:
+    default: op
+    description:  Withdraw money into the town's bank
+
+  town.withdraw:
+    default: op
+    description:  Withdraw money from the town's bank
+
+  town.claim:
+    default: op
+    description:  Withdraw money from the town's bank
+
+  town.unclaim:
+    default: op
+    description:  Withdraw money from the town's bank
+
+  ############
+  #   Edit   #
+  ############
+
+  town.regions.build:
+    default: op
+    description:  Can place blocks in towns but can't in player's regions
+
+  town.regions.destroy:
+    default: op
+    description:  Can break blocks in towns but can't in player's regions
+
+  town.destroy:
+    default: op
+    description:  Can break blocks in town
+
+  town.build:
+    default: op
+    description:  Can place blocks in town
+
+  town.teleport.spawn:
+    default: op
+    description: Teleport on town spawn
+
+  #############
+  #    Set    #
+  #############
+
+  town.set.*:
+    default: op
+    description:  Set all
+    children:
+      town.set.spawn: true
+
+  town.set.spawn:
+    default: op
+    description:  Set town's spawn
+
+  ################
+  #    Toggle    #
+  ################
+
+  town.toggle.*:
+    default: op
+    description: Toggle all in town
+    children:
+      town.toggle.pvp: true
+
+  town.toggle.pvp:
+    default: op
+    description: Toggle PvP in town
+
 

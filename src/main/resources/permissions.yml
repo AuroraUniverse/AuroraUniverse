@@ -4,10 +4,16 @@
 
 # No town permissions
 newbies:
-
-town:
-  groups:
+  - town.create
+groups:
+  town:
     resident:
-
+      - town.leave
+      - town.create
+      - town.build
+      - town.destroy
+      - town.deposit
+      - aun.info
     mayor:
+      - town.*
     # Here you can add your custom permission group

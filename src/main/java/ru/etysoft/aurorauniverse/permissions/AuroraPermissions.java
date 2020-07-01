@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
+import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.exceptions.YamlException;
 import ru.etysoft.aurorauniverse.utils.FileManager;
 
@@ -21,6 +22,14 @@ public class AuroraPermissions {
 
 
     public static void clear() {
+        permissionAttachments.forEach((uuid, attachment) -> {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                player.removeAttachment(attachment);
+            } else {
+                Logger.debug("Player " + player.getName() + " not found!");
+            }
+        });
         groups.clear();
         permissionAttachments.clear();
     }
@@ -31,8 +40,8 @@ public class AuroraPermissions {
             if (pemissionsfile != null) {
 
                 for (String groupName :
-                        pemissionsfile.getConfigurationSection("town.groups").getKeys(false)) {
-                    Group group = new Group(groupName, pemissionsfile.getStringList("town.groups." + groupName));
+                        pemissionsfile.getConfigurationSection("groups.town").getKeys(false)) {
+                    Group group = new Group(groupName, pemissionsfile.getStringList("groups.town." + groupName));
                     addGroup(group);
                 }
                 Group group = new Group("newbies", pemissionsfile.getStringList("newbies"));
@@ -58,7 +67,14 @@ public class AuroraPermissions {
 
     public static void setPermissons(Player player, Group group) {
         PermissionAttachment attachment = player.addAttachment(AuroraUniverse.getInstance());
+        if (permissionAttachments.containsKey(player.getUniqueId())) {
+            Logger.debug("Remove permissions from &b" + player.getName());
+            player.removeAttachment(permissionAttachments.get(player.getUniqueId()));
+            permissionAttachments.remove(player.getUniqueId());
+        }
+
         Logger.debug("Attaching permissions of " + group.getName() + " to " + player.getName());
+        Residents.getResident(player.getName()).setPermissonGroup(group.getName());
         for (String permission :
                 group.getPermissions()) {
             attachment.setPermission(permission, !permission.startsWith("-"));

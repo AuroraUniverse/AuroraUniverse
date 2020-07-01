@@ -1,6 +1,5 @@
 package ru.etysoft.aurorauniverse.commands;
 
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -10,12 +9,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
+import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.utils.Messaging;
+import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
@@ -30,23 +31,27 @@ public class TownCommands implements CommandExecutor {
         if (args.length > 1) {
             try {
                 Player pl = (Player) sender;
-                StringBuilder name = new StringBuilder();
-                for (String arg :
-                        args) {
-                    if (!arg.equals(args[0])) {
-                        name.append(arg).append(" ");
+                if (Permissions.canCreateTown(pl)) {
+                    StringBuilder name = new StringBuilder();
+                    for (String arg :
+                            args) {
+                        if (!arg.equals(args[0])) {
+                            name.append(arg).append(" ");
+                        }
                     }
-                }
-                try {
-                   String townname = name.toString().replace("&", "");
-                    if(Towns.createTown(townname, pl)) {
-                        Messaging.mess(AuroraConfiguration.getColorString("town-created-message").replace("%s", name), sender);
+                    try {
+                        String townname = name.toString().replace("&", "");
+                        if (Towns.createTown(townname, pl)) {
+                            Messaging.mess(AuroraConfiguration.getColorString("town-created-message").replace("%s", name), sender);
 
-                        Residents.getResident(pl).setLastwild(false);
+                            Residents.getResident(pl).setLastwild(false);
+                        }
+
+                    } catch (TownException e) {
+                        Messaging.mess(AuroraConfiguration.getColorString("town-cantcreate-message").replace("%s", e.getMessageErr()), pl);
                     }
-
-                } catch (TownException e) {
-                    Messaging.mess(AuroraConfiguration.getColorString("town-cantcreate-message").replace("%s", e.getMessageErr()), pl);
+                } else {
+                    Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
                 }
             } catch (Exception e)
             {
@@ -73,35 +78,58 @@ public class TownCommands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player pl = (Player) sender;
-        Resident resident = Residents.getResident(pl);
+
+        Player pl = null;
+        Resident resident = null;
+        if (sender instanceof Player) {
+            pl = (Player) sender;
+            resident = Residents.getResident(pl);
+        }
+
         if(args.length > 0) {
            if(args[0].equalsIgnoreCase("new")) {
                TownCommands.NewTownCommand(sender, args);
            }
            else if(args[0].equalsIgnoreCase("delete")) {
                try {
+                   if (resident != null) {
 
-                   assert resident != null;
-                   if (resident.getTown().isMayor(resident)) {
-                       if (resident.getTown().delete()) {
-                           Messaging.mess(ColorCodes.toColor(AuroraConfiguration.getColorString("town-deleted-message")), pl);
+                       if (Permissions.canDeleteTown(pl)) {
+                           if (resident.getTown().delete()) {
+                               Messaging.mess(ColorCodes.toColor(AuroraConfiguration.getColorString("town-deleted-message")), pl);
+                           }
+
+                       } else {
+                           Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
                        }
-
                    } else {
-                       Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                       if (Permissions.canDeleteTown(pl)) {
+                           if (args.length > 1) {
+                               if (Towns.getTown(args[1]).delete()) {
+                                   Messaging.mess(Messages.adminTownDelete(args[1]), sender);
+                               } else {
+                                   Messaging.mess(Messages.adminCantTownDelete(args[1]), sender);
+                               }
+                           } else {
+                               Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+                           }
+                       }
                    }
                } catch (Exception e) {
                    Messaging.mess(AuroraConfiguration.getColorString("town-cantcreate-message").replace("%s", e.getMessage()), pl);
                }
            }
            else if(args[0].equalsIgnoreCase("spawn")) {
+
                if (resident.hasTown()) {
-                   Town t = resident.getTown();
-                   t.teleportToTownSpawn(pl);
-                   Messaging.mess(AuroraConfiguration.getColorString("town-teleported-to-spawn"), sender);
+                   if (Permissions.canTeleportSpawn(pl)) {
+                       Town t = resident.getTown();
+                       t.teleportToTownSpawn(pl);
+                       Messaging.mess(AuroraConfiguration.getColorString("town-teleported-to-spawn"), sender);
+                   } else {
+                       Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                   }
                } else {
-                   //TODO: resident don't belong to
                    Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                }
            }
@@ -119,15 +147,16 @@ public class TownCommands implements CommandExecutor {
                int finalPage = page;
                double d = Double.parseDouble("" + AuroraUniverse.getTownlist().size());
                double maxPage = Math.ceil((double) d / 10f);
+               Player finalPl = pl;
                AuroraUniverse.getTownlist().forEach((name, town) -> {
 
                    if (i[0] != (10 * finalPage) + 1) {
                        if (i[0] > maxPage - 1) {
                            try {
-                               pl.sendMessage(ChatColor.AQUA + name + ChatColor.GOLD + "(" + town.getMembersCount() + ", " + town.getMayor().getName() + ")");
+                               finalPl.sendMessage(ChatColor.AQUA + name + ChatColor.GOLD + "(" + town.getMembersCount() + ", " + town.getMayor().getName() + ")");
                            } catch (Exception e) {
                                e.printStackTrace();
-                               pl.sendMessage(name);
+                               finalPl.sendMessage(name);
                            }
 
 
@@ -141,7 +170,7 @@ public class TownCommands implements CommandExecutor {
            else if(args[0].equalsIgnoreCase("claim")) {
                if (resident.hasTown()) {
                    Town t = resident.getTown();
-                   if (t.getMayor() == resident) {
+                   if (Permissions.canClaim(pl)) {
                        try {
                            if (t.claimChunk(pl.getLocation().getChunk())) {
                                Messaging.mess(AuroraConfiguration.getColorString("town-claim"), sender);
@@ -153,14 +182,17 @@ public class TownCommands implements CommandExecutor {
                        } catch (TownException e) {
                            e.printStackTrace();
                        }
+                   } else {
+                       Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
                    }
-                   // TODO: permissions claim
+
                }
            }
            else if(args[0].equalsIgnoreCase("unclaim")) {
+
                if (resident.hasTown()) {
                    Town t = resident.getTown();
-                   if (t.getMayor() == resident) {
+                   if (Permissions.canUnClaim(pl)) {
 
                        if (t.unclaimChunk(pl.getLocation().getChunk())) {
                            Messaging.mess(AuroraConfiguration.getColorString("town-unclaim"), sender);
@@ -170,38 +202,44 @@ public class TownCommands implements CommandExecutor {
                            Messaging.mess(AuroraConfiguration.getColorString("town-cantunclaim"), sender);
                        }
 
+                   } else {
+                       Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
                    }
-                   // TODO: permissions claim
                }
            }
            else if(args[0].equalsIgnoreCase("leave")) {
                if (resident.hasTown()) {
-                   Town t = resident.getTown();
-                   t.removeResident(resident);
-                   Messaging.mess(AuroraConfiguration.getColorString("town-leave").replace("%s", t.getName()), pl);
-
-                   // TODO: permissions claim
+                   if (Permissions.canLeaveTown(pl)) {
+                       Town t = resident.getTown();
+                       t.removeResident(resident);
+                       Messaging.mess(AuroraConfiguration.getColorString("town-leave").replace("%s", t.getName()), pl);
+                   } else {
+                       Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                   }
                }
            }
            else if(args[0].equalsIgnoreCase("deposit")) {
                if (args.length > 1) {
                    if (resident.hasTown()) {
-                       Town t = resident.getTown();
-                       double d = 0;
-                       try {
-                           d = Double.valueOf(args[1]);
+                       if (Permissions.canDepositTown(pl)) {
+                           Town t = resident.getTown();
+                           double d = 0;
+                           try {
+                               d = Double.valueOf(args[1]);
 
-                       } catch (Exception e) {
-                           Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
-                           return true;
-                       }
-                       if (resident.takeBalance(d)) {
-                           t.depositBank(d);
-                           Messaging.mess(AuroraConfiguration.getColorString("town-deposit").replace("%s", d + ""), pl);
+                           } catch (Exception e) {
+                               Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+                               return true;
+                           }
+                           if (resident.takeBalance(d)) {
+                               t.depositBank(d);
+                               Messaging.mess(AuroraConfiguration.getColorString("town-deposit").replace("%s", d + ""), pl);
+                           } else {
+                               Messaging.mess(AuroraConfiguration.getColorString("town-cantdeposit").replace("%s", d + ""), pl);
+                           }
                        } else {
-                           Messaging.mess(AuroraConfiguration.getColorString("town-cantdeposit").replace("%s", d + ""), pl);
+                           Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
                        }
-                       // TODO: permissions claim
                    } else {
                        Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                    }
@@ -213,23 +251,26 @@ public class TownCommands implements CommandExecutor {
            else if(args[0].equalsIgnoreCase("withdraw")) {
                if (args.length > 1) {
                    if (resident.hasTown()) {
-                       Town t = resident.getTown();
-                       double d = 0;
-                       try {
-                           d = Double.valueOf(args[1]);
+                       if (Permissions.canWithdrawTown(pl)) {
+                           Town t = resident.getTown();
+                           double d = 0;
+                           try {
+                               d = Double.valueOf(args[1]);
 
-                       } catch (Exception e) {
-                           Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
-                           return true;
-                       }
+                           } catch (Exception e) {
+                               Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+                               return true;
+                           }
 
-                       if (t.withdrawBank(d)) {
-                           Messaging.mess(AuroraConfiguration.getColorString("town-withdraw").replace("%s", d + ""), pl);
-                           resident.giveBalance(d);
+                           if (t.withdrawBank(d)) {
+                               Messaging.mess(AuroraConfiguration.getColorString("town-withdraw").replace("%s", d + ""), pl);
+                               resident.giveBalance(d);
+                           } else {
+                               Messaging.mess(AuroraConfiguration.getColorString("town-cantwithdraw").replace("%s", d + ""), pl);
+                           }
                        } else {
-                           Messaging.mess(AuroraConfiguration.getColorString("town-cantwithdraw").replace("%s", d + ""), pl);
+                           Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
                        }
-                       // TODO: permissions claim
                    } else {
                        Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                    }
@@ -243,8 +284,7 @@ public class TownCommands implements CommandExecutor {
                    if (args[1].equalsIgnoreCase("spawn")) {
                        if (resident.hasTown()) {
                            Town t = resident.getTown();
-                           if (t.getMayor() == resident) {
-                               // TODO: permissions set
+                           if (Permissions.canSetSpawn(pl)) {
                                try {
                                    t.setSpawn(pl.getLocation());
                                    Messaging.mess(AuroraConfiguration.getColorString("town-setspawn"), pl);
@@ -257,7 +297,6 @@ public class TownCommands implements CommandExecutor {
                                Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), pl);
                            }
                        } else {
-                           //TODO: resident don't belong to town
                            Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                        }
                    }
@@ -270,8 +309,7 @@ public class TownCommands implements CommandExecutor {
                    Resident resident2 = Residents.getResident(de);
                    if (resident.hasTown() && resident2 != null) {
                        Town t = resident.getTown();
-                       if (t.getMayor() == resident) {
-                           // TODO: permissions set
+                       if (Permissions.canKickResident(pl)) {
                            t.removeResident(resident2);
                            Messaging.mess(AuroraConfiguration.getColorString("town-kick").replace("%s", resident2.getName()), pl);
 
@@ -280,7 +318,6 @@ public class TownCommands implements CommandExecutor {
                            Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), pl);
                        }
                    } else {
-                       //TODO: resident don't belong to town
                        Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                    }
                }
@@ -292,8 +329,7 @@ public class TownCommands implements CommandExecutor {
                    Resident resident2 = Residents.getResident(de);
                    if (resident.hasTown() && resident2 != null) {
                        Town t = resident.getTown();
-                       if (t.getMayor() == resident) {
-                           // TODO: permissions set
+                       if (Permissions.canInviteResident(pl)) {
                            t.addResident(resident2);
                            Messaging.mess(AuroraConfiguration.getColorString("town-invite").replace("%s", resident2.getName()), pl);
 
@@ -301,7 +337,6 @@ public class TownCommands implements CommandExecutor {
                            Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), pl);
                        }
                    } else {
-                       //TODO: resident don't belong to town
                        Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                    }
                }
@@ -312,8 +347,7 @@ public class TownCommands implements CommandExecutor {
 
                        if (resident.hasTown()) {
                            Town t = resident.getTown();
-                           if (t.getMayor() == resident) {
-                               // TODO: permissions set
+                           if (Permissions.canTogglePvP(pl)) {
                                if (args[2].equals("on")) {
                                    t.setPvP(true);
                                    Messaging.mess(AuroraConfiguration.getColorString("town-pvpon"), pl);
@@ -321,18 +355,14 @@ public class TownCommands implements CommandExecutor {
                                    t.setPvP(false);
                                    Messaging.mess(AuroraConfiguration.getColorString("town-pvpoff"), pl);
                                }
-
-
                            } else {
                                Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), pl);
                            }
                        } else {
-                           //TODO: resident don't belong to town
                            Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                        }
                    }
                } else {
-                   // TODO: no argument message
                    Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
                }
            }
@@ -347,7 +377,6 @@ public class TownCommands implements CommandExecutor {
                 if (resident.hasTown()) {
                     Messaging.towninfo(sender, resident.getTown());
                 } else {
-                    //TODO: no town message
                     Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                 }
 

@@ -1,23 +1,37 @@
 # Language configuration file
 
-# Plugin information
-authors-string: "Authors: "
-version-string: "Version: "
-apiversion-string: "API Version: "
+########################################
+#                                      #
+#            General params            #
+#                                      #
+########################################
 
-# General
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
 file-version: 0.1.0.0
 
-# MESSAGES
-# Plugin
+########################################
+#                                      #
+#        Aurora Plugin Messages        #
+#                                      #
+########################################
+
+authors-string: "Authors: "
+version-string: "Version: "
+apiversion-string: "API Version: "
+
 reloaded-message: "&aPlugin was successfully reloaded with new params!"
 no-arguments: "&cWrong arguments! "
 access-denied-message: "&eYou have not permisson to do that!"
+console: "&cYou can't do it from console!"
 
-# TOWNS
+########################################
+#                                      #
+#            Towns messages            #
+#                                      #
+########################################
 # %s - is a variable (example: town name, error message etc.)
+
 town-created-message: "You successfuly created town with name %s"
 town-cantcreate-message: "&cCan't create town: %s "
 town-deleted-message: "Your town was successfully deleted"
@@ -47,13 +61,22 @@ town-withdraw: "Successfully withdrawed %s from the town bank"
 town-cantwithdraw: "Can't withdraw %s from the town bank"
 town-cantdeposit: "Can't deposit %s to the town bank"
 
-# Town errors:
+# [Town errors]
 e1: "town on this chunk already exists"
 e2: "wrong name"
 e3: "town with name %s already exists"
 e4: "already in town"
 e5: "chunk don't belong to the town"
 
-# Chunk notifications
+# [Chunk notifications]
 town-welcome: "Welcome to the town %s"
 world: "You have entered the world! Be careful!"
+
+########################################
+#                                      #
+#            Admin messages            #
+#                                      #
+########################################
+admin:
+  town-delete: "Town &b%s &cdeleted &fsuccessfully"
+  town-cantdelete: "Can't delete town &b%s &cdeleted &fsuccessfully"

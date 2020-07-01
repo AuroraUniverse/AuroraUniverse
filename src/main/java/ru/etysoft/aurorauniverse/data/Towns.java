@@ -9,10 +9,11 @@ import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.events.NewTownEvent;
 import ru.etysoft.aurorauniverse.events.PreTownCreateEvent;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
+import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.utils.Messaging;
-import ru.etysoft.aurorauniverse.world.Town;
 import ru.etysoft.aurorauniverse.world.Region;
 import ru.etysoft.aurorauniverse.world.Resident;
+import ru.etysoft.aurorauniverse.world.Town;
 
 public class Towns {
 
@@ -155,9 +156,11 @@ public class Towns {
         Bukkit.getPluginManager().callEvent(preTownCreateEvent);
 
         if(!preTownCreateEvent.isCancelled()) {
-            Town newtown = new Town(name.toString(), Residents.getResident(mayor), mayor.getLocation().getChunk());
+            Town newtown = new Town(name, Residents.getResident(mayor), mayor.getLocation().getChunk());
             newtown.setSpawn(mayor.getLocation());
+            Residents.getResident(mayor).setPermissonGroup("mayor");
 
+            AuroraPermissions.setPermissons(mayor, AuroraPermissions.getGroup("mayor"));
             AuroraUniverse.getTownlist().put(newtown.getName(), newtown);
             AuroraUniverse.getTownBlocks().putAll(newtown.getTownChunks());
 
