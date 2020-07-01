@@ -5,15 +5,22 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Warning;
 import org.bukkit.entity.Player;
-import ru.etysoft.aurorauniverse.*;
+import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.Logger;
+import ru.etysoft.aurorauniverse.data.Messages;
+import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.Bank;
 import ru.etysoft.aurorauniverse.events.PreTownDeleteEvent;
 import ru.etysoft.aurorauniverse.events.TownDeleteEvent;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
-import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
+import ru.etysoft.aurorauniverse.permissions.Group;
+import ru.etysoft.aurorauniverse.utils.Messaging;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -24,25 +31,40 @@ public class Town {
     public Location townspawn;
     public float bank;
     public boolean pvp = false;
-    public boolean build = false;
-    public boolean destroy = false;
 
+    private boolean fire = false;
     private Resident mayor;
     private Map<Chunk, Region> townchunks = new ConcurrentHashMap<>();
     private ArrayList<Resident> residents = new ArrayList<>();
-    // TODO: ranks permissons
     private Chunk mainchunk = null;
     private Bank townbank;
-    
+
+    // Permission type -> list of groups with permission
+    private Set<String> buildGroups = new HashSet<String>();
+    private Set<String> breakGroups = new HashSet<String>();
+
+
     @Warning
     public Town(){}
+
+    public void isFire(Boolean enableFireSpreading) {
+        fire = enableFireSpreading;
+    }
+
+    public boolean hasPlayerRegion(Chunk chunk) {
+        return false;
+    }
+
+    public boolean isFire(Chunk chunk) {
+        return fire;
+    }
 
     public Bank getBank()
     {
         return townbank;
     }
 
-   public void depositBank(double d)
+    public void depositBank(double d)
     {
         townbank.deposit(d);
     }
@@ -64,7 +86,9 @@ public class Town {
                         mayor = _mayor;
                         addResident(mayor);
                         mayor.setTown(name);
-
+                        Group mayorperms = AuroraPermissions.getGroup("mayor");
+                        toggleBuild(mayorperms);
+                        toggleDestroy(mayorperms);
                         townchunks.put(homeblock, new Region(name));
                         mainchunk = homeblock;
                         townbank = new Bank("aun.town." + name, 0, _mayor.getName());
@@ -165,78 +189,75 @@ public class Town {
             {
                 residents.remove(resident);
                 resident.setTown(null);
-
-
             }
 
         }
 
     }
 
-    public boolean isConnected(Chunk chunk)
-    {
+    public boolean toggleBuild(Group group) {
+        if (buildGroups.contains(group.getName())) {
+            buildGroups.remove(group.getName());
+            return false;
+        } else {
+            buildGroups.add(group.getName());
+            return true;
+        }
+    }
 
+    public boolean toggleDestroy(Group group) {
+        if (breakGroups.contains(group.getName())) {
+            breakGroups.remove(group.getName());
+            return false;
+        } else {
+            breakGroups.add(group.getName());
+            return true;
+        }
+    }
+
+    public boolean canDestroy(Resident resident) {
+        return breakGroups.contains(resident.getPermissonGroupName());
+    }
+
+    public boolean canBuild(Resident resident) {
+        return buildGroups.contains(resident.getPermissonGroupName());
+    }
+
+    public boolean isConnected(Chunk chunk, Player player) {
         AtomicBoolean connected = new AtomicBoolean(false);
-
         AuroraUniverse.alltownblocks.forEach((chunk1, region) -> {
             int m =  AuroraUniverse.minTownBlockDistanse;
-
-                //такого чанка нет
-
-
-                //другой чанк города лежит не более чем в 1 блоке рядом
-                for (int x = -1; x<2; x++) {
-                    for (int z = -1; z < 2; z++) {
-                        if (chunk1.getX() + x == chunk.getX() && chunk1.getZ() + z == chunk.getZ()) {
-                            if (region.getTownName().equals(name)) //если это наш чанк(приват рядом со своим городом
+            for (int x = -1; x<2; x++) {
+                for (int z = -1; z < 2; z++) {
+                    if (chunk1.getX() + x == chunk.getX() && chunk1.getZ() + z == chunk.getZ()) {
+                        if (region.getTownName().equals(name)) //если это наш чанк(приват рядом со своим городом
+                        {
+                            //Проверяем есть ли диагональ
+                            if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() + m) //++
                             {
-                                //Проверяем есть ли диагональ
-                                if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() + m) //++
-                                {
-
-                                    //Diagonal
-                                } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() + m) // -+
-                                {
-
-                                    //Diagonal
-                                } else if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() - m) //+-
-                                {
-
-                                    //Diagonal
-                                } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() - m) //--
-                                {
-
-                                    //Diagonal
-                                } else {
-
-                                        connected.set(true);
-
-
-                                }
-
-
+                            } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() + m) // -+
+                            {
+                            } else if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() - m) //+-
+                            {
+                            } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() - m) //--
+                            {
                             } else {
-
-
-                                // TODO: too close to another town
+                                connected.set(true);
                             }
                         } else {
-                            if (!region.getTownName().equals(name)) {
-
-                            }
-                            // TODO: too far from town
+                            Messaging.mess(Messages.claimTooClose(), player);
                         }
+                    } else {
+                        if (!region.getTownName().equals(name)) {
+                            Messaging.mess(Messages.claimTooFar(), player);
+                        }
+
                     }
                 }
-
+            }
 
 
             // chunk 2 is either adjacent to or has the same coordinates as chunk1
-
-
-
-
-
 
 
         });

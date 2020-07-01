@@ -31,6 +31,10 @@ permissions:
     default: op
     description: Get information
 
+  aun.edittowns:
+    default: op
+    description: Bypass every check
+
   ########################################
   #                                      #
   #          Town permissions            #

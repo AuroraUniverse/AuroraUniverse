@@ -29,4 +29,12 @@ public class Messages {
     public static String cantConsole() {
         return AuroraConfiguration.getColorString("console");
     }
+
+    public static String claimTooFar() {
+        return AuroraConfiguration.getColorString("too-far");
+    }
+
+    public static String claimTooClose() {
+        return AuroraConfiguration.getColorString("too-close");
+    }
 }

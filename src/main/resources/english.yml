@@ -67,6 +67,8 @@ e2: "wrong name"
 e3: "town with name %s already exists"
 e4: "already in town"
 e5: "chunk don't belong to the town"
+too-close: "&cThis chunk is too close to another town!"
+too-far: "&cThis chunk is too far from your town!"
 
 # [Chunk notifications]
 town-welcome: "Welcome to the town %s"
