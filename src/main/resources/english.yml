@@ -44,13 +44,24 @@ town-cantunclaim: "Can't unclaim a townchunk!"
 town-leave: "You successfully leave town with name %s"
 town-setspawn: "New spawnpoint set!"
 town-cantsetspawn: "Can't set town spawnpoint!"
+
+town-enperm: "Enabled %s to group %k!"
+town-disperm: "Disabled %s to group %k!"
+town-cantsetperm: "Can't set permisson %s to group %k"
+
+
 town-kick: "Resident %s has kicked from the town"
 town-invite: "Resident %s has added to the town"
 town-pvpon: "Now town has PvP enabled"
 town-pvpoff: "Now town has PvP disabled"
 town-pvp: "You can't PvP here!"
+town-fireon: "Now fire is enabled"
+town-fireoff: "Now fire is disabled"
+
 town-block-place: "You can't place blocks here!"
 town-block-break: "You can't break blocks here!"
+town-block-interact: "You can't interact here!"
+
 town-mayor: "Mayor: "
 town-residents: "Residents("
 town-chunks: "Chunks: "
@@ -73,6 +84,22 @@ too-far: "&cThis chunk is too far from your town!"
 # [Chunk notifications]
 town-welcome: "Welcome to the town %s"
 world: "You have entered the world! Be careful!"
+
+########################################
+#                                      #
+#           Economy messages           #
+#                                      #
+########################################
+
+economy:
+  give: "Successfully give %s to %k"
+  take: "Successfully take %s from %k"
+  balance: "Your balance is %s$"
+  pay:
+    success: "Successfully pay %s to %k"
+    not-found: "&cPlayer %s not found!"
+    no-money: "&cYou have not %s!"
+    error: "&cCan't pay &6%s &cto &b%k!"
 
 ########################################
 #                                      #

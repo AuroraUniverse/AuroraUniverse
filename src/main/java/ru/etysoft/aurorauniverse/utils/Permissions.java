@@ -50,6 +50,10 @@ public class Permissions {
         return p.hasPermission("town.set.spawn");
     }
 
+    public static boolean canSetPermissions(CommandSender p) {
+        return p.hasPermission("town.set.perms");
+    }
+
     public static boolean canTogglePvP(CommandSender p) {
         return p.hasPermission("town.toggle.pvp");
     }
@@ -64,5 +68,21 @@ public class Permissions {
 
     public static boolean canTeleportSpawn(CommandSender p) {
         return p.hasPermission("town.teleport.spawn");
+    }
+
+    public static boolean canPay(CommandSender p) {
+        return p.hasPermission("auneconomy.pay");
+    }
+
+    public static boolean canTake(CommandSender p) {
+        return p.hasPermission("auneconomy.take");
+    }
+
+    public static boolean canGive(CommandSender p) {
+        return p.hasPermission("auneconomy.give");
+    }
+
+    public static boolean canBalance(CommandSender p) {
+        return p.hasPermission("auneconomy.balance");
     }
 }

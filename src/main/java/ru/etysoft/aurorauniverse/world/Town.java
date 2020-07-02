@@ -42,7 +42,7 @@ public class Town {
     // Permission type -> list of groups with permission
     private Set<String> buildGroups = new HashSet<String>();
     private Set<String> breakGroups = new HashSet<String>();
-
+    private Set<String> interactGroups = new HashSet<String>();
 
     @Warning
     public Town(){}
@@ -89,6 +89,7 @@ public class Town {
                         Group mayorperms = AuroraPermissions.getGroup("mayor");
                         toggleBuild(mayorperms);
                         toggleDestroy(mayorperms);
+                        toggleInteract(mayorperms);
                         townchunks.put(homeblock, new Region(name));
                         mainchunk = homeblock;
                         townbank = new Bank("aun.town." + name, 0, _mayor.getName());
@@ -198,9 +199,11 @@ public class Town {
     public boolean toggleBuild(Group group) {
         if (buildGroups.contains(group.getName())) {
             buildGroups.remove(group.getName());
+            Logger.debug("Group " + group.getName() + " now can't build in " + getName());
             return false;
         } else {
             buildGroups.add(group.getName());
+            Logger.debug("Group " + group.getName() + " now can build in " + getName());
             return true;
         }
     }
@@ -208,18 +211,36 @@ public class Town {
     public boolean toggleDestroy(Group group) {
         if (breakGroups.contains(group.getName())) {
             breakGroups.remove(group.getName());
+            Logger.debug("Group " + group.getName() + " now can't destroy in " + getName());
             return false;
         } else {
             breakGroups.add(group.getName());
+            Logger.debug("Group " + group.getName() + " now can destroy in " + getName());
             return true;
         }
     }
 
-    public boolean canDestroy(Resident resident) {
+    public boolean toggleInteract(Group group) {
+        if (interactGroups.contains(group.getName())) {
+            interactGroups.remove(group.getName());
+            Logger.debug("Group " + group.getName() + " now can't interact in " + getName());
+            return false;
+        } else {
+            interactGroups.add(group.getName());
+            Logger.debug("Group " + group.getName() + " now can interact in " + getName());
+            return true;
+        }
+    }
+
+    public boolean canInteract(Resident resident, Chunk chunk) {
+        return interactGroups.contains(resident.getPermissonGroupName());
+    }
+
+    public boolean canDestroy(Resident resident, Chunk chunk) {
         return breakGroups.contains(resident.getPermissonGroupName());
     }
 
-    public boolean canBuild(Resident resident) {
+    public boolean canBuild(Resident resident, Chunk chunk) {
         return buildGroups.contains(resident.getPermissonGroupName());
     }
 

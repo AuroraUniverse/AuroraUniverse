@@ -12,6 +12,9 @@ commands:
   auntown:
     description: Town command
     aliases: [town, t]
+  auneco:
+    description: Town command
+    aliases: [money]
 permissions:
 
   ########################################
@@ -43,39 +46,39 @@ permissions:
 
   town.create:
     default: op
-    description:  Create a town
+    description: Create a town
 
   town.delete:
     default: op
-    description:  Delete a town
+    description: Delete a town
 
   town.residents.invite:
     default: op
-    description:  Invite new residents
+    description: Invite new residents
 
   town.residents.kick:
     default: op
-    description:  Kick a resident
+    description: Kick a resident
 
   town.leave:
     default: op
-    description:  Leave town
+    description: Leave town
 
   town.deposit:
     default: op
-    description:  Withdraw money into the town's bank
+    description: Withdraw money into the town's bank
 
   town.withdraw:
     default: op
-    description:  Withdraw money from the town's bank
+    description: Withdraw money from the town's bank
 
   town.claim:
     default: op
-    description:  Withdraw money from the town's bank
+    description: Withdraw money from the town's bank
 
   town.unclaim:
     default: op
-    description:  Withdraw money from the town's bank
+    description: Withdraw money from the town's bank
 
   ############
   #   Edit   #
@@ -83,19 +86,23 @@ permissions:
 
   town.regions.build:
     default: op
-    description:  Can place blocks in towns but can't in player's regions
+    description: Can place blocks in towns but can't in player's regions
 
   town.regions.destroy:
     default: op
-    description:  Can break blocks in towns but can't in player's regions
+    description: Can break blocks in towns but can't in player's regions
 
   town.destroy:
     default: op
-    description:  Can break blocks in town
+    description: Can break blocks in town
 
   town.build:
     default: op
-    description:  Can place blocks in town
+    description: Can place blocks in town
+
+  ##################
+  #    Teleport    #
+  ##################
 
   town.teleport.spawn:
     default: op
@@ -107,13 +114,17 @@ permissions:
 
   town.set.*:
     default: op
-    description:  Set all
+    description: Set all
     children:
       town.set.spawn: true
 
   town.set.spawn:
     default: op
-    description:  Set town's spawn
+    description: Set town's spawn
+
+  town.set.perms:
+    default: op
+    description: Set town's permissions
 
   ################
   #    Toggle    #
@@ -129,4 +140,25 @@ permissions:
     default: op
     description: Toggle PvP in town
 
+  ########################################
+  #                                      #
+  #              Economy                 #
+  #                                      #
+  ########################################
+
+  auneconomy.pay:
+    default: op
+    description: Pay someone from your balance
+
+  auneconomy.give:
+    default: op
+    description: Give money to someone from air
+
+  auneconomy.take:
+    default: op
+    description: Take money from someone
+
+  auneconomy.balance:
+    default: op
+    description: Give money to someone from air
 

@@ -151,7 +151,7 @@ public class AuroraEconomy implements Economy {
     @Override
     @Deprecated
     public boolean has(String s, double v) {
-          Bank _bank = getBank(s);
+        Bank _bank = getBank(s);
         if (AuroraConfiguration.getDebugMode())
         {
             Logger.debug("[Vault] Checking if has amount " + v + " bank "+ s + " with balance " + getBank(s).getBalance() + ")");
@@ -161,7 +161,7 @@ public class AuroraEconomy implements Economy {
 
     @Override
     public boolean has(OfflinePlayer offlinePlayer, double v) {
-          Bank _bank = getBank(offlinePlayer.getName());
+        Bank _bank = getBank(offlinePlayer.getName());
         if (AuroraConfiguration.getDebugMode())
         {
             Logger.debug("[Vault] Checking if has amount " + v + " bank "+ offlinePlayer.getName() + " with balance " + getBank(offlinePlayer.getName()).getBalance() + ")");

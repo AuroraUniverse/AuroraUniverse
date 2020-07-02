@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.listeners;
 
+import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,6 +9,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Residents;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ProtectionListener implements Listener {
+
     @EventHandler
     public void PvP(EntityDamageByEntityEvent event)
     {
@@ -41,6 +44,40 @@ public class ProtectionListener implements Listener {
         }
     }
 
+
+    @EventHandler
+    public void InteractEvent(PlayerInteractEvent event) {
+        if (!event.getPlayer().hasPermission("aun.edittowns")) {
+            Chunk chunk = event.getClickedBlock().getChunk();
+            if (Residents.getResident(event.getPlayer()).hasTown()) {
+                if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
+                    Town town = Towns.getTown(chunk);
+                    if (town != null) {
+                        if (!town.canInteract(Residents.getResident(event.getPlayer()), chunk)) {
+                            Logger.debug("Prevented from interact[1] " + event.getPlayer().getName());
+                            Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-interact"), event.getPlayer());
+                            event.setCancelled(true);
+                        } else {
+
+                        }
+                    }
+                } else {
+                    if (Towns.hasTown(chunk)) {
+                        Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-interact"), event.getPlayer());
+                        event.setCancelled(true);
+                        Logger.debug("Prevented from interact[2] " + event.getPlayer().getName());
+                    }
+                }
+            } else {
+                if (Towns.hasTown(chunk)) {
+                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-interact"), event.getPlayer());
+                    event.setCancelled(true);
+                    Logger.debug("Prevented from interact[3] " + event.getPlayer().getName());
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void BreakBlock(BlockBreakEvent event)
     {
@@ -49,7 +86,8 @@ public class ProtectionListener implements Listener {
                 if (Towns.hasMyTown(event.getBlock().getChunk(), Residents.getResident(event.getPlayer()).getTown())) {
                     Town town = Towns.getTown(event.getBlock().getChunk());
                     if (town != null) {
-                        if (!town.canDestroy(Residents.getResident(event.getPlayer()))) {
+                        if (!town.canDestroy(Residents.getResident(event.getPlayer()), event.getBlock().getChunk())) {
+                            Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-break"), event.getPlayer());
                             Logger.debug("Prevented from block break[1] " + event.getPlayer().getName());
                             event.setCancelled(true);
                         } else {
@@ -78,7 +116,6 @@ public class ProtectionListener implements Listener {
     public void onBlockIgnite(BlockIgniteEvent event) {
         Block block = event.getBlock();
         ArrayList<BlockIgniteEvent.IgniteCause> causes = new ArrayList<>(Arrays.asList(BlockIgniteEvent.IgniteCause.values()));
-        ;
         if (causes.contains(event.getCause())) {
 
             Town town = Towns.getTown(event.getBlock().getChunk());
@@ -100,7 +137,8 @@ public class ProtectionListener implements Listener {
                 if (Towns.hasMyTown(event.getBlock().getChunk(), Residents.getResident(event.getPlayer()).getTown())) {
                     Town town = Towns.getTown(event.getBlock().getChunk());
                     if (town != null) {
-                        if (!town.canBuild(Residents.getResident(event.getPlayer()))) {
+                        if (!town.canBuild(Residents.getResident(event.getPlayer()), event.getBlock().getChunk())) {
+                            Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-place"), event.getPlayer());
                             Logger.debug("Prevented from block place[1] " + event.getPlayer().getName());
                             event.setCancelled(true);
                         } else {
@@ -109,14 +147,14 @@ public class ProtectionListener implements Listener {
                     }
                 } else {
                     if (Towns.hasTown(event.getBlock().getChunk())) {
-                        Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-break"), event.getPlayer());
+                        Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-place"), event.getPlayer());
                         event.setCancelled(true);
                         Logger.debug("Prevented from block place[2] " + event.getPlayer().getName());
                     }
                 }
             } else {
                 if (Towns.hasTown(event.getBlock().getChunk())) {
-                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-break"), event.getPlayer());
+                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-place"), event.getPlayer());
                     event.setCancelled(true);
                     Logger.debug("Prevented from block place[3] " + event.getPlayer().getName());
                 }

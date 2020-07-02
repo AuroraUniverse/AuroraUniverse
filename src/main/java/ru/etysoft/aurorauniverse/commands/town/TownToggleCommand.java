@@ -28,10 +28,31 @@ public class TownToggleCommand {
             } else {
                 if (args[1].equalsIgnoreCase("pvp")) {
                     togglePvP();
+                } else if (args[1].equalsIgnoreCase("fire")) {
+                    toggleFire();
                 }
             }
         } else {
             Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+        }
+    }
+
+    private void toggleFire() {
+        if (resident.hasTown()) {
+            Town t = resident.getTown();
+            if (Permissions.canTogglePvP(player)) {
+                if (args[2].equals("on")) {
+                    t.isFire(true);
+                    Messaging.mess(AuroraConfiguration.getColorString("town-fireon"), player);
+                } else if (args[2].equals("off")) {
+                    t.isFire(false);
+                    Messaging.mess(AuroraConfiguration.getColorString("town-fireoff"), player);
+                }
+            } else {
+                Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), player);
+            }
+        } else {
+            Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
         }
     }
 

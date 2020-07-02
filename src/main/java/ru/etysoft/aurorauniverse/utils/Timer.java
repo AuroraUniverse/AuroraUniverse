@@ -1,7 +1,5 @@
 package ru.etysoft.aurorauniverse.utils;
 
-import java.util.Date;
-
 public class Timer {
 
     private double timestart;
@@ -12,7 +10,7 @@ public class Timer {
 
     public String getStringSeconds()
     {
-        return ((System.currentTimeMillis() - timestart) / 1000) + "";
+        return String.valueOf((System.currentTimeMillis() - timestart) / 1000);
     }
 
 }

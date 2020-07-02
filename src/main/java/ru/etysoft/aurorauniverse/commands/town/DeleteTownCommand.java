@@ -15,7 +15,6 @@ public class DeleteTownCommand {
     public DeleteTownCommand(Resident resident, Player pl, String[] args, CommandSender sender) {
         try {
             if (resident != null) {
-
                 if (Permissions.canDeleteTown(pl)) {
                     if (resident.getTown().delete()) {
                         Messaging.mess(ColorCodes.toColor(AuroraConfiguration.getColorString("town-deleted-message")), pl);
@@ -25,7 +24,7 @@ public class DeleteTownCommand {
                     Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
                 }
             } else {
-                if (Permissions.canDeleteTown(pl)) {
+                if (Permissions.canDeleteTown(sender)) {
                     if (args.length > 1) {
                         if (Towns.getTown(args[1]).delete()) {
                             Messaging.mess(Messages.adminTownDelete(args[1]), sender);

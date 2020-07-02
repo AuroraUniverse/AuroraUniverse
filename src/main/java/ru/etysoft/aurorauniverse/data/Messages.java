@@ -14,6 +14,10 @@ public class Messages {
         return AuroraConfiguration.getColorString("no-arguments");
     }
 
+    public static String balance(String bal) {
+        return AuroraConfiguration.getColorString("economy.balance").replace("%s", bal);
+    }
+
     public static String adminTownDelete(String townname) {
         return AuroraConfiguration.getColorString("admin.town-delete").replace("%s", townname);
     }
@@ -32,6 +36,18 @@ public class Messages {
 
     public static String claimTooFar() {
         return AuroraConfiguration.getColorString("too-far");
+    }
+
+    public static String enablePerm(String groupname, String permission) {
+        return AuroraConfiguration.getColorString("town-enperm").replace("%s", permission).replace("%k", groupname);
+    }
+
+    public static String disablePerm(String groupname, String permission) {
+        return AuroraConfiguration.getColorString("town-disperm").replace("%s", permission).replace("%k", groupname);
+    }
+
+    public static String cantSetPerm(String groupname, String permission) {
+        return AuroraConfiguration.getColorString("town-cantsetperm").replace("%s", permission).replace("%k", groupname);
     }
 
     public static String claimTooClose() {
