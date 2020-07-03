@@ -2,9 +2,17 @@
 ###### AuroraPermissions ######
 ###############################
 
+# Groups are not inherited.
+# Use .* only where a similar permission group is created.
+# If the permission is with .* will not exist, it will not be applied
+
+# Permission file for AuroraUniverse 0.1.1.0
+
 # No town permissions
 newbies:
   - town.create
+  - auneconomy.pay
+  - auneconomy.balance
 groups:
   town:
     resident:
@@ -14,6 +22,10 @@ groups:
       - town.destroy
       - town.deposit
       - aun.info
+      - auneconomy.pay
+      - auneconomy.balance
     mayor:
       - town.*
+      - auneconomy.pay
+      - auneconomy.balance
     # Here you can add your custom permission group

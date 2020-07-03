@@ -14,6 +14,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.etysoft.aurorauniverse.commands.PluginCommands;
 import ru.etysoft.aurorauniverse.commands.TownCommands;
+import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
 import ru.etysoft.aurorauniverse.listeners.PluginListener;
 import ru.etysoft.aurorauniverse.listeners.ProtectionListener;
@@ -48,6 +49,9 @@ public final class AuroraUniverse extends JavaPlugin {
     private static FileConfiguration language;
     private static boolean haswarnings = false;
 
+    private final static String langver = "0.1.1.0";
+    private final static String confver = "0.1.0.0";
+    private final static String permsver = "0.1.0.0";
 
     public AuroraEconomy getEconomy()
     {
@@ -70,11 +74,11 @@ public final class AuroraUniverse extends JavaPlugin {
             prefix = AuroraConfiguration.getColorString("prefix");
             if (getConfig().contains("file-version")) {
                 try {
-                    if (!getConfig().getString("file-version").equals(this.getDescription().getVersion())) {
+                    if (!getConfig().getString("file-version").equals(confver)) {
                         addWarning("&eOutdated configuration file!");
                     }
                     if (language.contains("file-version")) {
-                        if (!AuroraConfiguration.getColorString("file-version").equals(this.getDescription().getVersion())) {
+                        if (!AuroraConfiguration.getColorString("file-version").equals(langver)) {
                             addWarning("&eOutdated language file!");
                         }
                     } else {
@@ -299,6 +303,7 @@ public final class AuroraUniverse extends JavaPlugin {
     @Override
     public void onDisable() {
         Logger.info("Disabling AuroraUniverse...");
+        DataManager.saveTowns("towns.json");
         Logger.info("AuroraUniverse successfully disabled!");
     }
 }

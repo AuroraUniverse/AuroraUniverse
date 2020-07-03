@@ -8,7 +8,7 @@
 
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
-file-version: 0.1.0.0
+file-version: 0.1.1.0
 
 ########################################
 #                                      #
@@ -60,7 +60,8 @@ town-fireoff: "Now fire is disabled"
 
 town-block-place: "You can't place blocks here!"
 town-block-break: "You can't break blocks here!"
-town-block-interact: "You can't interact here!"
+town-block-switch: "You can't switch here!"
+town-block-use: "You can't use here!"
 
 town-mayor: "Mayor: "
 town-residents: "Residents("

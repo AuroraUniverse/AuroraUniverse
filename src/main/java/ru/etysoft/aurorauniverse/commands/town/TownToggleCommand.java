@@ -40,7 +40,7 @@ public class TownToggleCommand {
     private void toggleFire() {
         if (resident.hasTown()) {
             Town t = resident.getTown();
-            if (Permissions.canTogglePvP(player)) {
+            if (Permissions.canToggleFire(player)) {
                 if (args[2].equals("on")) {
                     t.isFire(true);
                     Messaging.mess(AuroraConfiguration.getColorString("town-fireon"), player);

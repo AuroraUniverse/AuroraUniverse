@@ -69,8 +69,14 @@ public class TownSetCommand {
                             } else {
                                 Messaging.mess(Messages.disablePerm(groupname, permisson), sender);
                             }
-                        } else if (permisson.equals("interact")) {
-                            if (t.toggleInteract(AuroraPermissions.getGroup(groupname))) {
+                        } else if (permisson.equals("use")) {
+                            if (t.toggleUse(AuroraPermissions.getGroup(groupname))) {
+                                Messaging.mess(Messages.enablePerm(groupname, permisson), sender);
+                            } else {
+                                Messaging.mess(Messages.disablePerm(groupname, permisson), sender);
+                            }
+                        } else if (permisson.equals("switch")) {
+                            if (t.toggleSwitch(AuroraPermissions.getGroup(groupname))) {
                                 Messaging.mess(Messages.enablePerm(groupname, permisson), sender);
                             } else {
                                 Messaging.mess(Messages.disablePerm(groupname, permisson), sender);

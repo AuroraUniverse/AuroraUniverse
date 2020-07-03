@@ -58,6 +58,10 @@ public class Permissions {
         return p.hasPermission("town.toggle.pvp");
     }
 
+    public static boolean canToggleFire(CommandSender p) {
+        return p.hasPermission("town.toggle.fire");
+    }
+
     public static boolean canKickResident(CommandSender p) {
         return p.hasPermission("town.kick");
     }

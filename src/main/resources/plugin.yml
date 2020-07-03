@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.1.0.0
+version: 0.1.1.0
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 api-version: 1.13
 author: karlov_m
@@ -44,6 +44,25 @@ permissions:
   #                                      #
   ########################################
 
+  town.*:
+    default: op
+    children:
+      town.create: true
+      town.delete: true
+      town.residents.invite: true
+      town.residents.kick: true
+      town.leave: true
+      town.deposit: true
+      town.withdraw: true
+      town.claim: true
+      town.unclaim: true
+      town.edit: true
+      town.teleport.spawn: true
+      town.set.*: true
+      town.toggle.*: true
+
+    description: Allows all commands
+
   town.create:
     default: op
     description: Create a town
@@ -84,6 +103,15 @@ permissions:
   #   Edit   #
   ############
 
+  town.edit:
+    default: op
+    description: All block operations in town
+    children:
+      town.regions.build: true
+      town.regions.destroy: true
+      town.destroy: true
+      town.build: true
+
   town.regions.build:
     default: op
     description: Can place blocks in towns but can't in player's regions
@@ -117,6 +145,7 @@ permissions:
     description: Set all
     children:
       town.set.spawn: true
+      town.set.perms: true
 
   town.set.spawn:
     default: op
@@ -139,6 +168,10 @@ permissions:
   town.toggle.pvp:
     default: op
     description: Toggle PvP in town
+
+  town.toggle.fire:
+    default: op
+    description: Toggle fire in town
 
   ########################################
   #                                      #

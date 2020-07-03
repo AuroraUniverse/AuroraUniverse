@@ -42,7 +42,8 @@ public class Town {
     // Permission type -> list of groups with permission
     private Set<String> buildGroups = new HashSet<String>();
     private Set<String> breakGroups = new HashSet<String>();
-    private Set<String> interactGroups = new HashSet<String>();
+    private Set<String> useGroups = new HashSet<String>();
+    private Set<String> switchGroups = new HashSet<String>();
 
     @Warning
     public Town(){}
@@ -89,7 +90,7 @@ public class Town {
                         Group mayorperms = AuroraPermissions.getGroup("mayor");
                         toggleBuild(mayorperms);
                         toggleDestroy(mayorperms);
-                        toggleInteract(mayorperms);
+                        toggleUse(mayorperms);
                         townchunks.put(homeblock, new Region(name));
                         mainchunk = homeblock;
                         townbank = new Bank("aun.town." + name, 0, _mayor.getName());
@@ -220,20 +221,36 @@ public class Town {
         }
     }
 
-    public boolean toggleInteract(Group group) {
-        if (interactGroups.contains(group.getName())) {
-            interactGroups.remove(group.getName());
-            Logger.debug("Group " + group.getName() + " now can't interact in " + getName());
+    public boolean toggleUse(Group group) {
+        if (useGroups.contains(group.getName())) {
+            useGroups.remove(group.getName());
+            Logger.debug("Group " + group.getName() + " now can't use in " + getName());
             return false;
         } else {
-            interactGroups.add(group.getName());
-            Logger.debug("Group " + group.getName() + " now can interact in " + getName());
+            useGroups.add(group.getName());
+            Logger.debug("Group " + group.getName() + " now can use in " + getName());
             return true;
         }
     }
 
-    public boolean canInteract(Resident resident, Chunk chunk) {
-        return interactGroups.contains(resident.getPermissonGroupName());
+    public boolean toggleSwitch(Group group) {
+        if (switchGroups.contains(group.getName())) {
+            switchGroups.remove(group.getName());
+            Logger.debug("Group " + group.getName() + " now can't switch in " + getName());
+            return false;
+        } else {
+            switchGroups.add(group.getName());
+            Logger.debug("Group " + group.getName() + " now can switch in " + getName());
+            return true;
+        }
+    }
+
+    public boolean canSwitch(Resident resident, Chunk chunk) {
+        return switchGroups.contains(resident.getPermissonGroupName());
+    }
+
+    public boolean canUse(Resident resident, Chunk chunk) {
+        return useGroups.contains(resident.getPermissonGroupName());
     }
 
     public boolean canDestroy(Resident resident, Chunk chunk) {

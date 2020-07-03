@@ -1,6 +1,7 @@
 package ru.etysoft.aurorauniverse.listeners;
 
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,7 @@ import ru.etysoft.aurorauniverse.world.Town;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ProtectionListener implements Listener {
 
@@ -46,37 +48,128 @@ public class ProtectionListener implements Listener {
 
 
     @EventHandler
-    public void InteractEvent(PlayerInteractEvent event) {
+    public void UseEvent(PlayerInteractEvent event) {
         if (!event.getPlayer().hasPermission("aun.edittowns")) {
-            Chunk chunk = event.getClickedBlock().getChunk();
-            if (Residents.getResident(event.getPlayer()).hasTown()) {
-                if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
-                    Town town = Towns.getTown(chunk);
-                    if (town != null) {
-                        if (!town.canInteract(Residents.getResident(event.getPlayer()), chunk)) {
-                            Logger.debug("Prevented from interact[1] " + event.getPlayer().getName());
-                            Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-interact"), event.getPlayer());
-                            event.setCancelled(true);
-                        } else {
 
+            if (event.hasBlock()) {
+                Chunk chunk = event.getClickedBlock().getChunk();
+                Block block = event.getClickedBlock();
+                List<Material> materials = new ArrayList<Material>();
+                materials.add(Material.CHEST);
+                materials.add(Material.CHEST_MINECART);
+                materials.add(Material.SHULKER_BOX);
+                materials.add(Material.FURNACE);
+                materials.add(Material.BREWING_STAND);
+                materials.add(Material.ITEM_FRAME);
+
+                // 1.14+
+                try {
+                    materials.add(Material.BARREL);
+                } catch (Exception e) {
+                    Logger.warning("Can't find Barrel material! Is the server outdated?");
+                }
+
+                if (materials.contains(block.getType())) {
+                    if (Residents.getResident(event.getPlayer()).hasTown()) {
+                        if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
+                            Town town = Towns.getTown(chunk);
+                            if (town != null) {
+                                if (!town.canUse(Residents.getResident(event.getPlayer()), chunk)) {
+                                    Logger.debug("Prevented from use[1] " + event.getPlayer().getName());
+                                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-use"), event.getPlayer());
+                                    event.setCancelled(true);
+                                } else {
+
+                                }
+                            }
+                        } else {
+                            if (Towns.hasTown(chunk)) {
+                                Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-use"), event.getPlayer());
+                                event.setCancelled(true);
+                                Logger.debug("Prevented from use[2] " + event.getPlayer().getName());
+                            }
+                        }
+                    } else {
+                        if (Towns.hasTown(chunk)) {
+                            Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-use"), event.getPlayer());
+                            event.setCancelled(true);
+                            Logger.debug("Prevented from use[3] " + event.getPlayer().getName());
                         }
                     }
-                } else {
-                    if (Towns.hasTown(chunk)) {
-                        Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-interact"), event.getPlayer());
-                        event.setCancelled(true);
-                        Logger.debug("Prevented from interact[2] " + event.getPlayer().getName());
-                    }
-                }
-            } else {
-                if (Towns.hasTown(chunk)) {
-                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-interact"), event.getPlayer());
-                    event.setCancelled(true);
-                    Logger.debug("Prevented from interact[3] " + event.getPlayer().getName());
                 }
             }
         }
     }
+
+    @EventHandler
+    public void SwitchEvent(PlayerInteractEvent event) {
+        if (!event.getPlayer().hasPermission("aun.edittowns")) {
+            if (event.hasBlock()) {
+                Chunk chunk = event.getClickedBlock().getChunk();
+                Block block = event.getClickedBlock();
+                List<Material> materials = new ArrayList<Material>();
+
+                materials.add(Material.DARK_OAK_DOOR);
+                materials.add(Material.ACACIA_DOOR);
+                materials.add(Material.BIRCH_DOOR);
+                materials.add(Material.IRON_DOOR);
+                materials.add(Material.JUNGLE_DOOR);
+                materials.add(Material.OAK_DOOR);
+                materials.add(Material.SPRUCE_DOOR);
+
+                materials.add(Material.BIRCH_BUTTON);
+                materials.add(Material.ACACIA_BUTTON);
+                materials.add(Material.DARK_OAK_BUTTON);
+                materials.add(Material.JUNGLE_BUTTON);
+                materials.add(Material.OAK_BUTTON);
+                materials.add(Material.SPRUCE_BUTTON);
+                materials.add(Material.STONE_BUTTON);
+
+                materials.add(Material.LEVER);
+
+                materials.add(Material.ACACIA_PRESSURE_PLATE);
+                materials.add(Material.BIRCH_PRESSURE_PLATE);
+                materials.add(Material.JUNGLE_PRESSURE_PLATE);
+                materials.add(Material.OAK_PRESSURE_PLATE);
+                materials.add(Material.SPRUCE_PRESSURE_PLATE);
+                materials.add(Material.STONE_PRESSURE_PLATE);
+                materials.add(Material.DARK_OAK_PRESSURE_PLATE);
+                materials.add(Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
+                materials.add(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);
+
+                if (materials.contains(block.getType())) {
+                    if (Residents.getResident(event.getPlayer()).hasTown()) {
+                        if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
+                            Town town = Towns.getTown(chunk);
+                            if (town != null) {
+                                if (!town.canSwitch(Residents.getResident(event.getPlayer()), chunk)) {
+                                    Logger.debug("Prevented from switch[1] " + event.getPlayer().getName());
+                                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
+                                    event.setCancelled(true);
+                                } else {
+
+                                }
+                            }
+                        } else {
+                            if (Towns.hasTown(chunk)) {
+                                Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
+                                event.setCancelled(true);
+                                Logger.debug("Prevented from switch[2] " + event.getPlayer().getName());
+                            }
+                        }
+                    } else {
+                        if (Towns.hasTown(chunk)) {
+                            Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
+                            event.setCancelled(true);
+                            Logger.debug("Prevented from switch[3] " + event.getPlayer().getName());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 
     @EventHandler
     public void BreakBlock(BlockBreakEvent event)
