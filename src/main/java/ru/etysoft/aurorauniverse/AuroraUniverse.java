@@ -6,14 +6,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.etysoft.aurorauniverse.commands.EconomyCommands;
 import ru.etysoft.aurorauniverse.commands.PluginCommands;
 import ru.etysoft.aurorauniverse.commands.TownCommands;
+import ru.etysoft.aurorauniverse.commands.TownTabCompliter;
 import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
 import ru.etysoft.aurorauniverse.listeners.PluginListener;
@@ -253,8 +256,9 @@ public final class AuroraUniverse extends JavaPlugin {
 
     private void registerCommands()
     {
-        registerCommand("auntown", new TownCommands());
-        registerCommand("aurorauniverse", new PluginCommands());
+        registerCommand("auntown", new TownCommands(), new TownTabCompliter());
+        registerCommand("aurorauniverse", new PluginCommands(), null);
+        registerCommand("auneco", new EconomyCommands(), null);
     }
 
     private void registerListeners()
@@ -264,11 +268,14 @@ public final class AuroraUniverse extends JavaPlugin {
     }
 
 
-    private boolean registerCommand(String name, CommandExecutor executor) {
+    private boolean registerCommand(String name, CommandExecutor executor, TabCompleter tabCompleter) {
         try
         {
             PluginCommand command = getCommand(name);
             command.setExecutor(executor);
+            if (tabCompleter != null) {
+                command.setTabCompleter(tabCompleter);
+            }
             if(AuroraConfiguration.getDebugMode())
             {
                 Logger.debug("Registered command &b/" + name);
