@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.world;
 
+import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.Bank;
@@ -12,14 +13,19 @@ public class Resident {
     private String townname = null;
     private Bank bank;
     private String permissonGroup;
+    private Player player;
 
 
-    public Resident(String name)
+    public Resident(String name, Player player)
     {
         nickname = name;
         permissonGroup = "newbies";
         bank = new Bank(nickname,  AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getDouble("start-balance"), nickname);
         AuroraUniverse.getInstance().getEconomy().addBank(bank);
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public void setPermissonGroup(String AuroraPermissonGroup) {

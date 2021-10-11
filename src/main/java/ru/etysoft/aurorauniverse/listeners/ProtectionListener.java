@@ -7,16 +7,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
+import ru.etysoft.aurorauniverse.commands.PluginCommands;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.utils.Messaging;
+import ru.etysoft.aurorauniverse.world.Region;
 import ru.etysoft.aurorauniverse.world.Resident;
+import ru.etysoft.aurorauniverse.world.ResidentRegion;
 import ru.etysoft.aurorauniverse.world.Town;
 
 import java.util.ArrayList;
@@ -174,6 +178,29 @@ public class ProtectionListener implements Listener {
     @EventHandler
     public void BreakBlock(BlockBreakEvent event)
     {
+        if(PluginCommands.debugHand.contains(event.getPlayer().getName()))
+        {
+            String infoMessage = "";
+            Town town = Towns.getTown(event.getBlock().getChunk());
+            if(town != null)
+            {
+                Region region = town.getTownChunks().get(event.getBlock().getChunk());
+                infoMessage += "Name: " + region.getRegionName() + "\n" +
+                        "TownName: " + region.getTown().getName() + " (" + region.getTown().getChunksCount() + ")";
+
+                if(region instanceof ResidentRegion)
+                {
+                    infoMessage = "[!] RESIDENT REGION \nName: " + region.getRegionName() + "\n" +
+                            "TownName: " + region.getTown().getName() + " (" + region.getTown().getChunksCount() + ") + \n" + ((ResidentRegion) region).getOwner().getName() ;
+                }
+            }
+            else
+            {
+                infoMessage = "Unowned";
+            }
+            event.getPlayer().sendMessage(infoMessage);
+            event.setCancelled(true);
+        }
         if(!event.getPlayer().hasPermission("aun.edittowns")) {
             if (Residents.getResident(event.getPlayer()).hasTown()) {
                 if (Towns.hasMyTown(event.getBlock().getChunk(), Residents.getResident(event.getPlayer()).getTown())) {
@@ -213,7 +240,7 @@ public class ProtectionListener implements Listener {
 
             Town town = Towns.getTown(event.getBlock().getChunk());
             if (town != null) {
-                if (!town.isFire(event.getBlock().getChunk())) {
+                if (!town.isFireAllowed(event.getBlock().getChunk())) {
                     event.setCancelled(true);
                     Logger.debug("Prevented fire spread on X:" + event.getBlock().getLocation().getBlockX() + " Y:" + event.getBlock().getLocation().getBlockY() + " Z:" + event.getBlock().getLocation().getBlockZ() + ". From " + event.getCause() + " on " + town.getName());
                 }
@@ -221,6 +248,19 @@ public class ProtectionListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onBlockFromTo(BlockFromToEvent event) {
+        Material id = event.getBlock().getType();
+        Town town = Towns.getTown(event.getBlock().getChunk());
+        Town toTown = Towns.getTown(event.getToBlock().getChunk());
+        if (town == null | toTown != town) {
+
+        if((id == Material.LAVA | id == Material.WATER) &&  (toTown != null)) {
+            event.setCancelled(true);
+        }
+
+        }
+    }
 
     @EventHandler
     public void PlaceBlock(BlockPlaceEvent event)

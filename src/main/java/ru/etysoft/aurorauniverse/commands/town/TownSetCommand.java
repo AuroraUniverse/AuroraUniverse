@@ -32,7 +32,7 @@ public class TownSetCommand {
                     setSpawn();
                 }
             }
-            if (args[1].equalsIgnoreCase("perm")) {
+            else if (args[1].equalsIgnoreCase("perm")) {
                 if (args.length > 3)
                     if (resident == null) {
                         Messaging.mess(Messages.cantConsole(), sender);
@@ -105,7 +105,7 @@ public class TownSetCommand {
                     t.setSpawn(player.getLocation());
                     Messaging.mess(AuroraConfiguration.getColorString("town-setspawn"), sender);
                 } catch (TownException e) {
-                    Messaging.mess(AuroraConfiguration.getColorString("town-cantsetspawn").replace("%s", e.getMessageErr()), player);
+                    Messaging.mess(AuroraConfiguration.getColorString("town-cantsetspawn").replace("%s", e.getErrorMessage()), player);
 
                 }
 

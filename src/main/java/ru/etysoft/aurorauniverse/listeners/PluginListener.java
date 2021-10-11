@@ -33,13 +33,13 @@ public class PluginListener implements Listener {
         }
         Residents.createResident(event.getPlayer());
         Group group = AuroraPermissions.getGroup(Residents.getResident(event.getPlayer()).getPermissonGroupName());
-        AuroraPermissions.setPermissons(event.getPlayer(), group);
+        AuroraPermissions.setPermissions(event.getPlayer(), group);
     }
 
     @EventHandler
     public void Quit(PlayerQuitEvent event)
     {
-        AuroraPermissions.removePermissons(event.getPlayer());
+        AuroraPermissions.removePermissions(event.getPlayer());
     }
 
     @EventHandler

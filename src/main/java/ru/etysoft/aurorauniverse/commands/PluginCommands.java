@@ -11,7 +11,12 @@ import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PluginCommands implements CommandExecutor {
+
+    public static List<String> debugHand = new ArrayList<>();
 
     public void setDebug(CommandSender sender, String[] args)
     {
@@ -66,6 +71,21 @@ public class PluginCommands implements CommandExecutor {
             else if(args[0].equalsIgnoreCase("debug"))
             {
                 setDebug(sender, args);
+            }
+            else if(args[0].equalsIgnoreCase("dhand"))
+            {
+                if(AuroraConfiguration.getDebugMode())
+                {
+                    if(debugHand.contains(sender.getName()))
+                    {
+                        debugHand.remove(sender.getName());
+                    }
+                    else
+                    {
+                        debugHand.add(sender.getName());
+                    }
+
+                }
             }
         }
         else

@@ -13,7 +13,7 @@ public class Residents {
         }
         else
         {
-            AuroraUniverse.residentlist.put(pl.getName(), new Resident(pl.getName()));
+            AuroraUniverse.residentlist.put(pl.getName(), new Resident(pl.getName(), pl));
             return  true;
         }
     }

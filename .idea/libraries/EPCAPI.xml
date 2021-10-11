@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="Vault">
+  <library name="EPCAPI">
     <CLASSES>
-      <root url="jar://E:/rstop/политземля/earth/pluginsTowny/Vault.jar!/" />
+      <root url="jar://E:/rstop/политземля/earth/plugins/EPCAPI.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

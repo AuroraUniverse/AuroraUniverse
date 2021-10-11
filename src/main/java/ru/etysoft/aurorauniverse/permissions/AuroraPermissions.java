@@ -18,11 +18,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AuroraPermissions {
     private static Map<String, Group> groups = new ConcurrentHashMap<>();
     private static boolean isInitialized = false;
-    private static HashMap<UUID, PermissionAttachment> permissionAttachments = new HashMap<>();
+    private static HashMap<UUID, PermissionAttachment> permissionDictionary = new HashMap<>();
 
 
     public static void clear() {
-        permissionAttachments.forEach((uuid, attachment) -> {
+        permissionDictionary.forEach((uuid, attachment) -> {
             Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
                 player.removeAttachment(attachment);
@@ -31,20 +31,20 @@ public class AuroraPermissions {
             }
         });
         groups.clear();
-        permissionAttachments.clear();
+        permissionDictionary.clear();
     }
 
     public static void initialize() {
         try {
-            YamlConfiguration pemissionsfile = FileManager.setupYaml("permissions.yml");
-            if (pemissionsfile != null) {
+            YamlConfiguration premissionsYml = FileManager.setupYaml("permissions.yml");
+            if (premissionsYml != null) {
 
                 for (String groupName :
-                        pemissionsfile.getConfigurationSection("groups.town").getKeys(false)) {
-                    Group group = new Group(groupName, pemissionsfile.getStringList("groups.town." + groupName));
+                        premissionsYml.getConfigurationSection("groups.town").getKeys(false)) {
+                    Group group = new Group(groupName, premissionsYml.getStringList("groups.town." + groupName));
                     addGroup(group);
                 }
-                Group group = new Group("newbies", pemissionsfile.getStringList("newbies"));
+                Group group = new Group("newbies", premissionsYml.getStringList("newbies"));
                 addGroup(group);
                 parsePlayers();
                 isInitialized = true;
@@ -61,16 +61,16 @@ public class AuroraPermissions {
         AuroraUniverse.residentlist.forEach((name, resident) -> {
             Player player = Bukkit.getPlayer(name);
             Group group = getGroup(resident.getPermissonGroupName());
-            setPermissons(player, group);
+            setPermissions(player, group);
         });
     }
 
-    public static void setPermissons(Player player, Group group) {
+    public static void setPermissions(Player player, Group group) {
         PermissionAttachment attachment = player.addAttachment(AuroraUniverse.getInstance());
-        if (permissionAttachments.containsKey(player.getUniqueId())) {
+        if (permissionDictionary.containsKey(player.getUniqueId())) {
             Logger.debug("Remove permissions from &b" + player.getName());
-            player.removeAttachment(permissionAttachments.get(player.getUniqueId()));
-            permissionAttachments.remove(player.getUniqueId());
+            player.removeAttachment(permissionDictionary.get(player.getUniqueId()));
+            permissionDictionary.remove(player.getUniqueId());
         }
 
         Logger.debug("Attaching permissions of " + group.getName() + " to " + player.getName());
@@ -80,7 +80,7 @@ public class AuroraPermissions {
             attachment.setPermission(permission, !permission.startsWith("-"));
             Logger.debug("Set permisson " + permission);
         }
-        permissionAttachments.put(player.getUniqueId(), attachment);
+        permissionDictionary.put(player.getUniqueId(), attachment);
     }
 
     public static Map<String, Group> getGroups() {
@@ -96,8 +96,8 @@ public class AuroraPermissions {
         }
     }
 
-    public static void removePermissons(Player player) {
-        permissionAttachments.remove(player.getUniqueId());
+    public static void removePermissions(Player player) {
+        permissionDictionary.remove(player.getUniqueId());
     }
 
     public static void addGroup(Group group) {

@@ -1,9 +1,9 @@
 package ru.etysoft.aurorauniverse.exceptions;
 
-public class TownException extends Exception {
+public class RegionException extends Exception {
 
     private String error;
-    public TownException(String message)
+    public RegionException(String message)
     {
         error = message;
     }

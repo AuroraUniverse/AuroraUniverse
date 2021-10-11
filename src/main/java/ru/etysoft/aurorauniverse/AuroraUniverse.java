@@ -16,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.etysoft.aurorauniverse.commands.EconomyCommands;
 import ru.etysoft.aurorauniverse.commands.PluginCommands;
 import ru.etysoft.aurorauniverse.commands.TownCommands;
-import ru.etysoft.aurorauniverse.commands.TownTabCompliter;
+import ru.etysoft.aurorauniverse.commands.TownTabCompleter;
 import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
 import ru.etysoft.aurorauniverse.listeners.PluginListener;
@@ -256,7 +256,7 @@ public final class AuroraUniverse extends JavaPlugin {
 
     private void registerCommands()
     {
-        registerCommand("auntown", new TownCommands(), new TownTabCompliter());
+        registerCommand("auntown", new TownCommands(), new TownTabCompleter());
         registerCommand("aurorauniverse", new PluginCommands(), null);
         registerCommand("auneco", new EconomyCommands(), null);
     }

@@ -1,30 +1,34 @@
 package ru.etysoft.aurorauniverse.world;
 
-import ru.etysoft.aurorauniverse.data.Towns;
+import java.io.Serializable;
 
 public class Region {
 
-    public String regonname = "";
-    public boolean undertown = true;
-    public String townname = "AuroraTown";
+    private String regionName = "";
+    private boolean townOwned = true;
+    private Town town;
 
-    public boolean canbuild = false;
 
-    public Region(String nameownertown)
+    public Region(Town town)
     {
-        townname = nameownertown;
+        this.town = town;
     }
 
     public Town getTown()
     {
-        return Towns.getTown(townname);
+        return town;
     }
 
-    public String getTownName()
-    {
-        return townname;
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
     }
 
+    public String getRegionName() {
+        return regionName;
+    }
 
+    public boolean isTownOwned() {
+        return townOwned;
+    }
 
 }

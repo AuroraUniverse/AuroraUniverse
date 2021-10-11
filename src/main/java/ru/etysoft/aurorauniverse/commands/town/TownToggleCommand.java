@@ -42,10 +42,10 @@ public class TownToggleCommand {
             Town t = resident.getTown();
             if (Permissions.canToggleFire(player)) {
                 if (args[2].equals("on")) {
-                    t.isFire(true);
+                    t.isFireAllowed(true);
                     Messaging.mess(AuroraConfiguration.getColorString("town-fireon"), player);
                 } else if (args[2].equals("off")) {
-                    t.isFire(false);
+                    t.isFireAllowed(false);
                     Messaging.mess(AuroraConfiguration.getColorString("town-fireoff"), player);
                 }
             } else {

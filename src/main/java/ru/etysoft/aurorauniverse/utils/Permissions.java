@@ -89,4 +89,23 @@ public class Permissions {
     public static boolean canBalance(CommandSender p) {
         return p.hasPermission("auneconomy.balance");
     }
+
+    public static boolean canGiveRegion(CommandSender p) {
+        return p.hasPermission("town.region.give");
+    }
+
+    public static boolean canAddMemberRegion(CommandSender p) {
+        return p.hasPermission("town.region.addmember");
+    }
+
+    public static boolean canKickMemberRegion(CommandSender p) {
+        return p.hasPermission("town.region.kick");
+    }
+    public static boolean canBypassRegion(CommandSender p) {
+        return p.hasPermission("town.region.bypass");
+    }
+
+    public static boolean canResetRegion(CommandSender p) {
+        return p.hasPermission("town.region.reset");
+    }
 }

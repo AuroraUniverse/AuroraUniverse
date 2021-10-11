@@ -60,6 +60,7 @@ permissions:
       town.teleport.spawn: true
       town.set.*: true
       town.toggle.*: true
+      town.region.*: true
 
     description: Allows all commands
 
@@ -156,6 +157,40 @@ permissions:
     description: Set town's permissions
 
   ################
+  #    Region    #
+  ################
+
+  town.region.*:
+    default: op
+    description: Toggle all in town
+    children:
+      town.region.give: true
+      town.region.reset: true
+      town.region.addmember: true
+      town.region.kick: true
+      town.region.bypass: true
+
+  town.region.give:
+    default: op
+    description: Give region to player
+
+  town.region.bypass:
+    default: op
+    description: Give region to player
+
+  town.region.reset:
+    default: op
+    description: Reset region to town owned
+
+  town.region.addmember:
+    default: op
+    description: Add member to region
+
+  town.region.kick:
+    default: op
+    description: Kick member from region
+
+  ################
   #    Toggle    #
   ################
 
@@ -164,6 +199,7 @@ permissions:
     description: Toggle all in town
     children:
       town.toggle.pvp: true
+      town.toggle.fire: true
 
   town.toggle.pvp:
     default: op

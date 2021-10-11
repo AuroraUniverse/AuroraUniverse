@@ -37,7 +37,7 @@ public class NewTownCommand {
                         }
 
                     } catch (TownException e) {
-                        Messaging.mess(AuroraConfiguration.getColorString("town-cantcreate-message").replace("%s", e.getMessageErr()), pl);
+                        Messaging.mess(AuroraConfiguration.getColorString("town-cantcreate-message").replace("%s", e.getErrorMessage()), pl);
                     }
                 } else {
                     Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);

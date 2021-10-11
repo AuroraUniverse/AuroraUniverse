@@ -15,8 +15,9 @@ public class TownLeaveCommand {
             Messaging.mess(Messages.cantConsole(), sender);
         } else {
             if (resident.hasTown()) {
-                if (Permissions.canLeaveTown(sender)) {
-                    Town t = resident.getTown();
+                Town t = resident.getTown();
+                if (Permissions.canLeaveTown(sender) && t.getMayor() == resident) {
+
                     t.removeResident(resident);
                     Messaging.mess(AuroraConfiguration.getColorString("town-leave").replace("%s", t.getName()), sender);
                 } else {

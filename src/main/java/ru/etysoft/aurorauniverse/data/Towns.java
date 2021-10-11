@@ -118,13 +118,13 @@ public class Towns {
                 if(resident.isLastWild())
                 {
                     resident.setLastwild(false);
-                    resident.setLastTown(rg.townname);
-                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTownName()), player);
+                    resident.setLastTown(rg.getTown().getName());
+                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
                 }
-                else if (!rg.getTownName().equals(resident.getLastTown()))
+                else if (!rg.getTown().getName().equals(resident.getLastTown()))
                 {
-                    resident.setLastTown(rg.townname);
-                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTownName()), player);
+                    resident.setLastTown(rg.getTown().getName());
+                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
                 }
             }
             else
@@ -160,7 +160,7 @@ public class Towns {
             newtown.setSpawn(mayor.getLocation());
             Residents.getResident(mayor).setPermissonGroup("mayor");
 
-            AuroraPermissions.setPermissons(mayor, AuroraPermissions.getGroup("mayor"));
+            AuroraPermissions.setPermissions(mayor, AuroraPermissions.getGroup("mayor"));
             AuroraUniverse.getTownlist().put(newtown.getName(), newtown);
             AuroraUniverse.getTownBlocks().putAll(newtown.getTownChunks());
 
