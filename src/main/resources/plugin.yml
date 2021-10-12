@@ -169,14 +169,19 @@ permissions:
       town.region.addmember: true
       town.region.kick: true
       town.region.bypass: true
+      town.region.info: true
 
   town.region.give:
     default: op
     description: Give region to player
 
+  town.region.info:
+    default: op
+    description: Give information about region to player
+
   town.region.bypass:
     default: op
-    description: Give region to player
+    description: Bypass regions
 
   town.region.reset:
     default: op

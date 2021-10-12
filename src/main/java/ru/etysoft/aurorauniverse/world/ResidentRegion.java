@@ -16,6 +16,34 @@ public class ResidentRegion extends Region {
         members.add(owner.getName());
     }
 
+    public boolean addMember(Resident resident)
+    {
+        String nickname = resident.getName();
+        if(members.contains(nickname))
+        {
+            return  false;
+        }
+        else
+        {
+            members.add(nickname);
+            return true;
+        }
+    }
+
+    public boolean removeMember(Resident resident)
+    {
+        String nickname = resident.getName();
+        if(members.contains(nickname))
+        {
+            members.remove(nickname);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public ArrayList<String> getMembers() {
         return members;
     }

@@ -31,8 +31,7 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("invite");
         firstPossibleArg.add("kick");
         firstPossibleArg.add("leave");
-        firstPossibleArg.add("giverg");
-        firstPossibleArg.add("resetrg");
+        firstPossibleArg.add("region");
         firstPossibleArg.add("claim");
         firstPossibleArg.add("unclaim");
         firstPossibleArg.add("withdraw");
@@ -58,22 +57,14 @@ public class TownTabCompleter implements TabCompleter {
                   possibleArgs.add("pvp");
                   possibleArgs.add("fire");
               }
-              else if(args[0].equals("giverg"))
+              else if(args[0].equals("region"))
               {
-                 Player player = (Player)  sender;
-                 Resident resident = Residents.getResident(player.getName());
-                 if(resident != null)
-                 {
-                     if(resident.hasTown())
-                     {
-                         Town town = resident.getTown();
-                         for(Resident r : town.getResidents())
-                         {
-                             possibleArgs.add(r.getName());
-                         }
-                     }
-                 }
+                  possibleArgs.add("add");
+                  possibleArgs.add("kick");
+                  possibleArgs.add("give");
+                  possibleArgs.add("reset");
               }
+
           }
           else if(args.length == 3)
           {
@@ -90,6 +81,23 @@ public class TownTabCompleter implements TabCompleter {
                       possibleArgs.add(groupName);
                   }
               }
+              if(args[0].equals("region") && (args[1].equals("give") | args[1].equals("add") | args[1].equals("region")))
+              {
+                  Player player = (Player)  sender;
+                  Resident resident = Residents.getResident(player.getName());
+                  if(resident != null)
+                  {
+                      if(resident.hasTown())
+                      {
+                          Town town = resident.getTown();
+                          for(Resident r : town.getResidents())
+                          {
+                              possibleArgs.add(r.getName());
+                          }
+                      }
+                  }
+              }
+
           }
           else if(args.length == 4)
           {

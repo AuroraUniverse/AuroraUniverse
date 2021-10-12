@@ -79,11 +79,15 @@ town-cantdeposit: "Can't deposit %s to the town bank"
 #                                      #
 ########################################
 
-region-already-owned: "This region is already belongs to another resident"
+region-already-owned: "This region is already belongs to resident"
 region-unowned: "This region is not claimed"
-region-error: "The region can't be given to this resident"
+region-error: "Region error: wrong operation"
 region-success: "Successfully gave region to resident"
 region-reset-success: "Successfully reset region"
+region-townowned: "This is townowned region!"
+region-owner-members: "Only region owner can change its members!"
+region-added: "Successfully added %s to region"
+region-kicked: "Successfully kicked %s from this region"
 
 # [Town errors]
 e1: "town on this chunk already exists"
@@ -97,6 +101,11 @@ too-far: "&cThis chunk is too far from your town!"
 # [Chunk notifications]
 town-welcome: "Welcome to the town %s"
 world: "You have entered the world! Be careful!"
+
+region-info:
+  title: "&bo0o_[&fRegion info&b]_o0o"
+  town-owned: "&7> This region is townwoned"
+  members: "&7> Owner %s, members(%s1): %s2"
 
 ########################################
 #                                      #

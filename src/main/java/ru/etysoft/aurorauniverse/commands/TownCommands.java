@@ -53,11 +53,8 @@ public class TownCommands implements CommandExecutor {
            else if(args[0].equalsIgnoreCase("set")) {
                new TownSetCommand(args, resident, sender, pl);
            }
-           else if(args[0].equalsIgnoreCase("giverg")) {
-              TownRegionCommand.giveRegion(sender, resident, args);
-           }
-           else if(args[0].equalsIgnoreCase("resetrg")) {
-               TownRegionCommand.resetRegion(sender, resident, args);
+           else if(args[0].equalsIgnoreCase("region")) {
+               new TownRegionCommand(sender,  resident, args);
            }
            else  if(args[0].equalsIgnoreCase("kick")) {
                new TownKickCommand(resident, args, sender);

@@ -18,6 +18,10 @@ public class Permissions {
         return true;
     }
 
+    public static boolean canEditTown(CommandSender p) {
+        return p.hasPermission("aun.edittown");
+    }
+
     public static boolean canCreateTown(CommandSender p) {
         return p.hasPermission("town.create");
     }
@@ -96,6 +100,9 @@ public class Permissions {
 
     public static boolean canAddMemberRegion(CommandSender p) {
         return p.hasPermission("town.region.addmember");
+    }
+    public static boolean canGetRegionInfo(CommandSender p) {
+        return p.hasPermission("town.region.info");
     }
 
     public static boolean canKickMemberRegion(CommandSender p) {

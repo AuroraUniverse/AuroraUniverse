@@ -41,7 +41,6 @@ public class AuroraConfiguration {
     }
 
 
-
     public static void setDebugMode(boolean isdebug)
     {
         AuroraUniverse.getInstance().getConfig().set("debug-mode", isdebug);
