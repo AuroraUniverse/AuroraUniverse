@@ -31,16 +31,16 @@ public class NewTownCommand {
                     try {
                         String townname = name.toString().replace("&", "");
                         if (Towns.createTown(townname, pl)) {
-                            Messaging.mess(AuroraConfiguration.getColorString("town-created-message").replace("%s", name), sender);
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-created-message").replace("%s", name), sender);
 
                             Residents.getResident(pl).setLastwild(false);
                         }
 
                     } catch (TownException e) {
-                        Messaging.mess(AuroraConfiguration.getColorString("town-cantcreate-message").replace("%s", e.getErrorMessage()), pl);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantcreate-message").replace("%s", e.getErrorMessage()), pl);
                     }
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
                 }
             } catch (Exception e) {
 
@@ -52,11 +52,11 @@ public class NewTownCommand {
                 } else {
                     Logger.error("Town creating error: ");
                     e.printStackTrace();
-                    Messaging.mess("Error!", sender);
+                    Messaging.sendPrefixedMessage("Error!", sender);
                 }
             }
         } else {
-            Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
         }
     }
 }

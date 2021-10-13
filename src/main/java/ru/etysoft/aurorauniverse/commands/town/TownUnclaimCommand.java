@@ -14,22 +14,22 @@ public class TownUnclaimCommand {
 
     public TownUnclaimCommand(Resident resident, CommandSender sender, Player pl) {
         if (resident == null) {
-            Messaging.mess(Messages.cantConsole(), sender);
+            Messaging.sendPrefixedMessage(Messages.cantConsole(), sender);
         } else {
             if (resident.hasTown()) {
                 Town t = resident.getTown();
                 if (Permissions.canUnClaim(pl)) {
 
                     if (t.unclaimChunk(pl.getLocation().getChunk())) {
-                        Messaging.mess(AuroraConfiguration.getColorString("town-unclaim"), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-unclaim"), sender);
                         resident.setLastwild(true);
                         Towns.ChangeChunk(pl, pl.getLocation().getChunk());
                     } else {
-                        Messaging.mess(AuroraConfiguration.getColorString("town-cantunclaim"), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantunclaim"), sender);
                     }
 
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
                 }
             }
         }

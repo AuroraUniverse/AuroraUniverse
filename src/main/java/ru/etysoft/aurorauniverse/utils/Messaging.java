@@ -8,7 +8,7 @@ import ru.etysoft.aurorauniverse.world.Town;
 public class Messaging {
 
     //Send information from plugin
-    public static void plinfo(CommandSender p, AuroraUniverse pl)
+    public static void sendPluginInfo(CommandSender p, AuroraUniverse pl)
     {
         p.sendMessage(">>" + ChatColor.AQUA + " AuroraUniverse" + ChatColor.GRAY + " | A good towns game mode plugin");
         p.sendMessage(ChatColor.AQUA + AuroraUniverse.getLanguage().getString("authors-string")  + ChatColor.WHITE + pl.getDescription().getAuthors());
@@ -18,17 +18,23 @@ public class Messaging {
     }
 
 
-    public static void towninfo(CommandSender p, Town town)
+    public static void sendTownInfo(CommandSender p, Town town)
     {
-        p.sendMessage(">> " + ChatColor.AQUA + town.getName() + ChatColor.GRAY);
-        p.sendMessage(AuroraUniverse.getLanguage().getString("town-mayor") + ChatColor.AQUA + town.getMayor().getName());
-        p.sendMessage(AuroraUniverse.getLanguage().getString("town-residents") +town.getMembersCount()  + "): " + ChatColor.AQUA + town.getMembersList());
-        p.sendMessage(AuroraUniverse.getLanguage().getString("town-chunks") + ChatColor.AQUA +town.getChunksCount());
-        p.sendMessage(AuroraUniverse.getLanguage().getString("town-balance") + ChatColor.AQUA +town.getBank().getBalance());
+        p.sendMessage(ChatColor.GRAY + "o0o_[" + ChatColor.AQUA + " " + town.getName() + ChatColor.GRAY + "]_o0o");
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-mayor").replace("%s", town.getMayor().getName())));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-residents").replace("%s1",
+                String.valueOf(town.getMembersCount())).replace("%s2",town.getMembersList())));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-chunks") .replace("%s", String.valueOf(town.getChunksCount()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-balance").replace("%s",
+                String.valueOf(town.getBank().getBalance()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-build") .replace("%s", String.join(", ", town.getBuildGroups()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-destroy") .replace("%s", String.join(", ", town.getDestroyGroups()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-use") .replace("%s", String.join(", ", town.getUseGroups()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-switch") .replace("%s", String.join(", ", town.getSwitchGroups()))));
     }
 
     //Simple send color message with prefix
-    public static void mess(String message, CommandSender sender)
+    public static void sendPrefixedMessage(String message, CommandSender sender)
     {
         if(AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getBoolean("use-prefix"))
         {

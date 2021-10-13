@@ -24,11 +24,11 @@ public class PluginListener implements Listener {
     {
         if(Permissions.isAdmin(event.getPlayer(), false))
         {
-              Messaging.mess("&f>> &bAuroraUniverse &a" + AuroraUniverse.getInstance().getDescription().getVersion() + " &f working!", event.getPlayer());
+              Messaging.sendPrefixedMessage("&f>> &bAuroraUniverse &a" + AuroraUniverse.getInstance().getDescription().getVersion() + " &f working!", event.getPlayer());
               if(!AuroraUniverse.getWarnings().equals(""))
               {
-                  Messaging.mess("&c>> There is some warnings: &e" + ChatColor.YELLOW + AuroraUniverse.getWarnings(), event.getPlayer());
-                  Messaging.mess("&7Please review the issues and make sure they are permanent. &fOnly administrators can see this message.", event.getPlayer());
+                  Messaging.sendPrefixedMessage("&c>> There is some warnings: &e" + ChatColor.YELLOW + AuroraUniverse.getWarnings(), event.getPlayer());
+                  Messaging.sendPrefixedMessage("&7Please review the issues and make sure they are permanent. &fOnly administrators can see this message.", event.getPlayer());
               }
         }
         Residents.createResident(event.getPlayer());

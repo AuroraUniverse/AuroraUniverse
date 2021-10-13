@@ -119,12 +119,12 @@ public class Towns {
                 {
                     resident.setLastwild(false);
                     resident.setLastTown(rg.getTown().getName());
-                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
+                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
                 }
                 else if (!rg.getTown().getName().equals(resident.getLastTown()))
                 {
                     resident.setLastTown(rg.getTown().getName());
-                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
+                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
                 }
             }
             else
@@ -140,7 +140,7 @@ public class Towns {
                 if(!resident.isLastWild())
                 {
                     resident.setLastwild(true);
-                    Messaging.mess(AuroraUniverse.getLanguage().getString("world"), player);
+                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("world"), player);
                 }
             }
             else

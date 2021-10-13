@@ -28,8 +28,8 @@ public class Resident {
         return player;
     }
 
-    public void setPermissonGroup(String AuroraPermissonGroup) {
-        this.permissonGroup = AuroraPermissonGroup;
+    public void setPermissonGroup(String auroraPermissonGroup) {
+        this.permissonGroup = auroraPermissonGroup;
     }
 
     public String getPermissonGroupName() {

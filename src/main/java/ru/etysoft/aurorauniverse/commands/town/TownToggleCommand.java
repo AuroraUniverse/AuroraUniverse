@@ -24,7 +24,7 @@ public class TownToggleCommand {
 
         if (args.length > 2) {
             if (resident == null) {
-                Messaging.mess(Messages.cantConsole(), sender);
+                Messaging.sendPrefixedMessage(Messages.cantConsole(), sender);
             } else {
                 if (args[1].equalsIgnoreCase("pvp")) {
                     togglePvP();
@@ -33,7 +33,7 @@ public class TownToggleCommand {
                 }
             }
         } else {
-            Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
         }
     }
 
@@ -43,16 +43,16 @@ public class TownToggleCommand {
             if (Permissions.canToggleFire(player)) {
                 if (args[2].equals("on")) {
                     t.isFireAllowed(true);
-                    Messaging.mess(AuroraConfiguration.getColorString("town-fireon"), player);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-fireon"), player);
                 } else if (args[2].equals("off")) {
                     t.isFireAllowed(false);
-                    Messaging.mess(AuroraConfiguration.getColorString("town-fireoff"), player);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-fireoff"), player);
                 }
             } else {
-                Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), player);
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
             }
         } else {
-            Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
         }
     }
 
@@ -62,16 +62,16 @@ public class TownToggleCommand {
             if (Permissions.canTogglePvP(player)) {
                 if (args[2].equals("on")) {
                     t.setPvP(true);
-                    Messaging.mess(AuroraConfiguration.getColorString("town-pvpon"), player);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-pvpon"), player);
                 } else if (args[2].equals("off")) {
                     t.setPvP(false);
-                    Messaging.mess(AuroraConfiguration.getColorString("town-pvpoff"), player);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-pvpoff"), player);
                 }
             } else {
-                Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), player);
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
             }
         } else {
-            Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
         }
     }
 

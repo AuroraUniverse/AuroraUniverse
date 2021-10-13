@@ -12,16 +12,16 @@ public class TownLeaveCommand {
 
     public TownLeaveCommand(Resident resident, CommandSender sender) {
         if (resident == null) {
-            Messaging.mess(Messages.cantConsole(), sender);
+            Messaging.sendPrefixedMessage(Messages.cantConsole(), sender);
         } else {
             if (resident.hasTown()) {
                 Town t = resident.getTown();
                 if (Permissions.canLeaveTown(sender) && t.getMayor() == resident) {
 
                     t.removeResident(resident);
-                    Messaging.mess(AuroraConfiguration.getColorString("town-leave").replace("%s", t.getName()), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-leave").replace("%s", t.getName()), sender);
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
                 }
             }
         }

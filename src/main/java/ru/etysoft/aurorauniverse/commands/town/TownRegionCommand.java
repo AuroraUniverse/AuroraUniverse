@@ -1,9 +1,7 @@
 package ru.etysoft.aurorauniverse.commands.town;
 
-import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.RegionException;
@@ -77,20 +75,20 @@ public class TownRegionCommand {
                             sender.sendMessage(AuroraConfiguration.getColorString("region-info.town-owned"));
                         }
                     } else {
-                        Messaging.mess(AuroraConfiguration.getColorString("region-unowned"), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-unowned"), sender);
                     }
                 }
                 else
                 {
-                    Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
                 }
             } else {
-                Messaging.mess(AuroraConfiguration.getColorString("region-unowned"), sender);
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-unowned"), sender);
             }
         }
         else
         {
-            Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
         }
     }
 
@@ -102,27 +100,27 @@ public class TownRegionCommand {
 
                 if (region != null) {
                     if (region instanceof ResidentRegion) {
-                        Messaging.mess(AuroraConfiguration.getColorString("region-already-owned"), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-already-owned"), sender);
                     } else {
                         Resident receiver = Residents.getResident(args[2]);
                         if (receiver != null) {
                             try {
                                 town.createPlayerRegion(((Player) sender).getLocation().getChunk(), receiver);
-                                Messaging.mess(AuroraConfiguration.getColorString("region-success"), sender);
+                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-success"), sender);
                             } catch (RegionException e) {
                                 e.printStackTrace();
-                                Messaging.mess(AuroraConfiguration.getColorString("region-error"), sender);
+                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-error"), sender);
                             }
                         }
                     }
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("region-unowned"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-unowned"), sender);
                 }
             } else {
-                Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
             }
         } else {
-            Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
         }
     }
 
@@ -142,16 +140,16 @@ public class TownRegionCommand {
                                 {
                                     if(residentRegion.addMember(resident))
                                     {
-                                        Messaging.mess(AuroraConfiguration.getColorString("region-added").replace("%s", args[2]), sender);
+                                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-added").replace("%s", args[2]), sender);
                                     }
                                     else
                                     {
-                                        Messaging.mess(AuroraConfiguration.getColorString("region-owner-members"), sender);
+                                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-owner-members"), sender);
                                     }
                                 }
                                 else
                                 {
-                                    Messaging.mess(AuroraConfiguration.getColorString("region-owner-members"), sender);
+                                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-owner-members"), sender);
                                 }
 
 
@@ -159,20 +157,20 @@ public class TownRegionCommand {
                         }
                         else
                         {
-                            Messaging.mess(AuroraConfiguration.getColorString("region-error"), sender);
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-error"), sender);
                         }
                     } else {
-                        Messaging.mess(AuroraConfiguration.getColorString("region-townowned"), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-townowned"), sender);
 
                     }
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("region-unowned"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-unowned"), sender);
                 }
             } else {
-                Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
             }
         } else {
-            Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
         }
     }
 
@@ -192,16 +190,16 @@ public class TownRegionCommand {
                             {
                                 if(residentRegion.removeMember(resident))
                                 {
-                                    Messaging.mess(AuroraConfiguration.getColorString("region-kicked").replace("%s", args[1]), sender);
+                                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-kicked").replace("%s", args[1]), sender);
                                 }
                                 else
                                 {
-                                    Messaging.mess(AuroraConfiguration.getColorString("region-owner-members"), sender);
+                                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-owner-members"), sender);
                                 }
                             }
                             else
                             {
-                                Messaging.mess(AuroraConfiguration.getColorString("region-owner-members"), sender);
+                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-owner-members"), sender);
                             }
 
 
@@ -209,20 +207,20 @@ public class TownRegionCommand {
                         }
                         else
                         {
-                            Messaging.mess(AuroraConfiguration.getColorString("region-error"), sender);
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-error"), sender);
                         }
                     } else {
-                        Messaging.mess(AuroraConfiguration.getColorString("region-townowned"), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-townowned"), sender);
 
                     }
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("region-unowned"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-unowned"), sender);
                 }
             } else {
-                Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
             }
         } else {
-            Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
         }
     }
 
@@ -236,21 +234,21 @@ public class TownRegionCommand {
 
                         try {
                             town.resetRegion(((Player) sender).getLocation().getChunk());
-                            Messaging.mess(AuroraConfiguration.getColorString("region-reset-success"), sender);
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-reset-success"), sender);
                         } catch (RegionException e) {
                             e.printStackTrace();
-                            Messaging.mess(AuroraConfiguration.getColorString("region-error"), sender);
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-error"), sender);
                         }
 
 
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("region-unowned"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("region-unowned"), sender);
                 }
             } else {
-                Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
             }
         } else {
-            Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
         }
     }
 

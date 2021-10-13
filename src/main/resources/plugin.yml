@@ -147,6 +147,7 @@ permissions:
     children:
       town.set.spawn: true
       town.set.perms: true
+      town.set.group: true
 
   town.set.spawn:
     default: op
@@ -155,6 +156,10 @@ permissions:
   town.set.perms:
     default: op
     description: Set town's permissions
+
+  town.set.group:
+    default: op
+    description: Give group to player
 
   ################
   #    Region    #

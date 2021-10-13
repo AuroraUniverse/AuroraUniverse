@@ -57,6 +57,9 @@ public class Permissions {
     public static boolean canSetPermissions(CommandSender p) {
         return p.hasPermission("town.set.perms");
     }
+    public static boolean canSetGroup(CommandSender p) {
+        return p.hasPermission("town.set.group");
+    }
 
     public static boolean canTogglePvP(CommandSender p) {
         return p.hasPermission("town.toggle.pvp");

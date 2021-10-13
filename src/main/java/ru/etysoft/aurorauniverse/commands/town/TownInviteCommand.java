@@ -22,17 +22,17 @@ public class TownInviteCommand {
                     Town t = resident.getTown();
                     if (Permissions.canInviteResident(sender)) {
                         t.addResident(resident2);
-                        Messaging.mess(AuroraConfiguration.getColorString("town-invite").replace("%s", resident2.getName()), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-invite").replace("%s", resident2.getName()), sender);
 
                     } else {
-                        Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
                     }
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                 }
             }
         } else {
-            Messaging.mess(Messages.wrongArgs(), sender);
+            Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
         }
     }
 

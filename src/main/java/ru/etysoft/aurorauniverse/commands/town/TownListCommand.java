@@ -16,7 +16,7 @@ public class TownListCommand {
             try {
                 page = Integer.parseInt(args[1]);
             } catch (Exception e) {
-                Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
             }
         }
         final int[] i = {1};
@@ -41,7 +41,7 @@ public class TownListCommand {
             i[0]++;
         });
 
-        Messaging.mess(AuroraConfiguration.getColorString("town-pages").replace("%s", String.valueOf(page)).replace("%y", AuroraUniverse.getTownlist().size() + ""), sender);
+        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-pages").replace("%s", String.valueOf(page)).replace("%y", AuroraUniverse.getTownlist().size() + ""), sender);
 
     }
 

@@ -17,27 +17,27 @@ public class DeleteTownCommand {
             if (resident != null) {
                 if (Permissions.canDeleteTown(pl)) {
                     if (resident.getTown().delete()) {
-                        Messaging.mess(ColorCodes.toColor(AuroraConfiguration.getColorString("town-deleted-message")), pl);
+                        Messaging.sendPrefixedMessage(ColorCodes.toColor(AuroraConfiguration.getColorString("town-deleted-message")), pl);
                     }
 
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
                 }
             } else {
                 if (Permissions.canDeleteTown(sender)) {
                     if (args.length > 1) {
                         if (Towns.getTown(args[1]).delete()) {
-                            Messaging.mess(Messages.adminTownDelete(args[1]), sender);
+                            Messaging.sendPrefixedMessage(Messages.adminTownDelete(args[1]), sender);
                         } else {
-                            Messaging.mess(Messages.adminCantTownDelete(args[1]), sender);
+                            Messaging.sendPrefixedMessage(Messages.adminCantTownDelete(args[1]), sender);
                         }
                     } else {
-                        Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
                     }
                 }
             }
         } catch (Exception e) {
-            Messaging.mess(AuroraConfiguration.getColorString("town-cantcreate-message").replace("%s", e.getMessage()), pl);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantcreate-message").replace("%s", e.getMessage()), pl);
         }
     }
 

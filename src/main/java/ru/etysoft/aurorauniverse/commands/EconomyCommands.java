@@ -34,14 +34,14 @@ public class EconomyCommands implements CommandExecutor {
             } else {
                 if (Permissions.canBalance(sender) && sender instanceof Player) {
                     Resident me = Residents.getResident((Player) sender);
-                    Messaging.mess(Messages.balance(String.valueOf(me.getBalance())), sender);
+                    Messaging.sendPrefixedMessage(Messages.balance(String.valueOf(me.getBalance())), sender);
                 } else {
-                    Messaging.mess(Messages.balance("good balance, dude (no limits, bro)"), sender);
+                    Messaging.sendPrefixedMessage(Messages.balance("good balance, dude (no limits, bro)"), sender);
                 }
             }
         } else {
             //No arguments message
-            Messaging.plinfo(sender, AuroraUniverse.getInstance());
+            Messaging.sendPluginInfo(sender, AuroraUniverse.getInstance());
         }
         return true;
     }
@@ -57,24 +57,24 @@ public class EconomyCommands implements CommandExecutor {
                             double toPay = Double.valueOf(args[2]);
                             if (from.takeBalance(toPay)) {
                                 to.giveBalance(toPay);
-                                Messaging.mess(AuroraConfiguration.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
+                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
                             } else {
-                                Messaging.mess(AuroraConfiguration.getColorString("economy.pay.no-money").replace("%s", toPay + ""), sender);
+                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.no-money").replace("%s", toPay + ""), sender);
                             }
                         } catch (Exception e) {
-                            Messaging.mess(AuroraConfiguration.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
                         }
                     } else {
-                        Messaging.mess(AuroraConfiguration.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
                     }
                 } else {
-                    Messaging.mess("Please, use &f/money give &band &f/money take&b from console!", sender);
+                    Messaging.sendPrefixedMessage("Please, use &f/money give &band &f/money take&b from console!", sender);
                 }
             } else {
-                Messaging.mess(Messages.wrongArgs(), sender);
+                Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
             }
         } else {
-            Messaging.mess(Messages.noPermission(), sender);
+            Messaging.sendPrefixedMessage(Messages.noPermission(), sender);
         }
     }
 
@@ -86,18 +86,18 @@ public class EconomyCommands implements CommandExecutor {
                     try {
                         double toPay = Double.valueOf(args[2]);
                         to.giveBalance(toPay);
-                        Messaging.mess(AuroraConfiguration.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
                     } catch (Exception e) {
-                        Messaging.mess(AuroraConfiguration.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
                     }
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
                 }
             } else {
-                Messaging.mess(Messages.wrongArgs(), sender);
+                Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
             }
         } else {
-            Messaging.mess(Messages.noPermission(), sender);
+            Messaging.sendPrefixedMessage(Messages.noPermission(), sender);
         }
     }
 
@@ -109,18 +109,18 @@ public class EconomyCommands implements CommandExecutor {
                     try {
                         double toPay = Double.valueOf(args[2]);
                         to.takeBalance(toPay);
-                        Messaging.mess(AuroraConfiguration.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
                     } catch (Exception e) {
-                        Messaging.mess(AuroraConfiguration.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
                     }
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
                 }
             } else {
-                Messaging.mess(Messages.wrongArgs(), sender);
+                Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
             }
         } else {
-            Messaging.mess(Messages.noPermission(), sender);
+            Messaging.sendPrefixedMessage(Messages.noPermission(), sender);
         }
     }
 }

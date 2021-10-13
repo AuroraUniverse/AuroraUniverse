@@ -16,17 +16,17 @@ public class TownWithdrawCommand {
                 if (args.length > 2) {
                     Town town = Towns.getTown(args[1]);
                     if (town == null) {
-                        Messaging.mess(Messages.wrongArgs(), sender);
+                        Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
                     } else {
                         try {
                             double towithdraw = Double.valueOf(args[2]);
                             town.withdrawBank(towithdraw);
                         } catch (Exception e) {
-                            Messaging.mess(Messages.wrongArgs(), sender);
+                            Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
                         }
                     }
                 } else {
-                    Messaging.mess(Messages.wrongArgs(), sender);
+                    Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
                 }
             } else {
                 if (resident.hasTown()) {
@@ -37,24 +37,24 @@ public class TownWithdrawCommand {
                             d = Double.valueOf(args[1]);
 
                         } catch (Exception e) {
-                            Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
                         }
 
                         if (t.withdrawBank(d)) {
-                            Messaging.mess(AuroraConfiguration.getColorString("town-withdraw").replace("%s", d + ""), sender);
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-withdraw").replace("%s", d + ""), sender);
                             resident.giveBalance(d);
                         } else {
-                            Messaging.mess(AuroraConfiguration.getColorString("town-cantwithdraw").replace("%s", d + ""), sender);
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantwithdraw").replace("%s", d + ""), sender);
                         }
                     } else {
-                        Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
                     }
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                 }
             }
         } else {
-            Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
         }
     }
 }

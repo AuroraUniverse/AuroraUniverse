@@ -51,6 +51,7 @@ public class TownTabCompleter implements TabCompleter {
               {
                   possibleArgs.add("spawn");
                   possibleArgs.add("perm");
+                  possibleArgs.add("group");
               }
               else if(args[0].equals("toggle"))
               {
@@ -81,7 +82,7 @@ public class TownTabCompleter implements TabCompleter {
                       possibleArgs.add(groupName);
                   }
               }
-              if(args[0].equals("region") && (args[1].equals("give") | args[1].equals("add") | args[1].equals("region")))
+              if((args[0].equals("region") && (args[1].equals("give") | args[1].equals("add") | args[1].equals("region"))))
               {
                   Player player = (Player)  sender;
                   Resident resident = Residents.getResident(player.getName());
@@ -97,6 +98,22 @@ public class TownTabCompleter implements TabCompleter {
                       }
                   }
               }
+              if(args[1].equals("group"))
+              {
+                  Player player = (Player)  sender;
+                  Resident resident = Residents.getResident(player.getName());
+                  if(resident != null)
+                  {
+                      if(resident.hasTown())
+                      {
+                          for(String groupName : AuroraPermissions.getGroups().keySet())
+                          {
+                              possibleArgs.add(groupName);
+                          }
+                      }
+                  }
+              }
+
 
           }
           else if(args.length == 4)
@@ -107,6 +124,22 @@ public class TownTabCompleter implements TabCompleter {
                   possibleArgs.add("destroy");
                   possibleArgs.add("use");
                   possibleArgs.add("switch");
+              }
+              if(args[1].equals("group"))
+              {
+                  Player player = (Player)  sender;
+                  Resident resident = Residents.getResident(player.getName());
+                  if(resident != null)
+                  {
+                      if(resident.hasTown())
+                      {
+                          Town town = resident.getTown();
+                          for(Resident r : town.getResidents())
+                          {
+                              possibleArgs.add(r.getName());
+                          }
+                      }
+                  }
               }
           }
         } else {

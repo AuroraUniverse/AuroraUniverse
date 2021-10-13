@@ -67,17 +67,17 @@ public class TownCommands implements CommandExecutor {
            }
            else
            {
-               Messaging.mess(AuroraConfiguration.getColorString("no-arguments"), sender);
+               Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
            }
         }
         else {
             if (resident == null) {
-                Messaging.mess(Messages.wrongArgs(), sender);
+                Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
             } else {
                 if (resident.hasTown()) {
-                    Messaging.towninfo(sender, resident.getTown());
+                    Messaging.sendTownInfo(sender, resident.getTown());
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                 }
             }
         }

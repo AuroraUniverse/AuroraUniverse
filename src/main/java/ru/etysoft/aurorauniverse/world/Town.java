@@ -42,12 +42,28 @@ public class Town {
 
     // Permission type -> list of groups with permission
     private Set<String> buildGroups = new HashSet<String>();
-    private Set<String> breakGroups = new HashSet<String>();
+    private Set<String> destroyGroups = new HashSet<String>();
     private Set<String> useGroups = new HashSet<String>();
     private Set<String> switchGroups = new HashSet<String>();
 
     @Warning
     public Town() {
+    }
+
+    public Set<String> getDestroyGroups() {
+        return destroyGroups;
+    }
+
+    public Set<String> getBuildGroups() {
+        return buildGroups;
+    }
+
+    public Set<String> getUseGroups() {
+        return useGroups;
+    }
+
+    public Set<String> getSwitchGroups() {
+        return switchGroups;
     }
 
     public ResidentRegion getResidentRegion(Chunk chunk) {
@@ -133,6 +149,7 @@ public class Town {
                         toggleBuild(mayorPermissions);
                         toggleDestroy(mayorPermissions);
                         toggleUse(mayorPermissions);
+                        toggleSwitch(mayorPermissions);
                         townChunks.put(homeblock, new Region(this));
                         mainChunk = homeblock;
                         townBank = new Bank("aun.town." + name, 0, mayor.getName());
@@ -237,12 +254,12 @@ public class Town {
     }
 
     public boolean toggleDestroy(Group group) {
-        if (breakGroups.contains(group.getName())) {
-            breakGroups.remove(group.getName());
+        if (destroyGroups.contains(group.getName())) {
+            destroyGroups.remove(group.getName());
             Logger.debug("Group " + group.getName() + " now can't destroy in " + getName());
             return false;
         } else {
-            breakGroups.add(group.getName());
+            destroyGroups.add(group.getName());
             Logger.debug("Group " + group.getName() + " now can destroy in " + getName());
             return true;
         }
@@ -290,7 +307,7 @@ public class Town {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
         if (residentRegion != null && !residentRegion.canEdit(resident)) return false;
-        return breakGroups.contains(resident.getPermissonGroupName());
+        return destroyGroups.contains(resident.getPermissonGroupName());
     }
 
     public boolean canBuild(Resident resident, Chunk chunk) {
@@ -326,11 +343,11 @@ public class Town {
                                 connected.set(true);
                             }
                         } else {
-                            Messaging.mess(Messages.claimTooClose(), player);
+                            Messaging.sendPrefixedMessage(Messages.claimTooClose(), player);
                         }
                     } else {
                         if (!region.getTown().getName().equals(name)) {
-                            Messaging.mess(Messages.claimTooFar(), player);
+                            Messaging.sendPrefixedMessage(Messages.claimTooFar(), player);
                         }
 
                     }

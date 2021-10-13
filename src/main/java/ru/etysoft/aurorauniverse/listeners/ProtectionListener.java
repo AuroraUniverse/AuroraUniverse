@@ -41,7 +41,7 @@ public class ProtectionListener implements Listener {
                 if (!Towns.getTown(p.getLocation().getChunk()).getPvP(resident, p.getLocation().getChunk())) {
 
                     event.setCancelled(true);
-                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-pvp"), p);
+                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-pvp"), p);
                 }
             }
             catch (Exception e){
@@ -80,7 +80,7 @@ public class ProtectionListener implements Listener {
                             if (town != null) {
                                 if (!town.canUse(Residents.getResident(event.getPlayer()), chunk)) {
                                     Logger.debug("Prevented from use[1] " + event.getPlayer().getName());
-                                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-use"), event.getPlayer());
+                                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-use"), event.getPlayer());
                                     event.setCancelled(true);
                                 } else {
 
@@ -88,14 +88,14 @@ public class ProtectionListener implements Listener {
                             }
                         } else {
                             if (Towns.hasTown(chunk)) {
-                                Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-use"), event.getPlayer());
+                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-use"), event.getPlayer());
                                 event.setCancelled(true);
                                 Logger.debug("Prevented from use[2] " + event.getPlayer().getName());
                             }
                         }
                     } else {
                         if (Towns.hasTown(chunk)) {
-                            Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-use"), event.getPlayer());
+                            Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-use"), event.getPlayer());
                             event.setCancelled(true);
                             Logger.debug("Prevented from use[3] " + event.getPlayer().getName());
                         }
@@ -148,7 +148,7 @@ public class ProtectionListener implements Listener {
                             if (town != null) {
                                 if (!town.canSwitch(Residents.getResident(event.getPlayer()), chunk)) {
                                     Logger.debug("Prevented from switch[1] " + event.getPlayer().getName());
-                                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
+                                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
                                     event.setCancelled(true);
                                 } else {
 
@@ -156,14 +156,14 @@ public class ProtectionListener implements Listener {
                             }
                         } else {
                             if (Towns.hasTown(chunk)) {
-                                Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
+                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
                                 event.setCancelled(true);
                                 Logger.debug("Prevented from switch[2] " + event.getPlayer().getName());
                             }
                         }
                     } else {
                         if (Towns.hasTown(chunk)) {
-                            Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
+                            Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
                             event.setCancelled(true);
                             Logger.debug("Prevented from switch[3] " + event.getPlayer().getName());
                         }
@@ -207,7 +207,7 @@ public class ProtectionListener implements Listener {
                     Town town = Towns.getTown(event.getBlock().getChunk());
                     if (town != null) {
                         if (!town.canDestroy(Residents.getResident(event.getPlayer()), event.getBlock().getChunk())) {
-                            Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-break"), event.getPlayer());
+                            Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), event.getPlayer());
                             Logger.debug("Prevented from block break[1] " + event.getPlayer().getName());
                             event.setCancelled(true);
                         } else {
@@ -216,14 +216,14 @@ public class ProtectionListener implements Listener {
                     }
                 } else {
                     if (Towns.hasTown(event.getBlock().getChunk())) {
-                        Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-break"), event.getPlayer());
+                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), event.getPlayer());
                         event.setCancelled(true);
                         Logger.debug("Prevented from block break[2] " + event.getPlayer().getName());
                     }
                 }
             } else {
                 if (Towns.hasTown(event.getBlock().getChunk())) {
-                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-break"), event.getPlayer());
+                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), event.getPlayer());
                     event.setCancelled(true);
                     Logger.debug("Prevented from block break[3] " + event.getPlayer().getName());
                 }
@@ -271,7 +271,7 @@ public class ProtectionListener implements Listener {
                     Town town = Towns.getTown(event.getBlock().getChunk());
                     if (town != null) {
                         if (!town.canBuild(Residents.getResident(event.getPlayer()), event.getBlock().getChunk())) {
-                            Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-place"), event.getPlayer());
+                            Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-place"), event.getPlayer());
                             Logger.debug("Prevented from block place[1] " + event.getPlayer().getName());
                             event.setCancelled(true);
                         } else {
@@ -280,14 +280,14 @@ public class ProtectionListener implements Listener {
                     }
                 } else {
                     if (Towns.hasTown(event.getBlock().getChunk())) {
-                        Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-place"), event.getPlayer());
+                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-place"), event.getPlayer());
                         event.setCancelled(true);
                         Logger.debug("Prevented from block place[2] " + event.getPlayer().getName());
                     }
                 }
             } else {
                 if (Towns.hasTown(event.getBlock().getChunk())) {
-                    Messaging.mess(AuroraUniverse.getLanguage().getString("town-block-place"), event.getPlayer());
+                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-place"), event.getPlayer());
                     event.setCancelled(true);
                     Logger.debug("Prevented from block place[3] " + event.getPlayer().getName());
                 }

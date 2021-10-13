@@ -27,10 +27,10 @@ public class PluginCommands implements CommandExecutor {
                 if (args[1].equalsIgnoreCase("on")) {
                     // TODO: add in .yml
                     AuroraConfiguration.setDebugMode(true);
-                    Messaging.mess("Now debug mode is &aenabled", sender);
+                    Messaging.sendPrefixedMessage("Now debug mode is &aenabled", sender);
                 } else if (args[1].equalsIgnoreCase("off")) {
                     AuroraConfiguration.setDebugMode(false);
-                    Messaging.mess("Now debug mode is &cdisabled", sender);
+                    Messaging.sendPrefixedMessage("Now debug mode is &cdisabled", sender);
                 } else {
                     sender.sendMessage(Messages.wrongArgs());
                 }
@@ -38,7 +38,7 @@ public class PluginCommands implements CommandExecutor {
         }
         else
         {
-            Messaging.mess(Messages.wrongArgs(), sender);
+            Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
         }
     }
 
@@ -47,7 +47,7 @@ public class PluginCommands implements CommandExecutor {
         {
             Logger.debug("Reloading configuration...");
             AuroraUniverse.getInstance().reloadConfig();
-            Messaging.mess(Messages.reload(), sender);
+            Messaging.sendPrefixedMessage(Messages.reload(), sender);
             Logger.debug("Reloading permission system...");
             AuroraPermissions.clear();
             AuroraPermissions.initialize();
@@ -91,7 +91,7 @@ public class PluginCommands implements CommandExecutor {
         else
         {
             //No arguments message
-            Messaging.plinfo(sender, AuroraUniverse.getInstance());
+            Messaging.sendPluginInfo(sender, AuroraUniverse.getInstance());
         }
         return true;
     }

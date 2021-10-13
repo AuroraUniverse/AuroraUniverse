@@ -16,7 +16,7 @@ public class TownKickCommand {
     public TownKickCommand(Resident resident, String[] args, CommandSender sender) {
         if (args.length > 1) {
             if (resident == null) {
-                Messaging.mess(Messages.cantConsole(), sender);
+                Messaging.sendPrefixedMessage(Messages.cantConsole(), sender);
             } else {
                 Player de = (Player) Bukkit.getPlayer(args[1]);
                 Resident resident2 = Residents.getResident(de);
@@ -24,14 +24,14 @@ public class TownKickCommand {
                     Town t = resident.getTown();
                     if (Permissions.canKickResident(sender)) {
                         t.removeResident(resident2);
-                        Messaging.mess(AuroraConfiguration.getColorString("town-kick").replace("%s", resident2.getName()), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-kick").replace("%s", resident2.getName()), sender);
 
 
                     } else {
-                        Messaging.mess(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
                     }
                 } else {
-                    Messaging.mess(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
                 }
             }
         }
