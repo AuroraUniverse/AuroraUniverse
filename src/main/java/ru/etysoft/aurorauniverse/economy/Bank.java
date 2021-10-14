@@ -7,11 +7,11 @@ public class Bank {
     private String owner;
     private boolean isPlayerAccount;
 
-    public Bank(String accountname, double startamount, String player)
+    public Bank(String accountName, double startBalance, String player)
     {
-        name = accountname;
+        name = accountName;
         owner = player;
-        amount = startamount;
+        amount = startBalance;
         if(player.equals(name))
         {
             isPlayerAccount = true;

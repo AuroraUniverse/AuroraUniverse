@@ -1,8 +1,11 @@
 package ru.etysoft.aurorauniverse.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
 import ru.etysoft.aurorauniverse.world.Town;
 
 public class Messaging {
@@ -38,6 +41,10 @@ public class Messaging {
     {
         if(AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getBoolean("use-prefix"))
         {
+            if(sender instanceof Player)
+            {
+                message = PlaceholderFormatter.process(message, Bukkit.getPlayer(sender.getName()));
+            }
             sender.sendMessage(ColorCodes.toColor(AuroraUniverse.getPrefix() + " " + message));
         }
         else

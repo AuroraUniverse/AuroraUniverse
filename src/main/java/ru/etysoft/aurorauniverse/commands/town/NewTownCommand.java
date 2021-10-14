@@ -22,14 +22,20 @@ public class NewTownCommand {
                 Player pl = (Player) sender;
                 if (Permissions.canCreateTown(pl)) {
                     StringBuilder name = new StringBuilder();
+                    int i = 0;
                     for (String arg :
                             args) {
                         if (!arg.equals(args[0])) {
-                            name.append(arg).append(" ");
+                            if (i != args.length - 1) {
+                                name.append(arg).append(" ");
+                            } else {
+                                name.append(arg);
+                            }
                         }
+                        i++;
                     }
                     try {
-                        String townname = name.toString().replace("&", "");
+                        String townname = name.toString().replace("&", "").replace("%", "");
                         if (Towns.createTown(townname, pl)) {
                             Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-created-message").replace("%s", name), sender);
 

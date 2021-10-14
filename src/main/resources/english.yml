@@ -132,6 +132,25 @@ economy:
     no-money: "&cYou have not %s!"
     error: "&cCan't pay &6%s &cto &b%k!"
 
+
+########################################
+#                                      #
+#                 Chat                 #
+#                                      #
+########################################
+
+chat:
+  global: "%sender%: &7%message%"
+  local: "%sender%: &e%message%"
+  town: "%sender%: &b%message%"
+  changed: "You changed your chat channel to %s"
+  local-nobody: "You're forever alone!"
+  channels:
+    town: "town"
+    local: "local"
+    global: "global"
+
+
 ########################################
 #                                      #
 #            Admin messages            #
@@ -140,3 +159,13 @@ economy:
 admin:
   town-delete: "Town &b%s &cdeleted &fsuccessfully"
   town-cantdelete: "Can't delete town &b%s &cdeleted &fsuccessfully"
+
+########################################
+#                                      #
+#             Placeholders             #
+#                                      #
+########################################
+
+placeholders:
+  town: "&7[&b%s&7]"
+  no-town: ""

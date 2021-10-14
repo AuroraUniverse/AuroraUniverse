@@ -1,6 +1,7 @@
 package ru.etysoft.aurorauniverse.world;
 
 import org.bukkit.Bukkit;
+import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 
 import java.util.ArrayList;
@@ -28,6 +29,18 @@ public class ResidentRegion extends Region {
             members.add(nickname);
             return true;
         }
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject regionObj = super.toJson();
+        regionObj.put()
+    }
+
+    private static class JsonKeys
+    {
+        public static final String OWNER = "TOWNNAME";
+        public static final String MEMBERS = "TOWN_OWNED";
     }
 
     public boolean removeMember(Resident resident)

@@ -1,10 +1,12 @@
 name: AuroraUniverse
 version: 0.1.1.0
 main: ru.etysoft.aurorauniverse.AuroraUniverse
+softdepend: [PlaceholderAPI]
 api-version: 1.13
 author: karlov_m
 description: AuroraUniverse is a good plugin that provides a system of cities, wars, trade, countries and various ranks. A good, and most importantly confident solution for moving from Towny.
 website: etysoft.ru
+
 commands:
   aurorauniverse:
     description: Main plugin command
@@ -15,6 +17,9 @@ commands:
   auneco:
     description: Town command
     aliases: [money]
+  aunchat:
+    description: Chat change command
+    aliases: [chat, tc, lc, g, local, global]
 permissions:
 
   ########################################
@@ -239,5 +244,5 @@ permissions:
 
   auneconomy.balance:
     default: op
-    description: Give money to someone from air
+    description: Show your balance
 

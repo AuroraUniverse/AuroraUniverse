@@ -1,5 +1,7 @@
 package ru.etysoft.aurorauniverse.utils;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,6 +25,7 @@ public class AuroraConfiguration {
                 try {
                     String result = AuroraUniverse.getInstance().getConfig().getDefaults().getString(path);
                     if (result != null) {
+
                         return result;
                     } else {
                         Logger.error("Can't find default string with path " + path);

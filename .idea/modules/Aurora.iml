@@ -25,5 +25,6 @@
     <orderEntry type="library" name="paper-228" level="project" />
     <orderEntry type="library" name="spigot-1.14" level="project" />
     <orderEntry type="library" name="EPCAPI" level="project" />
+    <orderEntry type="library" name="PlaceholderAPI-2.10.10" level="project" />
   </component>
 </module>

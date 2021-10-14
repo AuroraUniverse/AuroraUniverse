@@ -1,7 +1,9 @@
 package ru.etysoft.aurorauniverse.world;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.Bank;
 
@@ -13,19 +15,20 @@ public class Resident {
     private String townname = null;
     private Bank bank;
     private String permissonGroup;
-    private Player player;
+    private int chatMode;
 
 
-    public Resident(String name, Player player)
+    public Resident(String name)
     {
         nickname = name;
         permissonGroup = "newbies";
+        chatMode = AuroraChat.Channels.GLOBAL;
         bank = new Bank(nickname,  AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getDouble("start-balance"), nickname);
         AuroraUniverse.getInstance().getEconomy().addBank(bank);
     }
 
     public Player getPlayer() {
-        return player;
+        return Bukkit.getPlayer(nickname);
     }
 
     public void setPermissonGroup(String auroraPermissonGroup) {
@@ -48,6 +51,13 @@ public class Resident {
 
     public void giveBalance(double d) { bank.deposit(d); }
 
+    public int getChatMode() {
+        return chatMode;
+    }
+
+    public void setChatMode(int chatMode) {
+        this.chatMode = chatMode;
+    }
 
     public boolean takeBalance(double d)
     {

@@ -41,7 +41,12 @@ public class EconomyCommands implements CommandExecutor {
             }
         } else {
             //No arguments message
-            Messaging.sendPluginInfo(sender, AuroraUniverse.getInstance());
+            if (Permissions.canBalance(sender) && sender instanceof Player) {
+                Resident me = Residents.getResident((Player) sender);
+                Messaging.sendPrefixedMessage(Messages.balance(String.valueOf(me.getBalance())), sender);
+            } else {
+                Messaging.sendPrefixedMessage(Messages.balance("good balance, dude (no limits, bro)"), sender);
+            }
         }
         return true;
     }

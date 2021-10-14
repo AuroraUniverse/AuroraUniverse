@@ -5,6 +5,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Warning;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Messages;
@@ -46,8 +47,28 @@ public class Town {
     private Set<String> useGroups = new HashSet<String>();
     private Set<String> switchGroups = new HashSet<String>();
 
+    public static final class JsonKeys
+    {
+        public static final String NAME = "NAME";
+        public static final String MAYOR = "MAYOR";
+        public static final String PVP = "PVP";
+        public static final String FIRE = "FIRE";
+        public static final String BANK = "BANK";
+        public static final String BUILD_GROUPS = "BUILD_GROUPS";
+        public static final String DESTROY_GROUPS = "DESTROY_GROUPS";
+        public static final String USE_GROUPS = "USE_GROUPS";
+        public static final String SWITCH_GROUPS = "SWITCH_GROUPS";
+
+
+    }
+
     @Warning
     public Town() {
+    }
+
+    public JSONObject toJSON()
+    {
+
     }
 
     public Set<String> getDestroyGroups() {
