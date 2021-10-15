@@ -54,12 +54,12 @@ public class Town {
         public static final String PVP = "PVP";
         public static final String FIRE = "FIRE";
         public static final String BANK = "BANK";
+        public static final String RESIDENTS = "RESIDENTS";
+        public static final String REGIONS = "REGIONS";
         public static final String BUILD_GROUPS = "BUILD_GROUPS";
         public static final String DESTROY_GROUPS = "DESTROY_GROUPS";
         public static final String USE_GROUPS = "USE_GROUPS";
         public static final String SWITCH_GROUPS = "SWITCH_GROUPS";
-
-
     }
 
     @Warning
@@ -68,7 +68,16 @@ public class Town {
 
     public JSONObject toJSON()
     {
+        JSONObject townJsonObject = new JSONObject();
+        townJsonObject.put(JsonKeys.NAME, name);
+        townJsonObject.put(JsonKeys.MAYOR, mayor.toJson());
+        townJsonObject.put(JsonKeys.PVP, pvp);
+        townJsonObject.put(JsonKeys.FIRE, fire);
+        townJsonObject.put(JsonKeys.BANK, townBank.getBalance());
 
+        //TODO: доделать
+
+        return townJsonObject;
     }
 
     public Set<String> getDestroyGroups() {

@@ -48,7 +48,7 @@ public class Region {
         return townOwned;
     }
 
-    private static class JsonKeys
+    public static class JsonKeys
     {
         public static final String TOWN_NAME = "TOWNNAME";
         public static final String TOWN_OWNED = "TOWN_OWNED";

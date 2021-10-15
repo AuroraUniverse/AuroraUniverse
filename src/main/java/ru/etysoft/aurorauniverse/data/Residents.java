@@ -13,7 +13,20 @@ public class Residents {
         }
         else
         {
-            AuroraUniverse.residentlist.put(pl.getName(), new Resident(pl.getName(), pl));
+            AuroraUniverse.residentlist.put(pl.getName(), new Resident(pl.getName()));
+            return  true;
+        }
+    }
+
+    public static boolean createResident(String playerName)
+    {
+        if(AuroraUniverse.residentlist.containsKey(playerName))
+        {
+            return  false;
+        }
+        else
+        {
+            AuroraUniverse.residentlist.put(playerName, new Resident(playerName));
             return  true;
         }
     }

@@ -2,8 +2,10 @@ package ru.etysoft.aurorauniverse.world;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.chat.AuroraChat;
+import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.Bank;
 
@@ -25,6 +27,36 @@ public class Resident {
         chatMode = AuroraChat.Channels.GLOBAL;
         bank = new Bank(nickname,  AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getDouble("start-balance"), nickname);
         AuroraUniverse.getInstance().getEconomy().addBank(bank);
+    }
+
+    public JSONObject toJson()
+    {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(Types.NAME, nickname);
+        jsonObject.put(Types.BALANCE, bank.getBalance());
+        return jsonObject;
+    }
+
+    public static Resident fromJSON(JSONObject residentJsonObj)
+    {
+        String name = (String) residentJsonObj.get(Types.NAME);
+        if(Residents.createResident(name))
+        {
+            Resident resident = Residents.getResident(name);
+            if(resident != null)
+            {
+                resident.setBalance((double) residentJsonObj.get(Types.BALANCE));
+                return resident;
+            }
+            return null;
+        }
+        return  null;
+    }
+
+    public static class Types
+    {
+        public static final String NAME = "NAME";
+        public static final String BALANCE = "BALANCE";
     }
 
     public Player getPlayer() {
