@@ -228,10 +228,15 @@ permissions:
     children:
       town.toggle.pvp: true
       town.toggle.fire: true
+      town.toggle.mobs: true
 
   town.toggle.pvp:
     default: op
     description: Toggle PvP in town
+
+  town.toggle.mobs:
+    default: op
+    description: Toggle monsters in town
 
   town.toggle.fire:
     default: op

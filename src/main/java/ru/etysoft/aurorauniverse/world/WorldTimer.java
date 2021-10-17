@@ -1,12 +1,18 @@
 package ru.etysoft.aurorauniverse.world;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+
+import java.util.ArrayList;
 
 
 public class WorldTimer {
@@ -29,6 +35,27 @@ public class WorldTimer {
                 @Override
                 public void run() {
                     Logger.debug("WorldTimer check...");
+
+
+
+                    for (World world : (Bukkit.getServer().getWorlds())) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Monster) {
+
+                               Region region = AuroraUniverse.alltownblocks.get(e.getLocation().getChunk());
+                               if(region != null)
+                               {
+                                   if(!region.getTown().isMobs())
+                                   {
+                                       Logger.debug("Removing monster at " + e.getLocation());
+                                       e.remove();
+                                   }
+
+                               }
+                            }
+                        }
+                    }
+
                     if(System.currentTimeMillis() - lastTimeMillis >= delay)
                     {
                         AuroraChat.sendGlobalMessage(AuroraConfiguration.getColorString("world-timer"));
@@ -91,7 +118,7 @@ public class WorldTimer {
 
                     }
                 }
-            }, 20L, 300L);
+            }, 20L, 100L);
     }
 
     public void resetTimer()

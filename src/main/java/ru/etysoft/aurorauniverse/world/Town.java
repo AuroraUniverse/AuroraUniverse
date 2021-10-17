@@ -40,6 +40,7 @@ public class Town {
     public Location townSpawnPoint;
     public float bank;
     public boolean pvp = false;
+    private boolean mobs = false;
 
     private boolean fire = false;
     private double resTax = 0;
@@ -62,6 +63,7 @@ public class Town {
         public static final String MAYOR = "MAYOR";
         public static final String PVP = "PVP";
         public static final String FIRE = "FIRE";
+        public static final String MOBS = "MOBS";
         public static final String BANK = "BANK";
         public static final String RESIDENTS = "RESIDENTS";
         public static final String RESIDENT_TAX = "RES_TAX";
@@ -119,6 +121,22 @@ public class Town {
         finalPrice = Math.round(modifier * defPrice * 100);
         finalPrice = finalPrice/100;
         return finalPrice;
+    }
+
+    public void setMobs(boolean mobs) {
+        this.mobs = mobs;
+    }
+
+    public boolean isMobs() {
+        return mobs;
+    }
+
+    public void setFire(boolean fire) {
+        this.fire = fire;
+    }
+
+    public void setPvp(boolean pvp) {
+        this.pvp = pvp;
     }
 
     public void setMayor(Resident mayor) {
@@ -206,6 +224,10 @@ public class Town {
             Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ);
 
             spawnLocation.setYaw(-Float.parseFloat(String.valueOf(spawnYaw)));
+
+            town.setFire((boolean) jsonObject.get(JsonKeys.FIRE));
+            town.setPvP((boolean) jsonObject.get(JsonKeys.PVP));
+            town.setMobs((boolean) jsonObject.get(JsonKeys.MOBS));
 
 
 
@@ -299,6 +321,14 @@ public class Town {
         }
     }
 
+    public boolean isPvp() {
+        return pvp;
+    }
+
+    public boolean isFire() {
+        return fire;
+    }
+
     public JSONObject toJSON() {
 
         JSONObject townJsonObject = new JSONObject();
@@ -306,6 +336,7 @@ public class Town {
         townJsonObject.put(JsonKeys.MAYOR, mayor.toJson());
         townJsonObject.put(JsonKeys.PVP, pvp);
         townJsonObject.put(JsonKeys.FIRE, fire);
+        townJsonObject.put(JsonKeys.MOBS, mobs);
 
         townJsonObject.put(JsonKeys.SPAWN_X, townSpawnPoint.getX());
         townJsonObject.put(JsonKeys.SPAWN_Y, townSpawnPoint.getY());

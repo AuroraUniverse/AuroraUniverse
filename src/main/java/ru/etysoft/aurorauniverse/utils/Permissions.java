@@ -95,6 +95,8 @@ public class Permissions {
 
     public static boolean canTogglePvP(CommandSender p) {
         return p.hasPermission("town.toggle.pvp");
+    }public static boolean canToggleMobs(CommandSender p) {
+        return p.hasPermission("town.toggle.mobs");
     }
 
     public static boolean canToggleFire(CommandSender p) {

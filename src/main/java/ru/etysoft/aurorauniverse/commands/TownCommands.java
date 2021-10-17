@@ -68,6 +68,9 @@ public class TownCommands implements CommandExecutor {
            else if(args[0].equalsIgnoreCase("accept")) {
                new TownAcceptCommand(args, resident, sender);
            }
+           else if(args[0].equalsIgnoreCase("gui")) {
+               new TownGuiCommand(resident, pl, args, sender);
+           }
            else if(args[0].equalsIgnoreCase("toggle")) {
                new TownToggleCommand(args, resident, sender, pl);
            }

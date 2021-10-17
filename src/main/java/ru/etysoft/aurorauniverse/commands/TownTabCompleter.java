@@ -37,6 +37,7 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("claim");
         firstPossibleArg.add("unclaim");
         firstPossibleArg.add("withdraw");
+        firstPossibleArg.add("gui");
         firstPossibleArg.add("accept");
 
 
@@ -60,6 +61,7 @@ public class TownTabCompleter implements TabCompleter {
               {
                   possibleArgs.add("pvp");
                   possibleArgs.add("fire");
+                  possibleArgs.add("mobs");
               }
               else if(args[0].equals("region"))
               {
