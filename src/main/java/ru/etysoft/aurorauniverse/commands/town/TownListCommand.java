@@ -21,10 +21,10 @@ public class TownListCommand {
         }
         final int[] i = {1};
         int finalPage = page;
-        double d = Double.parseDouble("" + AuroraUniverse.getTownlist().size());
+        double d = Double.parseDouble("" + AuroraUniverse.getTownList().size());
         double maxPage = Math.ceil((double) d / 10f);
 
-        AuroraUniverse.getTownlist().forEach((name, town) -> {
+        AuroraUniverse.getTownList().forEach((name, town) -> {
 
             if (i[0] != (10 * finalPage) + 1) {
                 if (i[0] > maxPage - 1) {
@@ -41,7 +41,7 @@ public class TownListCommand {
             i[0]++;
         });
 
-        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-pages").replace("%s", String.valueOf(page)).replace("%y", AuroraUniverse.getTownlist().size() + ""), sender);
+        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-pages").replace("%s", String.valueOf(page)).replace("%y", AuroraUniverse.getTownList().size() + ""), sender);
 
     }
 

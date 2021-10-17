@@ -18,12 +18,44 @@ public class Permissions {
         return true;
     }
 
+    public static boolean canCreateNation(CommandSender p) {
+        return p.hasPermission("nation.create");
+    }
+
+    public static boolean canInviteNation(CommandSender p) {
+        return p.hasPermission("nation.invite");
+    }
+
+    public static boolean canAcceptNationInvite(CommandSender p) {
+        return p.hasPermission("nation.accept");
+    }
+
+    public static boolean canLeaveNation(CommandSender p) {
+        return p.hasPermission("nation.leave");
+    }
+
+    public static boolean canKickNation(CommandSender p) {
+        return p.hasPermission("nation.kick");
+    }
+
+    public static boolean canDeleteNation(CommandSender p) {
+        return p.hasPermission("nation.delete");
+    }
+
     public static boolean canEditTown(CommandSender p) {
         return p.hasPermission("aun.edittown");
     }
 
     public static boolean canCreateTown(CommandSender p) {
         return p.hasPermission("town.create");
+    }
+
+
+    public static boolean canRenameTown(CommandSender p) {
+        return p.hasPermission("town.rename");
+    }
+    public static boolean canSetTax(CommandSender p) {
+        return p.hasPermission("town.set.tax");
     }
 
     public static boolean canDeleteTown(CommandSender p) {

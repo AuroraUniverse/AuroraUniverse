@@ -28,6 +28,18 @@ public class AuroraEconomy implements Economy {
         }
     }
 
+    public static boolean canPay(Resident resident, double sum)
+    {
+        if(resident.getBalance() >= sum)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public Bank getBank(String name)
     {
         if(banklist.containsKey(name))

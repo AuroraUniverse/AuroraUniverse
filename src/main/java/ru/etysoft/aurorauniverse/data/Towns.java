@@ -17,151 +17,124 @@ import ru.etysoft.aurorauniverse.world.Town;
 
 public class Towns {
 
-    public  static Town getTown(String name)
-    {
-        if(AuroraUniverse.townlist != null) {
-            if (AuroraUniverse.townlist.containsKey(name)) {
-                return AuroraUniverse.townlist.get(name);
+    public static Town getTown(String name) {
+        if (AuroraUniverse.townList != null) {
+            if (AuroraUniverse.townList.containsKey(name)) {
+                return AuroraUniverse.townList.get(name);
             } else {
                 return null;
             }
-        }
-        else
-        {
+        } else {
             Logger.warning("Townlist is null!");
-            return  null;
+            return null;
         }
     }
 
 
-     public static boolean isTownExists(String s)
-     {
-         if(AuroraUniverse.townlist.containsKey(s))
-         {
-             return  true;
-         }
-         else
-         {
-             return false;
-         }
-     }
+    public static boolean isTownExists(String s) {
+        if (AuroraUniverse.townList.containsKey(s)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
-    public static boolean hasMyTown(Chunk chunk, Town town)
-    {
-        if(AuroraUniverse.alltownblocks.containsKey(chunk))
-        {
-            if(AuroraUniverse.alltownblocks.get(chunk).getTown() == town)
-            {
-                return  true;
+    public static boolean hasMyTown(Chunk chunk, Town town) {
+        if (AuroraUniverse.alltownblocks.containsKey(chunk)) {
+            if (AuroraUniverse.alltownblocks.get(chunk).getTown() == town) {
+                return true;
+            } else {
+                return false;
             }
-           else
-            {
-                return  false;
-            }
-        }
-        else
-        {
-            return  false;
+        } else {
+            return false;
         }
     }
 
-    public static boolean hasTown(Chunk chunk)
-    {
-        if(AuroraUniverse.alltownblocks.containsKey(chunk))
-        {
-            return  true;
-        }
-        else
-        {
-            return  false;
+    public static boolean hasTown(Chunk chunk) {
+        if (AuroraUniverse.alltownblocks.containsKey(chunk)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
-    public static Town getTown(Chunk chunk)
-    {
-        if(AuroraUniverse.alltownblocks.containsKey(chunk))
-        {
+    public static Town getTown(Chunk chunk) {
+        if (AuroraUniverse.alltownblocks.containsKey(chunk)) {
             return AuroraUniverse.alltownblocks.get(chunk).getTown();
-        }
-        else
-        {
-            return  null;
+        } else {
+            return null;
         }
     }
 
-    public static boolean hasTown(Location lc)
-    {
-        if(AuroraUniverse.alltownblocks.containsKey(lc.getChunk()))
-        {
-            return  true;
-        }
-        else
-        {
-            return  false;
+    public static boolean hasTown(Location lc) {
+        if (AuroraUniverse.alltownblocks.containsKey(lc.getChunk())) {
+            return true;
+        } else {
+            return false;
         }
     }
 
 
-
-
-
-    public static void ChangeChunk(Player player, Chunk ch)
-    {
-        if(AuroraUniverse.alltownblocks.containsKey((ch)))
-        {
+    public static void ChangeChunk(Player player, Chunk ch) {
+        if (AuroraUniverse.alltownblocks.containsKey((ch))) {
             Region rg = AuroraUniverse.alltownblocks.get((ch));
 
             Resident resident = Residents.getResident(player);
-            if(resident != null)
-            {
-                if(resident.isLastWild())
-                {
+            if (resident != null) {
+                if (resident.isLastWild()) {
                     resident.setLastwild(false);
                     resident.setLastTown(rg.getTown().getName());
                     Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
-                }
-                else if (!rg.getTown().getName().equals(resident.getLastTown()))
-                {
+                } else if (!rg.getTown().getName().equals(resident.getLastTown())) {
                     resident.setLastTown(rg.getTown().getName());
                     Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
                 }
-            }
-            else
-            {
+            } else {
                 Logger.warning("Can't find Resident with nickname " + player.getName());
             }
-        }
-        else
-        {
+        } else {
             Resident resident = Residents.getResident(player);
-            if(resident != null)
-            {
-                if(!resident.isLastWild())
-                {
+            if (resident != null) {
+                if (!resident.isLastWild()) {
                     resident.setLastwild(true);
                     Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("world"), player);
                 }
-            }
-            else
-            {
+            } else {
                 Logger.warning("Can't find Resident with nickname " + player.getName());
             }
         }
     }
 
-    public static boolean createTown(String name, Player mayor) throws TownException
+    public static boolean isNameValid(String name)
     {
+        if(name.length() < 3)
+        {
+            return false;
+        }
+        int maxLength = AuroraUniverse.getInstance().getConfig().getInt("max-town-name");
+        if(name.length() > maxLength)
+        {
+            return  false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public static boolean createTown(String name, Player mayor) throws TownException {
         PreTownCreateEvent preTownCreateEvent = new PreTownCreateEvent(name.toString(), Residents.getResident(mayor), mayor.getLocation());
         Bukkit.getPluginManager().callEvent(preTownCreateEvent);
 
-        if(!preTownCreateEvent.isCancelled()) {
+        if (!preTownCreateEvent.isCancelled()) {
             Town newtown = new Town(name, Residents.getResident(mayor), mayor.getLocation().getChunk());
             newtown.setSpawn(mayor.getLocation());
             Residents.getResident(mayor).setPermissonGroup("mayor");
 
             AuroraPermissions.setPermissions(mayor, AuroraPermissions.getGroup("mayor"));
-            AuroraUniverse.getTownlist().put(newtown.getName(), newtown);
+            AuroraUniverse.getTownList().put(newtown.getName(), newtown);
             AuroraUniverse.getTownBlocks().putAll(newtown.getTownChunks());
 
             NewTownEvent newTownEvent = new NewTownEvent(newtown);
@@ -169,6 +142,24 @@ public class Towns {
             return true;
         }
         return false;
+    }
+
+    public static Town loadTown(String name, Resident mayor, Chunk mainChunk) throws TownException {
+
+
+        Town newTown = new Town(name, mayor, mainChunk);
+
+        mayor.setPermissonGroup("mayor");
+
+        if (Bukkit.getOnlinePlayers().contains(mayor.getName())) {
+            AuroraPermissions.setPermissions(Bukkit.getPlayer(mayor.getName()), AuroraPermissions.getGroup("mayor"));
+        }
+
+        AuroraUniverse.getTownList().put(newTown.getName(), newTown);
+        AuroraUniverse.getTownBlocks().putAll(newTown.getTownChunks());
+        return newTown;
+
+
     }
 
 

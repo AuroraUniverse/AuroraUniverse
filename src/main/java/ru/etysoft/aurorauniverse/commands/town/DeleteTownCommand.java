@@ -16,8 +16,14 @@ public class DeleteTownCommand {
         try {
             if (resident != null) {
                 if (Permissions.canDeleteTown(pl)) {
-                    if (resident.getTown().delete()) {
-                        Messaging.sendPrefixedMessage(ColorCodes.toColor(AuroraConfiguration.getColorString("town-deleted-message")), pl);
+                    if(args.length > 1 && args[1].equalsIgnoreCase("confirm")) {
+                        if (resident.getTown().delete()) {
+                            Messaging.sendPrefixedMessage(ColorCodes.toColor(AuroraConfiguration.getColorString("town-deleted-message")), pl);
+                        }
+                    }
+                    else
+                    {
+                        Messaging.sendPrefixedMessage(ColorCodes.toColor(AuroraConfiguration.getColorString("town-delete-confirm")), pl);
                     }
 
                 } else {

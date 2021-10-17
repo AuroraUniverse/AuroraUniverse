@@ -2,6 +2,7 @@ package ru.etysoft.aurorauniverse.data;
 
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.world.Resident;
 
 public class Residents {
@@ -28,6 +29,23 @@ public class Residents {
         {
             AuroraUniverse.residentlist.put(playerName, new Resident(playerName));
             return  true;
+        }
+    }
+
+    /**
+     * Loading resident form file
+     * @param resident
+     */
+    public static void loadResident(Resident resident)
+    {
+        if(AuroraUniverse.residentlist.containsKey(resident.getName()))
+        {
+            Logger.error("Resident " + resident.getName() +" already loaded from data!");
+        }
+        else
+        {
+            AuroraUniverse.residentlist.put(resident.getName(),resident);
+
         }
     }
 

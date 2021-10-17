@@ -20,13 +20,21 @@ public class TownClaimCommand {
                 Town t = resident.getTown();
                 if (Permissions.canClaim(pl)) {
                     try {
-                        if (t.claimChunk(pl.getLocation().getChunk())) {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-claim"), sender);
-                            resident.setLastwild(false);
-                            resident.setLastTown(t.getName());
-                        } else {
+                        if(t.getBank().withdraw(t.getNewChunkPrice()))
+                        {
+                            if (t.claimChunk(pl.getLocation().getChunk())) {
+                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-claim"), sender);
+                                resident.setLastwild(false);
+                                resident.setLastTown(t.getName());
+                            } else {
+                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantclaim"), sender);
+                            }
+                        }
+                        else
+                        {
                             Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantclaim"), sender);
                         }
+
                     } catch (TownException e) {
                         e.printStackTrace();
                     }

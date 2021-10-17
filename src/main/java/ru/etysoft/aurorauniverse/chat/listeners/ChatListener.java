@@ -1,5 +1,8 @@
 package ru.etysoft.aurorauniverse.chat.listeners;
 
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,14 +11,13 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.Residents;
+import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.world.Resident;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ChatListener implements Listener {
     @EventHandler
@@ -24,8 +26,9 @@ public class ChatListener implements Listener {
         String message = event.getMessage();
 
         Resident resident = Residents.getResident(event.getPlayer().getName());
-
+        Set<Player> finalRecipients = new HashSet<>(event.getRecipients());
         Player playerSender = event.getPlayer();
+        event.getRecipients().clear();
 
 
         if (resident != null) {
@@ -44,14 +47,13 @@ public class ChatListener implements Listener {
                         recipients.add(player);
                     }
                 }
-                if (recipients.size() > 1) {
-                    recipients.clear();
-                    recipients.addAll(recipients);
-                } else {
+                if (recipients.size() == 1) {
                     playerSender.sendMessage(AuroraConfiguration.getColorString("chat.local-nobody"));
                 }
+                finalRecipients = recipients;
 
             } else if (channel == AuroraChat.Channels.TOWN) {
+
                 event.setFormat(AuroraConfiguration.getColorString("chat.town").replace("%sender%", event.getPlayer().getName())
                         .replace("%message%", event.getMessage()));
                 Set<Player> recipients = new HashSet<>();
@@ -62,14 +64,32 @@ public class ChatListener implements Listener {
                     return;
                 }
                 for (Resident townResident : resident.getTown().getResidents()) {
+                    if(Bukkit.getOnlinePlayers().contains(resident.getName()))
+                    {
                         recipients.add(Bukkit.getPlayer(townResident.getName()));
+                    }
+
                 }
-                    recipients.clear();
-                    recipients.addAll(recipients);
+
+                    finalRecipients.addAll(recipients);
+
 
             }
 
         }
 
+        for(Player player : finalRecipients)
+        {
+            player.spigot().sendMessage(sendPlayerMessage(event.getFormat(), event.getPlayer()));
+        }
+
+    }
+
+    private static TextComponent sendPlayerMessage(String message, Player player)
+    {
+        TextComponent textComponent = new TextComponent(message);
+        textComponent.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(
+                PlaceholderFormatter.process(AuroraConfiguration.getColorString("chat.hover-text"), player)).create() ) );
+        return textComponent;
     }
 }

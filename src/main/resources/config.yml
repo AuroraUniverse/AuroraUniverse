@@ -11,6 +11,18 @@ use-prefix: true
 #[NO RECOMMENDED] Kick players if they have not a Resident class, setting to false will produce ERRORS!
 kick-noresidents: true
 
+price-new-town: 10.0
+price-new-nation: 20.0
+max-town-name: 10
+max-nation-name: 10
+
+# TAXES
+
+town-chunk-tax: 15.0
+town-new-chunk-tax-mod: 1.4
+town-chunk-price: 10.0
+
 # ECONOMY
+
 
 start-balance: 0.0

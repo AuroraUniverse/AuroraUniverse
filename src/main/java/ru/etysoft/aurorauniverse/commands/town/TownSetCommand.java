@@ -43,6 +43,14 @@ public class TownSetCommand {
                             setPermission();
                         }
                     }
+                } else if (args[1].equalsIgnoreCase("tax")) {
+                    if (args.length > 2) {
+                        if (resident == null) {
+                            Messaging.sendPrefixedMessage(Messages.cantConsole(), sender);
+                        } else {
+                            setTax();
+                        }
+                    }
                 } else if (args[1].equalsIgnoreCase("group")) {
                     if (args.length > 3) {
                         if (resident == null) {
@@ -50,9 +58,7 @@ public class TownSetCommand {
                         } else {
                             setGroup();
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
                     }
                 }
@@ -64,6 +70,25 @@ public class TownSetCommand {
         }
 
 
+    }
+
+    private void setTax() {
+        if(Permissions.canSetTax(sender)) {
+            Town t = resident.getTown();
+            try {
+                double resTax = Double.parseDouble(args[2]);
+                t.setResTax(resTax);
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-settax"), player);
+            }
+            catch (Exception e)
+            {
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-tax-error"), player);
+            }
+        }
+        else
+        {
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+        }
     }
 
     private void setPermission() {
@@ -139,37 +164,27 @@ public class TownSetCommand {
             Town t = resident.getTown();
             if (Permissions.canSetGroup(sender)) {
 
-                    String groupName = args[2];
-                    String residentNickname = args[3];
-                    if(!groupName.equals("mayor") && resident != t.getMayor())
-                    {
-                        if(Residents.getResident(residentNickname) != null && t.getResidents().contains(Residents.getResident(residentNickname)))
-                        {
-                            if(AuroraPermissions.getGroups().keySet().contains(groupName))
-                            {
-                                Residents.getResident(residentNickname).setPermissonGroup(groupName);
-                                AuroraPermissions.setPermissions(player, AuroraPermissions.getGroup(groupName));
-                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-set")
-                                        .replace("%s", groupName)
-                                        .replace("%s1", residentNickname), sender);
-                            }
-                            else
-                            {
-                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-does-not-exists"), sender);
-                            }
+                String groupName = args[2];
+                String residentNickname = args[3];
+                if (!groupName.equals("mayor") && resident != t.getMayor()) {
+                    if (Residents.getResident(residentNickname) != null && t.getResidents().contains(Residents.getResident(residentNickname))) {
+                        if (AuroraPermissions.getGroups().keySet().contains(groupName)) {
+                            Residents.getResident(residentNickname).setPermissonGroup(groupName);
+                            AuroraPermissions.setPermissions(player, AuroraPermissions.getGroup(groupName));
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-set")
+                                    .replace("%s", groupName)
+                                    .replace("%s1", residentNickname), sender);
+                        } else {
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-does-not-exists"), sender);
                         }
-                        else
-                        {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-resident-not-in-town"), sender);
-                        }
-
-
-                    }
-                    else
-                    {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-mayor"), sender);
+                    } else {
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-resident-not-in-town"), sender);
                     }
 
+
+                } else {
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-mayor"), sender);
+                }
 
 
             } else {

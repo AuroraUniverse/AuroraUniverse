@@ -84,7 +84,7 @@ public class ResidentRegion extends Region {
 
     }
 
-    private static class JsonKeys
+    public static class JsonKeys
     {
         public static final String OWNER = "OWNER";
         public static final String MEMBERS = "MEMBERS";

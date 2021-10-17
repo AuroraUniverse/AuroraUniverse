@@ -11,6 +11,7 @@ import ru.etysoft.aurorauniverse.exceptions.TownException;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
+import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
 public class NewTownCommand {
@@ -34,12 +35,24 @@ public class NewTownCommand {
                         }
                         i++;
                     }
+                    if(!Towns.isNameValid(name.toString()))
+                    {
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("name-invalid").replace("%s", name.toString()), sender);
+                        return;
+                    }
                     try {
-                        String townname = name.toString().replace("&", "").replace("%", "");
-                        if (Towns.createTown(townname, pl)) {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-created-message").replace("%s", name), sender);
+                        double newTownPrice = AuroraUniverse.getInstance().getConfig().getDouble("price-new-town");
+                        if (Residents.getResident(pl).getBalance() >= newTownPrice) {
+                            String townname = name.toString().replace("&", "").replace("%", "");
+                            if (Towns.createTown(townname, pl)) {
+                                Resident resident = Residents.getResident(pl);
+                                resident.setBalance(resident.getBalance() - newTownPrice);
+                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-created-message").replace("%s", name), sender);
 
-                            Residents.getResident(pl).setLastwild(false);
+                                Residents.getResident(pl).setLastwild(false);
+                            }
+                        } else {
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("price-error").replace("%s", String.valueOf(newTownPrice)), sender);
                         }
 
                     } catch (TownException e) {
@@ -54,7 +67,7 @@ public class NewTownCommand {
                     Town newtown = new Town();
 
 
-                    AuroraUniverse.getTownlist().put(args[1], newtown);
+                    AuroraUniverse.getTownList().put(args[1], newtown);
                 } else {
                     Logger.error("Town creating error: ");
                     e.printStackTrace();

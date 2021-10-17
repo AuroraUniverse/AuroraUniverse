@@ -5,7 +5,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
+import ru.etysoft.aurorauniverse.world.Nation;
 import ru.etysoft.aurorauniverse.world.Town;
 
 public class Messaging {
@@ -23,17 +25,31 @@ public class Messaging {
 
     public static void sendTownInfo(CommandSender p, Town town)
     {
-        p.sendMessage(ChatColor.GRAY + "o0o_[" + ChatColor.AQUA + " " + town.getName() + ChatColor.GRAY + "]_o0o");
+        p.sendMessage(ChatColor.GRAY + "o0o_[" + ChatColor.AQUA + town.getName() + ChatColor.GRAY + "]_o0o");
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-mayor").replace("%s", town.getMayor().getName())));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-residents").replace("%s1",
                 String.valueOf(town.getMembersCount())).replace("%s2",town.getMembersList())));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-chunks") .replace("%s", String.valueOf(town.getChunksCount()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-chunk-price") .replace("%s", String.valueOf(town.getNewChunkPrice()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-tax") .replace("%s", String.valueOf(town.getTownTax()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-res-tax") .replace("%s", String.valueOf(town.getResTax()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-balance").replace("%s",
                 String.valueOf(town.getBank().getBalance()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-build") .replace("%s", String.join(", ", town.getBuildGroups()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-destroy") .replace("%s", String.join(", ", town.getDestroyGroups()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-use") .replace("%s", String.join(", ", town.getUseGroups()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-switch") .replace("%s", String.join(", ", town.getSwitchGroups()))));
+    }
+
+    public static void sendNationInfo(CommandSender p, Nation nation)
+    {
+        p.sendMessage(ChatColor.GRAY + "o0o_[" + ChatColor.GOLD + nation.getName() + ChatColor.GRAY + "]_o0o");
+
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("nation.capital") .replace("%s",  nation.getCapital().getName())));
+
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("nation.members") .replace("%s1", String.join(", ", nation.getTownNames())))
+        .replace("%s", String.valueOf(nation.getTownNames().size())));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("nation.tax") .replace("%s",  String.valueOf(nation.getTax()))));
     }
 
     //Simple send color message with prefix
@@ -52,6 +68,25 @@ public class Messaging {
             sender.sendMessage(ColorCodes.toColor("&b" + message));
         }
 
+    }
+
+    public static String getNameFromArgs(String[] args, int fromIndex)
+    {
+        StringBuilder name = new StringBuilder();
+        int i = 0;
+        for (String arg :
+                args) {
+            if (i >= fromIndex) {
+                if (i != args.length - 1) {
+                    name.append(arg).append(" ");
+                } else {
+                    name.append(arg);
+                }
+            }
+            i++;
+        }
+        Logger.debug("Constructor new name " + name.toString());
+        return name.toString().replace("%", "").replace("&", "");
     }
 
 

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
@@ -34,6 +35,8 @@ public class Resident {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(Types.NAME, nickname);
         jsonObject.put(Types.BALANCE, bank.getBalance());
+        jsonObject.put(Types.PERM_GROUP, permissonGroup);
+        jsonObject.put(Types.IS_IN_WILD, isLastWild());
         return jsonObject;
     }
 
@@ -46,10 +49,14 @@ public class Resident {
             if(resident != null)
             {
                 resident.setBalance((double) residentJsonObj.get(Types.BALANCE));
+                resident.setLastwild((boolean) residentJsonObj.get(Types.IS_IN_WILD));
+                resident.setPermissonGroup((String) residentJsonObj.get(Types.PERM_GROUP));
                 return resident;
             }
+            Logger.error("Resident is null!");
             return null;
         }
+        Logger.debug("Resident " + name + " already loaded!");
         return  null;
     }
 
@@ -57,6 +64,8 @@ public class Resident {
     {
         public static final String NAME = "NAME";
         public static final String BALANCE = "BALANCE";
+        public static final String PERM_GROUP = "PERM_GROUP";
+        public static final String IS_IN_WILD = "IS_WILD";
     }
 
     public Player getPlayer() {
@@ -79,6 +88,10 @@ public class Resident {
     public void setBalance(double d)
     {
         bank.setBalance(d);
+    }
+
+    public Bank getBank() {
+        return bank;
     }
 
     public void giveBalance(double d) { bank.deposit(d); }
@@ -112,6 +125,7 @@ public class Resident {
             return  false;
         }
     }
+
 
     public String getName()
     {

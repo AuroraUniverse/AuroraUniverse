@@ -22,7 +22,7 @@ apiversion-string: "API Version: "
 
 reloaded-message: "&aPlugin was successfully reloaded with new params!"
 no-arguments: "&cWrong arguments! "
-access-denied-message: "&eYou have not permisson to do that!"
+access-denied-message: "&eYou do not have permission to do that!"
 console: "&cYou can't do it from console!"
 
 ########################################
@@ -32,55 +32,72 @@ console: "&cYou can't do it from console!"
 ########################################
 # %s - is a variable (example: town name, error message etc.)
 
-town-created-message: "You successfuly created town with name %s"
+world-timer: "&eNew day begins! Time for taxes!"
+price-error: "&eYou need %s to do this!"
+name-invalid: "&eName %s is incorrect!"
+
+town-created-message: "You successfully created town with name %s"
 town-cantcreate-message: "&cCan't create town: %s "
 town-deleted-message: "Your town was successfully deleted"
+town-delete-confirm: "&fType &b/t delete confirm &fif you really wish to delete your town"
 town-teleported-to-spawn: "You have been teleported to the town spawn"
 town-dont-belong: "You don't belong to town!"
-town-claim: "Successfully claimed new chunk!"
-town-cantclaim: "Can't claim a new chunk!"
-town-unclaim: "Successfully unclaimed a townchunk!"
-town-cantunclaim: "Can't unclaim a townchunk!"
-town-leave: "You successfully leave town with name %s"
+town-claim: "&fSuccessfully &aclaimed &fa new chunk!"
+town-cantclaim: "&cCan't claim a new chunk!"
+town-unclaim: "&fSuccessfully &eunclaimed &fa townchunk!"
+town-cantunclaim: "&cCan't unclaim a &ftownchunk!"
+town-leave: "&fYou successfully &eleave &ftown with name %s"
+town-list: "&7>> &bList of towns"
+town-rename: "&fYou successfully &erenamed&f town to &b%s"
 town-setspawn: "New spawnpoint set!"
-town-cantsetspawn: "Can't set town spawnpoint!"
-town-group-mayor: "You can't edit mayor's group"
-town-group-does-not-exists: "This group does not exists!"
-town-group-set: "Successfully set group %s to resident %s1"
-town-resident-not-in-town: "This resident do not belongs to town"
+town-settax: "New taxes set!"
+town-tax-error: "Wrong tax!"
+town-cantsetspawn: "&cCan't set town spawnpoint!"
+town-group-mayor: "&cYou can't edit &emayor's group"
+town-group-does-not-exists: "&cThis group does not exists!"
+town-group-set: "Successfully set group &f%s &7to resident &b%s1"
+town-out-money: "&fTown &b%s &fhas been &cdeleted&f by taxes"
+town-resident-not-in-town: "&cThis resident do not belongs to town"
 
 
-town-enperm: "Enabled %s to group %k!"
-town-disperm: "Disabled %s to group %k!"
-town-cantsetperm: "Can't set permisson %s to group %k"
+town-enperm: "&fEnabled &a%s &fto group &b%k!"
+town-disperm: "&fDisabled &e%s to group &b%k!"
+town-cantsetperm: "&cCan't set permission &f%s &cto group &f%k"
 
 
-town-kick: "Resident %s has kicked from the town"
-town-invite: "Resident %s has added to the town"
-town-pvpon: "Now town has PvP enabled"
-town-pvpoff: "Now town has PvP disabled"
-town-pvp: "You can't PvP here!"
-town-fireon: "Now fire is enabled"
-town-fireoff: "Now fire is disabled"
+town-kick: "&fResident &b%s &fwas kicked from the town"
+town-invite: "&fResident &b%s &fwas invited to the town"
+town-accepted: "&fResident &b%s &fjoined the town"
+town-accepted-nothing: "&fThe town did not invite you"
+town-request: "&fThe town %s invites you to join. Type &b/t accept %s &fto accept request"
+town-accept-err: "&cWrong request!"
+town-pvpon: "Now town has &fPvP &aenabled"
+town-pvpoff: "Now town has &fPvP &adisabled"
+town-pvp: "&cYou can't PvP here!"
+town-fireon: "Now fire is &aenabled"
+town-fireoff: "Now fire is &adisabled"
 
-town-block-place: "You can't place blocks here!"
-town-block-break: "You can't break blocks here!"
-town-block-switch: "You can't switch here!"
-town-block-use: "You can't use here!"
+town-block-place: "&cYou can't place blocks here!"
+town-block-break: "&cYou can't break blocks here!"
+town-block-switch: "&cYou can't switch here!"
+town-block-use: "&cYou can't use here!"
 
-town-mayor: "Mayor: %s"
-town-residents: "Residents(%s1): %s2"
-town-chunks: "Chunks: %s"
-town-pages: "Show %s page from %y"
-town-balance: "Bank: %s"
-town-build: "Build groups: %s"
-town-destroy: "Destroy groups: %s"
-town-switch: "Switch groups: %s"
-town-use: "Use groups: %s"
-town-deposit: "Successfully deposited %s to the town bank"
-town-withdraw: "Successfully withdraw %s from the town bank"
-town-cantwithdraw: "Can't withdraw %s from the town bank"
-town-cantdeposit: "Can't deposit %s to the town bank"
+town-mayor: "&7> &bMayor: &f%s"
+town-residents: "&7> &bResidents&7(%s1): &f%s2"
+town-chunks: "&7> &bChunks: &f%s"
+town-chunk-price: "&7> &bNew chunk price: &f%s"
+town-tax: "&7> &bTax: &e%s"
+town-res-tax: "&7> &bResident Tax: &e%s"
+town-pages: "Showed &f%s &7page from &f%y"
+town-balance: "&7> &bBank: &a%s"
+town-build: "&7>> &eBuild &fgroups: &7%s"
+town-destroy: "&7>> &eDestroy &fgroups:  &7%s"
+town-switch: "&7>> &eSwitch &fgroups:  &7%s"
+town-use: "&7>> &eUse &fgroups:  &7%s"
+town-deposit: "&7Successfully &fdeposited &b%s &7to the town bank"
+town-withdraw: "&7Successfully &fwithdraw &b%s &7from the town bank"
+town-cantwithdraw: "&cCan't withdraw &f%s &cfrom the town bank"
+town-cantdeposit: "&cCan't deposit &f%s &cto the town bank"
 
 ########################################
 #                                      #
@@ -88,15 +105,15 @@ town-cantdeposit: "Can't deposit %s to the town bank"
 #                                      #
 ########################################
 
-region-already-owned: "This region is already belongs to resident"
-region-unowned: "This region is not claimed"
-region-error: "Region error: wrong operation"
-region-success: "Successfully gave region to resident"
-region-reset-success: "Successfully reset region"
-region-townowned: "This is townowned region!"
-region-owner-members: "Only region owner can change its members!"
-region-added: "Successfully added %s to region"
-region-kicked: "Successfully kicked %s from this region"
+region-already-owned: "&cThis region is already belongs to resident"
+region-unowned: "&cThis region is not claimed"
+region-error: "&cRegion error: wrong operation"
+region-success: "&fSuccessfully &agave region&f to resident"
+region-reset-success: "&fSuccessfully reset region"
+region-townowned: "&cThis is townowned region!"
+region-owner-members: "&cOnly region owner can change its members!"
+region-added: "&fSuccessfully &aadded &b%s &fto region"
+region-kicked: "&fSuccessfully &ekicked &b%s &ffrom this region"
 
 # [Town errors]
 e1: "town on this chunk already exists"
@@ -108,8 +125,8 @@ too-close: "&cThis chunk is too close to another town!"
 too-far: "&cThis chunk is too far from your town!"
 
 # [Chunk notifications]
-town-welcome: "Welcome to the town %s"
-world: "You have entered the world! Be careful!"
+town-welcome: "&fWelcome to the town &b%s"
+world: "&eYou have entered the world! &2Be careful!"
 
 region-info:
   title: "&bo0o_[&fRegion info&b]_o0o"
@@ -123,15 +140,42 @@ region-info:
 ########################################
 
 economy:
-  give: "Successfully gave %s to %k"
-  take: "Successfully take %s from %k"
-  balance: "Your balance is %s$"
+  give: "&fSuccessfully &agave &f%s &fto &b%k"
+  take: "&fSuccessfully &etake &f%s &ffrom &b%k"
+  balance: "&fYour balance is &b%s$"
   pay:
-    success: "Successfully pay %s to %k"
+    success: "&fSuccessfully &bpay &e%s &fto &b%k"
     not-found: "&cPlayer %s not found!"
     no-money: "&cYou have not %s!"
     error: "&cCan't pay &6%s &cto &b%k!"
 
+
+########################################
+#                                      #
+#                Nation                #
+#                                      #
+########################################
+
+nation:
+  capital: "Capital town: %s"
+  members: "Towns(%s): %s1"
+  tax: "Town tax: %s"
+no-nation: "You have no nation"
+wrong-nation: "Wrong nation name"
+nation-leave: "You leaved your nation"
+nation-kick: "You kicked %s from nation"
+nation-tax: "You set nation tax to %s"
+nation-tax-error: "Wrong tax!"
+nation-wrong-town: "Town %s does not exists or already has been invited"
+nation-no-capital: "Only capital can change nation members"
+nation-capital-edit: "You can't change capital statust"
+nation-no-invite: "You have not been invited"
+nation-invite-sent: "You sent the invitation to %s"
+nation-accepted: "You just accepted nation request. Now your town is a nation member"
+nation-created: "New nation %s created"
+nation-deleted: "Your nation has been deleted"
+nation-already: "You already in nation"
+nation-invitation: "Nation %s invites your town. Type &b/n accept %s &fto accept request"
 
 ########################################
 #                                      #
@@ -140,11 +184,12 @@ economy:
 ########################################
 
 chat:
-  global: "%sender%: &7%message%"
-  local: "%sender%: &e%message%"
-  town: "%sender%: &b%message%"
-  changed: "You changed your chat channel to %s"
-  local-nobody: "You're forever alone!"
+  global: "&3G &7> &f%sender%: &7%message%"
+  local: "&eLC &7>> &f%sender%: &e%message%"
+  town: "&b Town &7>> &f%sender%: &b%message%"
+  changed: "&fYou changed your chat channel to &b%s"
+  local-nobody: "&7You're forever alone!"
+  hover-text: "%aurorauniverse_town% %aurorauniverse_nation%"
   channels:
     town: "town"
     local: "local"
@@ -169,3 +214,5 @@ admin:
 placeholders:
   town: "&7[&b%s&7]"
   no-town: ""
+  nation: "&7[&6%s&7]"
+  no-nation: ""

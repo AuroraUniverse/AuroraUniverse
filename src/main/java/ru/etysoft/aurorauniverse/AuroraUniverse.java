@@ -24,9 +24,7 @@ import ru.etysoft.aurorauniverse.placeholders.AuroraPlaceholdersExpansion;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.LanguageSetup;
 import ru.etysoft.aurorauniverse.utils.Timer;
-import ru.etysoft.aurorauniverse.world.Region;
-import ru.etysoft.aurorauniverse.world.Resident;
-import ru.etysoft.aurorauniverse.world.Town;
+import ru.etysoft.aurorauniverse.world.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,10 +35,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class AuroraUniverse extends JavaPlugin {
 
-    public static Map<String, Town> townlist = new ConcurrentHashMap<>();
+    public static Map<String, Town> townList = new ConcurrentHashMap<>();
+    public static Map<String, Nation> nationList = new ConcurrentHashMap<>();
     public static Map<Chunk, Region> alltownblocks = new ConcurrentHashMap<>();
     public static Map<String, Resident> residentlist = new ConcurrentHashMap<>();
-    public static int minTownBlockDistanse = 1;
+    public static int minTownBlockDistance = 1;
     public static boolean debugmode = true;
 
     private static String warnings = "";
@@ -122,12 +121,15 @@ public final class AuroraUniverse extends JavaPlugin {
         } catch (Exception e) {
             addWarning("&cLISTENERS ERROR: " + e.getMessage());
         }
-        Logger.info("Initializing AuroraPemissions...");
+        Logger.info("Initializing AuroraPermissions...");
         try {
             AuroraPermissions.initialize();
         } catch (Exception e) {
             addWarning("&cAPERMS ERROR: " + e.getMessage());
         }
+
+        Logger.info("Initializing WorldTimer...");
+        WorldTimer.getInstance();
 
         Logger.info("Initializing AuroraEconomy...");
         try {
@@ -139,17 +141,30 @@ public final class AuroraUniverse extends JavaPlugin {
             }
         }
         if (!setupEconomy()) {
-            addWarning("Can't find Vault! Economy can't start!.");
+            addWarning("Can't find Vault! Economy can't start!");
             return;
         }
 
+        Logger.info("Loading data...");
+        if(!DataManager.loadData())
+        {
+            addWarning("&cAn error occurred loading data from json!");
+        }
+
+        int maxBound = 4;
+        String seconds = timer.getStringSeconds();
+
+        if(seconds.length() < 4)
+        {
+            maxBound = seconds.length() -1;
+        }
 
         if (!haswarnings) {
             //If no warnings
-            Logger.info("AuroraUniverse successfully enabled in " + timer.getStringSeconds().substring(0, 4) + " seconds!");
+            Logger.info("AuroraUniverse successfully enabled in " + seconds.substring(0, maxBound) + " seconds!");
         } else {
             //Some warnings catched
-            Logger.info("&cAuroraUniverse was enabled with warnings in " + timer.getStringSeconds().substring(0, 4) + " seconds: &e" + warnings);
+            Logger.info("&cAuroraUniverse was enabled with warnings in " + seconds.substring(0, maxBound) + " seconds: &e" + warnings);
         }
         if (AuroraConfiguration.getDebugMode()) {
             Logger.debug("You running AuroraUniverse in debug mode (more console messages)");
@@ -215,8 +230,8 @@ public final class AuroraUniverse extends JavaPlugin {
         Bukkit.getPluginManager().callEvent(event);
     }
 
-    public static Map<String, Town> getTownlist() {
-        return townlist;
+    public static Map<String, Town> getTownList() {
+        return townList;
     }
 
     public static Map<Chunk, Region> getTownBlocks() {
@@ -241,6 +256,7 @@ public final class AuroraUniverse extends JavaPlugin {
         registerCommand("auntown", new TownCommands(), new TownTabCompleter());
         registerCommand("aurorauniverse", new PluginCommands(), null);
         registerCommand("auneco", new EconomyCommands(), new EconomyTabCompleter());
+        registerCommand("aunnation", new NationCommands(), new NationTabCompleter());
         registerCommand("aunchat", AuroraChat.getInstance().getChatCommand(), null);
 
     }
@@ -288,7 +304,7 @@ public final class AuroraUniverse extends JavaPlugin {
     @Override
     public void onDisable() {
         Logger.info("Disabling AuroraUniverse...");
-        DataManager.saveTowns("towns.json");
+        DataManager.saveData();
         Logger.info("AuroraUniverse successfully disabled!");
     }
 }

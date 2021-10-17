@@ -31,10 +31,13 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("invite");
         firstPossibleArg.add("kick");
         firstPossibleArg.add("leave");
+        firstPossibleArg.add("rename");
+        firstPossibleArg.add("spawn");
         firstPossibleArg.add("region");
         firstPossibleArg.add("claim");
         firstPossibleArg.add("unclaim");
         firstPossibleArg.add("withdraw");
+        firstPossibleArg.add("accept");
 
 
 

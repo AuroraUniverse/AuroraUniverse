@@ -14,6 +14,9 @@ commands:
   auntown:
     description: Town command
     aliases: [town, t]
+  aunnation:
+    description: Nation command
+    aliases: [n, nation]
   auneco:
     description: Town command
     aliases: [money]
@@ -62,6 +65,7 @@ permissions:
       town.claim: true
       town.unclaim: true
       town.edit: true
+      town.rename: true
       town.teleport.spawn: true
       town.set.*: true
       town.toggle.*: true
@@ -72,6 +76,10 @@ permissions:
   town.create:
     default: op
     description: Create a town
+
+  town.renam:
+    default: op
+    description: Rename a town
 
   town.delete:
     default: op
@@ -153,6 +161,7 @@ permissions:
       town.set.spawn: true
       town.set.perms: true
       town.set.group: true
+      town.set.tax: true
 
   town.set.spawn:
     default: op
@@ -161,6 +170,10 @@ permissions:
   town.set.perms:
     default: op
     description: Set town's permissions
+
+  town.set.tax:
+    default: op
+    description: Set town's tax
 
   town.set.group:
     default: op
@@ -226,7 +239,7 @@ permissions:
 
   ########################################
   #                                      #
-  #              Economy                 #
+  #               Economy                #
   #                                      #
   ########################################
 
@@ -246,3 +259,40 @@ permissions:
     default: op
     description: Show your balance
 
+  ########################################
+  #                                      #
+  #               Nation                 #
+  #                                      #
+  ########################################
+  nation.*:
+    default: op
+    description: Toggle all in town
+    children:
+      nation.create: true
+      nation.invite: true
+      nation.accept: true
+      nation.kick: true
+      nation.leave: true
+      nation.delete: true
+      nation.tax: true
+  nation.create:
+    default: op
+    description: Create nation
+  nation.invite:
+    default: op
+    description: Invite town into nation
+  nation.tax:
+    default: op
+    description: Allows to set tax
+  nation.accept:
+    default: op
+    description: Accept invite
+  nation.kick:
+    default: op
+    description: Kick town from nation
+  nation.leave:
+    default: op
+    description: Leave from nation
+  nation.delete:
+    default: op
+    description: Delete nation

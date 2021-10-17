@@ -35,6 +35,9 @@ public class TownCommands implements CommandExecutor {
            else if(args[0].equalsIgnoreCase("list")) {
                new TownListCommand(sender, args);
            }
+           else if(args[0].equalsIgnoreCase("rename")) {
+               new TownRenameCommand(resident, args, sender);
+           }
            else if(args[0].equalsIgnoreCase("claim")) {
                new TownClaimCommand(resident, sender, pl);
            }
@@ -61,6 +64,9 @@ public class TownCommands implements CommandExecutor {
            }
            else if(args[0].equalsIgnoreCase("invite")) {
                new TownInviteCommand(args, resident, sender);
+           }
+           else if(args[0].equalsIgnoreCase("accept")) {
+               new TownAcceptCommand(args, resident, sender);
            }
            else if(args[0].equalsIgnoreCase("toggle")) {
                new TownToggleCommand(args, resident, sender, pl);

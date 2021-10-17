@@ -21,9 +21,11 @@ public class TownInviteCommand {
                 if (resident.hasTown() && resident2 != null) {
                     Town t = resident.getTown();
                     if (Permissions.canInviteResident(sender)) {
-                        t.addResident(resident2);
+                        t.getInvitedResidents().add(resident2);
                         Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-invite").replace("%s", resident2.getName()), sender);
-
+                        if(Bukkit.getPlayer(sender.getName()) != null) {
+                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-request").replace("%s", t.getName()), Bukkit.getPlayer(resident2.getName()));
+                        }
                     } else {
                         Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
                     }

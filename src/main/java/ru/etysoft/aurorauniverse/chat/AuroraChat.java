@@ -1,9 +1,11 @@
 package ru.etysoft.aurorauniverse.chat;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.chat.listeners.ChatListener;
+import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
 
 public class AuroraChat {
 
@@ -22,6 +24,14 @@ public class AuroraChat {
         AuroraUniverse.registerListener(new ChatListener());
 
 
+    }
+
+    public static void sendGlobalMessage(String string)
+    {
+        for(Player player : Bukkit.getOnlinePlayers())
+        {
+            player.sendMessage(string);
+        }
     }
 
     public ChatCommand getChatCommand()

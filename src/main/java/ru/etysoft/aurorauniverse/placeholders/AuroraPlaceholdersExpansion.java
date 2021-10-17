@@ -75,6 +75,30 @@ public class AuroraPlaceholdersExpansion extends PlaceholderExpansion {
             }
             return ColorCodes.toColor("&c[AUN ERROR]");
         }
+        else if(params.equalsIgnoreCase("nation"))
+        {
+            if(Residents.getResident(player.getName()) != null)
+            {
+                Resident resident = Residents.getResident(player.getName());
+                if(resident.hasTown())
+                {
+                    if(resident.getTown().getNation() != null)
+                    {
+                        return AuroraConfiguration.getColorString("placeholders.nation").replace("%s", resident.getTown().getNation().getName());
+                    }
+                    else
+                    {
+                        return AuroraConfiguration.getColorString("placeholders.no-nation");
+                    }
+
+                }
+                else
+                {
+                    return AuroraConfiguration.getColorString("placeholders.no-nation");
+                }
+            }
+            return ColorCodes.toColor("&c[AUN ERROR]");
+        }
         return null;
         // Placeholder is unknown by the Expansion
     }
