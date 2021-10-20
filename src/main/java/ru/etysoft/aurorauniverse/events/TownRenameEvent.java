@@ -4,19 +4,25 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import ru.etysoft.aurorauniverse.world.Town;
 
-public class TownDeleteEvent extends Event {
+public class TownRenameEvent extends Event {
 
-    private Town town;
+    private String newName, oldName;
 
-    public TownDeleteEvent (Town deletedTown)
+    public TownRenameEvent(String newName, String oldName)
     {
-        town = deletedTown;
+        this.newName = newName;
+        this.oldName = oldName;
     }
 
-    public Town getDeletedTown()
-    {
-        return town;
+    public String getNewName() {
+        return newName;
     }
+
+    public String getOldName() {
+        return oldName;
+    }
+
+
 
     private static final HandlerList HANDLERS = new HandlerList();
     @Override
@@ -28,3 +34,4 @@ public class TownDeleteEvent extends Event {
         return HANDLERS;
     }
 }
+

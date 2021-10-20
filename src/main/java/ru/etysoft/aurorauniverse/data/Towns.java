@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.events.NewTownEvent;
+import ru.etysoft.aurorauniverse.events.PlayerEnterTownEvent;
 import ru.etysoft.aurorauniverse.events.PreTownCreateEvent;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
@@ -83,11 +84,14 @@ public class Towns {
 
             Resident resident = Residents.getResident(player);
             if (resident != null) {
+                PlayerEnterTownEvent playerEnterTownEvent = new PlayerEnterTownEvent(rg.getTown(), resident);
                 if (resident.isLastWild()) {
+                    Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
                     resident.setLastwild(false);
                     resident.setLastTown(rg.getTown().getName());
                     Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
                 } else if (!rg.getTown().getName().equals(resident.getLastTown())) {
+                    Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
                     resident.setLastTown(rg.getTown().getName());
                     Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
                 }
@@ -107,19 +111,14 @@ public class Towns {
         }
     }
 
-    public static boolean isNameValid(String name)
-    {
-        if(name.length() < 3)
-        {
+    public static boolean isNameValid(String name) {
+        if (name.length() < 3) {
             return false;
         }
         int maxLength = AuroraUniverse.getInstance().getConfig().getInt("max-town-name");
-        if(name.length() > maxLength)
-        {
-            return  false;
-        }
-        else
-        {
+        if (name.length() > maxLength) {
+            return false;
+        } else {
             return true;
         }
     }

@@ -25,8 +25,9 @@ public class PreTownCreateEvent extends Event implements Cancellable {
    }
 
 
-
-
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
    public boolean isCancelled()
    {
        return cancelled;

@@ -1,37 +1,32 @@
 package ru.etysoft.aurorauniverse.events;
 
-import org.bukkit.Location;
-import org.bukkit.event.Cancellable;
-
-
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import ru.etysoft.aurorauniverse.world.Region;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
+public class PlayerEnterTownEvent extends Event {
 
-public class NewTownEvent extends Event {
-
-    private String townname;
     private Town town;
+    private Resident resident;
 
-    public NewTownEvent(Town town)
+    public PlayerEnterTownEvent (Town enteredTown, Resident resident)
     {
-        this.town = town;
+        town = enteredTown;
+        this.resident = resident;
     }
 
+    public Resident getResident() {
+        return resident;
+    }
 
-
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
 
     public Town getTown()
     {
         return town;
-    }
-
-
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
     }
 
     private static final HandlerList HANDLERS = new HandlerList();
@@ -40,3 +35,4 @@ public class NewTownEvent extends Event {
         return HANDLERS;
     }
 }
+

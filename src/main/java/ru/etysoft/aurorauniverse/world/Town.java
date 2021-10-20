@@ -17,8 +17,10 @@ import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.Bank;
+import ru.etysoft.aurorauniverse.events.NewTownEvent;
 import ru.etysoft.aurorauniverse.events.PreTownDeleteEvent;
 import ru.etysoft.aurorauniverse.events.TownDeleteEvent;
+import ru.etysoft.aurorauniverse.events.TownRenameEvent;
 import ru.etysoft.aurorauniverse.exceptions.RegionException;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
@@ -324,6 +326,8 @@ public class Town {
     public boolean isPvp() {
         return pvp;
     }
+
+
 
     public boolean isFire() {
         return fire;
@@ -877,6 +881,8 @@ public class Town {
 
     public void rename(String newName)
     {
+        TownRenameEvent townRenameEvent = new TownRenameEvent(newName, name);
+        Bukkit.getPluginManager().callEvent(townRenameEvent);
         AuroraUniverse.getTownList().remove(name);
         AuroraUniverse.getTownList().put(newName, this);
         name = newName;
