@@ -10,6 +10,7 @@ import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class WorldTimer {
                 @Override
                 public void run() {
                     Logger.debug("WorldTimer check...");
+
+                    StalinNPC.updateTarget();
 
 
 

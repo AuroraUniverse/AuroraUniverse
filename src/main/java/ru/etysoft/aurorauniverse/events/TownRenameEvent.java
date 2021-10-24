@@ -8,8 +8,7 @@ public class TownRenameEvent extends Event {
 
     private String newName, oldName;
 
-    public TownRenameEvent(String newName, String oldName)
-    {
+    public TownRenameEvent(String newName, String oldName) {
         this.newName = newName;
         this.oldName = oldName;
     }
@@ -23,8 +22,8 @@ public class TownRenameEvent extends Event {
     }
 
 
-
     private static final HandlerList HANDLERS = new HandlerList();
+
     @Override
     public HandlerList getHandlers() {
         return HANDLERS;

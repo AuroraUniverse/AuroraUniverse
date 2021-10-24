@@ -43,6 +43,7 @@ public class Town {
     public float bank;
     public boolean pvp = false;
     private boolean mobs = false;
+    private boolean forcePvp = false;
 
     private boolean fire = false;
     private double resTax = 0;
@@ -52,6 +53,7 @@ public class Town {
     private Chunk mainChunk = null;
     private Bank townBank;
     private String nationName;
+    private String id;
     private ArrayList<Resident> invitedResidents = new ArrayList<>();
 
     // Permission type -> list of groups with permission
@@ -79,6 +81,7 @@ public class Town {
 
         public static final String SPAWN_X = "SPAWN_X";
         public static final String SPAWN_Y = "SPAWN_Y";
+        public static final String ID = "ID";
         public static final String SPAWN_YAW = "SPAWN_YAW";
         public static final String SPAWN_PITCH = "SPAWN_PITCH";
         public static final String SPAWN_Z = "SPAWN_Z";
@@ -125,6 +128,14 @@ public class Town {
         return finalPrice;
     }
 
+    public void setForcePvp(boolean forcePvp) {
+        this.forcePvp = forcePvp;
+    }
+
+    public boolean isForcePvp() {
+        return forcePvp;
+    }
+
     public void setMobs(boolean mobs) {
         this.mobs = mobs;
     }
@@ -145,6 +156,10 @@ public class Town {
         this.mayor = mayor;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setNationName(String nationName) {
         this.nationName = nationName;
     }
@@ -159,12 +174,13 @@ public class Town {
         String townName = (String) jsonObject.get(JsonKeys.NAME);
         double resTax = (double) jsonObject.get(JsonKeys.RESIDENT_TAX);
         String nation = (String) jsonObject.get(JsonKeys.NATION_NAME);
+
         Resident mayorResident = Resident.fromJSON((JSONObject) jsonObject.get(JsonKeys.MAYOR));
         Chunk mainChunk = getChunkFromInfo((JSONObject) jsonObject.get(JsonKeys.MAIN_CHUNK));
 
         Town town = Towns.loadTown(townName, mayorResident, mainChunk);
         Logger.debug("Loaded town " + townName);
-
+        town.setId ((String) jsonObject.get(JsonKeys.ID));
         town.setResTax(resTax);
         town.setNationName(nation);
 
@@ -324,6 +340,7 @@ public class Town {
     }
 
     public boolean isPvp() {
+        if(forcePvp) return true;
         return pvp;
     }
 
@@ -331,6 +348,10 @@ public class Town {
 
     public boolean isFire() {
         return fire;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public JSONObject toJSON() {
@@ -354,6 +375,7 @@ public class Town {
         townJsonObject.put(JsonKeys.SPAWN_WORLD, townSpawnPoint.getWorld().getName());
         townJsonObject.put(JsonKeys.RESIDENT_TAX, getResTax());
         townJsonObject.put(JsonKeys.NATION_NAME, nationName);
+        townJsonObject.put(JsonKeys.ID, id);
 
         townJsonObject.put(JsonKeys.BANK, townBank.getBalance());
 
@@ -488,6 +510,7 @@ public class Town {
                     if (!Towns.hasTown(homeblock)) {
                         name = name2;
 
+                        id = System.currentTimeMillis() + homeblock.toString() + name;
                         this.mayor = mayor;
                         addResident(this.mayor);
                         this.mayor.setTown(name);

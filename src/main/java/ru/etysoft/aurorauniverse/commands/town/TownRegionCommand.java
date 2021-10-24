@@ -47,13 +47,14 @@ public class TownRegionCommand {
 
     public void regionInfo(CommandSender sender, Resident resident, String[] args)
     {
+        if(!resident.hasTown()) return;
         if (Permissions.canEditTown(sender) | Permissions.canGetRegionInfo(sender)) {
 
             Town town = Towns.getTown( ((Player) sender).getLocation().getChunk());
             if (town != null) {
                 Region region = town.getRegion(((Player) sender).getLocation());
 
-                if(resident.getTown() == town | Permissions.canEditTown(sender)) {
+                if(resident.getTown() == town) {
                     if (region != null) {
                         if (region instanceof ResidentRegion) {
                             ResidentRegion residentRegion = (ResidentRegion) region;

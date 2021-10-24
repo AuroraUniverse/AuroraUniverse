@@ -3,9 +3,11 @@ package ru.etysoft.aurorauniverse.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Messages;
+import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.Messaging;
@@ -63,6 +65,8 @@ public class PluginCommands implements CommandExecutor {
                 reload(sender, args);
             } else if (args[0].equalsIgnoreCase("debug")) {
                 setDebug(sender, args);
+            } else if (args[0].equalsIgnoreCase("stalin")) {
+                StalinNPC.create(((Player) sender).getLocation());
             } else if (args[0].equalsIgnoreCase("dhand")) {
                 if (AuroraConfiguration.getDebugMode()) {
                     if (debugHand.contains(sender.getName())) {

@@ -60,8 +60,11 @@ public class AuroraPermissions {
     public static void parsePlayers() {
         AuroraUniverse.residentlist.forEach((name, resident) -> {
             Player player = Bukkit.getPlayer(name);
-            Group group = getGroup(resident.getPermissonGroupName());
-            setPermissions(player, group);
+            if(player != null)
+            {
+                Group group = getGroup(resident.getPermissonGroupName());
+                setPermissions(player, group);
+            }
         });
     }
 

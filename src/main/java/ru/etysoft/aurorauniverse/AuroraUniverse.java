@@ -17,6 +17,7 @@ import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.commands.*;
 import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
+import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.listeners.PluginListener;
 import ru.etysoft.aurorauniverse.listeners.ProtectionListener;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
@@ -305,6 +306,14 @@ public final class AuroraUniverse extends JavaPlugin {
     public void onDisable() {
         Logger.info("Disabling AuroraUniverse...");
         DataManager.saveData();
+        try
+        {
+            StalinNPC.remove();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         Logger.info("AuroraUniverse successfully disabled!");
     }
 }

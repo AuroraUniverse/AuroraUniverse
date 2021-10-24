@@ -41,7 +41,7 @@ public class ProtectionListener implements Listener {
                 if (!Towns.getTown(p.getLocation().getChunk()).getPvP(resident, p.getLocation().getChunk())) {
 
                     event.setCancelled(true);
-                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-pvp"), p);
+                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-pvp"), (Player) event.getDamager());
                 }
             }
             catch (Exception e){

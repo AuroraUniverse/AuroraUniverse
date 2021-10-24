@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.world;
 
+import org.bukkit.Chunk;
 import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.data.Towns;
 
@@ -31,9 +32,35 @@ public class Region {
         return jsonObject;
     }
 
+    public void setTown(Town town) {
+        this.town = town;
+    }
+
     public static Region fromJSON(JSONObject jsonObject)
     {
         return new Region(Towns.getTown((String) jsonObject.get(JsonKeys.TOWN_NAME)));
+    }
+
+    public static void transfer(Region region, Town toTown)
+    {
+        String fromTownName = region.getTown().getName();
+        Town fromTown = Towns.getTown(fromTownName);
+
+        region.setTown(toTown);
+        Chunk keyChunk = null;
+        for(Chunk chunk : fromTown.getTownChunks().keySet())
+        {
+           Region regionToCompare = fromTown.getTownChunks().get(chunk);
+           if(region == regionToCompare)
+           {
+               keyChunk = chunk;
+           }
+        }
+
+        fromTown.getTownChunks().remove(keyChunk);
+
+        toTown.getTownChunks().put(keyChunk, region);
+
     }
 
     public void setRegionName(String regionName) {

@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
+import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.events.NewTownEvent;
 import ru.etysoft.aurorauniverse.events.PlayerEnterTownEvent;
 import ru.etysoft.aurorauniverse.events.PreTownCreateEvent;
@@ -15,6 +16,9 @@ import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.world.Region;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
+
+import java.util.Collection;
+import java.util.List;
 
 public class Towns {
 
@@ -75,6 +79,11 @@ public class Towns {
         } else {
             return false;
         }
+    }
+
+    public static Collection<Town> getTowns()
+    {
+        return AuroraUniverse.townList.values();
     }
 
 
