@@ -33,6 +33,9 @@ public class TownToggleCommand {
 
                 } else if (args[1].equalsIgnoreCase("mobs")) {
                     toggleMobs();
+
+                } else if (args[1].equalsIgnoreCase("explosions")) {
+                    toggleExplosions();
                 }
             }
         } else {
@@ -50,6 +53,25 @@ public class TownToggleCommand {
                 } else if (args[2].equals("off")) {
                     t.isFireAllowed(false);
                     Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-fireoff"), player);
+                }
+            } else {
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+            }
+        } else {
+            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+        }
+    }
+
+    private void toggleExplosions() {
+        if (resident.hasTown()) {
+            Town t = resident.getTown();
+            if (Permissions.canToggleExplosions(player)) {
+                if (args[2].equals("on")) {
+                    t.setExplosionEnabled(true);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-expon"), player);
+                } else if (args[2].equals("off")) {
+                    t.setExplosionEnabled(false);
+                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-expoff"), player);
                 }
             } else {
                 Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);

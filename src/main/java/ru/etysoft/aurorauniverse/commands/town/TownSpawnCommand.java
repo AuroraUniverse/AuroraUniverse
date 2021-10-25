@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.commands.town;
 
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.data.Messages;
@@ -19,6 +20,7 @@ public class TownSpawnCommand {
                     Town t = resident.getTown();
                     t.teleportToTownSpawn(pl);
                     Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-teleported-to-spawn"), sender);
+                    pl.playSound(pl.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 100.0f, 1.0f);
                 } else {
                     Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
                 }

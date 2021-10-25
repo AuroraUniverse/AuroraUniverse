@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.commands.town;
 
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -48,7 +49,7 @@ public class NewTownCommand {
                                 Resident resident = Residents.getResident(pl);
                                 resident.setBalance(resident.getBalance() - newTownPrice);
                                 Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-created-message").replace("%s", name), sender);
-
+                                pl.playSound(pl.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 100.0f, 1.0f);
                                 Residents.getResident(pl).setLastwild(false);
                             }
                         } else {

@@ -59,16 +59,12 @@ public class AuroraEconomy implements Economy {
 
     public void deleteBank(Bank bank)
     {
-        if(!banklist.containsKey(bank.getName())) {
-            banklist.remove(bank.getName());
-        }
+        banklist.remove(bank.getName());
 
     }
     public void deleteBankByName(String name)
     {
-        if(!banklist.containsKey(name)) {
-            banklist.remove(name);
-        }
+        banklist.remove(name);
 
     }
 

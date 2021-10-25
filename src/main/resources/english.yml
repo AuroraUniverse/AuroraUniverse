@@ -77,6 +77,8 @@ town-mobsoff: "Now town has &fmonsters &adisabled"
 town-pvpoff: "Now town has &fPvP &adisabled"
 town-pvp: "&cYou can't PvP here!"
 town-fireon: "Now fire is &aenabled"
+town-expon: "Now explosions is &aenabled"
+town-expoff: "Now explosions is &adisabled"
 town-fireoff: "Now fire is &adisabled"
 
 town-block-place: "&cYou can't place blocks here!"
@@ -104,7 +106,7 @@ town-cantdeposit: "&cCan't deposit &f%s &cto the town bank"
 gui:
   bank: "&7Bank: &b%s"
   mayor: "&7Mayor: &b%s"
-  chunks: "&7Chunks: &b%s"
+  chunks: "&7Chunks: &b%s/%m (%b bonus)"
   standing: "&3You currently standing on"
   standing-town: "&bSimple townblock"
   standing-main-chunk: "&bMain townchunk"
@@ -114,6 +116,7 @@ gui:
   toggle-fire: "&fFire (%s)"
   toggle-mobs: "&fMobs (%s)"
   toggle-pvp: "&fPvP (%s)"
+  toggle-exp: "&fExplotions (%s)"
   state-on: "&aON&f"
   state-off: "&cOFF&f"
 
@@ -143,8 +146,10 @@ too-close: "&cThis chunk is too close to another town!"
 too-far: "&cThis chunk is too far from your town!"
 
 # [Chunk notifications]
-town-welcome: "&fWelcome to the town &b%s"
+town-welcome: "&fWelcome to the town &b%s &7(%p)"
 world: "&eYou have entered the world! &2Be careful!"
+pvp: "&cPvP"
+no-pvp: "&aNo-PvP"
 
 region-info:
   title: "&bo0o_[&fRegion info&b]_o0o"

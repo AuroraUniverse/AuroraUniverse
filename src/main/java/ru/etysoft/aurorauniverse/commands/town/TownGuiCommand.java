@@ -45,12 +45,9 @@ public class TownGuiCommand {
             }, Items.createNamedItem(new ItemStack(Material.COBBLESTONE_WALL, 1), resident.getTown().getName(),
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.mayor").replace("%s", town.getMayor().getName())),
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.bank").replace("%s", String.valueOf(town.getBank().getBalance()))),
-                    ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.chunks").replace("%s", String.valueOf(town.getChunksCount())))
+                    ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.chunks").replace("%s", String.valueOf(town.getChunksCount()))
+                    .replace("%m", String.valueOf(town.getMaxChunks())).replace("%b", String.valueOf(town.getBonusChunks())))
             ));
-
-
-
-
 
 
 
@@ -232,5 +229,28 @@ public class TownGuiCommand {
         ));
 
         matrix.put(33, pvpToggleSlot);
+
+        String expToggle = AuroraConfiguration.getColorString("gui.state-off");
+
+        if(town.isExplosionEnabled())
+        {
+            expToggle = AuroraConfiguration.getColorString("gui.state-on");
+        }
+
+        Slot expToggleSlot = new Slot(new SlotRunnable() {
+            @Override
+            public void run() {
+                String suffix = "on";
+                if(town.isExplosionEnabled())
+                {
+                    suffix = "off";
+                }
+                player.performCommand("auntown toggle explosions " + suffix);
+                player.closeInventory();
+            }
+        }, Items.createNamedItem(new ItemStack(Material.TNT, 1),  AuroraConfiguration.getColorString("gui.toggle-exp").replace("%s", expToggle)
+        ));
+
+        matrix.put(41, expToggleSlot);
     }
 }

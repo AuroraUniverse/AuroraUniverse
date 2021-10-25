@@ -7,11 +7,13 @@ import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Messages;
+import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
+import ru.etysoft.aurorauniverse.world.Town;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class PluginCommands implements CommandExecutor {
                 } else if (args[1].equalsIgnoreCase("off")) {
                     AuroraConfiguration.setDebugMode(false);
                     Messaging.sendPrefixedMessage("Now debug mode is &cdisabled", sender);
-                } else {
+                }  else {
                     sender.sendMessage(Messages.wrongArgs());
                 }
             }
@@ -66,7 +68,9 @@ public class PluginCommands implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("debug")) {
                 setDebug(sender, args);
             } else if (args[0].equalsIgnoreCase("stalin")) {
-                StalinNPC.create(((Player) sender).getLocation());
+                if (Permissions.isAdmin(sender, true)) {
+                    StalinNPC.create(((Player) sender).getLocation());
+                }
             } else if (args[0].equalsIgnoreCase("dhand")) {
                 if (AuroraConfiguration.getDebugMode()) {
                     if (debugHand.contains(sender.getName())) {
@@ -76,6 +80,17 @@ public class PluginCommands implements CommandExecutor {
                     }
 
                 }
+            }
+            else if (args[0].equalsIgnoreCase("givebonus")) {
+                if(args.length > 2)
+                {
+                    if (Permissions.isAdmin(sender, true)) {
+                        Town town = Towns.getTown(args[1]);
+                        town.setBonusChunks(town.getBonusChunks() + Integer.parseInt(args[2]));
+                        Messaging.sendPrefixedMessage("Successfully gave " + args[1] + " " + args[2] + " bonus chunks", sender);
+                    }
+                }
+
             }
         } else {
             //No arguments message

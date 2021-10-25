@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
@@ -30,8 +31,7 @@ import java.util.List;
 public class ProtectionListener implements Listener {
 
     @EventHandler
-    public void PvP(EntityDamageByEntityEvent event)
-    {
+    public void PvP(EntityDamageByEntityEvent event) {
 
 
         if (event.getEntity() instanceof Player) {
@@ -43,13 +43,33 @@ public class ProtectionListener implements Listener {
                     event.setCancelled(true);
                     Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-pvp"), (Player) event.getDamager());
                 }
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 //can't pass event because null
             }
         }
     }
 
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent event) {
+
+        List<Block> finalBlockList = new ArrayList<>();
+
+        for (Block block : event.blockList().toArray(new Block[event.blockList().size()])) {
+            if (Towns.getTown(block.getChunk()) == null) {
+                finalBlockList.add(block);
+            }
+            else
+            {
+                if(Towns.getTown(block.getChunk()).isExplosionEnabled())
+                {
+                    finalBlockList.add(block);
+                }
+            }
+        }
+        event.blockList().clear();
+        event.blockList().addAll(finalBlockList);
+
+    }
 
     @EventHandler
     public void UseEvent(PlayerInteractEvent event) {
@@ -174,34 +194,27 @@ public class ProtectionListener implements Listener {
     }
 
 
-
     @EventHandler
-    public void BreakBlock(BlockBreakEvent event)
-    {
-        if(PluginCommands.debugHand.contains(event.getPlayer().getName()))
-        {
+    public void BreakBlock(BlockBreakEvent event) {
+        if (PluginCommands.debugHand.contains(event.getPlayer().getName())) {
             String infoMessage = "";
             Town town = Towns.getTown(event.getBlock().getChunk());
-            if(town != null)
-            {
+            if (town != null) {
                 Region region = town.getTownChunks().get(event.getBlock().getChunk());
                 infoMessage += "Name: " + region.getRegionName() + "\n" +
                         "TownName: " + region.getTown().getName() + " (" + region.getTown().getChunksCount() + ")";
 
-                if(region instanceof ResidentRegion)
-                {
+                if (region instanceof ResidentRegion) {
                     infoMessage = "[!] RESIDENT REGION \nName: " + region.getRegionName() + "\n" +
-                            "TownName: " + region.getTown().getName() + " (" + region.getTown().getChunksCount() + ") + \n" + ((ResidentRegion) region).getOwner().getName() ;
+                            "TownName: " + region.getTown().getName() + " (" + region.getTown().getChunksCount() + ") + \n" + ((ResidentRegion) region).getOwner().getName();
                 }
-            }
-            else
-            {
+            } else {
                 infoMessage = "Unowned";
             }
             event.getPlayer().sendMessage(infoMessage);
             event.setCancelled(true);
         }
-        if(!event.getPlayer().hasPermission("aun.edittowns")) {
+        if (!event.getPlayer().hasPermission("aun.edittowns")) {
             if (Residents.getResident(event.getPlayer()).hasTown()) {
                 if (Towns.hasMyTown(event.getBlock().getChunk(), Residents.getResident(event.getPlayer()).getTown())) {
                     Town town = Towns.getTown(event.getBlock().getChunk());
@@ -255,17 +268,16 @@ public class ProtectionListener implements Listener {
         Town toTown = Towns.getTown(event.getToBlock().getChunk());
         if (town == null | toTown != town) {
 
-        if((id == Material.LAVA | id == Material.WATER) &&  (toTown != null)) {
-            event.setCancelled(true);
-        }
+            if ((id == Material.LAVA | id == Material.WATER) && (toTown != null)) {
+                event.setCancelled(true);
+            }
 
         }
     }
 
     @EventHandler
-    public void PlaceBlock(BlockPlaceEvent event)
-    {
-        if(!event.getPlayer().hasPermission("aun.edittowns")) {
+    public void PlaceBlock(BlockPlaceEvent event) {
+        if (!event.getPlayer().hasPermission("aun.edittowns")) {
             if (Residents.getResident(event.getPlayer()).hasTown()) {
                 if (Towns.hasMyTown(event.getBlock().getChunk(), Residents.getResident(event.getPlayer()).getTown())) {
                     Town town = Towns.getTown(event.getBlock().getChunk());

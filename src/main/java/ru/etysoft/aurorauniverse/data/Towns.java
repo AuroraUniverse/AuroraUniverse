@@ -1,5 +1,7 @@
 package ru.etysoft.aurorauniverse.data;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -12,6 +14,7 @@ import ru.etysoft.aurorauniverse.events.PlayerEnterTownEvent;
 import ru.etysoft.aurorauniverse.events.PreTownCreateEvent;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
+import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.world.Region;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -94,15 +97,27 @@ public class Towns {
             Resident resident = Residents.getResident(player);
             if (resident != null) {
                 PlayerEnterTownEvent playerEnterTownEvent = new PlayerEnterTownEvent(rg.getTown(), resident);
+                Town town = rg.getTown();
+                String pvp = "";
+                if(town.isPvp())
+                {
+                    pvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("pvp"));
+                }
+                else
+                {
+                    pvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("no-pvp"));
+                }
                 if (resident.isLastWild()) {
                     Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
                     resident.setLastwild(false);
                     resident.setLastTown(rg.getTown().getName());
-                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()))
+                    .replace("%p", pvp)));
                 } else if (!rg.getTown().getName().equals(resident.getLastTown())) {
                     Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
                     resident.setLastTown(rg.getTown().getName());
-                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()), player);
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()))
+                    .replace("%p", pvp)));
                 }
             } else {
                 Logger.warning("Can't find Resident with nickname " + player.getName());
@@ -112,7 +127,7 @@ public class Towns {
             if (resident != null) {
                 if (!resident.isLastWild()) {
                     resident.setLastwild(true);
-                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("world"), player);
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("world"))));
                 }
             } else {
                 Logger.warning("Can't find Resident with nickname " + player.getName());

@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.1.1.1
+version: 0.1.1.2
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
 api-version: 1.13
@@ -229,6 +229,7 @@ permissions:
       town.toggle.pvp: true
       town.toggle.fire: true
       town.toggle.mobs: true
+      town.toggle.explosions: true
 
   town.toggle.pvp:
     default: op
@@ -241,6 +242,10 @@ permissions:
   town.toggle.fire:
     default: op
     description: Toggle fire in town
+
+  town.toggle.explosions:
+    default: op
+    description: Toggle explotions in town
 
   ########################################
   #                                      #

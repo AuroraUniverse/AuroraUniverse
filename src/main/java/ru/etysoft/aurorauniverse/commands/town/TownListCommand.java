@@ -3,9 +3,11 @@ package ru.etysoft.aurorauniverse.commands.town;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.utils.Messaging;
+import ru.etysoft.aurorauniverse.world.Town;
 
 public class TownListCommand {
 
@@ -19,29 +21,28 @@ public class TownListCommand {
                 Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
             }
         }
-        final int[] i = {1};
+        int townOnPage = 4;
+        int index = 0;
         int finalPage = page;
         double d = Double.parseDouble("" + AuroraUniverse.getTownList().size());
-        double maxPage = Math.ceil((double) d / 10f);
+        double maxPage = Math.ceil((double) d / townOnPage);
+        int fromIndex = (page - 1) * townOnPage;
+        int toIndex = fromIndex + townOnPage;
 
-        AuroraUniverse.getTownList().forEach((name, town) -> {
-
-            if (i[0] != (10 * finalPage) + 1) {
-                if (i[0] > maxPage - 1) {
-                    try {
-                        sender.sendMessage(ChatColor.AQUA + name + ChatColor.GOLD + "(" + town.getMembersCount() + ", " + town.getMayor().getName() + ")");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        sender.sendMessage(name);
-                    }
-
-
+        for (Town town : Towns.getTowns()) {
+            if (index >= fromIndex && index <= toIndex) {
+                try {
+                    sender.sendMessage(ChatColor.AQUA + town.getName() + ChatColor.GOLD + "(" + town.getMembersCount() + ", " + town.getMayor().getName() + ")");
+                }
+                catch (Exception e)
+                {
+                    sender.sendMessage(town.getName() + " (bad town)");
                 }
             }
-            i[0]++;
-        });
+            index++;
+        }
 
-        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-pages").replace("%s", String.valueOf(page)).replace("%y", AuroraUniverse.getTownList().size() + ""), sender);
+        sender.sendMessage(AuroraConfiguration.getColorString("town-pages").replace("%s", String.valueOf(page)).replace("%y", ((int)maxPage) + ""));
 
     }
 

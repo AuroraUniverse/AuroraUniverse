@@ -5,15 +5,12 @@ import ru.etysoft.aurorauniverse.data.Messages;
 
 public class Permissions {
 
-    public static boolean isAdmin(CommandSender sender, boolean sendMessage)
-    {
-        if(!sender.hasPermission("aun.admin"))
-        {
-            if(sendMessage)
-            {
+    public static boolean isAdmin(CommandSender sender, boolean sendMessage) {
+        if (!sender.hasPermission("aun.admin")) {
+            if (sendMessage) {
                 sender.sendMessage(Messages.noPermission());
             }
-           return false;
+            return false;
         }
         return true;
     }
@@ -54,6 +51,7 @@ public class Permissions {
     public static boolean canRenameTown(CommandSender p) {
         return p.hasPermission("town.rename");
     }
+
     public static boolean canSetTax(CommandSender p) {
         return p.hasPermission("town.set.tax");
     }
@@ -89,18 +87,25 @@ public class Permissions {
     public static boolean canSetPermissions(CommandSender p) {
         return p.hasPermission("town.set.perms");
     }
+
     public static boolean canSetGroup(CommandSender p) {
         return p.hasPermission("town.set.group");
     }
 
     public static boolean canTogglePvP(CommandSender p) {
         return p.hasPermission("town.toggle.pvp");
-    }public static boolean canToggleMobs(CommandSender p) {
+    }
+
+    public static boolean canToggleMobs(CommandSender p) {
         return p.hasPermission("town.toggle.mobs");
     }
 
     public static boolean canToggleFire(CommandSender p) {
         return p.hasPermission("town.toggle.fire");
+    }
+
+    public static boolean canToggleExplosions(CommandSender p) {
+        return p.hasPermission("town.toggle.explosions");
     }
 
     public static boolean canKickResident(CommandSender p) {
@@ -138,6 +143,7 @@ public class Permissions {
     public static boolean canAddMemberRegion(CommandSender p) {
         return p.hasPermission("town.region.addmember");
     }
+
     public static boolean canGetRegionInfo(CommandSender p) {
         return p.hasPermission("town.region.info");
     }
@@ -145,6 +151,7 @@ public class Permissions {
     public static boolean canKickMemberRegion(CommandSender p) {
         return p.hasPermission("town.region.kick");
     }
+
     public static boolean canBypassRegion(CommandSender p) {
         return p.hasPermission("town.region.bypass");
     }

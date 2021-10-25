@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.data.Residents;
+import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
@@ -62,6 +63,7 @@ public class TownTabCompleter implements TabCompleter {
                   possibleArgs.add("pvp");
                   possibleArgs.add("fire");
                   possibleArgs.add("mobs");
+                  possibleArgs.add("explosions");
               }
               else if(args[0].equals("region"))
               {
@@ -69,6 +71,13 @@ public class TownTabCompleter implements TabCompleter {
                   possibleArgs.add("kick");
                   possibleArgs.add("give");
                   possibleArgs.add("reset");
+              }
+              else if(args[0].equals("accept"))
+              {
+                  for(Town r : Towns.getTowns())
+                  {
+                      possibleArgs.add(r.getName());
+                  }
               }
 
           }

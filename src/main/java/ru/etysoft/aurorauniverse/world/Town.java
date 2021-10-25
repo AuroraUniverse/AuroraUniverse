@@ -43,10 +43,12 @@ public class Town {
     public float bank;
     public boolean pvp = false;
     private boolean mobs = false;
+    private boolean explosion = false;
     private boolean forcePvp = false;
 
     private boolean fire = false;
     private double resTax = 0;
+    private int bonusChunks = 0;
     private Resident mayor;
     private Map<Chunk, Region> townChunks = new ConcurrentHashMap<>();
     private ArrayList<Resident> residents = new ArrayList<>();
@@ -68,7 +70,9 @@ public class Town {
         public static final String PVP = "PVP";
         public static final String FIRE = "FIRE";
         public static final String MOBS = "MOBS";
+        public static final String EXPLOSION = "EXPLOSION";
         public static final String BANK = "BANK";
+        public static final String BONUS_CHUNKS = "BONUS_CHUNKS";
         public static final String RESIDENTS = "RESIDENTS";
         public static final String RESIDENT_TAX = "RES_TAX";
         public static final String NATION_NAME = "NATION_NAME";
@@ -102,6 +106,26 @@ public class Town {
 
     @Warning
     public Town() {
+    }
+
+    public int getMaxChunks() {
+        return bonusChunks + ((AuroraUniverse.getInstance().getConfig().getInt("chunk-per-resident")) * residents.size());
+    }
+
+    public void setBonusChunks(int bonusChunks) {
+        this.bonusChunks = bonusChunks;
+    }
+
+    public int getBonusChunks() {
+        return bonusChunks;
+    }
+
+    public boolean isExplosionEnabled() {
+        return explosion;
+    }
+
+    public void setExplosionEnabled(boolean explosion) {
+        this.explosion = explosion;
     }
 
     public ArrayList<Resident> getInvitedResidents() {
@@ -246,6 +270,8 @@ public class Town {
             town.setFire((boolean) jsonObject.get(JsonKeys.FIRE));
             town.setPvP((boolean) jsonObject.get(JsonKeys.PVP));
             town.setMobs((boolean) jsonObject.get(JsonKeys.MOBS));
+            town.setBonusChunks((int) ((long) jsonObject.get(JsonKeys.BONUS_CHUNKS)));
+            town.setExplosionEnabled((boolean) jsonObject.get(JsonKeys.EXPLOSION));
 
 
 
@@ -362,6 +388,7 @@ public class Town {
         townJsonObject.put(JsonKeys.PVP, pvp);
         townJsonObject.put(JsonKeys.FIRE, fire);
         townJsonObject.put(JsonKeys.MOBS, mobs);
+        townJsonObject.put(JsonKeys.EXPLOSION, explosion);
 
         townJsonObject.put(JsonKeys.SPAWN_X, townSpawnPoint.getX());
         townJsonObject.put(JsonKeys.SPAWN_Y, townSpawnPoint.getY());
@@ -376,6 +403,7 @@ public class Town {
         townJsonObject.put(JsonKeys.RESIDENT_TAX, getResTax());
         townJsonObject.put(JsonKeys.NATION_NAME, nationName);
         townJsonObject.put(JsonKeys.ID, id);
+        townJsonObject.put(JsonKeys.BONUS_CHUNKS, bonusChunks);
 
         townJsonObject.put(JsonKeys.BANK, townBank.getBalance());
 
@@ -774,74 +802,77 @@ public class Town {
         AtomicBoolean claimed = new AtomicBoolean(false);
         AtomicBoolean success = new AtomicBoolean(false);
         AtomicBoolean far = new AtomicBoolean(false);
-        AuroraUniverse.alltownblocks.forEach((chunk1, region) -> {
-            int m = AuroraUniverse.minTownBlockDistance;
-            if (!hasChunk(chunk)) // есть ли чанк, который мы хотим заприватить в городе
-            {
-                //такого чанка нет
+        if(townChunks.size() < getMaxChunks()) {
+            AuroraUniverse.alltownblocks.forEach((chunk1, region) -> {
+                int m = AuroraUniverse.minTownBlockDistance;
+                if (!hasChunk(chunk)) // есть ли чанк, который мы хотим заприватить в городе
+                {
+                    //такого чанка нет
 
 
-                //другой чанк города лежит не более чем в 1 блоке рядом
-                for (int x = -1; x < 2; x++) {
-                    for (int z = -1; z < 2; z++) {
-                        if (chunk1.getX() + x == chunk.getX() && chunk1.getZ() + z == chunk.getZ()) {
-                            if (region.getTown().getName().equals(name)) //если это наш чанк(приват рядом со своим городом
-                            {
-                                //Проверяем есть ли диагональ
-                                if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() + m) //++
+                    //другой чанк города лежит не более чем в 1 блоке рядом
+                    for (int x = -1; x < 2; x++) {
+                        for (int z = -1; z < 2; z++) {
+                            if (chunk1.getX() + x == chunk.getX() && chunk1.getZ() + z == chunk.getZ()) {
+                                if (region.getTown().getName().equals(name)) //если это наш чанк(приват рядом со своим городом
                                 {
+                                    //Проверяем есть ли диагональ
+                                    if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() + m) //++
+                                    {
 
-                                    //Diagonal
-                                } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() + m) // -+
-                                {
+                                        //Diagonal
+                                    } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() + m) // -+
+                                    {
 
-                                    //Diagonal
-                                } else if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() - m) //+-
-                                {
+                                        //Diagonal
+                                    } else if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() - m) //+-
+                                    {
 
-                                    //Diagonal
-                                } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() - m) //--
-                                {
+                                        //Diagonal
+                                    } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() - m) //--
+                                    {
 
-                                    //Diagonal
-                                } else {
-                                    if (!hasChunk(chunk)) {
-                                        success.set(true);
-
+                                        //Diagonal
                                     } else {
+                                        if (!hasChunk(chunk)) {
+                                            success.set(true);
 
+                                        } else {
+
+                                        }
                                     }
+
+
+                                } else {
+
+                                    claimed.set(true);
+                                    // TODO: too close to another town
                                 }
-
-
                             } else {
-
-                                claimed.set(true);
-                                // TODO: too close to another town
+                                if (!region.getTown().getName().equals(name)) {
+                                    // far.set(true);
+                                }
+                                // TODO: too far from town
                             }
-                        } else {
-                            if (!region.getTown().getName().equals(name)) {
-                                // far.set(true);
-                            }
-                            // TODO: too far from town
                         }
                     }
                 }
+
+
+                // chunk 2 is either adjacent to or has the same coordinates as chunk1
+
+
+            });
+            if (success.get() && !claimed.get() && !far.get()) {
+                townChunks.put(chunk, new Region(this));
+                Logger.info("Claimed chunk: " + chunk + " for town " + name);
+                AuroraUniverse.alltownblocks.put(chunk, new Region(this));
+            } else {
+                success.set(false);
             }
-
-
-            // chunk 2 is either adjacent to or has the same coordinates as chunk1
-
-
-        });
-        if (success.get() && !claimed.get() && !far.get()) {
-            townChunks.put(chunk, new Region(this));
-            Logger.info("Claimed chunk: " + chunk + " for town " + name);
-            AuroraUniverse.alltownblocks.put(chunk, new Region(this));
-        } else {
-            success.set(false);
+            return success.get();
         }
-        return success.get();
+        return false;
     }
 
     public boolean unclaimChunk(Chunk chunk) {

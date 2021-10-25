@@ -16,6 +16,8 @@ price-new-nation: 20.0
 max-town-name: 10
 max-nation-name: 10
 
+chunk-per-resident: 10
+
 # TAXES
 
 town-chunk-tax: 15.0
