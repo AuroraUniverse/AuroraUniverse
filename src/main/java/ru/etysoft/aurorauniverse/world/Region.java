@@ -2,6 +2,7 @@ package ru.etysoft.aurorauniverse.world;
 
 import org.bukkit.Chunk;
 import org.json.simple.JSONObject;
+import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Towns;
 
 import java.io.Serializable;
@@ -53,6 +54,7 @@ public class Region {
            Region regionToCompare = fromTown.getTownChunks().get(chunk);
            if(region == regionToCompare)
            {
+               Logger.debug("Transferred " + chunk);
                keyChunk = chunk;
            }
         }

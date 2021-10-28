@@ -27,6 +27,7 @@ import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.permissions.Group;
 import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
 import ru.etysoft.aurorauniverse.utils.Messaging;
+import ru.etysoft.aurorauniverse.utils.Numbers;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,7 +42,7 @@ public class Town {
     public Chunk homeblock;
     public Location townSpawnPoint;
     public float bank;
-    public boolean pvp = false;
+    private boolean pvp = false;
     private boolean mobs = false;
     private boolean explosion = false;
     private boolean forcePvp = false;
@@ -133,7 +134,7 @@ public class Town {
     }
 
     public double getResTax() {
-        return resTax;
+        return Numbers.round(resTax);
     }
 
     public void setResTax(double resTax) {
@@ -598,9 +599,6 @@ public class Town {
         return mainChunk;
     }
 
-    public boolean getPvP(Resident resident, Chunk ch) {
-        return pvp;
-    }
 
     public boolean isMayor(Resident r) {
         if (mayor.getName().equals(r.getName())) {
@@ -802,7 +800,7 @@ public class Town {
         AtomicBoolean claimed = new AtomicBoolean(false);
         AtomicBoolean success = new AtomicBoolean(false);
         AtomicBoolean far = new AtomicBoolean(false);
-        if(townChunks.size() < getMaxChunks()) {
+        if(townChunks.size() <= getMaxChunks()) {
             AuroraUniverse.alltownblocks.forEach((chunk1, region) -> {
                 int m = AuroraUniverse.minTownBlockDistance;
                 if (!hasChunk(chunk)) // есть ли чанк, который мы хотим заприватить в городе
@@ -906,6 +904,8 @@ public class Town {
     public void setSpawn(Location location) throws TownException {
         if (hasChunk(location)) {
             townSpawnPoint = location;
+            if((getTownChunks().get(location.getChunk()) instanceof ResidentRegion)) throw new TownException(AuroraUniverse.getLanguage().getString("e5"));
+
             mainChunk = location.getChunk();
             // До лучших времён
 //            Bukkit.getServer().getScheduler().runTaskTimer(AuroraUniverse.getInstance(), new Runnable() {
@@ -930,7 +930,7 @@ public class Town {
         long townChunkTax = AuroraUniverse.getInstance().getConfig().getLong("town-chunk-tax");
 
 
-        return townChunkTax * getChunksCount();
+        return Numbers.round(townChunkTax * getChunksCount());
     }
 
     public void rename(String newName)

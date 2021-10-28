@@ -1,5 +1,7 @@
 package ru.etysoft.aurorauniverse.economy;
 
+import ru.etysoft.aurorauniverse.utils.Numbers;
+
 public class Bank {
 
     private String name;
@@ -34,7 +36,7 @@ public class Bank {
     }
     public double getBalance()
     {
-        return amount;
+        return Numbers.round(amount);
     }
 
     public void setBalance(double d)

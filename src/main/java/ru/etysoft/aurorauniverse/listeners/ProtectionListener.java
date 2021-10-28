@@ -38,7 +38,7 @@ public class ProtectionListener implements Listener {
             Player p = (Player) event.getEntity();
             Resident resident = Residents.getResident(p);
             try {
-                if (!Towns.getTown(p.getLocation().getChunk()).getPvP(resident, p.getLocation().getChunk())) {
+                if (!Towns.getTown(p.getLocation().getChunk()).isPvp()) {
 
                     event.setCancelled(true);
                     Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-pvp"), (Player) event.getDamager());

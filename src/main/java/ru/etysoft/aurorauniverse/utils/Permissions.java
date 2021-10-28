@@ -109,11 +109,11 @@ public class Permissions {
     }
 
     public static boolean canKickResident(CommandSender p) {
-        return p.hasPermission("town.kick");
+        return p.hasPermission("town.residents.kick");
     }
 
     public static boolean canInviteResident(CommandSender p) {
-        return p.hasPermission("town.invite");
+        return p.hasPermission("town.residents.invite");
     }
 
     public static boolean canTeleportSpawn(CommandSender p) {

@@ -20,10 +20,11 @@ public class TownAcceptCommand {
                 String townName = Messaging.getNameFromArgs(args, 1);
                 Town town = Towns.getTown(townName);
                 if (!resident.hasTown() && town != null) {
-                    Town t = resident.getTown();
-                    if (t.getInvitedResidents().contains(resident)) {
-                        t.addResident(resident);
-                        t.sendMessage(AuroraConfiguration.getColorString("town-accepted").replace("%s", resident.getName()));
+
+                    if (town.getInvitedResidents().contains(resident)) {
+                        town.getInvitedResidents().remove(resident);
+                        town.addResident(resident);
+                        town.sendMessage(AuroraConfiguration.getColorString("town-accepted").replace("%s", resident.getName()));
 
                     } else {
                         Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-accepted-nothing"), sender);

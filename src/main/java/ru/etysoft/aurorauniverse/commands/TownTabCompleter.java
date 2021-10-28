@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -77,6 +78,23 @@ public class TownTabCompleter implements TabCompleter {
                   for(Town r : Towns.getTowns())
                   {
                       possibleArgs.add(r.getName());
+                  }
+              }
+              else if(args[0].equals("invite"))
+              {
+                  for(Player r : Bukkit.getOnlinePlayers())
+                  {
+                      possibleArgs.add(r.getName());
+                  }
+              }
+              else if(args[0].equals("kick"))
+              {
+                  Resident resident = Residents.getResident(sender.getName());
+                  if(resident != null && resident.hasTown()) {
+                      Town town = resident.getTown();
+                      for (Resident r : town.getResidents()) {
+                          possibleArgs.add(r.getName());
+                      }
                   }
               }
 
