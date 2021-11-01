@@ -8,6 +8,7 @@ import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.Permissions;
+import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 
@@ -56,6 +57,7 @@ public class ResidentRegion extends Region {
             jsonArray.add(member);
         }
         regionObj.put(JsonKeys.MEMBERS, jsonArray);
+        regionObj.put(JsonKeys.PVP, isPvp);
 
         return regionObj;
     }
@@ -83,6 +85,16 @@ public class ResidentRegion extends Region {
                 }
 
             }
+            try
+            {
+                boolean isPvp = (boolean) regionObj.get(JsonKeys.PVP);
+                residentRegion.setPvp(isPvp);
+            }
+            catch (Exception e)
+            {
+                Logger.warning("Cannot read property PvP of region of " + residentRegion.getOwner().getName());
+            }
+
             return residentRegion;
 
         }
@@ -98,6 +110,7 @@ public class ResidentRegion extends Region {
     {
         public static final String OWNER = "OWNER";
         public static final String MEMBERS = "MEMBERS";
+        public static final String PVP = "PVP";
 
     }
 
