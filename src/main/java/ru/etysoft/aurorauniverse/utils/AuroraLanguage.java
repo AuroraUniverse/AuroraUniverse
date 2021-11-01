@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class AuroraConfiguration {
+public class AuroraLanguage {
 
     public static String getColorString(String path)
     {

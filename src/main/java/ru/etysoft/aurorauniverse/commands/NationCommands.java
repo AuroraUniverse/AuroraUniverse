@@ -10,7 +10,8 @@ import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Nation;
@@ -42,10 +43,14 @@ public class NationCommands implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("delete")) {
                     deleteNation();
                 } else if (args[0].equalsIgnoreCase("spawn")) {
-                    if (resident.getTown().getNation() != null) {
-                        resident.getTown().getNation().getCapital().teleportToTownSpawn(player);
-                    } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-nation"), sender);
+                    try {
+                        if (resident.getTown().getNation() != null) {
+                            resident.getTown().getNation().getCapital().teleportToTownSpawn(player);
+                        } else {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-nation"), sender);
+                        }
+                    } catch (TownNotFoundedException e) {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);
                     }
                 } else if (args[0].equalsIgnoreCase("invite")) {
                     inviteTown();
@@ -65,17 +70,21 @@ public class NationCommands implements CommandExecutor {
                     Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
                 } else {
 
-                    if (resident.getTown().getNation() != null) {
+                    try {
+                        if (resident.getTown().getNation() != null) {
 
-                        Messaging.sendNationInfo(sender, resident.getTown().getNation());
-                    } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-nation"), sender);
+                            Messaging.sendNationInfo(sender, resident.getTown().getNation());
+                        } else {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-nation"), sender);
+                        }
+                    } catch (TownNotFoundedException e) {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);
                     }
 
                 }
             }
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
         }
 
         return true;
@@ -84,42 +93,58 @@ public class NationCommands implements CommandExecutor {
     public void leave() {
         if (Permissions.canLeaveNation(player)) {
 
-            if (resident.getTown().getNation() != null) {
-                Nation nation = resident.getTown().getNation();
+            try {
+                if (resident.getTown().getNation() != null) {
+                    Nation nation = resident.getTown().getNation();
 
-                nation.removeTown(resident.getTown());
+                    nation.removeTown(resident.getTown());
 
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-leave"), player);
-            } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-nation"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-leave"), player);
+                } else {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-nation"), player);
+                }
+            } catch (TownNotFoundedException e) {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);
             }
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
         }
     }
 
     public void kick() {
         if (Permissions.canKickNation(player)) {
 
-            if (resident.getTown().getNation() != null) {
+            try {
+                if (resident.getTown().getNation() != null) {
 
-                if (resident.getTown() == resident.getTown().getNation().getCapital()) {
-                    String townName = Messaging.getStringFromArgs(args, 1);
-                    if (resident.getTown().getNation().getTownNames().contains(townName)) {
-                        resident.getTown().getNation().removeTown(Towns.getTown(townName));
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-kick").replace("%s", townName), player);
+                    if (resident.getTown() == resident.getTown().getNation().getCapital()) {
+                        String townName = Messaging.getStringFromArgs(args, 1);
+                        try {
+                            if (resident.getTown().getNation().getTownNames().contains(townName)) {
+                                try {
+                                    resident.getTown().getNation().removeTown(Towns.getTown(townName));
+                                } catch (TownNotFoundedException e) {
+                                    e.printStackTrace();
+                                }
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-kick").replace("%s", townName), player);
+                            } else {
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-wrong-town").replace("%s", townName), player);
+                            }
+                        } catch (TownNotFoundedException e) {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);
+                        }
+
                     } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-wrong-town").replace("%s", townName), player);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-no-capital"), player);
                     }
-
                 } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-no-capital"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-nation"), player);
                 }
-            } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-nation"), player);
+            } catch (TownNotFoundedException e) {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);
             }
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
         }
     }
 
@@ -129,114 +154,131 @@ public class NationCommands implements CommandExecutor {
             if (Nations.getNation(nationName) != null) {
                 Nation nation = Nations.getNation(nationName);
 
-                if (nation.getInvitedTowns().contains(resident.getTown())) {
-                    nation.getInvitedTowns().remove(resident.getTown());
-                    nation.addTown(resident.getTown());
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-accepted"), player);
-                } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-no-invite"), player);
+                try {
+                    if (nation.getInvitedTowns().contains(resident.getTown())) {
+                        nation.getInvitedTowns().remove(resident.getTown());
+                        nation.addTown(resident.getTown());
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-accepted"), player);
+                    } else {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-no-invite"), player);
+                    }
+                } catch (TownNotFoundedException e) {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-wrong-town").replace("%s", resident.getTownName()), player);
                 }
             } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("wrong-nation"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("wrong-nation"), player);
             }
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
         }
     }
 
     public void inviteTown() {
         if (Permissions.canInviteNation(player)) {
             String townName = Messaging.getStringFromArgs(args, 1);
-            if (Towns.getTown(townName) != null) {
+            try{
                 if (!resident.getTown().getNation().getInvitedTowns().contains(Towns.getTown(townName)) | !resident.getTown().getNation().hasTown(Towns.getTown(townName))) {
                     if (resident.getTown().getNation().getCapital() == resident.getTown()) {
                         if (Towns.getTown(townName) != resident.getTown().getNation().getCapital()) {
                             resident.getTown().getNation().getInvitedTowns().add(Towns.getTown(townName));
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-invite-sent").replace("%s", townName), player);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-invite-sent").replace("%s", townName), player);
                         } else {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-capital-edit"), player);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-capital-edit"), player);
                         }
 
                     } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-no-capital"), player);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-no-capital"), player);
                     }
                 } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-wrong-town").replace("%s", townName), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-wrong-town").replace("%s", townName), player);
                 }
-            } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-wrong-town").replace("%s", townName), player);
+            } catch (TownNotFoundedException ignored){
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-wrong-town").replace("%s", townName), player);
             }
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
         }
     }
 
     public void createNation() {
         if (Permissions.canCreateNation(player)) {
-            if (resident.getTown().getNation() == null) {
-                String name = Messaging.getStringFromArgs(args, 1);
-                if (!Towns.isNameValid(name)) {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("name-invalid").replace("%s", name), player);
-                    return;
-                }
-                double priceNewNation = AuroraUniverse.getInstance().getConfig().getDouble("price-new-nation");
-                if (AuroraEconomy.canPay(resident, priceNewNation)) {
-                    resident.getBank().withdraw(priceNewNation);
+            try {
+                if (resident.getTown().getNation() == null) {
+                    String name = Messaging.getStringFromArgs(args, 1);
+                    if (!Towns.isNameValid(name)) {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("name-invalid").replace("%s", name), player);
+                        return;
+                    }
+                    double priceNewNation = AuroraUniverse.getInstance().getConfig().getDouble("price-new-nation");
+                    if (AuroraEconomy.canPay(resident, priceNewNation)) {
+                        resident.getBank().withdraw(priceNewNation);
 
-                    Nation nation = new Nation(name, resident.getTown());
+                        Nation nation = new Nation(name, resident.getTown());
 
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-created").replace("%s", name), player);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-created").replace("%s", name), player);
+                    } else {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("price-error").replace("%s", String.valueOf(priceNewNation)), player);
+                    }
                 } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("price-error").replace("%s", String.valueOf(priceNewNation)), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-already"), player);
                 }
-            } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-already"), player);
+            } catch (TownNotFoundedException e) {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);
+                e.printStackTrace();
             }
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
         }
     }
 
     public void setTax() {
         if (Permissions.canDeleteNation(player)) {
-            if (resident.getTown().getNation() != null) {
-                try {
-                    double tax = Double.valueOf(args[1]);
-                    if (resident.getTown() == resident.getTown().getNation().getCapital()) {
-                        resident.getTown().getNation().setTax(tax);
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-tax")
-                                .replace("%s", String.valueOf(tax)), player);
-                    } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-no-capital"), player);
+            try {
+                if (resident.getTown().getNation() != null) {
+                    try {
+                        double tax = Double.valueOf(args[1]);
+                        if (resident.getTown() == resident.getTown().getNation().getCapital()) {
+                            resident.getTown().getNation().setTax(tax);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-tax")
+                                    .replace("%s", String.valueOf(tax)), player);
+                        } else {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-no-capital"), player);
+                        }
+                    } catch (Exception e) {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-tax-error"), player);
                     }
-                } catch (Exception e) {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-tax-error"), player);
-                }
 
-            } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-nation"), player);
+                } else {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-nation"), player);
+                }
+            } catch (TownNotFoundedException e) {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);
             }
 
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
         }
     }
 
     public void deleteNation() {
         if (Permissions.canSetTax(player)) {
-            if (resident.getTown().getNation() != null) {
-                if (resident.getTown() == resident.getTown().getNation().getCapital()) {
-                    resident.getTown().getNation().delete();
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-deleted"), player);
+            try {
+                if (resident.getTown().getNation() != null) {
+                    if (resident.getTown() == resident.getTown().getNation().getCapital()) {
+                        resident.getTown().getNation().delete();
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-deleted"), player);
+                    } else {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-no-capital"), player);
+                    }
                 } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-no-capital"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-nation"), player);
                 }
-            } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-nation"), player);
+            } catch (TownNotFoundedException e) {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);
             }
 
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
         }
     }
 }

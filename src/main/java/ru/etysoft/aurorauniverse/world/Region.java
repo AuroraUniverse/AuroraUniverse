@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 
 import java.io.Serializable;
 
@@ -38,13 +39,11 @@ public class Region {
         this.town = town;
     }
 
-    public static Region fromJSON(JSONObject jsonObject)
-    {
+    public static Region fromJSON(JSONObject jsonObject) throws TownNotFoundedException {
         return new Region(Towns.getTown((String) jsonObject.get(JsonKeys.TOWN_NAME)));
     }
 
-    public static void transfer(Region region, Town toTown)
-    {
+    public static void transfer(Region region, Town toTown) throws TownNotFoundedException {
         String fromTownName = region.getTown().getName();
         Town fromTown = Towns.getTown(fromTownName);
 

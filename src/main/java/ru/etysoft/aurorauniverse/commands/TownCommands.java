@@ -9,7 +9,7 @@ import ru.etysoft.aurorauniverse.commands.town.*;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
@@ -32,7 +32,7 @@ public class TownCommands implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("delete")) {
                     new DeleteTownCommand(resident, pl, args, sender);
                 } else if (args[0].equalsIgnoreCase("spawn")) {
-                    new TownSpawnCommand(resident, sender, pl);
+                    new TownSpawnCommand(sender, resident, args);
                 } else if (args[0].equalsIgnoreCase("list")) {
                     new TownListCommand(sender, args);
                 } else if (args[0].equalsIgnoreCase("rename")) {
@@ -69,7 +69,7 @@ public class TownCommands implements CommandExecutor {
                     }
                     else
                     {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), sender);
                     }
                 }
             } else {
@@ -79,7 +79,7 @@ public class TownCommands implements CommandExecutor {
                     if (resident.hasTown()) {
                         Messaging.sendTownInfo(sender, resident.getTown());
                     } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
                     }
                 }
             }

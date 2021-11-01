@@ -375,10 +375,21 @@ public class Town {
         }
     }
 
-    public boolean isPvp() {
-        if(forcePvp) return true;
+    public boolean isTownPvp() {
+
         return pvp;
     }
+
+    public boolean isPvp(Chunk chunk) {
+        if(forcePvp) return true;
+        Region region = townChunks.get(chunk);
+        if(region instanceof ResidentRegion)
+        {
+            return ((ResidentRegion) region).isPvp();
+        }
+        return pvp;
+    }
+
 
 
 
@@ -621,13 +632,14 @@ public class Town {
         pvp = pvp2;
     }
 
-    public void addResident(Resident resident) {
+    public boolean addResident(Resident resident) {
         if (!resident.hasTown()) {
             residents.add(resident);
             AuroraPermissions.setPermissions(Bukkit.getPlayer(resident.getName()), AuroraPermissions.getGroup("resident"));
             resident.setTown(name);
+            return true;
         }
-
+        return false;
     }
 
     public String getName() {
@@ -635,16 +647,17 @@ public class Town {
     }
 
 
-    public void removeResident(Resident resident) {
+    public boolean removeResident(Resident resident) {
         if (residents.contains(resident)) {
             if (!isMayor(resident)) {
                 residents.remove(resident);
                 AuroraPermissions.setPermissions(Bukkit.getPlayer(resident.getName()), AuroraPermissions.getGroup("newbies"));
                 resident.setTown(null);
+                return true;
             }
 
         }
-
+        return false;
     }
 
     public boolean toggleBuild(Group group) {
@@ -790,10 +803,23 @@ public class Town {
             townChunks.forEach((chunk, region) -> {
                 AuroraUniverse.alltownblocks.remove(chunk);
             });
+            if(getNation() != null)
+            {
+                if(getNation().getCapital() == this)
+                {
+                    getNation().delete();
+                }
+                else
+                {
+                    getNation().removeTown(this);
+                }
+
+            }
             TownDeleteEvent townDeleteEvent = new TownDeleteEvent(this);
             AuroraUniverse.callEvent(townDeleteEvent);
             return true;
         } else {
+            Logger.warning("Town deletion was canceled by third-party plugin");
             return false;
         }
 
@@ -896,7 +922,6 @@ public class Town {
     public void teleportToTownSpawn(Player pl) {
         pl.teleport(townSpawnPoint);
         Towns.handleChunkChange(pl, pl.getLocation().getChunk());
-        //TODO: teleport message
     }
 
     public boolean hasChunk(Location lc) {

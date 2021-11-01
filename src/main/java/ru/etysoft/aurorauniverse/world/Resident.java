@@ -1,6 +1,7 @@
 package ru.etysoft.aurorauniverse.world;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
@@ -9,6 +10,7 @@ import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.Bank;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 
 public class Resident {
@@ -19,6 +21,7 @@ public class Resident {
     private String townname = null;
     private Bank bank;
     private String permissonGroup;
+    private Chunk lastChunk;
     private int chatMode;
 
 
@@ -28,6 +31,14 @@ public class Resident {
         chatMode = AuroraChat.Channels.GLOBAL;
         bank = new Bank(nickname, AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getDouble("start-balance"), nickname);
         AuroraUniverse.getInstance().getEconomy().addBank(bank);
+    }
+
+    public Chunk getLastChunk() {
+        return lastChunk;
+    }
+
+    public void setLastChunk(Chunk lastChunk) {
+        this.lastChunk = lastChunk;
     }
 
     public JSONObject toJson() {
@@ -128,11 +139,15 @@ public class Resident {
         return lastwild;
     }
 
+    public String getTownName() {
+        return townname;
+    }
+
     public void setLastwild(boolean lastwild) {
         this.lastwild = lastwild;
     }
 
-    public Town getTown() {
+    public Town getTown() throws TownNotFoundedException {
         return Towns.getTown(townname);
     }
 

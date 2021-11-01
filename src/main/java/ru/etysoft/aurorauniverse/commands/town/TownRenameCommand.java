@@ -1,12 +1,10 @@
 package ru.etysoft.aurorauniverse.commands.town;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.data.Messages;
-import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -37,21 +35,21 @@ public class TownRenameCommand {
                 if(Towns.isNameValid(newName)) {
 
 
-                    if (resident.hasTown()) {
+                   try {
                         Town t = resident.getTown();
                         if (Permissions.canRenameTown(sender)) {
                             t.rename(newName);
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-rename").replace("%s", newName), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-rename").replace("%s", newName), sender);
                         } else {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
                         }
-                    } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                    } catch (TownNotFoundedException ignored){
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
                     }
                 }
                 else
                 {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("name-invalid").replace("%s", newName), sender);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("name-invalid").replace("%s", newName), sender);
                 }
             }
         }

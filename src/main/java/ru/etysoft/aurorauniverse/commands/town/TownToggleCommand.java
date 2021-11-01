@@ -3,7 +3,8 @@ package ru.etysoft.aurorauniverse.commands.town;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.data.Messages;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -39,83 +40,83 @@ public class TownToggleCommand {
                 }
             }
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), sender);
         }
     }
 
     private void toggleFire() {
-        if (resident.hasTown()) {
+        try {
             Town t = resident.getTown();
             if (Permissions.canToggleFire(player)) {
                 if (args[2].equals("on")) {
                     t.isFireAllowed(true);
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-fireon"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-fireon"), player);
                 } else if (args[2].equals("off")) {
                     t.isFireAllowed(false);
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-fireoff"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-fireoff"), player);
                 }
             } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
             }
-        } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+        } catch (TownNotFoundedException ignored){
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
         }
     }
 
     private void toggleExplosions() {
-        if (resident.hasTown()) {
+        try {
             Town t = resident.getTown();
             if (Permissions.canToggleExplosions(player)) {
                 if (args[2].equals("on")) {
                     t.setExplosionEnabled(true);
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-expon"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-expon"), player);
                 } else if (args[2].equals("off")) {
                     t.setExplosionEnabled(false);
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-expoff"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-expoff"), player);
                 }
             } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
             }
-        } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+        } catch (TownNotFoundedException ignored){
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
         }
     }
 
     private void toggleMobs() {
-        if (resident.hasTown()) {
+        try {
             Town t = resident.getTown();
             if (Permissions.canToggleMobs(player)) {
                 if (args[2].equals("on")) {
                     t.setMobs(true);
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-mobson"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-mobson"), player);
                 } else if (args[2].equals("off")) {
                     t.setMobs(false);
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-mobsoff"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-mobsoff"), player);
                 }
             } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
             }
-        } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+        } catch (TownNotFoundedException ignored){
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
         }
     }
 
     private void togglePvP() {
-        if (resident.hasTown()) {
+        try {
             Town t = resident.getTown();
             if (Permissions.canTogglePvP(player)) {
                 if (args[2].equals("on")) {
                     t.setPvP(true);
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-pvpon"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-pvpon"), player);
                 } else if (args[2].equals("off")) {
                     t.setPvP(false);
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-pvpoff"), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-pvpoff"), player);
                 }
             } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
             }
-        } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+        } catch (TownNotFoundedException ignored){
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
         }
     }
 

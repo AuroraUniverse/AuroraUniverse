@@ -1,14 +1,15 @@
 package ru.etysoft.aurorauniverse.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
-import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Residents;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.world.Resident;
+
+import java.util.concurrent.ExecutionException;
 
 public class AuroraPlaceholdersExpansion extends PlaceholderExpansion {
 
@@ -64,13 +65,13 @@ public class AuroraPlaceholdersExpansion extends PlaceholderExpansion {
             if(Residents.getResident(player.getName()) != null)
             {
                 Resident resident = Residents.getResident(player.getName());
-                if(resident.hasTown())
+                try
                 {
-                    return AuroraConfiguration.getColorString("placeholders.town").replace("%s", resident.getTown().getName());
+                    return AuroraLanguage.getColorString("placeholders.town").replace("%s", resident.getTown().getName());
                 }
-                else
+                catch (TownNotFoundedException ignored)
                 {
-                    return AuroraConfiguration.getColorString("placeholders.no-town");
+                    return AuroraLanguage.getColorString("placeholders.no-town");
                 }
             }
             Residents.createResident(player.getName());
@@ -81,21 +82,21 @@ public class AuroraPlaceholdersExpansion extends PlaceholderExpansion {
             if(Residents.getResident(player.getName()) != null)
             {
                 Resident resident = Residents.getResident(player.getName());
-                if(resident.hasTown())
+                try
                 {
                     if(resident.getTown().getNation() != null)
                     {
-                        return AuroraConfiguration.getColorString("placeholders.nation").replace("%s", resident.getTown().getNation().getName());
+                        return AuroraLanguage.getColorString("placeholders.nation").replace("%s", resident.getTown().getNation().getName());
                     }
                     else
                     {
-                        return AuroraConfiguration.getColorString("placeholders.no-nation");
+                        return AuroraLanguage.getColorString("placeholders.no-nation");
                     }
 
                 }
-                else
+                catch (TownNotFoundedException ignored)
                 {
-                    return AuroraConfiguration.getColorString("placeholders.no-nation");
+                    return AuroraLanguage.getColorString("placeholders.no-nation");
                 }
             }
             return ColorCodes.toColor("&c[AUN ERROR]");

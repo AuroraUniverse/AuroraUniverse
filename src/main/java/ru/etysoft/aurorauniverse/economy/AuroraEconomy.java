@@ -5,7 +5,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Residents;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.world.Resident;
 
 import java.util.*;
@@ -134,7 +134,7 @@ public class AuroraEconomy implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("[Vault] Getting " + offlinePlayer.getName() + "'s balance (" + getBank(offlinePlayer.getName()).getBalance() + ")");
         }
@@ -149,7 +149,7 @@ public class AuroraEconomy implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer, String s) {
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("[Vault] Getting " + offlinePlayer.getName() + "'s balance (" + getBank(offlinePlayer.getName()).getBalance() + ")");
         }
@@ -160,7 +160,7 @@ public class AuroraEconomy implements Economy {
     @Deprecated
     public boolean has(String s, double v) {
         Bank _bank = getBank(s);
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("[Vault] Checking if has amount " + v + " bank "+ s + " with balance " + getBank(s).getBalance() + ")");
         }
@@ -170,7 +170,7 @@ public class AuroraEconomy implements Economy {
     @Override
     public boolean has(OfflinePlayer offlinePlayer, double v) {
         Bank _bank = getBank(offlinePlayer.getName());
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("[Vault] Checking if has amount " + v + " bank "+ offlinePlayer.getName() + " with balance " + getBank(offlinePlayer.getName()).getBalance() + ")");
         }
@@ -181,7 +181,7 @@ public class AuroraEconomy implements Economy {
     @Deprecated
     public boolean has(String s, String s1, double v) {
         Bank _bank = getBank(s);
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("[Vault] Checking if has amount " + v + " bank "+ s + " with balance " + getBank(s).getBalance() + ")");
         }
@@ -191,7 +191,7 @@ public class AuroraEconomy implements Economy {
     @Override
     public boolean has(OfflinePlayer offlinePlayer, String s, double v) {
         Bank _bank = getBank(offlinePlayer.getName());
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("[Vault] Checking if has amount " + v + " bank "+ offlinePlayer.getName() + " with balance " + getBank(offlinePlayer.getName()).getBalance() + ")");
         }
@@ -225,7 +225,7 @@ public class AuroraEconomy implements Economy {
         Bank _bank = getBank(offlinePlayer.getName());
         if(_bank.withdraw(v))
         {
-            if (AuroraConfiguration.getDebugMode())
+            if (AuroraLanguage.getDebugMode())
             {
                 Logger.debug("Withdraw " + v + " from " + offlinePlayer.getName());
             }
@@ -243,7 +243,7 @@ public class AuroraEconomy implements Economy {
         Bank _bank = getBank(s);
         if(_bank.withdraw(v))
         {
-            if (AuroraConfiguration.getDebugMode())
+            if (AuroraLanguage.getDebugMode())
             {
                 Logger.debug("Withdraw " + v + " from " + s);
             }
@@ -287,7 +287,7 @@ public class AuroraEconomy implements Economy {
         if(isBankExists(s))
         {
         Bank _bank = getBank(s);
-            if (AuroraConfiguration.getDebugMode())
+            if (AuroraLanguage.getDebugMode())
             {
                 Logger.debug("Deposit " + v + " to " + s);
             }
@@ -309,7 +309,7 @@ public class AuroraEconomy implements Economy {
         if(isBankExists(s))
         {
             Bank _bank = getBank(s);
-            if (AuroraConfiguration.getDebugMode())
+            if (AuroraLanguage.getDebugMode())
             {
                 Logger.debug("Deposit " + v + " to " + s + " in world " + s1);
             }
@@ -328,7 +328,7 @@ public class AuroraEconomy implements Economy {
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String s, double v) {
         if(isBankExists(offlinePlayer.getName()))
         {
-            if (AuroraConfiguration.getDebugMode())
+            if (AuroraLanguage.getDebugMode())
             {
                 Logger.debug("Deposit " + v + " to " + offlinePlayer.getName() + " in world " + s);
             }
@@ -347,7 +347,7 @@ public class AuroraEconomy implements Economy {
     @Deprecated
     public EconomyResponse createBank(String s, String player) {
         Bank b = new Bank(s, 0, player);
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("Try to create bank " + s + " to " + player);
         }
@@ -366,7 +366,7 @@ public class AuroraEconomy implements Economy {
     @Override
     public EconomyResponse createBank(String s, OfflinePlayer offlinePlayer) {
         Bank b = new Bank(s, 0, offlinePlayer.getName());
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("Try to create bank " + s + " to " + offlinePlayer.getName());
         }
@@ -608,7 +608,7 @@ public class AuroraEconomy implements Economy {
     @Override
     @Deprecated
     public boolean createPlayerAccount(String s) {
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("Try to create player bank " + s);
         }
@@ -618,7 +618,7 @@ public class AuroraEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("Try to create player bank " + offlinePlayer.getName());
         }
@@ -629,7 +629,7 @@ public class AuroraEconomy implements Economy {
     @Override
     @Deprecated
     public boolean createPlayerAccount(String s, String world) {
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("Try to create player bank " + s + " in the world " + world);
         }
@@ -639,7 +639,7 @@ public class AuroraEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String world) {
-        if (AuroraConfiguration.getDebugMode())
+        if (AuroraLanguage.getDebugMode())
         {
             Logger.debug("Try to create player bank " + offlinePlayer.getName() + " in the world " + world);
         }

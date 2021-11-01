@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Towns;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -17,22 +17,26 @@ public class TownUnclaimCommand {
         if (resident == null) {
             Messaging.sendPrefixedMessage(Messages.cantConsole(), sender);
         } else {
-            if (resident.hasTown()) {
+            try {
                 Town t = resident.getTown();
                 if (Permissions.canUnClaim(pl)) {
 
                     if (t.unclaimChunk(pl.getLocation().getChunk())) {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-unclaim"), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-unclaim"), sender);
                         resident.setLastwild(true);
                         Towns.handleChunkChange(pl, pl.getLocation().getChunk());
                         pl.playSound(pl.getLocation(), Sound.ENTITY_CAT_HURT, 100.0f, 1.0f);
                     } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantunclaim"), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-cantunclaim"), sender);
                     }
 
                 } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
                 }
+            }
+            catch (Exception e)
+            {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
             }
         }
     }

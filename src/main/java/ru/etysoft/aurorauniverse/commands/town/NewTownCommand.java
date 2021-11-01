@@ -9,7 +9,7 @@ import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -39,7 +39,7 @@ public class NewTownCommand {
                     }
                     if(!Towns.isNameValid(name.toString()))
                     {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("name-invalid").replace("%s", name.toString()), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("name-invalid").replace("%s", name.toString()), sender);
                         return;
                     }
                     try {
@@ -49,20 +49,20 @@ public class NewTownCommand {
                             if (Towns.createTown(townname, pl)) {
                                 Resident resident = Residents.getResident(pl);
                                 resident.setBalance(resident.getBalance() - newTownPrice);
-                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-created-message").replace("%s", name)
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-created-message").replace("%s", name)
                                         .replace("%h", String.valueOf(WorldTimer.getInstance().getRemainingHours())), sender);
                                 pl.playSound(pl.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 100.0f, 1.0f);
                                 Residents.getResident(pl).setLastwild(false);
                             }
                         } else {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("price-error").replace("%s", String.valueOf(newTownPrice)), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("price-error").replace("%s", String.valueOf(newTownPrice)), sender);
                         }
 
                     } catch (TownException e) {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantcreate-message").replace("%s", e.getErrorMessage()), pl);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-cantcreate-message").replace("%s", e.getErrorMessage()), pl);
                     }
                 } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
                 }
             } catch (Exception e) {
 
@@ -78,7 +78,7 @@ public class NewTownCommand {
                 }
             }
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), sender);
         }
     }
 }

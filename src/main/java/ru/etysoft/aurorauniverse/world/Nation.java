@@ -3,7 +3,9 @@ package ru.etysoft.aurorauniverse.world;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 
 import java.util.ArrayList;
 
@@ -103,15 +105,29 @@ public class Nation {
         String name = (String) jsonObject.get(Keys.NAME);
         String nameCapital = (String) jsonObject.get(Keys.CAPITAL);
 
-        Nation nation = new Nation(name, Towns.getTown(nameCapital));
+        Nation nation = null;
+        try {
+            nation = new Nation(name, Towns.getTown(nameCapital));
+        } catch (TownNotFoundedException e) {
+            Logger.error("Capital of nation " + name + " (" + nameCapital + ") not founded!");
+            e.printStackTrace();
+            return;
+        }
 
         JSONArray townList = (JSONArray) jsonObject.get(Keys.TOWNS);
 
         if(townList != null) {
             for (int i = 0; i < townList.size(); i++) {
                 String membersName = (String) townList.get(i);
-                Town town = Towns.getTown(membersName);
-                nation.addTown(town);
+                Town town = null;
+                try {
+                    town = Towns.getTown(membersName);
+                    nation.addTown(town);
+                } catch (TownNotFoundedException e) {
+                    Logger.error("Town of nation " + name + " (" + membersName + ") not founded!");
+                    e.printStackTrace();
+                }
+
             }
         }
     }

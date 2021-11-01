@@ -18,6 +18,7 @@ import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.commands.PluginCommands;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.world.Region;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -38,7 +39,7 @@ public class ProtectionListener implements Listener {
             Player p = (Player) event.getEntity();
             Resident resident = Residents.getResident(p);
             try {
-                if (!Towns.getTown(p.getLocation().getChunk()).isPvp()) {
+                if (!Towns.getTown(p.getLocation().getChunk()).isPvp(event.getEntity().getLocation().getChunk())) {
 
                     event.setCancelled(true);
                     Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-pvp"), (Player) event.getDamager());
@@ -94,7 +95,7 @@ public class ProtectionListener implements Listener {
                 }
 
                 if (materials.contains(block.getType())) {
-                    if (Residents.getResident(event.getPlayer()).hasTown()) {
+                   try {
                         if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
                             Town town = Towns.getTown(chunk);
                             if (town != null) {
@@ -113,7 +114,7 @@ public class ProtectionListener implements Listener {
                                 Logger.debug("Prevented from use[2] " + event.getPlayer().getName());
                             }
                         }
-                    } else {
+                    } catch (TownNotFoundedException ignored){
                         if (Towns.hasTown(chunk)) {
                             Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-use"), event.getPlayer());
                             event.setCancelled(true);
@@ -162,7 +163,7 @@ public class ProtectionListener implements Listener {
                 materials.add(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);
 
                 if (materials.contains(block.getType())) {
-                    if (Residents.getResident(event.getPlayer()).hasTown()) {
+                    try {
                         if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
                             Town town = Towns.getTown(chunk);
                             if (town != null) {
@@ -181,7 +182,7 @@ public class ProtectionListener implements Listener {
                                 Logger.debug("Prevented from switch[2] " + event.getPlayer().getName());
                             }
                         }
-                    } else {
+                    } catch (TownNotFoundedException ignored){
                         if (Towns.hasTown(chunk)) {
                             Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
                             event.setCancelled(true);
@@ -215,7 +216,7 @@ public class ProtectionListener implements Listener {
             event.setCancelled(true);
         }
         if (!event.getPlayer().hasPermission("aun.edittowns")) {
-            if (Residents.getResident(event.getPlayer()).hasTown()) {
+            try {
                 if (Towns.hasMyTown(event.getBlock().getChunk(), Residents.getResident(event.getPlayer()).getTown())) {
                     Town town = Towns.getTown(event.getBlock().getChunk());
                     if (town != null) {
@@ -234,7 +235,7 @@ public class ProtectionListener implements Listener {
                         Logger.debug("Prevented from block break[2] " + event.getPlayer().getName());
                     }
                 }
-            } else {
+            } catch (TownNotFoundedException ignored){
                 if (Towns.hasTown(event.getBlock().getChunk())) {
                     Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), event.getPlayer());
                     event.setCancelled(true);
@@ -278,7 +279,7 @@ public class ProtectionListener implements Listener {
     @EventHandler
     public void PlaceBlock(BlockPlaceEvent event) {
         if (!event.getPlayer().hasPermission("aun.edittowns")) {
-            if (Residents.getResident(event.getPlayer()).hasTown()) {
+            try {
                 if (Towns.hasMyTown(event.getBlock().getChunk(), Residents.getResident(event.getPlayer()).getTown())) {
                     Town town = Towns.getTown(event.getBlock().getChunk());
                     if (town != null) {
@@ -297,7 +298,7 @@ public class ProtectionListener implements Listener {
                         Logger.debug("Prevented from block place[2] " + event.getPlayer().getName());
                     }
                 }
-            } else {
+            } catch (TownNotFoundedException ignored){
                 if (Towns.hasTown(event.getBlock().getChunk())) {
                     Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-place"), event.getPlayer());
                     event.setCancelled(true);

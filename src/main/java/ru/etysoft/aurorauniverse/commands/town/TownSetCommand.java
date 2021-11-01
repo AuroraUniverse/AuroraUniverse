@@ -6,8 +6,9 @@ import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -26,7 +27,8 @@ public class TownSetCommand {
         this.player = pl;
         this.args = args;
 
-        if (resident.hasTown()) {
+        try
+        {
             if (args.length > 1) {
                 if (args[1].equalsIgnoreCase("spawn")) {
                     if (resident == null) {
@@ -72,29 +74,29 @@ public class TownSetCommand {
             } else {
                 Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
             }
-        } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+        } catch (TownNotFoundedException ignored){
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
         }
 
 
     }
 
-    private void setTax() {
+    private void setTax() throws TownNotFoundedException {
         if (Permissions.canSetTax(sender)) {
             Town t = resident.getTown();
             try {
                 double resTax = Double.parseDouble(args[2]);
                 t.setResTax(resTax);
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-settax"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-settax"), player);
             } catch (Exception e) {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-tax-error"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-tax-error"), player);
             }
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
         }
     }
 
-    private void setPermission() {
+    private void setPermission() throws TownNotFoundedException {
         if (resident.hasTown()) {
             Town t = resident.getTown();
 
@@ -139,30 +141,30 @@ public class TownSetCommand {
                 }
 
             } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
             }
         }
     }
 
-    private void setSpawn() {
+    private void setSpawn() throws TownNotFoundedException {
         if (resident.hasTown()) {
             Town t = resident.getTown();
             if (Permissions.canSetSpawn(sender)) {
                 try {
                     t.setSpawn(player.getLocation());
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-setspawn"), sender);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-setspawn"), sender);
                 } catch (TownException e) {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantsetspawn").replace("%s", e.getErrorMessage()), player);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-cantsetspawn").replace("%s", e.getErrorMessage()), player);
 
                 }
 
             } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
             }
         }
     }
 
-    private void setMayor() {
+    private void setMayor() throws TownNotFoundedException {
         if (resident.hasTown()) {
             Town t = resident.getTown();
             if (Permissions.canSetMayor(sender)) {
@@ -174,21 +176,21 @@ public class TownSetCommand {
                 if (mayor != null) {
                     if (mayor.getTown() == t) {
                         t.setMayor(mayor);
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-setmayor"), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-setmayor"), sender);
                         return;
                     }
                 }
 
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantsetmayor"), sender);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-cantsetmayor"), sender);
 
 
             } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
             }
         }
     }
 
-    private void setGroup() {
+    private void setGroup() throws TownNotFoundedException {
         if (resident.hasTown()) {
             Town t = resident.getTown();
             if (Permissions.canSetGroup(sender)) {
@@ -199,29 +201,29 @@ public class TownSetCommand {
                     if (Residents.getResident(residentNickname) != null && t.getResidents().contains(Residents.getResident(residentNickname))) {
                         if (!groupName.equals("newbies") && AuroraPermissions.getGroups().keySet().contains(groupName)) {
                             Residents.getResident(residentNickname).setPermissionGroup(groupName);
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-set")
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-group-set")
                                     .replace("%s", groupName)
-                                    .replace("%s1", residentNickname), sender);
+                                    .replace("%p", residentNickname), sender);
                             try {
                                 AuroraPermissions.setPermissions(Bukkit.getPlayer(residentNickname), AuroraPermissions.getGroup(groupName));
                             } catch (Exception ignored) {
                             }
 
                         } else {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-does-not-exists"), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-group-does-not-exists"), sender);
                         }
                     } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-resident-not-in-town"), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-resident-not-in-town"), sender);
                     }
 
 
                 } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-mayor"), sender);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-group-mayor"), sender);
                 }
 
 
             } else {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
             }
         }
     }

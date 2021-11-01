@@ -49,12 +49,16 @@ public class NationTabCompleter implements TabCompleter {
                 } else if (args[0].equals("kick")) {
                     Resident resident = Residents.getResident(sender.getName());
                     if (resident != null) {
-                        if (resident.hasTown()) {
+                        try {
                             if (resident.getTown().getNation() != null) {
                                 for (String t : resident.getTown().getNation().getTownNames()) {
                                     possibleArgs.add(t);
                                 }
                             }
+                        }
+                        catch (Exception ignored)
+                        {
+
                         }
                     }
                 }

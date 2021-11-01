@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Towns;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
@@ -20,7 +21,6 @@ import ru.etysoft.epcore.gui.Items;
 import ru.etysoft.epcore.gui.Slot;
 import ru.etysoft.epcore.gui.SlotRunnable;
 
-import java.security.Permission;
 import java.util.HashMap;
 
 public class TownGuiCommand {
@@ -29,7 +29,7 @@ public class TownGuiCommand {
     private Town town;
 
     public TownGuiCommand(Resident resident, Player pl, String[] args, CommandSender sender) {
-        if (resident.hasTown()) {
+        try {
             player = pl;
              town = resident.getTown();
 
@@ -62,7 +62,7 @@ public class TownGuiCommand {
                         pl.closeInventory();
 
                     }
-                }, Items.createNamedItem(new ItemStack(Material.RED_STAINED_GLASS_PANE, 1), AuroraConfiguration.getColorString("gui.unclaim")
+                }, Items.createNamedItem(new ItemStack(Material.RED_STAINED_GLASS_PANE, 1), AuroraLanguage.getColorString("gui.unclaim")
                 ));
 
                     matrix.put(46, unclaimSlot);
@@ -79,7 +79,7 @@ public class TownGuiCommand {
                             new TownClaimCommand(resident, sender, pl);
                             pl.closeInventory();
                         }
-                    }, Items.createNamedItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1), AuroraConfiguration.getColorString("gui.claim")
+                    }, Items.createNamedItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1), AuroraLanguage.getColorString("gui.claim")
                             .replace("%s", String.valueOf(town.getNewChunkPrice()))
                     ));
                     matrix.put(46, claimSlot);
@@ -111,24 +111,24 @@ public class TownGuiCommand {
                                     public void run() {
 
                                     }
-                                }, Items.createNamedItem(new ItemStack(Material.PODZOL, 1), AuroraConfiguration.getColorString("gui.standing"),
-                                        AuroraConfiguration.getColorString("gui.has-owner")
+                                }, Items.createNamedItem(new ItemStack(Material.PODZOL, 1), AuroraLanguage.getColorString("gui.standing"),
+                                        AuroraLanguage.getColorString("gui.has-owner")
                                                 .replace("%s1", String.valueOf(residentRegion.getMembers().size()))
                                                 .replace("%s", residentRegion.getOwner().getName())
                                 ));
                                 matrix.put(54, standingSlot);
                             } else {
-                                String townBlock = AuroraConfiguration.getColorString("gui.standing-town");
+                                String townBlock = AuroraLanguage.getColorString("gui.standing-town");
                                 if(standingTown.getMainChunk() == ((Player) sender).getLocation().getChunk())
                                 {
-                                    townBlock = AuroraConfiguration.getColorString("gui.standing-main-chunk");
+                                    townBlock = AuroraLanguage.getColorString("gui.standing-main-chunk");
                                 }
                                 standingSlot = new Slot(new SlotRunnable() {
                                     @Override
                                     public void run() {
 
                                     }
-                                }, Items.createNamedItem(new ItemStack(Material.GRASS_BLOCK, 1),  AuroraConfiguration.getColorString("gui.standing"),
+                                }, Items.createNamedItem(new ItemStack(Material.GRASS_BLOCK, 1),  AuroraLanguage.getColorString("gui.standing"),
                                       townBlock
                                 ));
 
@@ -152,19 +152,19 @@ public class TownGuiCommand {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+        } catch (TownNotFoundedException ignored){
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
         }
     }
 
 
     private void processToggles(HashMap<Integer, Slot> matrix)
     {
-        String fireToggle = AuroraConfiguration.getColorString("gui.state-off");
+        String fireToggle = AuroraLanguage.getColorString("gui.state-off");
 
         if(town.isFire())
         {
-             fireToggle = AuroraConfiguration.getColorString("gui.state-on");
+             fireToggle = AuroraLanguage.getColorString("gui.state-on");
         }
 
         Slot fireToggleSlot = new Slot(new SlotRunnable() {
@@ -178,16 +178,16 @@ public class TownGuiCommand {
                 player.performCommand("auntown toggle fire " + suffix);
                 player.closeInventory();
             }
-        }, Items.createNamedItem(new ItemStack(Material.CAMPFIRE, 1),  AuroraConfiguration.getColorString("gui.toggle-fire").replace("%s", fireToggle)
+        }, Items.createNamedItem(new ItemStack(Material.CAMPFIRE, 1),  AuroraLanguage.getColorString("gui.toggle-fire").replace("%s", fireToggle)
         ));
 
         matrix.put(31, fireToggleSlot);
 
-        String mobsToggle = AuroraConfiguration.getColorString("gui.state-off");
+        String mobsToggle = AuroraLanguage.getColorString("gui.state-off");
 
         if(town.isMobs())
         {
-            mobsToggle = AuroraConfiguration.getColorString("gui.state-on");
+            mobsToggle = AuroraLanguage.getColorString("gui.state-on");
         }
 
         Slot mobsToggleSlot = new Slot(new SlotRunnable() {
@@ -201,40 +201,40 @@ public class TownGuiCommand {
                 player.performCommand("auntown toggle mobs " + suffix);
                 player.closeInventory();
             }
-        }, Items.createNamedItem(new ItemStack(Material.ZOMBIE_HEAD, 1),  AuroraConfiguration.getColorString("gui.toggle-mobs").replace("%s", mobsToggle)
+        }, Items.createNamedItem(new ItemStack(Material.ZOMBIE_HEAD, 1),  AuroraLanguage.getColorString("gui.toggle-mobs").replace("%s", mobsToggle)
         ));
 
         matrix.put(32, mobsToggleSlot);
 
 
-        String pvpToggle = AuroraConfiguration.getColorString("gui.state-off");
+        String pvpToggle = AuroraLanguage.getColorString("gui.state-off");
 
-        if(town.isPvp())
+        if(town.isTownPvp())
         {
-            pvpToggle = AuroraConfiguration.getColorString("gui.state-on");
+            pvpToggle = AuroraLanguage.getColorString("gui.state-on");
         }
 
         Slot pvpToggleSlot = new Slot(new SlotRunnable() {
             @Override
             public void run() {
                 String suffix = "on";
-                if(town.isPvp())
+                if(town.isTownPvp())
                 {
                     suffix = "off";
                 }
                 player.performCommand("auntown toggle pvp " + suffix);
                 player.closeInventory();
             }
-        }, Items.createNamedItem(new ItemStack(Material.DIAMOND_SWORD, 1),  AuroraConfiguration.getColorString("gui.toggle-pvp").replace("%s", pvpToggle)
+        }, Items.createNamedItem(new ItemStack(Material.DIAMOND_SWORD, 1),  AuroraLanguage.getColorString("gui.toggle-pvp").replace("%s", pvpToggle)
         ));
 
         matrix.put(33, pvpToggleSlot);
 
-        String expToggle = AuroraConfiguration.getColorString("gui.state-off");
+        String expToggle = AuroraLanguage.getColorString("gui.state-off");
 
         if(town.isExplosionEnabled())
         {
-            expToggle = AuroraConfiguration.getColorString("gui.state-on");
+            expToggle = AuroraLanguage.getColorString("gui.state-on");
         }
 
         Slot expToggleSlot = new Slot(new SlotRunnable() {
@@ -248,7 +248,7 @@ public class TownGuiCommand {
                 player.performCommand("auntown toggle explosions " + suffix);
                 player.closeInventory();
             }
-        }, Items.createNamedItem(new ItemStack(Material.TNT, 1),  AuroraConfiguration.getColorString("gui.toggle-exp").replace("%s", expToggle)
+        }, Items.createNamedItem(new ItemStack(Material.TNT, 1),  AuroraLanguage.getColorString("gui.toggle-exp").replace("%s", expToggle)
         ));
 
         matrix.put(41, expToggleSlot);

@@ -22,7 +22,7 @@ import ru.etysoft.aurorauniverse.listeners.PluginListener;
 import ru.etysoft.aurorauniverse.listeners.ProtectionListener;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.placeholders.AuroraPlaceholdersExpansion;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.LanguageSetup;
 import ru.etysoft.aurorauniverse.utils.Timer;
 import ru.etysoft.aurorauniverse.world.*;
@@ -73,14 +73,14 @@ public final class AuroraUniverse extends JavaPlugin {
             if (!w1.equals("ok")) {
                 addWarning(w1);
             }
-            prefix = AuroraConfiguration.getColorString("prefix");
+            prefix = AuroraLanguage.getColorString("prefix");
             if (getConfig().contains("file-version")) {
                 try {
                     if (!getConfig().getString("file-version").equals(confver)) {
                         addWarning("&eOutdated configuration file!");
                     }
                     if (language.contains("file-version")) {
-                        if (!AuroraConfiguration.getColorString("file-version").equals(langver)) {
+                        if (!AuroraLanguage.getColorString("file-version").equals(langver)) {
                             addWarning("&eOutdated language file!");
                         }
                     } else {
@@ -108,7 +108,7 @@ public final class AuroraUniverse extends JavaPlugin {
             }
         } catch (Exception e) {
             addWarning("&cCONFIGURATION ERROR(Probably language file is outdated): " + e.getMessage());
-            if (AuroraConfiguration.getDebugMode()) {
+            if (AuroraLanguage.getDebugMode()) {
                 Logger.debug("Configuration error: ");
                 e.printStackTrace();
             }
@@ -136,7 +136,7 @@ public final class AuroraUniverse extends JavaPlugin {
         try {
             auroraEconomy = new AuroraEconomy();
         } catch (Exception e) {
-            if (AuroraConfiguration.getDebugMode()) {
+            if (AuroraLanguage.getDebugMode()) {
                 Logger.debug("Can't create EconomyCore:");
                 e.printStackTrace();
             }
@@ -167,7 +167,7 @@ public final class AuroraUniverse extends JavaPlugin {
             //Some warnings catched
             Logger.info("&cAuroraUniverse was enabled with warnings in " + seconds.substring(0, maxBound) + " seconds: &e" + warnings);
         }
-        if (AuroraConfiguration.getDebugMode()) {
+        if (AuroraLanguage.getDebugMode()) {
             Logger.debug("You running AuroraUniverse in debug mode (more console messages)");
         }
 
@@ -255,7 +255,7 @@ public final class AuroraUniverse extends JavaPlugin {
 
     private void registerCommands() {
         registerCommand("auntown", new TownCommands(), new TownTabCompleter());
-        registerCommand("aurorauniverse", new PluginCommands(), null);
+        registerCommand("aurorauniverse", new PluginCommands(), new MainTabCompleter());
         registerCommand("auneco", new EconomyCommands(), new EconomyTabCompleter());
         registerCommand("aunnation", new NationCommands(), new NationTabCompleter());
         registerCommand("aunchat", AuroraChat.getInstance().getChatCommand(), null);
@@ -275,7 +275,7 @@ public final class AuroraUniverse extends JavaPlugin {
             if (tabCompleter != null) {
                 command.setTabCompleter(tabCompleter);
             }
-            if (AuroraConfiguration.getDebugMode()) {
+            if (AuroraLanguage.getDebugMode()) {
                 Logger.debug("Registered command &b/" + name);
             }
             return true;
@@ -286,7 +286,7 @@ public final class AuroraUniverse extends JavaPlugin {
     }
 
     public static void registerListener(org.bukkit.event.Listener listener) {
-        if (AuroraConfiguration.getDebugMode()) {
+        if (AuroraLanguage.getDebugMode()) {
             Logger.debug("Registered listener &b" + listener.getClass().getSimpleName());
         }
         getInstance().getServer().getPluginManager().registerEvents(listener, getInstance());

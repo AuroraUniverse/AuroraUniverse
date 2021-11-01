@@ -12,26 +12,29 @@ import ru.etysoft.aurorauniverse.events.NewTownEvent;
 import ru.etysoft.aurorauniverse.events.PlayerEnterTownEvent;
 import ru.etysoft.aurorauniverse.events.PreTownCreateEvent;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.world.Region;
 import ru.etysoft.aurorauniverse.world.Resident;
+import ru.etysoft.aurorauniverse.world.ResidentRegion;
 import ru.etysoft.aurorauniverse.world.Town;
 
 import java.util.Collection;
 
 public class Towns {
 
-    public static Town getTown(String name) {
+    public static Town getTown(String name) throws TownNotFoundedException {
         if (AuroraUniverse.townList != null) {
             if (AuroraUniverse.townList.containsKey(name)) {
                 return AuroraUniverse.townList.get(name);
             } else {
-                return null;
+                throw new TownNotFoundedException();
             }
         } else {
             Logger.warning("Townlist is null!");
-            return null;
+            throw new TownNotFoundedException();
         }
     }
 
@@ -87,39 +90,114 @@ public class Towns {
     }
 
 
+    private static void getWelcomeMessage(Player player, Region rg, Town town, boolean notifyRegion, boolean notifyTown)
+    {
+        String townPvp = "";
+        if(town.isTownPvp())
+        {
+            townPvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("pvp"));
+        }
+        else
+        {
+            townPvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("no-pvp"));
+        }
+        if(notifyRegion && !notifyTown) {
+            ResidentRegion residentRegion = (ResidentRegion) rg;
+            String rpvp = "";
+            if (residentRegion.isPvp()) {
+                rpvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("pvp"));
+            } else {
+                rpvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("no-pvp"));
+            }
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString(Messages.Keys.REGION_WELCOME)
+                    .replace("%s", residentRegion.getOwner().getName()))
+                    .replace("%p", rpvp)));
+        }
+       if(!notifyRegion && notifyTown)
+        {
+
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()))
+                    .replace("%p", townPvp)));
+
+        }
+       if(notifyRegion && notifyTown)
+        {
+            ResidentRegion residentRegion = (ResidentRegion) rg;
+            String rpvp = "";
+            if (residentRegion.isPvp()) {
+                rpvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("pvp"));
+            } else {
+                rpvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("no-pvp"));
+            }
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString(Messages.Keys.TOWN_REGION_WELCOME)
+                    .replace("%town", rg.getTown().getName()))
+                    .replace("%tpvp", townPvp)
+                    .replace("%resident", residentRegion.getOwner().getName())
+                    .replace("%rpvp", rpvp)));
+        }
+    }
+
     public static void handleChunkChange(Player player, Chunk ch) {
         if (AuroraUniverse.alltownblocks.containsKey((ch))) {
+            //чанк городской
             Region rg = AuroraUniverse.alltownblocks.get((ch));
 
             Resident resident = Residents.getResident(player);
             if (resident != null) {
                 PlayerEnterTownEvent playerEnterTownEvent = new PlayerEnterTownEvent(rg.getTown(), resident);
                 Town town = rg.getTown();
-                String pvp = "";
-                if(town.isPvp())
-                {
-                    pvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("pvp"));
-                }
-                else
-                {
-                    pvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("no-pvp"));
-                }
+
+                Chunk lastChunk = resident.getLastChunk();
+
+                resident.setLastChunk(ch);
+
+                boolean notifyTown = false;
+                boolean notifyRegion = false;
+
                 if (resident.isLastWild()) {
+                    // пришёл в город
                     Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
                     resident.setLastwild(false);
-                    resident.setLastTown(rg.getTown().getName());
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()))
-                    .replace("%p", pvp)));
+
+                    resident.setLastTown(town.getName());
+                    notifyTown = true;
+
                 } else if (!rg.getTown().getName().equals(resident.getLastTown())) {
+                    // перешёл в другой город
                     Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
                     resident.setLastTown(rg.getTown().getName());
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()))
-                    .replace("%p", pvp)));
+                    notifyTown = true;
                 }
+                if(lastChunk != null)
+                {
+                    Region region = AuroraUniverse.alltownblocks.get(lastChunk);
+                    if(region != null)
+                    {
+                        // пришёл из региона игрока
+
+                        if(region.getTown() != town)
+                        {
+                            notifyTown = true;
+                        }
+                        else if(!(rg instanceof ResidentRegion))
+                        {
+                            notifyTown = true;
+                        }
+
+                    }
+                }
+
+                if(rg instanceof ResidentRegion)
+                {
+                    notifyRegion = true;
+                }
+
+                getWelcomeMessage(player, rg, town, notifyRegion, notifyTown);
             } else {
                 Logger.warning("Can't find Resident with nickname " + player.getName());
             }
         } else {
+            // чанк не городской
             Resident resident = Residents.getResident(player);
             if (resident != null) {
                 if (!resident.isLastWild()) {

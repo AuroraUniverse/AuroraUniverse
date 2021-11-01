@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 
 import java.util.ArrayList;
@@ -14,11 +15,21 @@ public class ResidentRegion extends Region {
 
     private Resident owner;
     private ArrayList<String> members = new ArrayList<>();
+    private boolean isPvp;
 
     public ResidentRegion(Town town, Resident owner) {
         super(town);
         this.owner = owner;
         members.add(owner.getName());
+        isPvp = false;
+    }
+
+    public void setPvp(boolean pvp) {
+        isPvp = pvp;
+    }
+
+    public boolean isPvp() {
+        return isPvp;
     }
 
     public boolean addMember(Resident resident)
@@ -49,8 +60,7 @@ public class ResidentRegion extends Region {
         return regionObj;
     }
 
-    public static ResidentRegion fromJSON(JSONObject regionObj)
-    {
+    public static ResidentRegion fromJSON(JSONObject regionObj) throws TownNotFoundedException {
         String ownerName = (String) regionObj.get(JsonKeys.OWNER);
         Resident ownerResident = Residents.getResident(ownerName);
 

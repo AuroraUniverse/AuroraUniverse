@@ -7,10 +7,13 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
+import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,153 +44,137 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("withdraw");
         firstPossibleArg.add("gui");
         firstPossibleArg.add("accept");
-        for(Town r : Towns.getTowns())
-        {
+        for (Town r : Towns.getTowns()) {
             firstPossibleArg.add(r.getName());
         }
 
 
-
-
-
         if (args.length >= 1) {
-          if(args.length == 1)
-          {
-              possibleArgs.addAll(firstPossibleArg);
-          }
-          else if(args.length == 2)
-          {
-              if(args[0].equals("set"))
-              {
-                  possibleArgs.add("spawn");
-                  possibleArgs.add("perm");
-                  possibleArgs.add("group");
-                  possibleArgs.add("mayor");
-                  possibleArgs.add("tax");
-              }
-              else if(args[0].equals("toggle"))
-              {
-                  possibleArgs.add("pvp");
-                  possibleArgs.add("fire");
-                  possibleArgs.add("mobs");
-                  possibleArgs.add("explosions");
-              }
-              else if(args[0].equals("region"))
-              {
-                  possibleArgs.add("add");
-                  possibleArgs.add("kick");
-                  possibleArgs.add("give");
-                  possibleArgs.add("reset");
-              }
-              else if(args[0].equals("accept"))
-              {
-                  for(Town r : Towns.getTowns())
-                  {
-                      possibleArgs.add(r.getName());
-                  }
-              }
-              else if(args[0].equals("invite"))
-              {
-                  for(Player r : Bukkit.getOnlinePlayers())
-                  {
-                      possibleArgs.add(r.getName());
-                  }
-              }
-              else if(args[0].equals("kick"))
-              {
-                  Resident resident = Residents.getResident(sender.getName());
-                  if(resident != null && resident.hasTown()) {
-                      Town town = resident.getTown();
-                      for (Resident r : town.getResidents()) {
-                          possibleArgs.add(r.getName());
-                      }
-                  }
-              }
+            if (args.length == 1) {
+                possibleArgs.addAll(firstPossibleArg);
+            } else if (args.length == 2) {
+                if (args[0].equals("set")) {
+                    possibleArgs.add("spawn");
+                    possibleArgs.add("perm");
+                    possibleArgs.add("group");
+                    possibleArgs.add("mayor");
+                    possibleArgs.add("tax");
+                } else if (args[0].equals("toggle")) {
+                    possibleArgs.add("pvp");
+                    possibleArgs.add("fire");
+                    possibleArgs.add("mobs");
+                    possibleArgs.add("explosions");
+                } else if (args[0].equals("region")) {
+                    possibleArgs.add("add");
+                    possibleArgs.add("kick");
+                    possibleArgs.add("give");
+                    possibleArgs.add("reset");
+                    possibleArgs.add("pvp");
+                } else if (args[0].equals("accept")) {
+                    for (Town r : Towns.getTowns()) {
+                        possibleArgs.add(r.getName());
+                    }
+                } else if (args[0].equals("spawn") && Permissions.canTeleportOnTowns(sender)) {
+                    for (Town r : Towns.getTowns()) {
+                        possibleArgs.add(r.getName());
+                    }
+                } else if (args[0].equals("invite")) {
+                    for (Player r : Bukkit.getOnlinePlayers()) {
+                        possibleArgs.add(r.getName());
+                    }
+                } else if (args[0].equals("kick")) {
+                    try {
+                        Resident resident = Residents.getResident(sender.getName());
+                        if (resident != null && resident.hasTown()) {
+                            Town town = resident.getTown();
+                            for (Resident r : town.getResidents()) {
+                                possibleArgs.add(r.getName());
+                            }
+                        }
+                    } catch (Exception ignored) {
+                    }
+                }
 
-          }
-          else if(args.length == 3)
-          {
-              if(args[0].equals("toggle"))
-              {
-                  possibleArgs.add("on");
-                  possibleArgs.add("off");
-              }
-              else if(args[1].equals("perm"))
-              {
+            } else if (args.length == 3) {
+                if (args[0].equals("toggle")) {
+                    possibleArgs.add("on");
+                    possibleArgs.add("off");
+                } else if (args[1].equals("perm")) {
 
-                  for(String groupName : AuroraPermissions.getGroups().keySet())
-                  {
-                      possibleArgs.add(groupName);
-                  }
-              }
-              if((args[0].equals("region") && (args[1].equals("give") | args[1].equals("add") | args[1].equals("region"))))
-              {
-                  Player player = (Player)  sender;
-                  Resident resident = Residents.getResident(player.getName());
-                  if(resident != null)
-                  {
-                      if(resident.hasTown())
-                      {
-                          Town town = resident.getTown();
-                          for(Resident r : town.getResidents())
-                          {
-                              possibleArgs.add(r.getName());
-                          }
-                      }
-                  }
-              }
-              if(args[1].equals("group"))
-              {
-                  Player player = (Player)  sender;
-                  Resident resident = Residents.getResident(player.getName());
-                  if(resident != null)
-                  {
-                      if(resident.hasTown())
-                      {
-                          for(String groupName : AuroraPermissions.getGroups().keySet())
-                          {
-                              possibleArgs.add(groupName);
-                          }
-                      }
-                  }
-              }
+                    for (String groupName : AuroraPermissions.getGroups().keySet()) {
+                        possibleArgs.add(groupName);
+                    }
+                }
+
+                if ((args[0].equals("region") && (args[1].equals("pvp"))))
+                {
+                    possibleArgs.add("on");
+                    possibleArgs.add("off");
+                }
+
+                if ((args[0].equals("region") && (args[1].equals("give") | args[1].equals("add") | args[1].equals("region")))) {
+                    Player player = (Player) sender;
+                    Resident resident = Residents.getResident(player.getName());
+                    if (resident != null) {
+                        if (resident.hasTown()) {
+
+                            try {
+                                Town town = resident.getTown();
+                                for (Resident r : town.getResidents()) {
+                                    possibleArgs.add(r.getName());
+                                }
+                            } catch (TownNotFoundedException ignored) {
+
+                            }
+
+                        }
+                    }
+                }
+                if (args[1].equals("group")) {
+                    Player player = (Player) sender;
+                    Resident resident = Residents.getResident(player.getName());
+                    if (resident != null) {
+                        if (resident.hasTown()) {
+                            for (String groupName : AuroraPermissions.getGroups().keySet()) {
+                                possibleArgs.add(groupName);
+                            }
+                        }
+                    }
+                }
 
 
-          }
-          else if(args.length == 4)
-          {
-              if(args[1].equals("perm"))
-              {
-                  possibleArgs.add("build");
-                  possibleArgs.add("destroy");
-                  possibleArgs.add("use");
-                  possibleArgs.add("switch");
-              }
-              if(args[1].equals("group"))
-              {
-                  Player player = (Player)  sender;
-                  Resident resident = Residents.getResident(player.getName());
-                  if(resident != null)
-                  {
-                      if(resident.hasTown())
-                      {
-                          Town town = resident.getTown();
-                          for(Resident r : town.getResidents())
-                          {
-                              possibleArgs.add(r.getName());
-                          }
-                      }
-                  }
-              }
-          }
+            } else if (args.length == 4) {
+                if (args[1].equals("perm")) {
+                    possibleArgs.add("build");
+                    possibleArgs.add("destroy");
+                    possibleArgs.add("use");
+                    possibleArgs.add("switch");
+                }
+                if (args[1].equals("group")) {
+                    Player player = (Player) sender;
+                    Resident resident = Residents.getResident(player.getName());
+                    if (resident != null) {
+                        if (resident.hasTown()) {
+
+                            try {
+                                Town town = resident.getTown();
+                                for (Resident r : town.getResidents()) {
+                                    possibleArgs.add(r.getName());
+                                }
+                            } catch (TownNotFoundedException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                }
+            }
         } else {
 
         }
 
-        for(String arg : possibleArgs)
-        {
-            if(arg.contains(args[args.length - 1]))
-            {
+        for (String arg : possibleArgs) {
+            if (arg.contains(args[args.length - 1])) {
                 result.add(arg);
             }
         }

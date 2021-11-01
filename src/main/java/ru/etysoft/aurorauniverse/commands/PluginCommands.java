@@ -6,11 +6,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
+import ru.etysoft.aurorauniverse.commands.town.AdminCommands;
 import ru.etysoft.aurorauniverse.data.Messages;
+import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Town;
@@ -28,10 +31,10 @@ public class PluginCommands implements CommandExecutor {
 
                 if (args[1].equalsIgnoreCase("on")) {
                     // TODO: add in .yml
-                    AuroraConfiguration.setDebugMode(true);
+                    AuroraLanguage.setDebugMode(true);
                     Messaging.sendPrefixedMessage("Now debug mode is &aenabled", sender);
                 } else if (args[1].equalsIgnoreCase("off")) {
-                    AuroraConfiguration.setDebugMode(false);
+                    AuroraLanguage.setDebugMode(false);
                     Messaging.sendPrefixedMessage("Now debug mode is &cdisabled", sender);
                 }  else {
                     sender.sendMessage(Messages.wrongArgs());
@@ -65,6 +68,8 @@ public class PluginCommands implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("reload")) {
                 reload(sender, args);
+            } else if (args[0].equalsIgnoreCase("town")) {
+                new AdminCommands(sender, Residents.getResident(sender.getName()), args);
             } else if (args[0].equalsIgnoreCase("debug")) {
                 setDebug(sender, args);
             } else if (args[0].equalsIgnoreCase("stalin")) {
@@ -72,7 +77,7 @@ public class PluginCommands implements CommandExecutor {
                     StalinNPC.create(((Player) sender).getLocation());
                 }
             } else if (args[0].equalsIgnoreCase("dhand")) {
-                if (AuroraConfiguration.getDebugMode()) {
+                if (AuroraLanguage.getDebugMode()) {
                     if (debugHand.contains(sender.getName())) {
                         debugHand.remove(sender.getName());
                     } else {
@@ -85,7 +90,13 @@ public class PluginCommands implements CommandExecutor {
                 if(args.length > 2)
                 {
                     if (Permissions.isAdmin(sender, true)) {
-                        Town town = Towns.getTown(args[1]);
+                        Town town = null;
+                        try {
+                            town = Towns.getTown(args[1]);
+                        } catch (TownNotFoundedException e) {
+                            e.printStackTrace();
+                            sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.NOT_REGISTERED_TOWN));
+                        }
                         town.setBonusChunks(town.getBonusChunks() + Integer.parseInt(args[2]));
                         Messaging.sendPrefixedMessage("Successfully gave " + args[1] + " " + args[2] + " bonus chunks", sender);
                     }

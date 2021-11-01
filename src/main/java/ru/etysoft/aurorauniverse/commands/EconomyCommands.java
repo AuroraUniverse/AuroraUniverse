@@ -4,10 +4,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -62,15 +61,15 @@ public class EconomyCommands implements CommandExecutor {
                             double toPay = Double.valueOf(args[2]);
                             if (from.takeBalance(toPay)) {
                                 to.giveBalance(toPay);
-                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
                             } else {
-                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.no-money").replace("%s", toPay + ""), sender);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.no-money").replace("%s", toPay + ""), sender);
                             }
                         } catch (Exception e) {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
                         }
                     } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
                     }
                 } else {
                     Messaging.sendPrefixedMessage("Please, use &f/money give &band &f/money take&b from console!", sender);
@@ -91,12 +90,12 @@ public class EconomyCommands implements CommandExecutor {
                     try {
                         double toPay = Double.valueOf(args[2]);
                         to.giveBalance(toPay);
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
                     } catch (Exception e) {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
                     }
                 } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
                 }
             } else {
                 Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
@@ -114,12 +113,12 @@ public class EconomyCommands implements CommandExecutor {
                     try {
                         double toPay = Double.valueOf(args[2]);
                         to.takeBalance(toPay);
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
                     } catch (Exception e) {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
                     }
                 } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.not-found").replace("%s", args[1]), sender);
                 }
             } else {
                 Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);

@@ -3,7 +3,6 @@ package ru.etysoft.aurorauniverse.world;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
@@ -11,10 +10,8 @@ import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Numbers;
-
-import java.util.ArrayList;
 
 
 public class WorldTimer {
@@ -68,7 +65,7 @@ public class WorldTimer {
 
                     if(System.currentTimeMillis() - lastTimeMillis >= delay)
                     {
-                        AuroraChat.sendGlobalMessage(AuroraConfiguration.getColorString("world-timer"));
+                        AuroraChat.sendGlobalMessage(AuroraLanguage.getColorString("world-timer"));
                         lastTimeMillis = System.currentTimeMillis();
 
 
@@ -97,7 +94,7 @@ public class WorldTimer {
 
                             if(town.getBank().getBalance() < sum)
                             {
-                                AuroraChat.sendGlobalMessage(AuroraConfiguration.getColorString("town-out-money")
+                                AuroraChat.sendGlobalMessage(AuroraLanguage.getColorString("town-out-money")
                                 .replace("%s", town.getName()));
                                 town.delete();
                             }

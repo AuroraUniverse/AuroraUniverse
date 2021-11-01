@@ -1,7 +1,7 @@
 package ru.etysoft.aurorauniverse;
 
 import org.bukkit.Bukkit;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 
 public class Logger {
@@ -13,7 +13,7 @@ public class Logger {
 
     public static void debug(String s)
     {
-        if (AuroraConfiguration.getDebugMode()) {
+        if (AuroraLanguage.getDebugMode()) {
             Bukkit.getConsoleSender().sendMessage(ColorCodes.toColor(AuroraUniverse.getPrefix() + " &a[DEBUG] &f" + s));
         }
     }

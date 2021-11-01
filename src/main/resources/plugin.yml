@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.1.2.0
+version: 0.2.0.0
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
 depend: [EasyPluginCore]
@@ -151,6 +151,10 @@ permissions:
     default: op
     description: Teleport on town spawn
 
+  teleport.towns:
+    default: op
+    description: Teleport on towns
+
   #############
   #    Set    #
   #############
@@ -197,6 +201,7 @@ permissions:
       town.region.kick: true
       town.region.bypass: true
       town.region.info: true
+      town.region.pvp: true
 
   town.region.give:
     default: op
@@ -213,6 +218,10 @@ permissions:
   town.region.reset:
     default: op
     description: Reset region to town owned
+
+  town.region.pvp:
+    default: op
+    description: Toggle pvp in region
 
   town.region.addmember:
     default: op

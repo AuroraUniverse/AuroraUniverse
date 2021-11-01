@@ -8,8 +8,9 @@ import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.chat.listeners.ChatListener;
 import ru.etysoft.aurorauniverse.data.Residents;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.world.Resident;
 
@@ -41,10 +42,10 @@ public class AuroraChat {
         if (resident != null) {
             int channel = resident.getChatMode();
             if (channel == AuroraChat.Channels.GLOBAL) {
-                message = AuroraConfiguration.getColorString("chat.global").replace("%sender%", playerSender.getName())
+                message = AuroraLanguage.getColorString("chat.global").replace("%sender%", playerSender.getName())
                         .replace("%message%", message);
             } else if (channel == AuroraChat.Channels.LOCAL) {
-                message = AuroraConfiguration.getColorString("chat.local").replace("%sender%", playerSender.getName())
+                message = AuroraLanguage.getColorString("chat.local").replace("%sender%", playerSender.getName())
                         .replace("%message%",message);
                 Set<Player> recipients = new HashSet<>();
                 for (Player player : Bukkit.getOnlinePlayers()) {
@@ -55,7 +56,7 @@ public class AuroraChat {
                     }
                 }
                 if (recipients.size() == 1) {
-                    playerSender.sendMessage(AuroraConfiguration.getColorString("chat.local-nobody"));
+                    playerSender.sendMessage(AuroraLanguage.getColorString("chat.local-nobody"));
                 }
                 finalRecipients = recipients;
 
@@ -65,16 +66,20 @@ public class AuroraChat {
                 Set<Player> recipients = new HashSet<>();
                 if(!resident.hasTown())
                 {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), playerSender);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), playerSender);
                     return false;
                 }
-                for (Resident townResident : resident.getTown().getResidents()) {
-                    Player player = Bukkit.getPlayer(townResident.getName());
-                    if(player != null)
-                    {
-                        recipients.add(Bukkit.getPlayer(townResident.getName()));
-                    }
+                try {
+                    for (Resident townResident : resident.getTown().getResidents()) {
+                        Player player = Bukkit.getPlayer(townResident.getName());
+                        if(player != null)
+                        {
+                            recipients.add(Bukkit.getPlayer(townResident.getName()));
+                        }
 
+                    }
+                } catch (TownNotFoundedException e) {
+                    e.printStackTrace();
                 }
 
                 finalRecipients = recipients;
@@ -95,7 +100,7 @@ public class AuroraChat {
     {
         TextComponent textComponent = new TextComponent(message);
         textComponent.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(
-                PlaceholderFormatter.process(AuroraConfiguration.getColorString("chat.hover-text"), player)).create() ) );
+                PlaceholderFormatter.process(AuroraLanguage.getColorString("chat.hover-text"), player)).create() ) );
         return textComponent;
     }
 

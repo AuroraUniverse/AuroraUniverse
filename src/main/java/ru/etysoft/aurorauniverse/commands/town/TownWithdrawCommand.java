@@ -3,7 +3,8 @@ package ru.etysoft.aurorauniverse.commands.town;
 import org.bukkit.command.CommandSender;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Towns;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -14,22 +15,24 @@ public class TownWithdrawCommand {
         if (args.length > 1) {
             if (resident == null) {
                 if (args.length > 2) {
+                    try {
                     Town town = Towns.getTown(args[1]);
                     if (town == null) {
                         Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
                     } else {
-                        try {
+
                             double towithdraw = Double.valueOf(args[2]);
                             town.withdrawBank(towithdraw);
-                        } catch (Exception e) {
-                            Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
-                        }
+
+                    }
+                    } catch (Exception e) {
+                        Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
                     }
                 } else {
                     Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
                 }
             } else {
-                if (resident.hasTown()) {
+               try {
                     if (Permissions.canWithdrawTown(sender)) {
                         Town t = resident.getTown();
                         double d = 0;
@@ -37,24 +40,24 @@ public class TownWithdrawCommand {
                             d = Double.valueOf(args[1]);
 
                         } catch (Exception e) {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), sender);
                         }
 
                         if (t.withdrawBank(d)) {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-withdraw").replace("%s", d + ""), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-withdraw").replace("%s", d + ""), sender);
                             resident.giveBalance(d);
                         } else {
-                            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantwithdraw").replace("%s", d + ""), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-cantwithdraw").replace("%s", d + ""), sender);
                         }
                     } else {
-                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
                     }
-                } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-dont-belong"), sender);
+                } catch (TownNotFoundedException ignored){
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
                 }
             }
         } else {
-            Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), sender);
         }
     }
 }

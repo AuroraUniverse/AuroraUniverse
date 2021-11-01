@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Towns;
-import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.world.Town;
@@ -12,13 +12,13 @@ import ru.etysoft.aurorauniverse.world.Town;
 public class TownListCommand {
 
     public TownListCommand(CommandSender sender, String[] args) {
-        sender.sendMessage(ColorCodes.toColor(AuroraConfiguration.getColorString("town-list")));
+        sender.sendMessage(ColorCodes.toColor(AuroraLanguage.getColorString("town-list")));
         int page = 1;
         if (args.length > 1) {
             try {
                 page = Integer.parseInt(args[1]);
             } catch (Exception e) {
-                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), sender);
             }
         }
         int townOnPage = 4;
@@ -42,7 +42,7 @@ public class TownListCommand {
             index++;
         }
 
-        sender.sendMessage(AuroraConfiguration.getColorString("town-pages").replace("%s", String.valueOf(page)).replace("%y", ((int)maxPage) + ""));
+        sender.sendMessage(AuroraLanguage.getColorString("town-pages").replace("%s", String.valueOf(page)).replace("%y", ((int)maxPage) + ""));
 
     }
 

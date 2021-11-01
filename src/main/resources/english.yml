@@ -54,10 +54,11 @@ town-settax: "New taxes set!"
 town-setmayor: "New mayor set!"
 town-cantsetmayor: "&cThis player cannot be a mayor."
 town-tax-error: "Wrong tax!"
+town-delete-canceled: "Town deletion was canceled"
 town-cantsetspawn: "&cCan't set town spawnpoint!"
 town-group-mayor: "&cYou can't edit &emayor's group"
 town-group-does-not-exists: "&cThis group does not exists!"
-town-group-set: "Successfully set group &f%s &7to resident &b%s1"
+town-group-set: "Successfully set group &f%s &7to resident &b%p"
 town-out-money: "&fTown &b%s &fhas been &cdeleted&f by taxes"
 town-resident-not-in-town: "&cThis resident do not belongs to town"
 
@@ -119,9 +120,13 @@ gui:
   toggle-fire: "&fFire (%s)"
   toggle-mobs: "&fMobs (%s)"
   toggle-pvp: "&fPvP (%s)"
-  toggle-exp: "&fExplotions (%s)"
+  toggle-exp: "&fExplosions (%s)"
   state-on: "&aON&f"
   state-off: "&cOFF&f"
+
+
+not-registered-town: "Town with that name doesn't exists"
+not-registered-resident: "Resident with that name doesn't exists"
 
 ########################################
 #                                      #
@@ -138,6 +143,8 @@ region-townowned: "&cThis is townowned region!"
 region-owner-members: "&cOnly region owner can change its members!"
 region-added: "&fSuccessfully &aadded &b%s &fto region"
 region-kicked: "&fSuccessfully &ekicked &b%s &ffrom this region"
+region-pvp-on: "&fNow pvp &aenabled &fin this chunk"
+region-pvp-off: "&fNow pvp &cdisabled &fin this chunk"
 
 # [Town errors]
 e1: "town on this chunk already exists"
@@ -149,7 +156,9 @@ too-close: "&cThis chunk is too close to another town!"
 too-far: "&cThis chunk is too far from your town!"
 
 # [Chunk notifications]
-town-welcome: "&fWelcome to the town &b%s &7(%p)"
+town-welcome: "&fWelcome to the town &b%s &7(%p&7)"
+region-welcome: "&fRegion of &b%s &7(%p&7)"
+town-region-welcome: "&fTown &b%town&7 (%tpvp&7) | &6Region of &b%resident &7(%rpvp&7)"
 world: "&eYou have entered the world! &2Be careful!"
 pvp: "&cPvP"
 no-pvp: "&aNo-PvP"
@@ -201,6 +210,7 @@ nation-accepted: "You just accepted nation request. Now your town is a nation me
 nation-created: "New nation %s created"
 nation-deleted: "Your nation has been deleted"
 nation-already: "You already in nation"
+nation-town-not-registered: "You already in nation"
 nation-invitation: "Nation %s invites your town. Type &b/n accept %s &fto accept request"
 
 ########################################
@@ -228,8 +238,19 @@ chat:
 #                                      #
 ########################################
 admin:
-  town-delete: "Town &b%s &cdeleted &fsuccessfully"
-  town-cantdelete: "Can't delete town &b%s &cdeleted &fsuccessfully"
+  town-gave-bonus: "Gave &b%s &fbonus chunks to &b%t"
+  town-cant-give-bonus: "&cCan't give &fbonus chunks to &b%t"
+  town-deleted: "Town &b%s &cdeleted &fsuccessfully"
+  town-cantdelete: "Can't delete town &b%s"
+  town-cant-add: "Can't add resident &b%s"
+  town-added: "Added resident &b%s &fto town &b%t"
+  town-removed: "Removed resident &b%s &ffrom town &b%t"
+  town-cant-remove: "Can't remove resident &b%s"
+  town-cant-deposit: "Can't deposit"
+  town-deposited: "Deposited &b%s &fto town &b%t"
+  town-cant-withdraw: "Can't withdraw"
+  town-withdraw: "Withdraw &b%s &from town &b%t"
+
 
 ########################################
 #                                      #

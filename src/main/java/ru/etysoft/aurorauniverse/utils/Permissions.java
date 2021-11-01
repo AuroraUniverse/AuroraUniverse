@@ -22,6 +22,9 @@ public class Permissions {
     public static boolean canInviteNation(CommandSender p) {
         return p.hasPermission("nation.invite");
     }
+    public static boolean canTeleportOnTowns(CommandSender p) {
+        return p.hasPermission("teleport.towns");
+    }
 
     public static boolean canAcceptNationInvite(CommandSender p) {
         return p.hasPermission("nation.accept");
@@ -153,6 +156,9 @@ public class Permissions {
 
     public static boolean canKickMemberRegion(CommandSender p) {
         return p.hasPermission("town.region.kick");
+    }
+    public static boolean canTogglePvpRegion(CommandSender p) {
+        return p.hasPermission("town.region.pvp");
     }
 
     public static boolean canBypassRegion(CommandSender p) {
