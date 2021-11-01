@@ -30,7 +30,7 @@ public class TownListCommand {
         int toIndex = fromIndex + townOnPage;
 
         for (Town town : Towns.getTowns()) {
-            if (index >= fromIndex && index <= toIndex) {
+            if (index >= fromIndex && index < toIndex) {
                 try {
                     sender.sendMessage(ChatColor.AQUA + town.getName() + ChatColor.GOLD + "(" + town.getMembersCount() + ", " + town.getMayor().getName() + ")");
                 }

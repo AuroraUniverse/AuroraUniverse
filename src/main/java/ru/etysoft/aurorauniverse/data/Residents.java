@@ -35,7 +35,7 @@ public class Residents {
      */
     public static void loadResident(Resident resident) {
         if (AuroraUniverse.residentlist.containsKey(resident.getName())) {
-            Logger.error("Resident " + resident.getName() + " already loaded from data!");
+            Logger.warning("Resident " + resident.getName() + " already loaded from data!");
         } else {
             AuroraUniverse.residentlist.put(resident.getName(), resident);
 

@@ -497,7 +497,10 @@ public class Town {
             if (townChunks.containsKey(originalLocation)) {
                 if (originalLocation != mainChunk) {
                     townChunks.remove(originalLocation);
+
                     townChunks.put(originalLocation, new ResidentRegion(this, resident));
+                    AuroraUniverse.alltownblocks.remove(originalLocation);
+                    AuroraUniverse.alltownblocks.put(originalLocation, new ResidentRegion(this, resident));
                 } else {
                     throw new RegionException("Unable to remove town's main chunk");
                 }
@@ -516,6 +519,8 @@ public class Town {
             if (originalLocation != mainChunk) {
                 townChunks.remove(originalLocation);
                 townChunks.put(originalLocation, new Region(this));
+                AuroraUniverse.alltownblocks.remove(originalLocation);
+                AuroraUniverse.alltownblocks.put(originalLocation, new Region(this));
             } else {
                 throw new RegionException("Unable to reset town's main chunk");
             }
