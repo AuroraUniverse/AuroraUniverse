@@ -1,7 +1,6 @@
 package ru.etysoft.aurorauniverse.world;
 
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -17,7 +16,6 @@ import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.Bank;
-import ru.etysoft.aurorauniverse.events.NewTownEvent;
 import ru.etysoft.aurorauniverse.events.PreTownDeleteEvent;
 import ru.etysoft.aurorauniverse.events.TownDeleteEvent;
 import ru.etysoft.aurorauniverse.events.TownRenameEvent;
@@ -177,8 +175,18 @@ public class Town {
         this.pvp = pvp;
     }
 
-    public void setMayor(Resident mayor) {
-        this.mayor = mayor;
+    public void setMayor(Resident newMayor) {
+
+        if(mayor != null)
+        {
+            mayor.setPermissionGroup("newbies");
+
+        }
+
+        newMayor.setPermissionGroup("mayor");
+
+
+        this.mayor = newMayor;
     }
 
     public void setId(String id) {
@@ -208,6 +216,7 @@ public class Town {
         town.setId ((String) jsonObject.get(JsonKeys.ID));
         town.setResTax(resTax);
         town.setNationName(nation);
+        town.getBank().setBalance((double) jsonObject.get(JsonKeys.BANK));
 
         try {
 
@@ -615,6 +624,7 @@ public class Town {
     public void addResident(Resident resident) {
         if (!resident.hasTown()) {
             residents.add(resident);
+            AuroraPermissions.setPermissions(Bukkit.getPlayer(resident.getName()), AuroraPermissions.getGroup("resident"));
             resident.setTown(name);
         }
 
@@ -629,7 +639,7 @@ public class Town {
         if (residents.contains(resident)) {
             if (!isMayor(resident)) {
                 residents.remove(resident);
-                resident.setPermissonGroup("newbies");
+                AuroraPermissions.setPermissions(Bukkit.getPlayer(resident.getName()), AuroraPermissions.getGroup("newbies"));
                 resident.setTown(null);
             }
 
@@ -689,28 +699,28 @@ public class Town {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
         if (residentRegion != null && !residentRegion.canEdit(resident)) return false;
-        return switchGroups.contains(resident.getPermissonGroupName());
+        return switchGroups.contains(resident.getPermissionGroupName());
     }
 
     public boolean canUse(Resident resident, Chunk chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
         if (residentRegion != null && !residentRegion.canEdit(resident)) return false;
-        return useGroups.contains(resident.getPermissonGroupName());
+        return useGroups.contains(resident.getPermissionGroupName());
     }
 
     public boolean canDestroy(Resident resident, Chunk chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
         if (residentRegion != null && !residentRegion.canEdit(resident)) return false;
-        return destroyGroups.contains(resident.getPermissonGroupName());
+        return destroyGroups.contains(resident.getPermissionGroupName());
     }
 
     public boolean canBuild(Resident resident, Chunk chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
         if (residentRegion != null && !residentRegion.canEdit(resident)) return false;
-        return buildGroups.contains(resident.getPermissonGroupName());
+        return buildGroups.contains(resident.getPermissionGroupName());
     }
 
     public boolean isResident(Resident resident) {
@@ -768,7 +778,7 @@ public class Town {
                     residents) {
                 r.setTown(null);
                 r.setLastwild(true);
-                r.setPermissonGroup("newbies");
+                r.setPermissionGroup("newbies");
             }
 
             if(hasNation())
@@ -885,7 +895,7 @@ public class Town {
 
     public void teleportToTownSpawn(Player pl) {
         pl.teleport(townSpawnPoint);
-        Towns.ChangeChunk(pl, pl.getLocation().getChunk());
+        Towns.handleChunkChange(pl, pl.getLocation().getChunk());
         //TODO: teleport message
     }
 

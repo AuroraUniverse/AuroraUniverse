@@ -41,6 +41,10 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("withdraw");
         firstPossibleArg.add("gui");
         firstPossibleArg.add("accept");
+        for(Town r : Towns.getTowns())
+        {
+            firstPossibleArg.add(r.getName());
+        }
 
 
 
@@ -58,6 +62,8 @@ public class TownTabCompleter implements TabCompleter {
                   possibleArgs.add("spawn");
                   possibleArgs.add("perm");
                   possibleArgs.add("group");
+                  possibleArgs.add("mayor");
+                  possibleArgs.add("tax");
               }
               else if(args[0].equals("toggle"))
               {

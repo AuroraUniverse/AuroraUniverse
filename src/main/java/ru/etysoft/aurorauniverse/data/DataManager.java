@@ -9,6 +9,7 @@ import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
 import ru.etysoft.aurorauniverse.world.Nation;
+import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
 import java.io.*;
@@ -33,8 +34,18 @@ public class DataManager {
             nations.add(nation.toJSON());
         }
 
+        JSONArray newbies = new JSONArray();
+        for (Resident newbie : Residents.getList()) {
+            if(!newbie.hasTown())
+            {
+                newbies.add(newbie.toJson());
+            }
+
+        }
+
         jsonObject.put("towns", towns);
         jsonObject.put("nations", nations);
+        jsonObject.put("newbies", newbies);
 
 
         saveStringToFile(jsonObject.toJSONString());
@@ -49,12 +60,14 @@ public class DataManager {
     public static boolean loadData() {
         JSONArray towns = null;
         JSONArray nations = null;
+        JSONArray newbies = null;
         try {
             if((new File("plugins/AuroraUniverse/data.json").exists())) {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject mainJson = (JSONObject) jsonParser.parse(readFile());
                 towns = (JSONArray) mainJson.get("towns");
                 nations = (JSONArray) mainJson.get("nations");
+                newbies = (JSONArray) mainJson.get("newbies");
 
                 for (int i = 0; i < towns.size(); i++) {
                     JSONObject jsonObject = (JSONObject) towns.get(i);
@@ -64,6 +77,16 @@ public class DataManager {
                 for (int i = 0; i < nations.size(); i++) {
                     JSONObject jsonObject = (JSONObject) towns.get(i);
                     Nation.loadFromJson(jsonObject);
+                }
+
+                for (int i = 0; i < newbies.size(); i++) {
+                    JSONObject jsonObject = (JSONObject) newbies.get(i);
+                    Resident resident = Resident.fromJSON(jsonObject);
+                    if(resident == null)
+                    {
+                        Logger.error("Cannot load resident (null, " +i + ")");
+                    }
+
                 }
             }
                 return true;

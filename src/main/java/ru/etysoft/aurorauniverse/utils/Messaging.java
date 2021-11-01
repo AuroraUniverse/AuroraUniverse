@@ -70,7 +70,7 @@ public class Messaging {
 
     }
 
-    public static String getNameFromArgs(String[] args, int fromIndex)
+    public static String getStringFromArgs(String[] args, int fromIndex)
     {
         StringBuilder name = new StringBuilder();
         int i = 0;

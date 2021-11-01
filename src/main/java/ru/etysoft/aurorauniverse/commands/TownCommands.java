@@ -8,9 +8,11 @@ import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.commands.town.*;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
+import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.world.Resident;
+import ru.etysoft.aurorauniverse.world.Town;
 
 public class TownCommands implements CommandExecutor {
 
@@ -60,7 +62,15 @@ public class TownCommands implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("toggle")) {
                     new TownToggleCommand(args, resident, sender, pl);
                 } else {
-                    Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
+                    Town town = Towns.getTown(Messaging.getStringFromArgs(args, 0));
+                    if(town != null)
+                    {
+                       Messaging.sendTownInfo(sender, town);
+                    }
+                    else
+                    {
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("no-arguments"), sender);
+                    }
                 }
             } else {
                 if (resident == null) {

@@ -5,13 +5,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
-import ru.etysoft.aurorauniverse.commands.town.*;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
-import ru.etysoft.aurorauniverse.placeholders.AuroraPlaceholdersExpansion;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
@@ -106,7 +104,7 @@ public class NationCommands implements CommandExecutor {
             if (resident.getTown().getNation() != null) {
 
                 if (resident.getTown() == resident.getTown().getNation().getCapital()) {
-                    String townName = Messaging.getNameFromArgs(args, 1);
+                    String townName = Messaging.getStringFromArgs(args, 1);
                     if (resident.getTown().getNation().getTownNames().contains(townName)) {
                         resident.getTown().getNation().removeTown(Towns.getTown(townName));
                         Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("nation-kick").replace("%s", townName), player);
@@ -127,7 +125,7 @@ public class NationCommands implements CommandExecutor {
 
     public void acceptInvite() {
         if (Permissions.canAcceptNationInvite(player)) {
-            String nationName = Messaging.getNameFromArgs(args, 1);
+            String nationName = Messaging.getStringFromArgs(args, 1);
             if (Nations.getNation(nationName) != null) {
                 Nation nation = Nations.getNation(nationName);
 
@@ -148,7 +146,7 @@ public class NationCommands implements CommandExecutor {
 
     public void inviteTown() {
         if (Permissions.canInviteNation(player)) {
-            String townName = Messaging.getNameFromArgs(args, 1);
+            String townName = Messaging.getStringFromArgs(args, 1);
             if (Towns.getTown(townName) != null) {
                 if (!resident.getTown().getNation().getInvitedTowns().contains(Towns.getTown(townName)) | !resident.getTown().getNation().hasTown(Towns.getTown(townName))) {
                     if (resident.getTown().getNation().getCapital() == resident.getTown()) {
@@ -176,7 +174,7 @@ public class NationCommands implements CommandExecutor {
     public void createNation() {
         if (Permissions.canCreateNation(player)) {
             if (resident.getTown().getNation() == null) {
-                String name = Messaging.getNameFromArgs(args, 1);
+                String name = Messaging.getStringFromArgs(args, 1);
                 if (!Towns.isNameValid(name)) {
                     Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("name-invalid").replace("%s", name), player);
                     return;

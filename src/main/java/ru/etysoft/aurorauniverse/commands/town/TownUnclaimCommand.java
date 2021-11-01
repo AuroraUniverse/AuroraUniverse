@@ -24,7 +24,7 @@ public class TownUnclaimCommand {
                     if (t.unclaimChunk(pl.getLocation().getChunk())) {
                         Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-unclaim"), sender);
                         resident.setLastwild(true);
-                        Towns.ChangeChunk(pl, pl.getLocation().getChunk());
+                        Towns.handleChunkChange(pl, pl.getLocation().getChunk());
                         pl.playSound(pl.getLocation(), Sound.ENTITY_CAT_HURT, 100.0f, 1.0f);
                     } else {
                         Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantunclaim"), sender);

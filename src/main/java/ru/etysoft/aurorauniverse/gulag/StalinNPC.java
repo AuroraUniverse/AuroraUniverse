@@ -63,7 +63,6 @@ public class StalinNPC {
                         target = player;
                     }
                 }
-                assert target != null;
                 int randomNum = ThreadLocalRandom.current().nextInt(0, 100 + 1);
                 npc.getNavigator().setTarget(spawnLocation);
                 if (target.getLocation().distance(spawnLocation) < 500) {
@@ -85,7 +84,10 @@ public class StalinNPC {
             {
                 Logger.debug("Stalin stuck!");
                 npc.getEntity().teleport(spawnLocation);
-                if(AuroraUniverse.debugmode) e.printStackTrace();
+                if(AuroraUniverse.debugmode)
+                {
+                    e.printStackTrace();
+                }
             }
         }
     }

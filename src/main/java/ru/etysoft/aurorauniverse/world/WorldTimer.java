@@ -12,6 +12,7 @@ import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.utils.AuroraConfiguration;
+import ru.etysoft.aurorauniverse.utils.Numbers;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,12 @@ public class WorldTimer {
     private WorldTimer(){
         lastTimeMillis = System.currentTimeMillis();
         start();
+    }
+
+    public double getRemainingHours()
+    {
+        long millis = System.currentTimeMillis() - lastTimeMillis;
+        return Numbers.round((delay - millis) / 3600000D);
     }
 
     private void start()

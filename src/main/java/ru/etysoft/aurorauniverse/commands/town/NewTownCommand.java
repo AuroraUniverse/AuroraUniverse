@@ -14,6 +14,7 @@ import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
+import ru.etysoft.aurorauniverse.world.WorldTimer;
 
 public class NewTownCommand {
 
@@ -48,7 +49,8 @@ public class NewTownCommand {
                             if (Towns.createTown(townname, pl)) {
                                 Resident resident = Residents.getResident(pl);
                                 resident.setBalance(resident.getBalance() - newTownPrice);
-                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-created-message").replace("%s", name), sender);
+                                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-created-message").replace("%s", name)
+                                        .replace("%h", String.valueOf(WorldTimer.getInstance().getRemainingHours())), sender);
                                 pl.playSound(pl.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 100.0f, 1.0f);
                                 Residents.getResident(pl).setLastwild(false);
                             }

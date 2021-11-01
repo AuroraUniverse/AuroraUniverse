@@ -1,6 +1,5 @@
 package ru.etysoft.aurorauniverse.listeners;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
@@ -33,7 +32,7 @@ public class PluginListener implements Listener {
               }
         }
         Residents.createResident(event.getPlayer());
-        Group group = AuroraPermissions.getGroup(Residents.getResident(event.getPlayer()).getPermissonGroupName());
+        Group group = AuroraPermissions.getGroup(Residents.getResident(event.getPlayer()).getPermissionGroupName());
         AuroraPermissions.setPermissions(event.getPlayer(), group);
 
     }
@@ -64,7 +63,7 @@ public class PluginListener implements Listener {
         } else {
 
 
-              Towns.ChangeChunk(player, event.getTo().getChunk());
+              Towns.handleChunkChange(player, event.getTo().getChunk());
 
         }
     }

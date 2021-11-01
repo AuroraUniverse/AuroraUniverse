@@ -8,20 +8,17 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
-import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.events.NewTownEvent;
 import ru.etysoft.aurorauniverse.events.PlayerEnterTownEvent;
 import ru.etysoft.aurorauniverse.events.PreTownCreateEvent;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
-import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.world.Region;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
 import java.util.Collection;
-import java.util.List;
 
 public class Towns {
 
@@ -90,7 +87,7 @@ public class Towns {
     }
 
 
-    public static void ChangeChunk(Player player, Chunk ch) {
+    public static void handleChunkChange(Player player, Chunk ch) {
         if (AuroraUniverse.alltownblocks.containsKey((ch))) {
             Region rg = AuroraUniverse.alltownblocks.get((ch));
 
@@ -154,7 +151,7 @@ public class Towns {
         if (!preTownCreateEvent.isCancelled()) {
             Town newtown = new Town(name, Residents.getResident(mayor), mayor.getLocation().getChunk());
             newtown.setSpawn(mayor.getLocation());
-            Residents.getResident(mayor).setPermissonGroup("mayor");
+            Residents.getResident(mayor).setPermissionGroup("mayor");
 
             AuroraPermissions.setPermissions(mayor, AuroraPermissions.getGroup("mayor"));
             AuroraUniverse.getTownList().put(newtown.getName(), newtown);
@@ -172,7 +169,7 @@ public class Towns {
 
         Town newTown = new Town(name, mayor, mainChunk);
 
-        mayor.setPermissonGroup("mayor");
+        mayor.setPermissionGroup("mayor");
 
         if (Bukkit.getOnlinePlayers().contains(mayor.getName())) {
             AuroraPermissions.setPermissions(Bukkit.getPlayer(mayor.getName()), AuroraPermissions.getGroup("mayor"));

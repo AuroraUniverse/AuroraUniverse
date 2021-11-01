@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.commands.town;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.data.Messages;
@@ -11,8 +12,6 @@ import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
-
-import java.security.Permission;
 
 public class TownSetCommand {
 
@@ -51,6 +50,14 @@ public class TownSetCommand {
                             setTax();
                         }
                     }
+                } else if (args[1].equalsIgnoreCase("mayor")) {
+                    if (args.length > 2) {
+                        if (resident == null) {
+                            Messaging.sendPrefixedMessage(Messages.cantConsole(), sender);
+                        } else {
+                            setMayor();
+                        }
+                    }
                 } else if (args[1].equalsIgnoreCase("group")) {
                     if (args.length > 3) {
                         if (resident == null) {
@@ -73,20 +80,16 @@ public class TownSetCommand {
     }
 
     private void setTax() {
-        if(Permissions.canSetTax(sender)) {
+        if (Permissions.canSetTax(sender)) {
             Town t = resident.getTown();
             try {
                 double resTax = Double.parseDouble(args[2]);
                 t.setResTax(resTax);
                 Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-settax"), player);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-tax-error"), player);
             }
-        }
-        else
-        {
+        } else {
             Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
         }
     }
@@ -159,6 +162,32 @@ public class TownSetCommand {
         }
     }
 
+    private void setMayor() {
+        if (resident.hasTown()) {
+            Town t = resident.getTown();
+            if (Permissions.canSetMayor(sender)) {
+                String newMayorName = args[2];
+
+                Resident mayor = Residents.getResident(newMayorName);
+
+
+                if (mayor != null) {
+                    if (mayor.getTown() == t) {
+                        t.setMayor(mayor);
+                        Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-setmayor"), sender);
+                        return;
+                    }
+                }
+
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-cantsetmayor"), sender);
+
+
+            } else {
+                Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("access-denied-message"), player);
+            }
+        }
+    }
+
     private void setGroup() {
         if (resident.hasTown()) {
             Town t = resident.getTown();
@@ -168,12 +197,16 @@ public class TownSetCommand {
                 String residentNickname = args[3];
                 if (!groupName.equals("mayor")) {
                     if (Residents.getResident(residentNickname) != null && t.getResidents().contains(Residents.getResident(residentNickname))) {
-                        if (AuroraPermissions.getGroups().keySet().contains(groupName)) {
-                            Residents.getResident(residentNickname).setPermissonGroup(groupName);
-                            AuroraPermissions.setPermissions(player, AuroraPermissions.getGroup(groupName));
+                        if (!groupName.equals("newbies") && AuroraPermissions.getGroups().keySet().contains(groupName)) {
+                            Residents.getResident(residentNickname).setPermissionGroup(groupName);
                             Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-set")
                                     .replace("%s", groupName)
                                     .replace("%s1", residentNickname), sender);
+                            try {
+                                AuroraPermissions.setPermissions(Bukkit.getPlayer(residentNickname), AuroraPermissions.getGroup(groupName));
+                            } catch (Exception ignored) {
+                            }
+
                         } else {
                             Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-group-does-not-exists"), sender);
                         }

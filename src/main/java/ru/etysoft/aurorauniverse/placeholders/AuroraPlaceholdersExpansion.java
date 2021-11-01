@@ -73,7 +73,8 @@ public class AuroraPlaceholdersExpansion extends PlaceholderExpansion {
                     return AuroraConfiguration.getColorString("placeholders.no-town");
                 }
             }
-            return ColorCodes.toColor("&c[AUN ERROR]");
+            Residents.createResident(player.getName());
+            return ColorCodes.toColor("&c[NULL RES] &r");
         }
         else if(params.equalsIgnoreCase("nation"))
         {

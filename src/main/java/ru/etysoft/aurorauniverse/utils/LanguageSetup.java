@@ -4,8 +4,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class LanguageSetup {
 
-    public static FileConfiguration setup(FileConfiguration l)
-    {
+    public static FileConfiguration setup(FileConfiguration l) {
+        /*
+        Remove
+         */
         l.addDefault("authors-string", "Authors: ");
         l.addDefault("version-string", "Version: ");
         l.addDefault("apiversion-string", "API Version: ");
@@ -50,7 +52,6 @@ public class LanguageSetup {
         l.addDefault("world", "You have entered the world! Be careful!");
 
 
-
-        return  l;
+        return l;
     }
 }

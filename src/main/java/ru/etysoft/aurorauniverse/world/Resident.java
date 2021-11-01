@@ -9,6 +9,7 @@ import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.Bank;
+import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 
 public class Resident {
 
@@ -21,17 +22,15 @@ public class Resident {
     private int chatMode;
 
 
-    public Resident(String name)
-    {
+    public Resident(String name) {
         nickname = name;
         permissonGroup = "newbies";
         chatMode = AuroraChat.Channels.GLOBAL;
-        bank = new Bank(nickname,  AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getDouble("start-balance"), nickname);
+        bank = new Bank(nickname, AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getDouble("start-balance"), nickname);
         AuroraUniverse.getInstance().getEconomy().addBank(bank);
     }
 
-    public JSONObject toJson()
-    {
+    public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(Types.NAME, nickname);
         jsonObject.put(Types.BALANCE, bank.getBalance());
@@ -40,28 +39,28 @@ public class Resident {
         return jsonObject;
     }
 
-    public static Resident fromJSON(JSONObject residentJsonObj)
-    {
+    public static Resident fromJSON(JSONObject residentJsonObj) {
         String name = (String) residentJsonObj.get(Types.NAME);
-        if(Residents.createResident(name))
-        {
+        if (Residents.createResident(name)) {
             Resident resident = Residents.getResident(name);
-            if(resident != null)
-            {
+            if (resident != null) {
                 resident.setBalance((double) residentJsonObj.get(Types.BALANCE));
                 resident.setLastwild((boolean) residentJsonObj.get(Types.IS_IN_WILD));
-                resident.setPermissonGroup((String) residentJsonObj.get(Types.PERM_GROUP));
+                resident.setPermissionGroup((String) residentJsonObj.get(Types.PERM_GROUP));
                 return resident;
             }
             Logger.error("Resident is null!");
             return null;
         }
-        Logger.debug("Resident " + name + " already loaded!");
-        return  null;
+        if(Residents.getResident(name) != null)
+        {
+            return Residents.getResident(name);
+        }
+        Logger.debug("Resident " + name + " cannot be created");
+        return null;
     }
 
-    public static class Types
-    {
+    public static class Types {
         public static final String NAME = "NAME";
         public static final String BALANCE = "BALANCE";
         public static final String PERM_GROUP = "PERM_GROUP";
@@ -72,21 +71,19 @@ public class Resident {
         return Bukkit.getPlayer(nickname);
     }
 
-    public void setPermissonGroup(String auroraPermissonGroup) {
-        this.permissonGroup = auroraPermissonGroup;
+    public void setPermissionGroup(String auroraPermissionGroup) {
+        this.permissonGroup = auroraPermissionGroup;
     }
 
-    public String getPermissonGroupName() {
+    public String getPermissionGroupName() {
         return permissonGroup;
     }
 
-    public double getBalance()
-    {
+    public double getBalance() {
         return bank.getBalance();
     }
 
-    public void setBalance(double d)
-    {
+    public void setBalance(double d) {
         bank.setBalance(d);
     }
 
@@ -94,7 +91,9 @@ public class Resident {
         return bank;
     }
 
-    public void giveBalance(double d) { bank.deposit(d); }
+    public void giveBalance(double d) {
+        bank.deposit(d);
+    }
 
     public int getChatMode() {
         return chatMode;
@@ -104,31 +103,24 @@ public class Resident {
         this.chatMode = chatMode;
     }
 
-    public boolean takeBalance(double d)
-    {
-       return bank.withdraw(d);
+    public boolean takeBalance(double d) {
+        return bank.withdraw(d);
     }
 
-    public void setTown(String town)
-    {
+    public void setTown(String town) {
         townname = town;
     }
 
-    public boolean hasTown()
-    {
-        if(townname != null)
-        {
-            return  true;
-        }
-        else
-        {
-            return  false;
+    public boolean hasTown() {
+        if (townname != null) {
+            return true;
+        } else {
+            return false;
         }
     }
 
 
-    public String getName()
-    {
+    public String getName() {
         return nickname;
     }
 
@@ -140,18 +132,15 @@ public class Resident {
         this.lastwild = lastwild;
     }
 
-    public Town getTown()
-    {
-      return Towns.getTown(townname);
+    public Town getTown() {
+        return Towns.getTown(townname);
     }
 
-    public String getLastTown()
-    {
+    public String getLastTown() {
         return lasttownname;
     }
 
-    public void setLastTown(String name)
-    {
-      lasttownname = name;
+    public void setLastTown(String name) {
+        lasttownname = name;
     }
 }

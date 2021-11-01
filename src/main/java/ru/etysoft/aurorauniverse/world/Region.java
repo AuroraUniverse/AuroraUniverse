@@ -2,6 +2,7 @@ package ru.etysoft.aurorauniverse.world;
 
 import org.bukkit.Chunk;
 import org.json.simple.JSONObject;
+import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Towns;
 
@@ -58,7 +59,8 @@ public class Region {
                keyChunk = chunk;
            }
         }
-
+        AuroraUniverse.alltownblocks.remove(keyChunk);
+        AuroraUniverse.alltownblocks.put(keyChunk, region);
         fromTown.getTownChunks().remove(keyChunk);
 
         toTown.getTownChunks().put(keyChunk, region);

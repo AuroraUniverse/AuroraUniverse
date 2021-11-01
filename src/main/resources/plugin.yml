@@ -1,7 +1,8 @@
 name: AuroraUniverse
-version: 0.1.1.3
+version: 0.1.2.0
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
+depend: [EasyPluginCore]
 api-version: 1.13
 author: karlov_m
 description: AuroraUniverse is a good plugin that provides a system of cities, wars, trade, countries and various ranks. A good, and most importantly confident solution for moving from Towny.
@@ -179,6 +180,9 @@ permissions:
     default: op
     description: Give group to player
 
+  town.set.mayor:
+    default: op
+    description: Change mayor of town
   ################
   #    Region    #
   ################

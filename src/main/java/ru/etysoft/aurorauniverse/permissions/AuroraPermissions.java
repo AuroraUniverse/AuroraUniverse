@@ -62,28 +62,34 @@ public class AuroraPermissions {
             Player player = Bukkit.getPlayer(name);
             if(player != null)
             {
-                Group group = getGroup(resident.getPermissonGroupName());
+                Group group = getGroup(resident.getPermissionGroupName());
                 setPermissions(player, group);
             }
         });
     }
 
     public static void setPermissions(Player player, Group group) {
-        PermissionAttachment attachment = player.addAttachment(AuroraUniverse.getInstance());
-        if (permissionDictionary.containsKey(player.getUniqueId())) {
-            Logger.debug("Remove permissions from &b" + player.getName());
-            player.removeAttachment(permissionDictionary.get(player.getUniqueId()));
-            permissionDictionary.remove(player.getUniqueId());
-        }
+        if(player != null) {
+            PermissionAttachment attachment = player.addAttachment(AuroraUniverse.getInstance());
+            if (permissionDictionary.containsKey(player.getUniqueId())) {
+                Logger.debug("Remove permissions from &b" + player.getName());
+                player.removeAttachment(permissionDictionary.get(player.getUniqueId()));
+                permissionDictionary.remove(player.getUniqueId());
+            }
 
-        Logger.debug("Attaching permissions of " + group.getName() + " to " + player.getName());
-        Residents.getResident(player.getName()).setPermissonGroup(group.getName());
-        for (String permission :
-                group.getPermissions()) {
-            attachment.setPermission(permission, !permission.startsWith("-"));
-            Logger.debug("Set permisson " + permission);
+            Logger.debug("Attaching permissions of " + group.getName() + " to " + player.getName());
+            Residents.getResident(player.getName()).setPermissionGroup(group.getName());
+            for (String permission :
+                    group.getPermissions()) {
+                attachment.setPermission(permission, !permission.startsWith("-"));
+                Logger.debug("Set permisson " + permission);
+            }
+            permissionDictionary.put(player.getUniqueId(), attachment);
         }
-        permissionDictionary.put(player.getUniqueId(), attachment);
+        else
+        {
+            Logger.debug("[Permissions] Player " + " is null!");
+        }
     }
 
     public static Map<String, Group> getGroups() {

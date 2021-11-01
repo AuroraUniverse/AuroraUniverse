@@ -16,7 +16,7 @@ public class TownLeaveCommand {
         } else {
             if (resident.hasTown()) {
                 Town t = resident.getTown();
-                if (Permissions.canLeaveTown(sender) && t.getMayor() == resident) {
+                if (Permissions.canLeaveTown(sender) && t.getMayor() != resident) {
 
                     t.removeResident(resident);
                     Messaging.sendPrefixedMessage(AuroraConfiguration.getColorString("town-leave").replace("%s", t.getName()), sender);

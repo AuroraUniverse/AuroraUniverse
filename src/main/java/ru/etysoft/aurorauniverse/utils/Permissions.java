@@ -55,6 +55,9 @@ public class Permissions {
     public static boolean canSetTax(CommandSender p) {
         return p.hasPermission("town.set.tax");
     }
+    public static boolean canSetMayor(CommandSender p) {
+        return p.hasPermission("town.set.mayor");
+    }
 
     public static boolean canDeleteTown(CommandSender p) {
         return p.hasPermission("town.delete");
