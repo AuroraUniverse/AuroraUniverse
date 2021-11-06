@@ -43,6 +43,7 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("unclaim");
         firstPossibleArg.add("withdraw");
         firstPossibleArg.add("gui");
+        firstPossibleArg.add("outpost");
         firstPossibleArg.add("accept");
         for (Town r : Towns.getTowns()) {
             firstPossibleArg.add(r.getName());
@@ -73,6 +74,17 @@ public class TownTabCompleter implements TabCompleter {
                 } else if (args[0].equals("accept")) {
                     for (Town r : Towns.getTowns()) {
                         possibleArgs.add(r.getName());
+                    }
+                } else if (args[0].equals("outpost")) {
+                    try {
+                        Resident resident = Residents.getResident(sender.getName());
+                        if (resident != null && resident.hasTown()) {
+                            Town town = resident.getTown();
+
+                            possibleArgs.add(String.valueOf(town.getOutPosts().size() - 1));
+
+                        }
+                    } catch (Exception ignored) {
                     }
                 } else if (args[0].equals("spawn") && Permissions.canTeleportOnTowns(sender)) {
                     for (Town r : Towns.getTowns()) {
@@ -106,8 +118,7 @@ public class TownTabCompleter implements TabCompleter {
                     }
                 }
 
-                if ((args[0].equals("region") && (args[1].equals("pvp"))))
-                {
+                if ((args[0].equals("region") && (args[1].equals("pvp")))) {
                     possibleArgs.add("on");
                     possibleArgs.add("off");
                 }

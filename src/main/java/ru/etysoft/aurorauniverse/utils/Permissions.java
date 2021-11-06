@@ -125,9 +125,18 @@ public class Permissions {
     public static boolean canTeleportSpawn(CommandSender p) {
         return p.hasPermission("town.teleport.spawn");
     }
+    public static boolean canTeleportOutpost(CommandSender p) {
+        return p.hasPermission("town.teleport.outpost");
+    }
+    public static boolean canTeleportNationSpawn(CommandSender p) {
+        return p.hasPermission("nation.teleport");
+    }
 
     public static boolean canPay(CommandSender p) {
         return p.hasPermission("auneconomy.pay");
+    }
+    public static boolean canSendColorCodes(CommandSender p) {
+        return p.hasPermission("aunchat.color");
     }
 
     public static boolean canTake(CommandSender p) {

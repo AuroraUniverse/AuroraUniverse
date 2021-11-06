@@ -29,8 +29,11 @@ public class Messaging {
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-mayor").replace("%s", town.getMayor().getName())));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-residents").replace("%s1",
                 String.valueOf(town.getMembersCount())).replace("%s2",town.getMembersList())));
-        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-chunks") .replace("%s", String.valueOf(town.getChunksCount()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-chunks").replace("%s", String.valueOf(town.getChunksCount()))
+                .replace("%m", String.valueOf(town.getMaxChunks())).replace("%b", String.valueOf(town.getBonusChunks()))).replace("%o", String.valueOf(town.getOutPosts().size()))
+        .replace("%p", String.valueOf(AuroraUniverse.getMaxOutposts())));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-chunk-price") .replace("%s", String.valueOf(town.getNewChunkPrice()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-outpost-price") .replace("%s", String.valueOf(town.getNewOutpostPrice()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-tax") .replace("%s", String.valueOf(town.getTownTax()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-res-tax") .replace("%s", String.valueOf(town.getResTax()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-balance").replace("%s",

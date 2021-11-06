@@ -8,7 +8,7 @@
 
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
-file-version: 0.1.1.0
+file-version: 0.1.1.1
 
 ########################################
 #                                      #
@@ -41,8 +41,12 @@ town-cantcreate-message: "&cCan't create town: %s "
 town-deleted-message: "Your town was successfully deleted"
 town-delete-confirm: "&fType &b/t delete confirm &fif you really wish to delete your town"
 town-teleported-to-spawn: "You have been teleported to the town spawn"
+town-teleported-to-outpost: "You have been teleported to the town outpost"
+town-no-outpost: "&cOutpost with that number doesn't exists"
 town-dont-belong: "You don't belong to town!"
 town-claim: "&fSuccessfully &aclaimed &fa new chunk!"
+town-claim-outpost: "&fSuccessfully &aclaimed &fa new &6outpost!"
+town-cant-withdraw-outpost: "&cCan't pay for outpost! "
 town-cantclaim: "&cCan't claim a new chunk!"
 town-unclaim: "&fSuccessfully &eunclaimed &fa townchunk!"
 town-cantunclaim: "&cCan't unclaim a &ftownchunk!"
@@ -92,8 +96,9 @@ town-block-use: "&cYou can't use here!"
 
 town-mayor: "&7> &bMayor: &f%s"
 town-residents: "&7> &bResidents&7(%s1): &f%s2"
-town-chunks: "&7> &bChunks: &f%s"
+town-chunks: "&7> &bChunks: &f%s/%m (%b bonus, %o/%p outposts)"
 town-chunk-price: "&7> &bNew chunk price: &f%s"
+town-outpost-price: "&7> &bNew outpost price: &f%s"
 town-tax: "&7> &bTax: &e%s"
 town-res-tax: "&7> &bResident Tax: &e%s"
 town-pages: "Showed &f%s &7page from &f%y"
@@ -110,7 +115,7 @@ town-cantdeposit: "&cCan't deposit &f%s &cto the town bank"
 gui:
   bank: "&7Bank: &b%s"
   mayor: "&7Mayor: &b%s"
-  chunks: "&7Chunks: &b%s/%m (%b bonus)"
+  chunks: "&7Chunks: &b%s/%m (%b bonus, %o/%p outposts)"
   standing: "&3You currently standing on"
   standing-town: "&bSimple townblock"
   standing-main-chunk: "&bMain townchunk"
@@ -158,6 +163,7 @@ too-far: "&cThis chunk is too far from your town!"
 # [Chunk notifications]
 town-welcome: "&fWelcome to the town &b%s &7(%p&7)"
 region-welcome: "&fRegion of &b%s &7(%p&7)"
+outpost-welcome: "&fOutpost number &6%n&f of &b%s"
 town-region-welcome: "&fTown &b%town&7 (%tpvp&7) | &6Region of &b%resident &7(%rpvp&7)"
 world: "&eYou have entered the world! &2Be careful!"
 pvp: "&cPvP"
@@ -210,6 +216,7 @@ nation-accepted: "You just accepted nation request. Now your town is a nation me
 nation-created: "New nation %s created"
 nation-deleted: "Your nation has been deleted"
 nation-already: "You already in nation"
+nation-teleport: "You have been teleported to the capital's spawn"
 nation-town-not-registered: "You already in nation"
 nation-invitation: "Nation %s invites your town. Type &b/n accept %s &fto accept request"
 

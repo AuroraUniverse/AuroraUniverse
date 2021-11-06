@@ -9,6 +9,7 @@ import ru.etysoft.aurorauniverse.commands.town.*;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -49,6 +50,8 @@ public class TownCommands implements CommandExecutor {
                     new TownWithdrawCommand(args, resident, sender);
                 } else if (args[0].equalsIgnoreCase("set")) {
                     new TownSetCommand(args, resident, sender, pl);
+                } else if (args[0].equalsIgnoreCase("outpost")) {
+                    new OutpostCommands(sender, resident, args);
                 } else if (args[0].equalsIgnoreCase("region")) {
                     new TownRegionCommand(sender, resident, args);
                 } else if (args[0].equalsIgnoreCase("kick")) {
@@ -62,14 +65,15 @@ public class TownCommands implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("toggle")) {
                     new TownToggleCommand(args, resident, sender, pl);
                 } else {
-                    Town town = Towns.getTown(Messaging.getStringFromArgs(args, 0));
-                    if(town != null)
+
+                    try
                     {
+                        Town town = Towns.getTown(Messaging.getStringFromArgs(args, 0));
                        Messaging.sendTownInfo(sender, town);
                     }
-                    else
+                    catch (TownNotFoundedException ignored)
                     {
-                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), sender);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
                     }
                 }
             } else {

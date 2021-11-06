@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.2.0.3
+version: 0.2.1.0
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
 depend: [EasyPluginCore]
@@ -68,6 +68,7 @@ permissions:
       town.edit: true
       town.rename: true
       town.teleport.spawn: true
+      town.teleport.outpost: true
       town.set.*: true
       town.toggle.*: true
       town.region.*: true
@@ -150,6 +151,11 @@ permissions:
   town.teleport.spawn:
     default: op
     description: Teleport on town spawn
+
+  town.teleport.outpost:
+    default: op
+    description: Teleport on town spawn
+
 
   teleport.towns:
     default: op
@@ -298,9 +304,13 @@ permissions:
       nation.leave: true
       nation.delete: true
       nation.tax: true
+      nation.teleport: true
   nation.create:
     default: op
     description: Create nation
+  nation.teleport:
+    default: op
+    description: Teleport on town's spawn
   nation.invite:
     default: op
     description: Invite town into nation
@@ -317,5 +327,21 @@ permissions:
     default: op
     description: Leave from nation
   nation.delete:
+    default: op
+    description: Delete nation
+
+
+    ########################################
+    #                                      #
+    #                Chat                  #
+    #                                      #
+    ########################################
+  aunchat.*:
+    default: op
+    description: Toggle all in town
+    children:
+      nation.color: true
+
+  aunchat.color:
     default: op
     description: Delete nation

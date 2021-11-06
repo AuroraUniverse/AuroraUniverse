@@ -25,8 +25,11 @@ groups:
       - auneconomy.pay
       - auneconomy.balance
       - town.teleport.spawn
+      - town.teleport.outpost
+      - nation.teleport
     mayor:
       - town.*
       - auneconomy.pay
       - auneconomy.balance
+      - nation.*
     # Here you can add your custom permission group

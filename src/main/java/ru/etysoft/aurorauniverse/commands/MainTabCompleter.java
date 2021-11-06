@@ -40,6 +40,8 @@ public class MainTabCompleter implements TabCompleter {
                 if (args[0].equals("town")) {
                     possibleArgs.add("delete");
                     possibleArgs.add("remove");
+                    possibleArgs.add("outpost");
+                    possibleArgs.add("spawn");
                     possibleArgs.add("add");
                     possibleArgs.add("deposit");
                     possibleArgs.add("withdraw");

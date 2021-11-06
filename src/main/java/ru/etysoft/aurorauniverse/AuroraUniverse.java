@@ -33,6 +33,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public final class AuroraUniverse extends JavaPlugin {
 
@@ -40,7 +42,7 @@ public final class AuroraUniverse extends JavaPlugin {
     public static Map<String, Nation> nationList = new ConcurrentHashMap<>();
     public static Map<Chunk, Region> alltownblocks = new ConcurrentHashMap<>();
     public static Map<String, Resident> residentlist = new ConcurrentHashMap<>();
-    public static int minTownBlockDistance = 1;
+   // public static int minTownBlockDistance = 1;
     public static boolean debugmode = true;
 
     private static String warnings = "";
@@ -51,8 +53,8 @@ public final class AuroraUniverse extends JavaPlugin {
     private static FileConfiguration language;
     private static boolean haswarnings = false;
 
-    private final static String langver = "0.1.1.0";
-    private final static String confver = "0.1.0.0";
+    private final static String langver = "0.1.1.1";
+    private final static String confver = "0.1.0.1";
     private final static String permsver = "0.1.0.0";
 
     public AuroraEconomy getEconomy() {
@@ -172,6 +174,43 @@ public final class AuroraUniverse extends JavaPlugin {
         }
 
     }
+
+    public static int getMinTownsDistance()
+    {
+        int value = AuroraUniverse.getInstance().getConfig().getInt("min-distance-between-towns");
+
+        if(value >= 1)
+        {
+            return  value;
+        }
+        Logger.warning("Wrong min-distance-between-towns value: " + value);
+        return 1;
+    }
+
+    public static int getMaxOutposts()
+    {
+        int value = AuroraUniverse.getInstance().getConfig().getInt("max-outposts-count");
+
+        if(value >= 0)
+        {
+            return  value;
+        }
+        Logger.warning("Wrong max-outposts-count value: " + value);
+        return 1;
+    }
+
+    public static boolean matchesRegex(String toMatch)
+    {
+       String regex = AuroraUniverse.getInstance().getConfig().getString("string-regex");
+        try {
+            Pattern.compile(regex);
+        } catch (Exception e) {
+            Logger.error("Regex is incorrect!");
+           return false;
+        }
+        return Pattern.matches(regex ,toMatch);
+    }
+
 
     public String setupLanguageFile() {
         boolean ok = true;

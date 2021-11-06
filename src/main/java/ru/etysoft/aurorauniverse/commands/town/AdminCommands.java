@@ -1,6 +1,7 @@
 package ru.etysoft.aurorauniverse.commands.town;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
@@ -30,6 +31,14 @@ public class AdminCommands extends CommandPattern {
                             name = Messaging.getStringFromArgs(args, 2);
                             delete(name);
                             break;
+                        case "spawn":
+                            name = Messaging.getStringFromArgs(args, 2);
+                            spawn(name);
+                            break;
+                        case "outpost":
+                            name = Messaging.getStringFromArgs(args, 3);
+                            outpost(name);
+                            break;
                         case "givebonus":
                             name = Messaging.getStringFromArgs(args, 3);
                             giveBonus(name);
@@ -57,6 +66,33 @@ public class AdminCommands extends CommandPattern {
             }
         } else {
             sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.ACCESS_DENIED));
+        }
+
+    }
+
+    private void outpost(String townName) throws TownNotFoundedException {
+        Town town = Towns.getTown(townName);
+        if(getSender() instanceof Player)
+        {
+            try
+            {
+                int num = Integer.parseInt(getArgs()[2]);
+                town.teleportToOutpost((Player) getSender(), num);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+        }
+
+    }
+
+    private void spawn(String townName) throws TownNotFoundedException {
+        Town town = Towns.getTown(townName);
+        if(getSender() instanceof Player)
+        {
+            town.teleportToTownSpawn((Player) getSender());
         }
 
     }

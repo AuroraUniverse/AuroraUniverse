@@ -13,14 +13,26 @@ public class ChatListener implements Listener {
         Logger.debug("Processing message " + event.getMessage());
         String message = event.getMessage();
 
+        try {
 
-        Player playerSender = event.getPlayer();
+            Player playerSender = event.getPlayer();
 
-        if(!AuroraChat.processMessage(message, playerSender,  event.getRecipients()))
-        {
-            event.setCancelled(true);
+            String processedMessage = AuroraChat.processMessage(message, playerSender, event.getRecipients(), false);
+
+
+            event.getRecipients().clear();
+            if (processedMessage == null) {
+                event.setCancelled(true);
+                return;
+            }
+
+            event.setFormat(processedMessage);
+
         }
-        event.getRecipients().clear();
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
 
 

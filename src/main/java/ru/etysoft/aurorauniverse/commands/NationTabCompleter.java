@@ -5,8 +5,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
+import ru.etysoft.aurorauniverse.world.Nation;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
@@ -32,6 +34,11 @@ public class NationTabCompleter implements TabCompleter {
         firstPossibleArg.add("spawn");
         firstPossibleArg.add("accept");
         firstPossibleArg.add("tax");
+
+        for(Nation nation : Nations.getNations())
+        {
+            firstPossibleArg.add(nation.getName());
+        }
 
 
         if (args.length >= 1) {

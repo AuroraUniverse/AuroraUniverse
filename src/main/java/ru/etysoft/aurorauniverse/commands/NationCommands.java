@@ -65,6 +65,18 @@ public class NationCommands implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("tax")) {
                     setTax();
                 }
+                else
+                {
+                    Nation nation = Nations.getNation(Messaging.getStringFromArgs(args, 0));
+                    if(nation != null)
+                    {
+                        Messaging.sendNationInfo(sender, nation);
+                    }
+                    else
+                    {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
+                    }
+                }
             } else {
                 if (resident == null) {
                     Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
@@ -205,7 +217,7 @@ public class NationCommands implements CommandExecutor {
             try {
                 if (resident.getTown().getNation() == null) {
                     String name = Messaging.getStringFromArgs(args, 1);
-                    if (!Towns.isNameValid(name)) {
+                    if (!Nations.isNameValid(name)) {
                         Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("name-invalid").replace("%s", name), player);
                         return;
                     }
@@ -221,6 +233,25 @@ public class NationCommands implements CommandExecutor {
                     }
                 } else {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-already"), player);
+                }
+            } catch (TownNotFoundedException e) {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);
+                e.printStackTrace();
+            }
+        } else {
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
+        }
+    }
+
+    public void spawn() {
+        if (Permissions.canTeleportNationSpawn(player)) {
+            try {
+                if (resident.getTown().getNation() != null) {
+                    resident.getTown().getNation().getCapital().teleportToTownSpawn(player);
+
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-teleport"), player);
+                } else {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-nation"), player);
                 }
             } catch (TownNotFoundedException e) {
                 Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);

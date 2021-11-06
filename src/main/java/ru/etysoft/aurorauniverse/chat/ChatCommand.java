@@ -19,26 +19,33 @@ public class ChatCommand implements CommandExecutor {
 
         if(resident != null) {
             if (label.equalsIgnoreCase("g") | label.equalsIgnoreCase("global")) {
-                resident.setChatMode(AuroraChat.Channels.GLOBAL);
-                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("chat.changed")
-                        .replace("%s", AuroraLanguage.getColorString("chat.channels.global")), sender);
+
+                if(resident.getChatMode() != AuroraChat.Channels.GLOBAL) {
+                    resident.setChatMode(AuroraChat.Channels.GLOBAL);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("chat.changed")
+                            .replace("%s", AuroraLanguage.getColorString("chat.channels.global")), sender);
+                }
             }
             else  if (label.equalsIgnoreCase("local") | label.equalsIgnoreCase("lc")) {
-                resident.setChatMode(AuroraChat.Channels.LOCAL);
-                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("chat.changed")
-                        .replace("%s", AuroraLanguage.getColorString("chat.channels.local")), sender);
+                if(resident.getChatMode() != AuroraChat.Channels.LOCAL) {
+                    resident.setChatMode(AuroraChat.Channels.LOCAL);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("chat.changed")
+                            .replace("%s", AuroraLanguage.getColorString("chat.channels.local")), sender);
+                }
             }
             else  if (label.equalsIgnoreCase("tc")) {
-                resident.setChatMode(AuroraChat.Channels.TOWN);
-                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("chat.changed")
-                        .replace("%s", AuroraLanguage.getColorString("chat.channels.town")), sender);
+                if(resident.getChatMode() != AuroraChat.Channels.TOWN) {
+                    resident.setChatMode(AuroraChat.Channels.TOWN);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("chat.changed")
+                            .replace("%s", AuroraLanguage.getColorString("chat.channels.town")), sender);
+                }
             }
             if(args.length > 0)
             {
                 String message = Messaging.getStringFromArgs(args, 0);
                 if(sender instanceof Player)
                 {
-                  AuroraChat.processMessage(message, Bukkit.getPlayer(sender.getName()), new HashSet<Player>(Bukkit.getOnlinePlayers()));
+                  AuroraChat.processMessage(message, Bukkit.getPlayer(sender.getName()), new HashSet<Player>(Bukkit.getOnlinePlayers()), true);
                 }
             }
         }

@@ -16,17 +16,15 @@ import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
-import ru.etysoft.aurorauniverse.world.Region;
-import ru.etysoft.aurorauniverse.world.Resident;
-import ru.etysoft.aurorauniverse.world.ResidentRegion;
-import ru.etysoft.aurorauniverse.world.Town;
+import ru.etysoft.aurorauniverse.world.*;
 
-import java.util.Collection;
+import java.util.*;
 
 public class Towns {
 
     public static Town getTown(String name) throws TownNotFoundedException {
         if (AuroraUniverse.townList != null) {
+            if (name == null) throw new TownNotFoundedException();
             if (AuroraUniverse.townList.containsKey(name)) {
                 return AuroraUniverse.townList.get(name);
             } else {
@@ -45,6 +43,32 @@ public class Towns {
         } else {
             return false;
         }
+    }
+
+    public static ArrayList<Town> getTownsFromBiggest() {
+        ArrayList<Town> sorted = new ArrayList<Town>();
+        Collection<Town> townsList = getTowns();
+        Town[] array = new Town[townsList.size()];
+        townsList.toArray(array);
+        for (int i = array.length - 1; i > 0; i--) {
+            for (int j = 0; j < i; j++) {
+
+                if (array[j].getResidents().size() > array[j + 1].getResidents().size()) {
+                    Town tmp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = tmp;
+                }
+            }
+        }
+
+        Logger.debug("Towns : " + array.length);
+
+        for(Town town : array)
+        {
+            sorted.add(town);
+        }
+        Collections.reverse(sorted);
+        return sorted;
     }
 
 
@@ -84,24 +108,19 @@ public class Towns {
         }
     }
 
-    public static Collection<Town> getTowns()
-    {
+    public static Collection<Town> getTowns() {
         return AuroraUniverse.townList.values();
     }
 
 
-    private static void getWelcomeMessage(Player player, Region rg, Town town, boolean notifyRegion, boolean notifyTown)
-    {
+    private static void getWelcomeMessage(Player player, Region rg, Town town, boolean notifyRegion, boolean notifyTown) {
         String townPvp = "";
-        if(town.isTownPvp())
-        {
+        if (town.isTownPvp()) {
             townPvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("pvp"));
-        }
-        else
-        {
+        } else {
             townPvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("no-pvp"));
         }
-        if(notifyRegion && !notifyTown) {
+        if (notifyRegion && !notifyTown) {
             ResidentRegion residentRegion = (ResidentRegion) rg;
             String rpvp = "";
             if (residentRegion.isPvp()) {
@@ -113,15 +132,13 @@ public class Towns {
                     .replace("%s", residentRegion.getOwner().getName()))
                     .replace("%p", rpvp)));
         }
-       if(!notifyRegion && notifyTown)
-        {
+        if (!notifyRegion && notifyTown) {
 
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-welcome").replace("%s", rg.getTown().getName()))
                     .replace("%p", townPvp)));
 
         }
-       if(notifyRegion && notifyTown)
-        {
+        if (notifyRegion && notifyTown) {
             ResidentRegion residentRegion = (ResidentRegion) rg;
             String rpvp = "";
             if (residentRegion.isPvp()) {
@@ -168,28 +185,29 @@ public class Towns {
                     resident.setLastTown(rg.getTown().getName());
                     notifyTown = true;
                 }
-                if(lastChunk != null)
-                {
+                if (lastChunk != null) {
                     Region region = AuroraUniverse.alltownblocks.get(lastChunk);
-                    if(region != null)
-                    {
+                    if (region != null) {
                         // пришёл из региона игрока
 
-                        if(region.getTown() != town)
-                        {
+                        if (region.getTown() != town) {
                             notifyTown = true;
-                        }
-                        else if(!(rg instanceof ResidentRegion))
-                        {
+                        } else if (!(rg instanceof ResidentRegion)) {
                             notifyTown = true;
                         }
 
                     }
                 }
 
-                if(rg instanceof ResidentRegion)
-                {
+                if (rg instanceof ResidentRegion) {
                     notifyRegion = true;
+                }
+
+                if (rg instanceof OutpostRegion) {
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("outpost-welcome")).replace(
+                            "%s", town.getName()).replace("%n", String.valueOf(town.getOutPosts().indexOf(rg)))
+                    ));
+                    return;
                 }
 
                 getWelcomeMessage(player, rg, town, notifyRegion, notifyTown);
@@ -214,6 +232,7 @@ public class Towns {
         if (name.length() < 3) {
             return false;
         }
+        if(!AuroraUniverse.matchesRegex(name)) return false;
         int maxLength = AuroraUniverse.getInstance().getConfig().getInt("max-town-name");
         if (name.length() > maxLength) {
             return false;

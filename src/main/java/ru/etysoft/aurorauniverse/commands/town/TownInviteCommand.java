@@ -20,7 +20,7 @@ public class TownInviteCommand {
                 Player de = (Player) Bukkit.getPlayer(args[1]);
                 Resident resident2 = Residents.getResident(de);
                 try {
-                    if (resident2 != null) throw new TownNotFoundedException();
+                    if (resident2 == null) throw new TownNotFoundedException();
                     Town t = resident.getTown();
                     if (Permissions.canInviteResident(sender)) {
                         if (!t.getInvitedResidents().contains(resident2)) {

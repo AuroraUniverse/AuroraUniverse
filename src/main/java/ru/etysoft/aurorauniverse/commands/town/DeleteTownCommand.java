@@ -2,6 +2,7 @@ package ru.etysoft.aurorauniverse.commands.town;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.utils.Messaging;
@@ -36,6 +37,8 @@ public class DeleteTownCommand {
             {
                 Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-delete-canceled"), sender);
             }
+        } catch (TownNotFoundedException e) {
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
         } catch (Exception e) {
             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("admin.town-cantdelete").replace("%s", e.getMessage()), sender);
         }

@@ -3,11 +3,14 @@
 # Name of language file: russian.yml, english.yml or {yourlang}.yml (EN and RU are currently translated)
 language-file: "russian.yml"
 # DO NOT EDIT
-file-version: 0.1.0.0
+file-version: 0.1.0.1
 debug-mode: false
 
 # Use prefix in-chat messages
 use-prefix: true
+
+# Strings in nation name, town name, and chat message must match this regex pattern
+string-regex: '^[аa-яzA-ЯZ0-9 \s._\[\]\#\?\"\!\&\@\/\$\%\^\*\-\;\:\,\*\(\)\{\}Ёё]*$'
 #[NO RECOMMENDED] Kick players if they have not a Resident class, setting to false will produce ERRORS!
 kick-noresidents: true
 
@@ -15,6 +18,8 @@ price-new-town: 10.0
 price-new-nation: 20.0
 max-town-name: 10
 max-nation-name: 10
+min-distance-between-towns: 1
+max-outposts-count: 1
 
 chunk-per-resident: 10
 
@@ -23,6 +28,8 @@ chunk-per-resident: 10
 town-chunk-tax: 15.0
 town-new-chunk-tax-mod: 1.4
 town-chunk-price: 10.0
+town-outpost-price: 10.0
+town-outpost-mod-price: 4.0
 
 # ECONOMY
 
