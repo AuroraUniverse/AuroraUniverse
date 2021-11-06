@@ -1,0 +1,5 @@
+# Things that do not need to be in the repository
+.idea/
+.gradle/
+build/
+out/
