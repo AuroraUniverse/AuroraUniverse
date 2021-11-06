@@ -1,5 +1,14 @@
-# AuroraUniverse
+# AuroraUniverse by karlov_m
+<p><img align=left width="150" src="https://i.imgur.com/0zk8dT8.png"></p>
+
+___
+
+
 AuroraUniverse is a good plugin that provides a system of cities, wars, trade, countries and various ranks. A good, and most importantly confident solution for moving from Towny.
+
+
+___
+
 ## Feauters
 ### Town system
 Players can create towns with mayors and permission ranks. Town has many settingable functions: build, destroy, switch, fire spread, explotions, mob spawn, pvp and much more. Also towns can declare a war. Several towns can participate in it.
