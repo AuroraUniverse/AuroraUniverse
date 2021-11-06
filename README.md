@@ -21,3 +21,6 @@ Aurora Universe is a very careful and friendly plugin. It tries to track down an
 Unfortunately, the plugin does not support migration from Towny, but you can transfer your server to Aurora Universe after wipe and tell the players about the new cool city system on your server.
 ## Where can I download plugin?
 The plugin is currently under development and testing, so stay tuned to be the first to try out the new product.
+## Dependencies 
+Plugin requires EPCAPI for work properly
+https://github.com/karlovm/EasyPluginCore/tree/0.4
