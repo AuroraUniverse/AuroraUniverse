@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse;
 
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,6 +25,7 @@ import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.placeholders.AuroraPlaceholdersExpansion;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.LanguageSetup;
+import ru.etysoft.aurorauniverse.utils.Metrics;
 import ru.etysoft.aurorauniverse.utils.Timer;
 import ru.etysoft.aurorauniverse.world.*;
 
@@ -53,7 +55,7 @@ public final class AuroraUniverse extends JavaPlugin {
     private static FileConfiguration language;
     private static boolean haswarnings = false;
 
-    private final static String langver = "0.1.1.1";
+    private final static String langver = "0.1.1.2";
     private final static String confver = "0.1.0.1";
     private final static String permsver = "0.1.0.0";
 
@@ -117,6 +119,12 @@ public final class AuroraUniverse extends JavaPlugin {
         }
 
         // LISTENERS
+        Logger.info("Initializing metrics...");
+        try {
+            new Metrics(this, 13258);
+        } catch (Exception e) {
+            addWarning("&METRICS ERROR: " + e.getMessage());
+        }
         Logger.info("Initializing listeners and commands...");
         try {
             registerListeners();
@@ -139,7 +147,7 @@ public final class AuroraUniverse extends JavaPlugin {
             auroraEconomy = new AuroraEconomy();
         } catch (Exception e) {
             if (AuroraLanguage.getDebugMode()) {
-                Logger.debug("Can't create EconomyCore:");
+                Logger.fatalError("Can't create EconomyCore:");
                 e.printStackTrace();
             }
         }
@@ -297,7 +305,7 @@ public final class AuroraUniverse extends JavaPlugin {
         registerCommand("aurorauniverse", new PluginCommands(), new MainTabCompleter());
         registerCommand("auneco", new EconomyCommands(), new EconomyTabCompleter());
         registerCommand("aunnation", new NationCommands(), new NationTabCompleter());
-        registerCommand("aunchat", AuroraChat.getInstance().getChatCommand(), null);
+        registerCommand("aunchat", AuroraChat.getInstance().getChatCommand(), new ChatTabCompleter());
 
     }
 

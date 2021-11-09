@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.2.1.0
+version: 0.2.2.0
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
 depend: [EasyPluginCore]
@@ -23,7 +23,7 @@ commands:
     aliases: [money]
   aunchat:
     description: Chat change command
-    aliases: [chat, tc, lc, g, local, global]
+    aliases: [chat, tc, lc, g, nc, local, global]
 permissions:
 
   ########################################
@@ -154,7 +154,7 @@ permissions:
 
   town.teleport.outpost:
     default: op
-    description: Teleport on town spawn
+    description: Teleport on town outpos
 
 
   teleport.towns:
@@ -199,7 +199,7 @@ permissions:
 
   town.region.*:
     default: op
-    description: Toggle all in town
+    description: All region commands
     children:
       town.region.give: true
       town.region.reset: true

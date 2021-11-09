@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,10 +13,12 @@ import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
+import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Nation;
 import ru.etysoft.aurorauniverse.world.Resident;
+import ru.etysoft.aurorauniverse.world.Town;
 
 public class NationCommands implements CommandExecutor {
 
@@ -61,7 +64,8 @@ public class NationCommands implements CommandExecutor {
                     leave();
                 } else if (args[0].equalsIgnoreCase("kick")) {
                     kick();
-
+                } else if (args[0].equalsIgnoreCase("list")) {
+                    list();
                 } else if (args[0].equalsIgnoreCase("tax")) {
                     setTax();
                 }
@@ -121,6 +125,42 @@ public class NationCommands implements CommandExecutor {
         } else {
             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
         }
+    }
+
+    public void list()
+    {
+        player.sendMessage(ColorCodes.toColor(AuroraLanguage.getColorString("town-list")));
+        int page = 1;
+        if (args.length > 1) {
+            try {
+                page = Integer.parseInt(args[1]);
+            } catch (Exception e) {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), player);
+            }
+        }
+
+        int townOnPage = 8;
+        int index = 0;
+        double d = Double.parseDouble("" + AuroraUniverse.getTownList().size());
+        double maxPage = Math.ceil((double) d / townOnPage);
+        int fromIndex = (page - 1) * townOnPage;
+        int toIndex = fromIndex + townOnPage;
+
+
+        for (Nation nation : Nations.getNationsFromBiggest()) {
+            if (index >= fromIndex && index < toIndex) {
+                try {
+                    player.sendMessage(ChatColor.AQUA + nation.getName() + ChatColor.GOLD + "(" + nation.getTowns().size() + ", " + nation.getCapital().getName() + ")");
+                }
+                catch (Exception e)
+                {
+                    player.sendMessage(nation.getName() + " (bad nation)");
+                }
+            }
+            index++;
+        }
+
+        player.sendMessage(AuroraLanguage.getColorString("town-pages").replace("%s", String.valueOf(page)).replace("%y", ((int)maxPage) + ""));
     }
 
     public void kick() {
@@ -268,6 +308,7 @@ public class NationCommands implements CommandExecutor {
                 if (resident.getTown().getNation() != null) {
                     try {
                         double tax = Double.valueOf(args[1]);
+                        if(tax < 0)  Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-tax-error"), player);
                         if (resident.getTown() == resident.getTown().getNation().getCapital()) {
                             resident.getTown().getNation().setTax(tax);
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-tax")

@@ -25,7 +25,6 @@ groups:
       - auneconomy.pay
       - auneconomy.balance
       - town.teleport.spawn
-      - town.teleport.outpost
       - nation.teleport
     mayor:
       - town.*

@@ -8,7 +8,7 @@
 
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
-file-version: 0.1.1.1
+file-version: 0.1.1.2
 
 ########################################
 #                                      #
@@ -205,6 +205,7 @@ no-nation: "У Вас нет нации"
 wrong-nation: "Неверное имя нации"
 nation-leave: "Вы покинули свою нацию"
 nation-kick: "Вы выгнали %s из состава нации"
+nation-list: "&7>> &bСписок наций"
 nation-tax: "Вы установили налог с города на %s"
 nation-tax-error: "Неверный налог!"
 nation-wrong-town: "Города %s не существует или он уже приглашён"
@@ -230,13 +231,17 @@ chat:
   global: "&3G &7> &f%sender%: &7%message%"
   local: "&eLC &7>> &f%sender%: &e%message%"
   town: "&b Город &7>> &f%sender%: &b%message%"
+  nation: "&6 Нация &7>> &f%sender%: &b%message%"
   changed: "&fВы поменяли чат на &b%s"
+  ignore: "&fВы игнорируете &b%s &fчат"
+  no-ignore: "&fТеперь вы будете получать сообщения из канала &b%s"
   local-nobody: "&7Вас никто не слышит!"
   hover-text: "%aurorauniverse_town% %aurorauniverse_nation%"
   channels:
     town: "городской"
     local: "локальный"
     global: "глобальный"
+    nation: "нации"
 
 
 ########################################

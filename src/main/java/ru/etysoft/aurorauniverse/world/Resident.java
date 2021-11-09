@@ -13,6 +13,8 @@ import ru.etysoft.aurorauniverse.economy.Bank;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 
+import java.util.ArrayList;
+
 public class Resident {
 
     private String nickname;
@@ -22,6 +24,7 @@ public class Resident {
     private Bank bank;
     private String permissonGroup;
     private Chunk lastChunk;
+    private ArrayList<Integer> ignoreChannels = new ArrayList<>();
     private int chatMode;
 
 
@@ -31,6 +34,24 @@ public class Resident {
         chatMode = AuroraChat.Channels.GLOBAL;
         bank = new Bank(nickname, AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getDouble("start-balance"), nickname);
         AuroraUniverse.getInstance().getEconomy().addBank(bank);
+    }
+
+    public boolean toggleIgnore(int chatMode)
+    {
+        if(!ignoreChannels.contains(chatMode))
+        {
+            ignoreChannels.add(chatMode);
+            return false;
+        }
+        else
+        {
+            ignoreChannels.remove(chatMode);
+            return true;
+        }
+    }
+
+    public ArrayList<Integer> getIgnoreChannels() {
+        return ignoreChannels;
     }
 
     public Chunk getLastChunk() {

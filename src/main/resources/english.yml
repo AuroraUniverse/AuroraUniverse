@@ -205,6 +205,7 @@ no-nation: "You have no nation"
 wrong-nation: "Wrong nation name"
 nation-leave: "You leaved your nation"
 nation-kick: "You kicked %s from nation"
+nation-list: "&7>> &bList of nations"
 nation-tax: "You set nation tax to %s"
 nation-tax-error: "Wrong tax!"
 nation-wrong-town: "Town %s does not exists or already has been invited"
@@ -230,13 +231,17 @@ chat:
   global: "&3G &7> &f%sender%: &7%message%"
   local: "&eLC &7>> &f%sender%: &e%message%"
   town: "&b Town &7>> &f%sender%: &b%message%"
+  nation: "&6 Nation &7>> &f%sender%: &b%message%"
   changed: "&fYou changed your chat channel to &b%s"
+  ignore: "&fNow you ignoring &b%s"
+  no-ignore: "&fNow you receive messages from &b%s &fchat"
   local-nobody: "&7You're forever alone!"
   hover-text: "%aurorauniverse_town% %aurorauniverse_nation%"
   channels:
     town: "town"
     local: "local"
     global: "global"
+    nation: "nation"
 
 
 ########################################

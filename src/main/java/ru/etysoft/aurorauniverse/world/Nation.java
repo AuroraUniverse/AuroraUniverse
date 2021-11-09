@@ -25,6 +25,10 @@ public class Nation {
         AuroraUniverse.nationList.put(name, this);
     }
 
+    public ArrayList<Town> getTowns() {
+        return towns;
+    }
+
     public ArrayList<Town> getInvitedTowns() {
         return invitedTowns;
     }

@@ -34,6 +34,7 @@ public class NationTabCompleter implements TabCompleter {
         firstPossibleArg.add("spawn");
         firstPossibleArg.add("accept");
         firstPossibleArg.add("tax");
+        firstPossibleArg.add("list");
 
         for(Nation nation : Nations.getNations())
         {
