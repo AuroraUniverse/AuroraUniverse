@@ -173,6 +173,7 @@ permissions:
       town.set.perms: true
       town.set.group: true
       town.set.tax: true
+      town.set.mayor: true
 
   town.set.spawn:
     default: op
