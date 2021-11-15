@@ -192,7 +192,7 @@ public class Towns {
 
                         if (region.getTown() != town) {
                             notifyTown = true;
-                        } else if (!(rg instanceof ResidentRegion)) {
+                        } else if (!(rg instanceof ResidentRegion) && region instanceof ResidentRegion) {
                             notifyTown = true;
                         }
 

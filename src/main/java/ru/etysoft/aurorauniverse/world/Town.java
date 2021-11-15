@@ -203,11 +203,13 @@ public class Town {
     public void setMayor(Resident newMayor) {
 
         if (mayor != null) {
-            mayor.setPermissionGroup("newbies");
+            mayor.setPermissionGroup("resident");
+            AuroraPermissions.setPermissions(Bukkit.getPlayer(mayor.getName()), AuroraPermissions.getGroup("resident"));
 
         }
 
         newMayor.setPermissionGroup("mayor");
+        AuroraPermissions.setPermissions(Bukkit.getPlayer(newMayor.getName()), AuroraPermissions.getGroup("mayor"));
 
 
         this.mayor = newMayor;

@@ -1,8 +1,14 @@
 package ru.etysoft.aurorauniverse.listeners;
 
+import com.mysql.jdbc.Buffer;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.PortalCreateEvent;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.commands.PluginCommands;
@@ -305,6 +312,58 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void pistonEvent(BlockPistonExtendEvent event) {
+
+
+        for (Block block : event.getBlocks()) {
+            if (Towns.getTown(block.getChunk()) != null) {
+                event.setCancelled(true);
+            }
+
+            if (Towns.getTown(event.getBlock().getRelative(event.getDirection()).getChunk()) != null) {
+                event.setCancelled(true);
+            }
+        }
+
+
+    }
+
+    @EventHandler
+    public void onPortalCreate(PortalCreateEvent event) {
+
+
+        if (!event.getEntity().getType().equals(EntityType.PLAYER)) {
+            return;
+        }
+
+        Player player = (Player) event.getEntity();
+        Resident resident = Residents.getResident(player.getName());
+
+        for (BlockState block : event.getBlocks()) {
+
+            //Make decision on whether this is allowed using the PlayerCache and then a cancellable event.
+            if (Towns.getTown(block.getChunk()) != null) {
+                Town t = Towns.getTown(block.getChunk());
+
+
+                try {
+                    if(resident.getTown() != t)
+                    {
+                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-cantcreateportal"), player);
+                        event.setCancelled(true);
+                        return;
+                    }
+                } catch (TownNotFoundedException ignored) {
+
+                }
+
+
+
+            }
+        }
+    }
+
+    @EventHandler
+    public void pistonEvent(BlockPistonRetractEvent event) {
 
 
         for (Block block : event.getBlocks()) {
