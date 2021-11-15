@@ -129,7 +129,7 @@ public class NationCommands implements CommandExecutor {
 
     public void list()
     {
-        player.sendMessage(ColorCodes.toColor(AuroraLanguage.getColorString("town-list")));
+        player.sendMessage(ColorCodes.toColor(AuroraLanguage.getColorString("nation-list")));
         int page = 1;
         if (args.length > 1) {
             try {
@@ -150,7 +150,7 @@ public class NationCommands implements CommandExecutor {
         for (Nation nation : Nations.getNationsFromBiggest()) {
             if (index >= fromIndex && index < toIndex) {
                 try {
-                    player.sendMessage(ChatColor.AQUA + nation.getName() + ChatColor.GOLD + "(" + nation.getTowns().size() + ", " + nation.getCapital().getName() + ")");
+                    player.sendMessage(ChatColor.AQUA + nation.getName() + ChatColor.GOLD + "(" + (nation.getTowns().size() + 1) + ", " + nation.getCapital().getName() + ")");
                 }
                 catch (Exception e)
                 {

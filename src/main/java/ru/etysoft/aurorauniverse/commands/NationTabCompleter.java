@@ -78,7 +78,7 @@ public class NationTabCompleter implements TabCompleter {
 
 
         for (String arg : possibleArgs) {
-            if (arg.contains(args[args.length - 1])) {
+            if (arg.toLowerCase().contains(args[args.length - 1].toLowerCase())) {
                 result.add(arg);
             }
         }

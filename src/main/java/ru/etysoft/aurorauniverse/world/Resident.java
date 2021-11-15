@@ -41,12 +41,12 @@ public class Resident {
         if(!ignoreChannels.contains(chatMode))
         {
             ignoreChannels.add(chatMode);
-            return false;
+            return true;
         }
         else
         {
             ignoreChannels.remove(chatMode);
-            return true;
+            return false;
         }
     }
 

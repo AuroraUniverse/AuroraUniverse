@@ -35,3 +35,4 @@ town-outpost-mod-price: 4.0
 
 
 start-balance: 0.0
+min-pay-amount: 1.0

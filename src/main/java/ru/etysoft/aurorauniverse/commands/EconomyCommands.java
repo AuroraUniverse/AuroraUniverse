@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
@@ -59,11 +60,17 @@ public class EconomyCommands implements CommandExecutor {
                     if (to != null) {
                         try {
                             double toPay = Double.valueOf(args[2]);
-                            if (from.takeBalance(toPay)) {
-                                to.giveBalance(toPay);
-                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
-                            } else {
-                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.no-money").replace("%s", toPay + ""), sender);
+                            if(toPay > AuroraUniverse.getInstance().getConfig().getDouble("min-pay-amount")) {
+                                if (from.takeBalance(toPay)) {
+                                    to.giveBalance(toPay);
+                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
+                                } else {
+                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.no-money").replace("%s", toPay + ""), sender);
+                                }
+                            }
+                            else
+                            {
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);
                             }
                         } catch (Exception e) {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.error").replace("%s", args[2]).replace("%k", args[1]), sender);

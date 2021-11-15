@@ -49,6 +49,7 @@ public class ChatCommand implements CommandExecutor {
                     }
 
                 }
+                return true;
             }
             if (label.equalsIgnoreCase("g") | label.equalsIgnoreCase("global")) {
 

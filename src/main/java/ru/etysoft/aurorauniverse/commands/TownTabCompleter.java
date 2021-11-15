@@ -35,6 +35,7 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("deposit");
         firstPossibleArg.add("invite");
         firstPossibleArg.add("kick");
+        firstPossibleArg.add("list");
         firstPossibleArg.add("leave");
         firstPossibleArg.add("rename");
         firstPossibleArg.add("spawn");
@@ -45,10 +46,10 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("gui");
         firstPossibleArg.add("outpost");
         firstPossibleArg.add("accept");
+
         for (Town r : Towns.getTowns()) {
             firstPossibleArg.add(r.getName());
         }
-
 
         if (args.length >= 1) {
             if (args.length == 1) {

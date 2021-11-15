@@ -33,10 +33,10 @@ public class ChatTabCompleter implements TabCompleter {
 
                if(args[0].equals("ignore"))
                {
-                   possibleArgs.add(AuroraChat.getChannelName(AuroraChat.Channels.GLOBAL));
-                   possibleArgs.add(AuroraChat.getChannelName(AuroraChat.Channels.LOCAL));
-                   possibleArgs.add(AuroraChat.getChannelName(AuroraChat.Channels.TOWN));
-                   possibleArgs.add(AuroraChat.getChannelName(AuroraChat.Channels.NATION));
+                   possibleArgs.add("nation");
+                   possibleArgs.add("local");
+                   possibleArgs.add("global");
+                   possibleArgs.add("town");
                }
            }
            for (String arg : possibleArgs) {

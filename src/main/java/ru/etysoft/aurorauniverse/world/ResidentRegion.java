@@ -143,6 +143,7 @@ public class ResidentRegion extends Region {
             }
             catch (Exception e)
             {
+                Logger.error("Error bypass permission check!");
                 return false;
             }
            return members.contains(resident.getName());

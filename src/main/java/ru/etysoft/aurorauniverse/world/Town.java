@@ -740,28 +740,36 @@ public class Town {
     public boolean canSwitch(Resident resident, Chunk chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
-        if (residentRegion != null && !residentRegion.canEdit(resident)) return false;
+        if (residentRegion != null) {
+            return residentRegion.canEdit(resident);
+        }
         return switchGroups.contains(resident.getPermissionGroupName());
     }
 
     public boolean canUse(Resident resident, Chunk chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
-        if (residentRegion != null && !residentRegion.canEdit(resident)) return false;
+        if (residentRegion != null) {
+            return residentRegion.canEdit(resident);
+        }
         return useGroups.contains(resident.getPermissionGroupName());
     }
 
     public boolean canDestroy(Resident resident, Chunk chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
-        if (residentRegion != null && !residentRegion.canEdit(resident)) return false;
+        if (residentRegion != null) {
+            return residentRegion.canEdit(resident);
+        }
         return destroyGroups.contains(resident.getPermissionGroupName());
     }
 
     public boolean canBuild(Resident resident, Chunk chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
-        if (residentRegion != null && !residentRegion.canEdit(resident)) return false;
+        if (residentRegion != null) {
+            return residentRegion.canEdit(resident);
+        }
         return buildGroups.contains(resident.getPermissionGroupName());
     }
 
@@ -860,7 +868,7 @@ public class Town {
         boolean success = false;
         boolean far = false;
         boolean isOutpost = true;
-        if (townChunks.size() <= getMaxChunks()) {
+        if (townChunks.size() < getMaxChunks()) {
             for (Chunk chunk1 : AuroraUniverse.alltownblocks.keySet()) {
                 Region region = AuroraUniverse.alltownblocks.get(chunk1);
                 int m = AuroraUniverse.getMinTownsDistance();

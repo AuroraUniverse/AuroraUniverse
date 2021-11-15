@@ -197,7 +197,7 @@ public class TownSetCommand {
 
                 String groupName = args[2];
                 String residentNickname = args[3];
-                if (!groupName.equals("mayor")) {
+                if (!groupName.equals("mayor") && t.getMayor() != Residents.getResident(residentNickname)) {
                     if (Residents.getResident(residentNickname) != null && t.getResidents().contains(Residents.getResident(residentNickname))) {
                         if (!groupName.equals("newbies") && AuroraPermissions.getGroups().keySet().contains(groupName)) {
                             Residents.getResident(residentNickname).setPermissionGroup(groupName);

@@ -43,8 +43,9 @@ public class AuroraChat {
         if (!AuroraUniverse.matchesRegex(message)) return null;
         Set<Player> finalRecipients = new HashSet<>(allRecipients);
         Resident resident = Residents.getResident(playerSender);
+        int channel = Channels.GLOBAL;
         if (resident != null) {
-            int channel = resident.getChatMode();
+          channel= resident.getChatMode();
             if (channel == AuroraChat.Channels.GLOBAL) {
                 message = AuroraLanguage.getColorString("chat.global").replace("%sender%", playerSender.getName())
                         .replace("%message%", message);
@@ -137,7 +138,11 @@ public class AuroraChat {
         }
 
         for (Player player : finalRecipients) {
-            player.spigot().sendMessage(getPreparedChatMessage(message, playerSender));
+            Resident resident1 = Residents.getResident(player.getName());
+            assert resident1 != null;
+            if(!resident1.getIgnoreChannels().contains(channel)) {
+                player.spigot().sendMessage(getPreparedChatMessage(message, playerSender));
+            }
         }
         if (sendConsole) {
             Bukkit.getConsoleSender().sendMessage(message);
