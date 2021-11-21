@@ -9,9 +9,11 @@ import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
+import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +28,17 @@ public class MainTabCompleter implements TabCompleter {
 
         ArrayList<String> firstPossibleArg = new ArrayList<>();
 
-        firstPossibleArg.add("town");
-        firstPossibleArg.add("stalin");
-        firstPossibleArg.add("reload");
-        firstPossibleArg.add("debug");
-        firstPossibleArg.add("dhand");
+        firstPossibleArg.add("prices");
+
+        if(Permissions.isAdmin(sender, false))
+        {
+            firstPossibleArg.add("town");
+            firstPossibleArg.add("stalin");
+            firstPossibleArg.add("reload");
+            firstPossibleArg.add("debug");
+            firstPossibleArg.add("dhand");
+        }
+
 
 
         if (args.length >= 1) {

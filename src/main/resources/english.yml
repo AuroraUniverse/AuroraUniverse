@@ -24,6 +24,15 @@ reloaded-message: "&aPlugin was successfully reloaded with new params!"
 no-arguments: "&cWrong arguments! "
 access-denied-message: "&eYou do not have permission to do that!"
 console: "&cYou can't do that from console!"
+prices:
+  header: "&7>> &bAurora&fUniverse &aprices &7<<"
+  new-town: "&bTown &fprice: &a%s"
+  chunk-price: "&bClaim townchunk&f start price: &a%s"
+  outpost-price: "&bClaim outpost &fstart price: &a%s"
+  chunk-mod: "&bClaim &fmodifier: &a%s"
+  outpost-mod: "&bClaim outpost &fmodifier: &a%s"
+  nation-price: "&bNation &fprice: &a%s"
+  new-day: "&eTime for new day&f: &a%s"
 
 ########################################
 #                                      #

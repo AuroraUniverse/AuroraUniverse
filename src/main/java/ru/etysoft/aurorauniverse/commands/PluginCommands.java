@@ -30,7 +30,6 @@ public class PluginCommands implements CommandExecutor {
             if (Permissions.isAdmin(sender, true)) {
 
                 if (args[1].equalsIgnoreCase("on")) {
-                    // TODO: add in .yml
                     AuroraLanguage.setDebugMode(true);
                     Messaging.sendPrefixedMessage("Now debug mode is &aenabled", sender);
                 } else if (args[1].equalsIgnoreCase("off")) {
@@ -72,6 +71,8 @@ public class PluginCommands implements CommandExecutor {
                 new AdminCommands(sender, Residents.getResident(sender.getName()), args);
             } else if (args[0].equalsIgnoreCase("debug")) {
                 setDebug(sender, args);
+            } else if (args[0].equalsIgnoreCase("prices")) {
+                Messaging.sendPrices(sender);
             } else if (args[0].equalsIgnoreCase("stalin")) {
                 if (Permissions.isAdmin(sender, true)) {
                     StalinNPC.create(((Player) sender).getLocation());
@@ -93,12 +94,13 @@ public class PluginCommands implements CommandExecutor {
                         Town town = null;
                         try {
                             town = Towns.getTown(args[1]);
+                            town.setBonusChunks(town.getBonusChunks() + Integer.parseInt(args[2]));
+                            Messaging.sendPrefixedMessage("Successfully gave " + args[1] + " " + args[2] + " bonus chunks", sender);
                         } catch (TownNotFoundedException e) {
                             e.printStackTrace();
                             sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.NOT_REGISTERED_TOWN));
                         }
-                        town.setBonusChunks(town.getBonusChunks() + Integer.parseInt(args[2]));
-                        Messaging.sendPrefixedMessage("Successfully gave " + args[1] + " " + args[2] + " bonus chunks", sender);
+
                     }
                 }
 
