@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.PortalCreateEvent;
+import org.bukkit.material.Directional;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.commands.PluginCommands;
@@ -25,11 +26,13 @@ import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.Messaging;
+import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Region;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.ResidentRegion;
 import ru.etysoft.aurorauniverse.world.Town;
 
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,8 +43,10 @@ public class ProtectionListener implements Listener {
     public void PvP(EntityDamageByEntityEvent event) {
 
 
+
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();
+            if(Permissions.isAdmin(p, false)) return;
             Resident resident = Residents.getResident(p);
             try {
                 if (!Towns.getTown(p.getLocation().getChunk()).isPvp(event.getEntity().getLocation().getChunk())) {
@@ -51,6 +56,25 @@ public class ProtectionListener implements Listener {
                 }
             } catch (Exception e) {
                 //can't pass event because null
+            }
+        }
+        else if(event.getDamager() instanceof Player)
+        {
+            Player p = (Player) event.getDamager();
+            if(Permissions.isAdmin(p, false)) return;
+            Resident resident = Residents.getResident(p);
+            Town entityTown = Towns.getTown(event.getEntity().getLocation().getChunk());
+            if(entityTown != null)
+            {
+                try {
+                    if(entityTown != resident.getTown())
+                    {
+                        event.setCancelled(true);
+                    }
+                } catch (TownNotFoundedException e) {
+                    event.setCancelled(true);
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -163,6 +187,10 @@ public class ProtectionListener implements Listener {
                 materials.add(Material.DARK_OAK_PRESSURE_PLATE);
                 materials.add(Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
                 materials.add(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);
+                materials.add(Material.OAK_FENCE_GATE);
+                materials.add(Material.SPRUCE_FENCE_GATE);
+                materials.add(Material.BIRCH_FENCE_GATE);
+                materials.add(Material.JUNGLE_FENCE_GATE);
 
                 if (materials.contains(block.getType())) {
                     try {
@@ -310,16 +338,82 @@ public class ProtectionListener implements Listener {
         }
     }
 
+    private boolean canBlockMove(Block block, Block blockTo) {
+        Location from = block.getLocation();
+        Location to = blockTo.getLocation();
+
+        if (from == to) return true;
+
+
+
+            if(Towns.getTown(from.getChunk()) == null && Towns.getTown(to.getChunk()) != null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+    }
+
+    @EventHandler
+    public void onBlockDispense(BlockDispenseEvent event) {
+
+
+        if (event.getBlock().getType() != Material.DISPENSER)
+            return;
+
+
+
+        if (!canBlockMove(event.getBlock(), event.getBlock().getRelative(((Directional) event.getBlock().getBlockData()).getFacing())))
+            event.setCancelled(true);
+    }
+
+
+    @EventHandler
+    public void pistonEvent(BlockPistonRetractEvent event) {
+
+        Town town = Towns.getTown(event.getBlock().getChunk());
+        for (Block block : event.getBlocks()) {
+
+
+
+
+            if(town != null)
+            {
+               if(Towns.getTown(block.getChunk()) != town)
+               {
+                   event.setCancelled(true);
+               }
+            }
+            else
+            {
+                if(Towns.getTown(block.getChunk()) != null)
+                {
+                    event.setCancelled(true);
+                }
+            }
+
+
+        }
+
+
+    }
+
     @EventHandler
     public void pistonEvent(BlockPistonExtendEvent event) {
 
 
         for (Block block : event.getBlocks()) {
-            if (Towns.getTown(block.getChunk()) != null) {
-                event.setCancelled(true);
-            }
 
-            if (Towns.getTown(event.getBlock().getRelative(event.getDirection()).getChunk()) != null) {
+
+//            if (Towns.getTown(block.getChunk()) != null && Towns.getTown(block.getChunk()) == Towns.getTown(event.getBlock().getRelative(event.getDirection()).getChunk())) {
+//                event.setCancelled(true);
+//            }
+
+            if(!canBlockMove(block, block.getRelative(event.getDirection())))
+            {
                 event.setCancelled(true);
             }
         }
@@ -362,19 +456,6 @@ public class ProtectionListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void pistonEvent(BlockPistonRetractEvent event) {
-
-
-        for (Block block : event.getBlocks()) {
-            if (Towns.getTown(block.getChunk()) != null) {
-                event.setCancelled(true);
-            }
-
-        }
-
-
-    }
 
     @EventHandler
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {

@@ -3,7 +3,6 @@ package ru.etysoft.aurorauniverse.data;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.world.Nation;
-import ru.etysoft.aurorauniverse.world.Town;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +54,7 @@ public class Nations {
             return false;
         }
         int maxLength = AuroraUniverse.getInstance().getConfig().getInt("max-nation-name");
-        if(!AuroraUniverse.matchesRegex(name)) return false;
+        if(!AuroraUniverse.matchesNameRegex(name)) return false;
         if(name.length() > maxLength)
         {
             return  false;

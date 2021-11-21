@@ -3,14 +3,16 @@
 # Name of language file: russian.yml, english.yml or {yourlang}.yml (EN and RU are currently translated)
 language-file: "russian.yml"
 # DO NOT EDIT
-file-version: 0.1.0.1
+file-version: 0.1.0.2
 debug-mode: false
 
 # Use prefix in-chat messages
 use-prefix: true
 
-# Strings in nation name, town name, and chat message must match this regex pattern
+# Strings in chat messages etc.
 string-regex: '^[аa-яzA-ЯZ0-9 \s._\[\]\#\?\"\!\&\@\/\$\%\^\*\-\;\:\,\*\(\)\{\}Ёё]*$'
+# String in names
+name-regex: '^[аa-яzA-ЯZ0-9 \s._\[\]\#\?\"\!\&\@\/\$\%\^\*\-\;\:\,\*\(\)\{\}Ёё]*$'
 #[NO RECOMMENDED] Kick players if they have not a Resident class, setting to false will produce ERRORS!
 kick-noresidents: true
 

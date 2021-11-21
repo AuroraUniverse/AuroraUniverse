@@ -14,7 +14,6 @@ import ru.etysoft.aurorauniverse.events.PreTownCreateEvent;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
-import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.world.*;
 
@@ -232,7 +231,7 @@ public class Towns {
         if (name.length() < 3) {
             return false;
         }
-        if(!AuroraUniverse.matchesRegex(name)) return false;
+        if(!AuroraUniverse.matchesNameRegex(name)) return false;
         int maxLength = AuroraUniverse.getInstance().getConfig().getInt("max-town-name");
         if (name.length() > maxLength) {
             return false;

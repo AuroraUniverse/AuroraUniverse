@@ -56,7 +56,7 @@ public final class AuroraUniverse extends JavaPlugin {
     private static boolean haswarnings = false;
 
     private final static String langver = "0.1.1.2";
-    private final static String confver = "0.1.0.1";
+    private final static String confver = "0.1.0.2";
     private final static String permsver = "0.1.0.0";
 
     public AuroraEconomy getEconomy() {
@@ -207,13 +207,26 @@ public final class AuroraUniverse extends JavaPlugin {
         return 1;
     }
 
-    public static boolean matchesRegex(String toMatch)
+    public static boolean matchesStringRegex(String toMatch)
     {
-       String regex = AuroraUniverse.getInstance().getConfig().getString("string-regex");
+        String regex = AuroraUniverse.getInstance().getConfig().getString("string-regex");
         try {
             Pattern.compile(regex);
         } catch (Exception e) {
-            Logger.error("Regex is incorrect!");
+            Logger.error("String regex is incorrect!");
+            return false;
+        }
+        return Pattern.matches(regex ,toMatch);
+    }
+
+
+    public static boolean matchesNameRegex(String toMatch)
+    {
+       String regex = AuroraUniverse.getInstance().getConfig().getString("name-regex");
+        try {
+            Pattern.compile(regex);
+        } catch (Exception e) {
+            Logger.error("Name regex is incorrect!");
            return false;
         }
         return Pattern.matches(regex ,toMatch);
