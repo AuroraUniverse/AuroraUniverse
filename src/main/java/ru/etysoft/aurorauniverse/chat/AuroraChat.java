@@ -41,6 +41,7 @@ public class AuroraChat {
 
     public static String processMessage(String message, Player playerSender, Set<Player> allRecipients, boolean sendConsole) {
         if (!AuroraUniverse.matchesStringRegex(message)) return null;
+
         Set<Player> finalRecipients = new HashSet<>(allRecipients);
         Resident resident = Residents.getResident(playerSender);
         int channel = Channels.GLOBAL;
@@ -136,6 +137,7 @@ public class AuroraChat {
         if (Permissions.canSendColorCodes(playerSender)) {
             message = ColorCodes.toColor(message);
         }
+        message = PlaceholderFormatter.process(message, playerSender);
 
         for (Player player : finalRecipients) {
             Resident resident1 = Residents.getResident(player.getName());
