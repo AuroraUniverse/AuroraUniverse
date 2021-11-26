@@ -71,7 +71,6 @@ public class ProtectionListener implements Listener {
                     }
                 } catch (TownNotFoundedException e) {
                     event.setCancelled(true);
-                    e.printStackTrace();
                 }
             }
         }

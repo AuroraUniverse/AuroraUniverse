@@ -291,9 +291,18 @@ public class Town {
                         region = Region.fromJSON(regionObj);
                     }
                 }
-                town.townChunks.put(chunk, region);
-                AuroraUniverse.addTownBlock(chunk, region);
-                Logger.debug(townName + " > Loaded chunk " + chunk.getX() + ", " + chunk.getZ());
+                if(region != null)
+                {
+                    town.townChunks.put(chunk, region);
+                    AuroraUniverse.addTownBlock(chunk, region);
+                    Logger.debug(townName + " > Loaded chunk " + chunk.getX() + ", " + chunk.getZ());
+                }
+                else
+                {
+                    Logger.error(townName + " > Chunk " + chunk.getX() + ", " + chunk.getZ() + " is ignored");
+                }
+
+
             }
 
 

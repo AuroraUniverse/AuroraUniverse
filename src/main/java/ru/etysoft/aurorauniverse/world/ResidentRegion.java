@@ -100,7 +100,7 @@ public class ResidentRegion extends Region {
         }
         else
         {
-            Logger.debug("Owner with name " + ownerName + " not found");
+            Logger.warning("ResidentRegion: Owner with name " + ownerName + " not found");
             return null;
         }
 

@@ -49,8 +49,8 @@ public class PluginListener implements Listener {
 
         try {
             event.setRespawnLocation(resident.getTown().townSpawnPoint);
-        } catch (TownNotFoundedException e) {
-            e.printStackTrace();
+        } catch (TownNotFoundedException ignored) {
+
         }
 
 

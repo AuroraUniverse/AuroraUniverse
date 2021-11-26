@@ -69,6 +69,16 @@ public class DataManager {
                 nations = (JSONArray) mainJson.get("nations");
                 newbies = (JSONArray) mainJson.get("newbies");
 
+                for (int i = 0; i < newbies.size(); i++) {
+                    JSONObject jsonObject = (JSONObject) newbies.get(i);
+                    Resident resident = Resident.fromJSON(jsonObject);
+                    if(resident == null)
+                    {
+                        Logger.error("Cannot load resident (null, " +i + ")");
+                    }
+
+                }
+
                 for (int i = 0; i < towns.size(); i++) {
                     JSONObject jsonObject = (JSONObject) towns.get(i);
                     Town.loadTownFromJSON(jsonObject);
@@ -79,15 +89,7 @@ public class DataManager {
                     Nation.loadFromJson(jsonObject);
                 }
 
-                for (int i = 0; i < newbies.size(); i++) {
-                    JSONObject jsonObject = (JSONObject) newbies.get(i);
-                    Resident resident = Resident.fromJSON(jsonObject);
-                    if(resident == null)
-                    {
-                        Logger.error("Cannot load resident (null, " +i + ")");
-                    }
 
-                }
             }
                 return true;
 
