@@ -62,6 +62,7 @@ public class DataManager {
         JSONArray nations = null;
         JSONArray newbies = null;
         try {
+            Logger.log("Loading data from JSON...");
             if((new File("plugins/AuroraUniverse/data.json").exists())) {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject mainJson = (JSONObject) jsonParser.parse(readFile());
@@ -89,8 +90,13 @@ public class DataManager {
                     Nation.loadFromJson(jsonObject);
                 }
 
-
+                Logger.log("Loading finished");
             }
+            else
+            {
+                Logger.log("Storage not found. Loading finished");
+            }
+
                 return true;
 
 

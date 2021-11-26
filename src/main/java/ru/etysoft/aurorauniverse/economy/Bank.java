@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.economy;
 
+import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.utils.Numbers;
 
 public class Bank {
@@ -42,6 +43,7 @@ public class Bank {
     public void setBalance(double d)
     {
         amount = d;
+        Logger.log("Balance of  " + getName() + " set to " + getBalance());
     }
 
     public String getName()
@@ -51,11 +53,13 @@ public class Bank {
 
     public void deposit(double money)
     {
+        Logger.log("Deposited  " + money + " to " + getName());
         amount += money;
     }
 
     public boolean withdraw(double money)
     {
+
         if(money > amount)
         {
             return false;
@@ -63,6 +67,7 @@ public class Bank {
         else
         {
             amount -= money;
+            Logger.log("Withdrawn  " + money + " from " + getName());
             return true;
         }
 
@@ -78,6 +83,7 @@ public class Bank {
         {
             amount -= money;
             toBank.deposit(money);
+            Logger.log("Withdrawn  " + money + " from " + getName() + " to "+ toBank.getName());
             return true;
         }
 

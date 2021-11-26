@@ -65,6 +65,7 @@ public class WorldTimer {
 
                     if(System.currentTimeMillis() - lastTimeMillis >= delay)
                     {
+                        Logger.log("New day begins!");
                         AuroraChat.sendGlobalMessage(AuroraLanguage.getColorString("world-timer"));
                         lastTimeMillis = System.currentTimeMillis();
 

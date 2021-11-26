@@ -35,6 +35,7 @@ public class MainTabCompleter implements TabCompleter {
             firstPossibleArg.add("town");
             firstPossibleArg.add("stalin");
             firstPossibleArg.add("reload");
+            firstPossibleArg.add("save-all");
             firstPossibleArg.add("debug");
             firstPossibleArg.add("dhand");
         }

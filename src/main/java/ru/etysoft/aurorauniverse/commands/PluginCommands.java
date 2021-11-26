@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.commands.town.AdminCommands;
+import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
@@ -44,6 +45,15 @@ public class PluginCommands implements CommandExecutor {
         }
     }
 
+
+    public void save(CommandSender sender, String[] args) {
+        if (Permissions.isAdmin(sender, true)) {
+            DataManager.saveData();
+        } else {
+            Logger.info(sender.getName() + " tried to use SAVE-ALL command. Access denied.");
+        }
+    }
+
     public void reload(CommandSender sender, String[] args) {
         if (Permissions.isAdmin(sender, true)) {
             Logger.debug("Reloading configuration...");
@@ -67,6 +77,9 @@ public class PluginCommands implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("reload")) {
                 reload(sender, args);
+            }
+           else if (args[0].equalsIgnoreCase("save-all")) {
+                    save(sender, args);
             } else if (args[0].equalsIgnoreCase("town")) {
                 new AdminCommands(sender, Residents.getResident(sender.getName()), args);
             } else if (args[0].equalsIgnoreCase("debug")) {

@@ -633,6 +633,8 @@ public class Town {
                         AuroraUniverse.addTownBlock(homeblock, homeRegion);
                         townBank = new Bank("aun.town." + name, 0, mayor.getName());
                         AuroraUniverse.getInstance().getEconomy().addBank(townBank);
+
+                        Logger.log("Town " + name + " created by " + mayor.getName());
                     } else {
                         throw new TownException(AuroraUniverse.getLanguage().getString("e1"));
                     }
@@ -700,6 +702,7 @@ public class Town {
             residents.add(resident);
             AuroraPermissions.setPermissions(Bukkit.getPlayer(resident.getName()), AuroraPermissions.getGroup("resident"));
             resident.setTown(name);
+            Logger.log("Added resident  " + resident.getName() + " to " + getName());
             return true;
         }
         return false;
@@ -716,6 +719,7 @@ public class Town {
                 residents.remove(resident);
                 AuroraPermissions.setPermissions(Bukkit.getPlayer(resident.getName()), AuroraPermissions.getGroup("newbies"));
                 resident.setTown(null);
+                Logger.log("Kicked resident  " + resident.getName() + " to " + getName());
                 return true;
             }
 
@@ -883,8 +887,10 @@ public class Town {
             }
             TownDeleteEvent townDeleteEvent = new TownDeleteEvent(this);
             AuroraUniverse.callEvent(townDeleteEvent);
+            Logger.log("Town " + name + " deleted");
             return true;
         } else {
+            Logger.log("Town " + name + " deletion was canceled");
             Logger.warning("Town deletion was canceled by third-party plugin");
             return false;
         }
@@ -969,6 +975,7 @@ public class Town {
                 toClaim = new Region(this);
                 townChunks.put(chunk, toClaim);
                 Logger.info("Claimed chunk: " + chunk + " for town " + name);
+                Logger.log("Claimed chunk: " + chunk + " for town " + name);
                 AuroraUniverse.addTownBlock(chunk, toClaim);
             } else {
                 if (!success && !claimed) {
