@@ -8,6 +8,7 @@ import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
+import ru.etysoft.aurorauniverse.world.ChunkPair;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
@@ -21,10 +22,11 @@ public class TownUnclaimCommand {
                 Town t = resident.getTown();
                 if (Permissions.canUnClaim(pl)) {
 
-                    if (t.unclaimChunk(pl.getLocation().getChunk())) {
+                    ChunkPair chunkPair = ChunkPair.fromChunk(pl.getLocation().getChunk());
+                    if (t.unclaimChunk(chunkPair)) {
                         Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-unclaim"), sender);
                         resident.setLastwild(true);
-                        Towns.handleChunkChange(pl, pl.getLocation().getChunk());
+                        Towns.handleChunkChange(pl, chunkPair);
                         pl.playSound(pl.getLocation(), Sound.ENTITY_CAT_HURT, 100.0f, 1.0f);
                     } else {
                         Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-cantunclaim"), sender);

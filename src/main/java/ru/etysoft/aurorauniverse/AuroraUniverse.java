@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -40,10 +41,10 @@ import java.util.regex.PatternSyntaxException;
 
 public final class AuroraUniverse extends JavaPlugin {
 
-    public static Map<String, Town> townList = new ConcurrentHashMap<>();
-    public static Map<String, Nation> nationList = new ConcurrentHashMap<>();
-    public static Map<Chunk, Region> alltownblocks = new ConcurrentHashMap<>();
-    public static Map<String, Resident> residentlist = new ConcurrentHashMap<>();
+    public static Map<String, Town> townList = new HashMap<>();
+    public static Map<String, Nation> nationList = new HashMap<>();
+    private static Map<ChunkPair, Region> alltownblocks = new HashMap<>();
+    public static Map<String, Resident> residentlist = new HashMap<>();
    // public static int minTownBlockDistance = 1;
     public static boolean debugmode = true;
 
@@ -295,8 +296,26 @@ public final class AuroraUniverse extends JavaPlugin {
         return townList;
     }
 
-    public static Map<Chunk, Region> getTownBlocks() {
+    @Deprecated
+    public static Map<ChunkPair, Region> getTownBlocks() {
         return alltownblocks;
+    }
+
+
+    public static Region getTownBlock(ChunkPair chunkPair) {
+        return alltownblocks.get(chunkPair);
+    }
+
+    public static void addTownBlock(ChunkPair chunkPair, Region region) {
+        alltownblocks.put(chunkPair, region);
+    }
+
+    public static void removeTownBlock(ChunkPair chunkPair) {
+        alltownblocks.remove(chunkPair);
+    }
+
+    public static boolean containsChunk(ChunkPair chunkPair) {
+        return alltownblocks.containsKey(chunkPair);
     }
 
     public static AuroraUniverse getInstance() {

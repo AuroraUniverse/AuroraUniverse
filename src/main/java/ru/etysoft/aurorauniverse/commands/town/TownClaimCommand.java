@@ -10,10 +10,7 @@ import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
-import ru.etysoft.aurorauniverse.world.OutpostRegion;
-import ru.etysoft.aurorauniverse.world.Region;
-import ru.etysoft.aurorauniverse.world.Resident;
-import ru.etysoft.aurorauniverse.world.Town;
+import ru.etysoft.aurorauniverse.world.*;
 
 public class TownClaimCommand {
 
@@ -29,7 +26,7 @@ public class TownClaimCommand {
                         {
                             double priceNewChunk = t.getNewChunkPrice();
                             double priceOutpost = t.getNewOutpostPrice();
-                            Chunk ch = pl.getLocation().getChunk();
+                            ChunkPair ch = ChunkPair.fromChunk(pl.getLocation().getChunk());
                             Region region = t.claimChunk(ch, pl);
                             if (region != null) {
                                 resident.setLastwild(false);

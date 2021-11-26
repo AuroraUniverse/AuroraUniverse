@@ -11,6 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
+import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
@@ -51,9 +52,9 @@ public class Town {
     private double resTax = 0;
     private int bonusChunks = 0;
     private Resident mayor;
-    private Map<Chunk, Region> townChunks = new ConcurrentHashMap<>();
+    private Map<ChunkPair, Region> townChunks = new ConcurrentHashMap<>();
     private ArrayList<Resident> residents = new ArrayList<>();
-    private Chunk mainChunk = null;
+    private ChunkPair mainChunk = null;
     private Bank townBank;
     private String nationName;
     private String id;
@@ -169,7 +170,7 @@ public class Town {
         return finalPrice;
     }
 
-    public boolean isOutpost(Chunk ch) {
+    public boolean isOutpost(ChunkPair ch) {
         if (hasChunk(ch)) {
             return townChunks.get(ch) instanceof OutpostRegion;
         }
@@ -236,7 +237,7 @@ public class Town {
         String nation = (String) jsonObject.get(JsonKeys.NATION_NAME);
 
         Resident mayorResident = Resident.fromJSON((JSONObject) jsonObject.get(JsonKeys.MAYOR));
-        Chunk mainChunk = getChunkFromInfo((JSONObject) jsonObject.get(JsonKeys.MAIN_CHUNK));
+        ChunkPair mainChunk = getChunkFromInfo((JSONObject) jsonObject.get(JsonKeys.MAIN_CHUNK));
 
         Town town = Towns.loadTown(townName, mayorResident, mainChunk);
         Logger.debug("Loaded town " + townName);
@@ -273,7 +274,7 @@ public class Town {
             for (int i = 0; i < chunkInfos.size(); i++) {
                 JSONObject chunkInfo = (JSONObject) chunkInfos.get(i);
 
-                Chunk chunk = getChunkFromInfo(chunkInfo);
+                ChunkPair chunk = getChunkFromInfo(chunkInfo);
 
                 JSONObject regionObj = (JSONObject) chunkInfo.get(JsonKeys.REGION);
                 boolean isOutpost = (boolean) chunkInfo.get(JsonKeys.IS_OUTPOST);
@@ -290,10 +291,11 @@ public class Town {
                         region = Region.fromJSON(regionObj);
                     }
                 }
-                Logger.debug(townName + " > Loaded chunk " + chunk.getX() + ", " + chunk.getZ());
                 town.townChunks.put(chunk, region);
+                AuroraUniverse.addTownBlock(chunk, region);
+                Logger.debug(townName + " > Loaded chunk " + chunk.getX() + ", " + chunk.getZ());
             }
-            AuroraUniverse.getTownBlocks().putAll(town.getTownChunks());
+
 
             String spawnWorld = (String) jsonObject.get(JsonKeys.SPAWN_WORLD);
             double spawnX = (double) jsonObject.get(JsonKeys.SPAWN_X);
@@ -319,7 +321,6 @@ public class Town {
 
 
             // spawnLocation.setDirection(new Vector(spawnDirX,spawnDirY,spawnDirZ));
-
 
 
             town.setBuildGroups(getList((JSONArray) jsonObject.get(JsonKeys.BUILD_GROUPS)));
@@ -362,13 +363,15 @@ public class Town {
         return Nations.getNation(nationName);
     }
 
-    private static Chunk getChunkFromInfo(JSONObject chunkInfo) {
+    private static ChunkPair getChunkFromInfo(JSONObject chunkInfo) {
         long x = (long) chunkInfo.get(JsonKeys.X);
         long z = (long) chunkInfo.get(JsonKeys.Z);
         String world = (String) chunkInfo.get(JsonKeys.WORLD);
 
-        Location location = new Location(Bukkit.getWorld(world), x * 16, 0, z * 16);
-        return Bukkit.getWorld(world).getChunkAt(location);
+
+        ChunkPair chunk = new ChunkPair((int) x, (int) z, Bukkit.getWorld(world));
+
+        return chunk;
     }
 
 
@@ -402,7 +405,7 @@ public class Town {
         return pvp;
     }
 
-    public boolean isPvp(Chunk chunk) {
+    public boolean isPvp(ChunkPair chunk) {
         if (forcePvp) return true;
         Region region = townChunks.get(chunk);
         if (region instanceof ResidentRegion) {
@@ -453,11 +456,17 @@ public class Town {
             jsonArrayResidents.add(resident.toJson());
         }
 
+        if(!townChunks.containsKey(mainChunk))
+        {
+            Logger.error("Main chunk not in chunklist!");
+        }
+
+
         townJsonObject.put(JsonKeys.RESIDENTS, jsonArrayResidents);
 
         JSONArray regions = new JSONArray();
 
-        for (Chunk chunk : townChunks.keySet()) {
+        for (ChunkPair chunk : townChunks.keySet()) {
             JSONObject chunkInfo = new JSONObject();
 
             Region region = townChunks.get(chunk);
@@ -476,9 +485,12 @@ public class Town {
 
             regions.add(chunkInfo);
 
-            if (mainChunk == chunk) {
+            if(mainChunk.equals(chunk))
+            {
                 townJsonObject.put(JsonKeys.MAIN_CHUNK, chunkInfo);
             }
+
+
         }
 
         townJsonObject.put(JsonKeys.REGIONS, regions);
@@ -507,7 +519,7 @@ public class Town {
         return switchGroups;
     }
 
-    public ResidentRegion getResidentRegion(Chunk chunk) {
+    public ResidentRegion getResidentRegion(ChunkPair chunk) {
         Region region = townChunks.get(chunk);
         if (region instanceof ResidentRegion) {
             return (ResidentRegion) region;
@@ -517,15 +529,15 @@ public class Town {
     }
 
 
-    public void createPlayerRegion(Chunk originalLocation, Resident resident) throws RegionException {
+    public void createPlayerRegion(ChunkPair originalLocation, Resident resident) throws RegionException {
         if (residents.contains(resident)) {
             if (townChunks.containsKey(originalLocation)) {
                 if (originalLocation != mainChunk) {
                     townChunks.remove(originalLocation);
 
                     townChunks.put(originalLocation, new ResidentRegion(this, resident));
-                    AuroraUniverse.alltownblocks.remove(originalLocation);
-                    AuroraUniverse.alltownblocks.put(originalLocation, new ResidentRegion(this, resident));
+                    AuroraUniverse.removeTownBlock(originalLocation);
+                    AuroraUniverse.addTownBlock(originalLocation, new ResidentRegion(this, resident));
                 } else {
                     throw new RegionException("Unable to remove town's main chunk");
                 }
@@ -538,15 +550,15 @@ public class Town {
         }
     }
 
-    public void resetRegion(Chunk originalLocation) throws RegionException {
+    public void resetRegion(ChunkPair originalLocation) throws RegionException {
 
         if (hasChunk(originalLocation)) {
             Region region = townChunks.get(originalLocation);
             if (originalLocation != mainChunk && region instanceof ResidentRegion) {
                 townChunks.remove(originalLocation);
                 townChunks.put(originalLocation, new Region(this));
-                AuroraUniverse.alltownblocks.remove(originalLocation);
-                AuroraUniverse.alltownblocks.put(originalLocation, new Region(this));
+                AuroraUniverse.removeTownBlock(originalLocation);
+                AuroraUniverse.addTownBlock(originalLocation, new Region(this));
             } else {
                 throw new RegionException("Unable to reset non-resident region");
             }
@@ -582,7 +594,7 @@ public class Town {
     }
 
 
-    public Town(String name2, Resident mayor, Chunk homeblock) throws TownException {
+    public Town(String name2, Resident mayor, ChunkPair homeblock) throws TownException {
         if (!mayor.hasTown()) {
 
             if (!AuroraUniverse.townList.containsKey(name2)) {
@@ -595,12 +607,21 @@ public class Town {
                         addResident(this.mayor);
                         this.mayor.setTown(name);
                         Group mayorPermissions = AuroraPermissions.getGroup("mayor");
+
                         toggleBuild(mayorPermissions);
                         toggleDestroy(mayorPermissions);
                         toggleUse(mayorPermissions);
                         toggleSwitch(mayorPermissions);
-                        townChunks.put(homeblock, new Region(this));
+
+                        Group residentPermissions = AuroraPermissions.getGroup("resident");
+                        toggleBuild(residentPermissions);
+                        toggleDestroy(residentPermissions);
+                        toggleUse(residentPermissions);
+                        toggleSwitch(residentPermissions);
+                        Region homeRegion = new Region(this);
+                        townChunks.put(homeblock, homeRegion);
                         mainChunk = homeblock;
+                        AuroraUniverse.addTownBlock(homeblock, homeRegion);
                         townBank = new Bank("aun.town." + name, 0, mayor.getName());
                         AuroraUniverse.getInstance().getEconomy().addBank(townBank);
                     } else {
@@ -619,8 +640,10 @@ public class Town {
     }
 
     public Region getRegion(Location location) {
-        if (hasChunk(location.getChunk())) {
-            return townChunks.get(location.getChunk());
+
+        ChunkPair chunkPair = ChunkPair.fromChunk(location.getChunk());
+        if (hasChunk(chunkPair)) {
+            return townChunks.get(chunkPair);
         } else {
             return null;
         }
@@ -646,7 +669,7 @@ public class Town {
         return residents.size();
     }
 
-    public Chunk getMainChunk() {
+    public ChunkPair getMainChunk() {
         return mainChunk;
     }
 
@@ -739,7 +762,7 @@ public class Town {
         }
     }
 
-    public boolean canSwitch(Resident resident, Chunk chunk) {
+    public boolean canSwitch(Resident resident, ChunkPair chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
         if (residentRegion != null) {
@@ -748,7 +771,7 @@ public class Town {
         return switchGroups.contains(resident.getPermissionGroupName());
     }
 
-    public boolean canUse(Resident resident, Chunk chunk) {
+    public boolean canUse(Resident resident, ChunkPair chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
         if (residentRegion != null) {
@@ -757,7 +780,7 @@ public class Town {
         return useGroups.contains(resident.getPermissionGroupName());
     }
 
-    public boolean canDestroy(Resident resident, Chunk chunk) {
+    public boolean canDestroy(Resident resident, ChunkPair chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
         if (residentRegion != null) {
@@ -766,7 +789,7 @@ public class Town {
         return destroyGroups.contains(resident.getPermissionGroupName());
     }
 
-    public boolean canBuild(Resident resident, Chunk chunk) {
+    public boolean canBuild(Resident resident, ChunkPair chunk) {
         if (!isResident(resident)) return false;
         ResidentRegion residentRegion = getResidentRegion(chunk);
         if (residentRegion != null) {
@@ -781,7 +804,7 @@ public class Town {
 
     public boolean isConnected(Chunk chunk, Player player) {
         AtomicBoolean connected = new AtomicBoolean(false);
-        AuroraUniverse.alltownblocks.forEach((chunk1, region) -> {
+        AuroraUniverse.getTownBlocks().forEach((chunk1, region) -> {
             int m = AuroraUniverse.getMinTownsDistance();
             for (int x = -1; x < 2; x++) {
                 for (int z = -1; z < 2; z++) {
@@ -839,7 +862,7 @@ public class Town {
 
             AuroraUniverse.townList.remove(name);
             townChunks.forEach((chunk, region) -> {
-                AuroraUniverse.alltownblocks.remove(chunk);
+                AuroraUniverse.removeTownBlock(chunk);
             });
             if (getNation() != null) {
                 if (getNation().getCapital() == this) {
@@ -865,14 +888,14 @@ public class Town {
     }
 
 
-    public Region claimChunk(Chunk chunk, Player player) throws TownException {
+    public Region claimChunk(ChunkPair chunk, Player player) throws TownException {
         boolean claimed = false;
         boolean success = false;
         boolean far = false;
         boolean isOutpost = true;
         if (townChunks.size() < getMaxChunks()) {
-            for (Chunk chunk1 : AuroraUniverse.alltownblocks.keySet()) {
-                Region region = AuroraUniverse.alltownblocks.get(chunk1);
+            for (ChunkPair chunk1 : AuroraUniverse.getTownBlocks().keySet()) {
+                Region region = AuroraUniverse.getTownBlock(chunk1);
                 int m = AuroraUniverse.getMinTownsDistance();
                 if (chunk1 != chunk && !(region instanceof OutpostRegion)) // есть ли чанк, который мы хотим заприватить в городах
                 {
@@ -887,29 +910,28 @@ public class Town {
                                 {
                                     //Проверяем есть ли диагональ
 
-                                        if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() + m) //++
-                                        {
+                                    if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() + m) //++
+                                    {
 
-                                            //Diagonal
-                                        } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() + m) // -+
-                                        {
+                                        //Diagonal
+                                    } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() + m) // -+
+                                    {
 
-                                            //Diagonal
-                                        } else if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() - m) //+-
-                                        {
+                                        //Diagonal
+                                    } else if (chunk1.getX() == chunk.getX() + m && chunk1.getZ() == chunk.getZ() - m) //+-
+                                    {
 
-                                            //Diagonal
-                                        } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() - m) //--
-                                        {
+                                        //Diagonal
+                                    } else if (chunk1.getX() == chunk.getX() - m && chunk1.getZ() == chunk.getZ() - m) //--
+                                    {
 
-                                            //Diagonal
-                                        } else {
-                                            isOutpost = false;
+                                        //Diagonal
+                                    } else {
+                                        isOutpost = false;
 
-                                            success = true;
+                                        success = true;
 
-                                        }
-
+                                    }
 
 
                                 } else {
@@ -928,42 +950,40 @@ public class Town {
                 }
 
 
-
                 // chunk 2 is either adjacent to or has the same coordinates as chunk1
 
 
             }
             Region toClaim = null;
 
-                if (success && !claimed) {
-                    toClaim = new Region(this);
-                    townChunks.put(chunk, toClaim);
-                    Logger.info("Claimed chunk: " + chunk + " for town " + name);
-                    AuroraUniverse.alltownblocks.put(chunk, toClaim);
-                } else {
-                    if (!success && !claimed) {
-                        if(outPosts.size()  < AuroraUniverse.getMaxOutposts()) {
-                            toClaim = new OutpostRegion(this, player.getLocation());
-                            outPosts.add((OutpostRegion) toClaim);
-                            AuroraUniverse.alltownblocks.put(chunk, toClaim);
-                            townChunks.put(chunk, toClaim);
-                        }
+            if (success && !claimed) {
+                toClaim = new Region(this);
+                townChunks.put(chunk, toClaim);
+                Logger.info("Claimed chunk: " + chunk + " for town " + name);
+                AuroraUniverse.addTownBlock(chunk, toClaim);
+            } else {
+                if (!success && !claimed) {
+                    if (outPosts.size() < AuroraUniverse.getMaxOutposts()) {
+                        toClaim = new OutpostRegion(this, player.getLocation());
+                        outPosts.add((OutpostRegion) toClaim);
+                        AuroraUniverse.addTownBlock(chunk, toClaim);
+                        townChunks.put(chunk, toClaim);
                     }
                 }
+            }
 
             return toClaim;
         }
         return null;
     }
 
-    public boolean unclaimChunk(Chunk chunk) {
+    public boolean unclaimChunk(ChunkPair chunk) {
         if (townChunks.containsKey(chunk) && mainChunk != chunk) {
-            if(townChunks.get(chunk) instanceof OutpostRegion)
-            {
+            if (townChunks.get(chunk) instanceof OutpostRegion) {
                 outPosts.remove((OutpostRegion) townChunks.get(chunk));
             }
             townChunks.remove(chunk);
-            AuroraUniverse.alltownblocks.remove(chunk);
+            AuroraUniverse.removeTownBlock(chunk);
             return true;
         } else {
             return false;
@@ -972,33 +992,39 @@ public class Town {
 
     public void teleportToTownSpawn(Player pl) {
         pl.teleport(townSpawnPoint);
-        Towns.handleChunkChange(pl, pl.getLocation().getChunk());
+        Towns.handleChunkChange(pl, ChunkPair.fromChunk(pl.getLocation().getChunk()));
     }
 
     public void teleportToOutpost(Player pl, int outpostNum) {
         pl.teleport(outPosts.get(outpostNum).getSpawnLocation());
-        Towns.handleChunkChange(pl, pl.getLocation().getChunk());
+        Towns.handleChunkChange(pl, ChunkPair.fromChunk(pl.getLocation().getChunk()));
     }
 
     public boolean hasChunk(Location lc) {
-        if (townChunks.containsKey(lc.getChunk())) {
+
+        ChunkPair chunkPair = ChunkPair.fromChunk(lc.getChunk());
+
+        return hasChunk(chunkPair);
+    }
+
+    public boolean hasChunk(ChunkPair chunkPair) {
+
+        if (townChunks.containsKey(chunkPair)) {
             return true;
         } else {
             return false;
         }
     }
 
-    public boolean hasChunk(Chunk chunk) {
-        return townChunks.containsKey(chunk);
-    }
+
 
     public void setSpawn(Location location) throws TownException {
         if (hasChunk(location)) {
             townSpawnPoint = location;
-            if ((getTownChunks().get(location.getChunk()) instanceof ResidentRegion))
+            if ((getTownChunks().get(ChunkPair.fromChunk(location.getChunk())) instanceof ResidentRegion))
                 throw new TownException(AuroraUniverse.getLanguage().getString("e5"));
 
-            mainChunk = location.getChunk();
+            mainChunk = ChunkPair.fromChunk(location.getChunk());
             // До лучших времён
 //            Bukkit.getServer().getScheduler().runTaskTimer(AuroraUniverse.getInstance(), new Runnable() {
 //                @Override
@@ -1037,7 +1063,7 @@ public class Town {
     }
 
 
-    public Map<Chunk, Region> getTownChunks() {
+    public Map<ChunkPair, Region> getTownChunks() {
         return townChunks;
     }
 

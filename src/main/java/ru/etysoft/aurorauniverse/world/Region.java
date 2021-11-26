@@ -48,8 +48,8 @@ public class Region {
         Town fromTown = Towns.getTown(fromTownName);
 
         region.setTown(toTown);
-        Chunk keyChunk = null;
-        for(Chunk chunk : fromTown.getTownChunks().keySet())
+        ChunkPair keyChunk = null;
+        for(ChunkPair chunk : fromTown.getTownChunks().keySet())
         {
            Region regionToCompare = fromTown.getTownChunks().get(chunk);
            if(region == regionToCompare)
@@ -58,8 +58,8 @@ public class Region {
                keyChunk = chunk;
            }
         }
-        AuroraUniverse.alltownblocks.remove(keyChunk);
-        AuroraUniverse.alltownblocks.put(keyChunk, region);
+        AuroraUniverse.removeTownBlock(keyChunk);
+        AuroraUniverse.addTownBlock(keyChunk, region);
         fromTown.getTownChunks().remove(keyChunk);
 
         toTown.getTownChunks().put(keyChunk, region);

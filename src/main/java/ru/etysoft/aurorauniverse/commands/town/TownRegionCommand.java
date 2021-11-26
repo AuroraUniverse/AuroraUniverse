@@ -10,10 +10,7 @@ import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
-import ru.etysoft.aurorauniverse.world.Region;
-import ru.etysoft.aurorauniverse.world.Resident;
-import ru.etysoft.aurorauniverse.world.ResidentRegion;
-import ru.etysoft.aurorauniverse.world.Town;
+import ru.etysoft.aurorauniverse.world.*;
 
 public class TownRegionCommand {
 
@@ -42,7 +39,7 @@ public class TownRegionCommand {
         if (!resident.hasTown()) return;
         if (Permissions.canEditTown(sender) | Permissions.canGetRegionInfo(sender)) {
 
-            Town town = Towns.getTown(((Player) sender).getLocation().getChunk());
+            Town town = Towns.getTown(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk()));
             if (town != null) {
                 Region region = town.getRegion(((Player) sender).getLocation());
 
@@ -98,10 +95,9 @@ public class TownRegionCommand {
                         Resident receiver = Residents.getResident(args[2]);
                         if (receiver != null) {
                             try {
-                                town.createPlayerRegion(((Player) sender).getLocation().getChunk(), receiver);
+                                town.createPlayerRegion(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk()), receiver);
                                 Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-success"), sender);
                             } catch (RegionException e) {
-                                e.printStackTrace();
                                 Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-error"), sender);
                             }
                         }
@@ -247,7 +243,7 @@ public class TownRegionCommand {
                 if (region != null) {
 
                     try {
-                        town.resetRegion(((Player) sender).getLocation().getChunk());
+                        town.resetRegion(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk()));
                         Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-reset-success"), sender);
                     } catch (RegionException e) {
                         e.printStackTrace();

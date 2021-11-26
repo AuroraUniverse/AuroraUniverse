@@ -57,7 +57,7 @@ public class AuroraChat {
                 for (Player player : Bukkit.getOnlinePlayers()) {
 
                     if (player.getLocation().getWorld() == playerSender.getLocation().getWorld()) {
-                        if (playerSender.getLocation().distance(player.getLocation()) < 20) {
+                        if (playerSender.getLocation().distance(player.getLocation()) < 100) {
                             recipients.add(player);
                         }
                     }

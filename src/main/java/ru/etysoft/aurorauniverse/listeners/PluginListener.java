@@ -18,6 +18,7 @@ import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.permissions.Group;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
+import ru.etysoft.aurorauniverse.world.ChunkPair;
 import ru.etysoft.aurorauniverse.world.Resident;
 
 public class PluginListener implements Listener {
@@ -74,7 +75,7 @@ public class PluginListener implements Listener {
         } else {
 
 
-            Towns.handleChunkChange(player, event.getTo().getChunk());
+            Towns.handleChunkChange(player, ChunkPair.fromChunk(event.getTo().getChunk()));
 
         }
     }

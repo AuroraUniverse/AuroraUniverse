@@ -23,7 +23,7 @@ public class Resident {
     private String townname = null;
     private Bank bank;
     private String permissonGroup;
-    private Chunk lastChunk;
+    private ChunkPair lastChunk;
     private ArrayList<Integer> ignoreChannels = new ArrayList<>();
     private int chatMode;
 
@@ -54,11 +54,11 @@ public class Resident {
         return ignoreChannels;
     }
 
-    public Chunk getLastChunk() {
+    public ChunkPair getLastChunk() {
         return lastChunk;
     }
 
-    public void setLastChunk(Chunk lastChunk) {
+    public void setLastChunk(ChunkPair lastChunk) {
         this.lastChunk = lastChunk;
     }
 

@@ -49,7 +49,7 @@ public class WorldTimer {
                         for (Entity e : world.getEntities()) {
                             if (e instanceof Monster) {
 
-                               Region region = AuroraUniverse.alltownblocks.get(e.getLocation().getChunk());
+                               Region region = AuroraUniverse.getTownBlock(ChunkPair.fromChunk(e.getLocation().getChunk()));
                                if(region != null)
                                {
                                    if(!region.getTown().isMobs())

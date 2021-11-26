@@ -71,9 +71,9 @@ public class Towns {
     }
 
 
-    public static boolean hasMyTown(Chunk chunk, Town town) {
-        if (AuroraUniverse.alltownblocks.containsKey(chunk)) {
-            if (AuroraUniverse.alltownblocks.get(chunk).getTown() == town) {
+    public static boolean hasMyTown(ChunkPair chunk, Town town) {
+        if (AuroraUniverse.containsChunk(chunk)) {
+            if (AuroraUniverse.getTownBlocks().get(chunk).getTown() == town) {
                 return true;
             } else {
                 return false;
@@ -83,24 +83,30 @@ public class Towns {
         }
     }
 
-    public static boolean hasTown(Chunk chunk) {
-        if (AuroraUniverse.alltownblocks.containsKey(chunk)) {
+    public static boolean hasTown(ChunkPair chunk) {
+        if (AuroraUniverse.containsChunk(chunk)) {
             return true;
         } else {
             return false;
         }
     }
 
+
     public static Town getTown(Chunk chunk) {
-        if (AuroraUniverse.alltownblocks.containsKey(chunk)) {
-            return AuroraUniverse.alltownblocks.get(chunk).getTown();
+        return getTown(ChunkPair.fromChunk(chunk));
+    }
+
+    public static Town getTown(ChunkPair chunk) {
+        if (AuroraUniverse.containsChunk(chunk)) {
+            return AuroraUniverse.getTownBlocks().get(chunk).getTown();
         } else {
             return null;
         }
     }
 
     public static boolean hasTown(Location lc) {
-        if (AuroraUniverse.alltownblocks.containsKey(lc.getChunk())) {
+        ChunkPair chunkPair = ChunkPair.fromChunk(lc.getChunk());
+        if (AuroraUniverse.containsChunk(chunkPair)) {
             return true;
         } else {
             return false;
@@ -153,17 +159,17 @@ public class Towns {
         }
     }
 
-    public static void handleChunkChange(Player player, Chunk ch) {
-        if (AuroraUniverse.alltownblocks.containsKey((ch))) {
+    public static void handleChunkChange(Player player, ChunkPair ch) {
+        if (AuroraUniverse.containsChunk((ch))) {
             //чанк городской
-            Region rg = AuroraUniverse.alltownblocks.get((ch));
+            Region rg = AuroraUniverse.getTownBlocks().get((ch));
 
             Resident resident = Residents.getResident(player);
             if (resident != null) {
                 PlayerEnterTownEvent playerEnterTownEvent = new PlayerEnterTownEvent(rg.getTown(), resident);
                 Town town = rg.getTown();
 
-                Chunk lastChunk = resident.getLastChunk();
+                ChunkPair lastChunk = resident.getLastChunk();
 
                 resident.setLastChunk(ch);
 
@@ -185,7 +191,7 @@ public class Towns {
                     notifyTown = true;
                 }
                 if (lastChunk != null) {
-                    Region region = AuroraUniverse.alltownblocks.get(lastChunk);
+                    Region region = AuroraUniverse.getTownBlock(lastChunk);
                     if (region != null) {
                         // пришёл из региона игрока
 
@@ -245,7 +251,7 @@ public class Towns {
         Bukkit.getPluginManager().callEvent(preTownCreateEvent);
 
         if (!preTownCreateEvent.isCancelled()) {
-            Town newtown = new Town(name, Residents.getResident(mayor), mayor.getLocation().getChunk());
+            Town newtown = new Town(name, Residents.getResident(mayor), ChunkPair.fromChunk(mayor.getLocation().getChunk()));
             newtown.setSpawn(mayor.getLocation());
             Residents.getResident(mayor).setPermissionGroup("mayor");
 
@@ -260,7 +266,7 @@ public class Towns {
         return false;
     }
 
-    public static Town loadTown(String name, Resident mayor, Chunk mainChunk) throws TownException {
+    public static Town loadTown(String name, Resident mayor, ChunkPair mainChunk) throws TownException {
 
 
         Town newTown = new Town(name, mayor, mainChunk);
