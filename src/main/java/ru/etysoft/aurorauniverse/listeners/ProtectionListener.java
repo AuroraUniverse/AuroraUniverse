@@ -95,10 +95,29 @@ public class ProtectionListener implements Listener {
 
     }
 
+
+
     @EventHandler
     public void UseEvent(PlayerInteractEvent event) {
+
         if (!event.getPlayer().hasPermission("aun.edittowns")) {
 
+            if (event.getAction() == Action.PHYSICAL) {
+
+                Block block = event.getClickedBlock();
+                if (block == null) return;
+                // If the block is farmland (soil)
+                if (block.getType() == Material.FARMLAND) {
+
+                    if(Towns.getTown(block.getChunk()) != null)
+                    {
+                        event.setUseInteractedBlock(org.bukkit.event.Event.Result.DENY);
+                        event.setCancelled(true);
+                        block.setBlockData(block.getBlockData(), true);
+                    }
+
+                }
+            }
             if (event.hasBlock()) {
                 ChunkPair chunk = ChunkPair.fromChunk(event.getClickedBlock().getChunk());
                 Block block = event.getClickedBlock();
@@ -146,6 +165,7 @@ public class ProtectionListener implements Listener {
                     }
                 }
             }
+
         }
     }
 
