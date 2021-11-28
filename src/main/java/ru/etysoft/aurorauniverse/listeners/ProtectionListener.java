@@ -17,7 +17,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.event.world.PortalCreateEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Directional;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
@@ -74,6 +76,36 @@ public class ProtectionListener implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerShearEntity (PlayerShearEntityEvent e) {
+        Region region = AuroraUniverse.getTownBlock(ChunkPair.fromChunk(e.getEntity().getLocation().getChunk()));
+        if(region != null)
+        {
+            Town town = region.getTown();
+            if(town != null)
+            {
+                Resident resident = Residents.getResident(e.getPlayer());
+                if(resident.hasTown())
+                {
+                    try {
+                        if(resident.getTown() != town)
+                        {
+                            e.setCancelled(true);
+                        }
+                    } catch (TownNotFoundedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+            }
+
+        }
+
+
+
+
     }
 
     @EventHandler

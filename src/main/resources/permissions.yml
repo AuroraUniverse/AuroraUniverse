@@ -25,10 +25,27 @@ groups:
       - auneconomy.pay
       - auneconomy.balance
       - town.teleport.spawn
-      - nation.teleport
+    assistant:
+      - town.leave
+      - town.create
+      - town.build
+      - town.destroy
+      - town.deposit
+      - aun.info
+      - auneconomy.pay
+      - auneconomy.balance
+      - town.teleport.spawn
+      - town.set.spawn
+      - town.set.perms
+      - town.set.tax
+      - town.set.group
+      - town.toggle.*
+      - town.region.*
+      - town.residents.invite
+      - town.residents.kick
+      - town.withdraw
     mayor:
       - town.*
       - auneconomy.pay
       - auneconomy.balance
-      - nation.*
     # Here you can add your custom permission group
