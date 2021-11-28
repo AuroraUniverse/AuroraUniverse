@@ -1,13 +1,11 @@
-# AuroraUniverse by karlov_m
+
 <p><img align=left width="150" src="https://i.imgur.com/0zk8dT8.png"></p>
 
-___
 
+# AuroraUniverse by karlov_m
 
 AuroraUniverse is a great plugin that provides a system of cities, wars, trade, countries and various ranks. A good, and most importantly confident solution for moving from Towny.
 
-
-___
 
 ## Features
 AuroraUniverse comes with great many features!  
