@@ -40,7 +40,7 @@ Leave all the hard work to Aurora!
 ## Migrating from Towny
 Unfortunately, AuroraUniverse does not support migration from Towny. However, you can transfer your server to Aurora Universe after a wipe and tell the players about the new cool Town System on your server!
 ## Where can I download the plugin?
-The plugin is currently under development and a testing process. Stay tuned to be the first to try out the new product!
+The plugin is currently under development and a testing process, but *you can download last stable release*
 ## Wiki
 The wiki can be found [here](https://github.com/AuroraUniverse/AuroraUniverse/wiki)
 
