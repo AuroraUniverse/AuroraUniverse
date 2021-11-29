@@ -1,13 +1,11 @@
-# AuroraUniverse by karlov_m
+
 <p><img align=left width="150" src="https://i.imgur.com/0zk8dT8.png"></p>
 
-___
 
+# AuroraUniverse by karlov_m
 
 AuroraUniverse is a great plugin that provides a system of cities, wars, trade, countries and various ranks. A good, and most importantly confident solution for moving from Towny.
 
-
-___
 
 ## Features
 AuroraUniverse comes with great many features!  
@@ -42,7 +40,7 @@ Leave all the hard work to Aurora!
 ## Migrating from Towny
 Unfortunately, AuroraUniverse does not support migration from Towny. However, you can transfer your server to Aurora Universe after a wipe and tell the players about the new cool Town System on your server!
 ## Where can I download the plugin?
-The plugin is currently under development and a testing process. Stay tuned to be the first to try out the new product!
+The plugin is currently under development and a testing process, but *you can download last stable release*
 ## Wiki
 The wiki can be found [here](https://github.com/AuroraUniverse/AuroraUniverse/wiki)
 
