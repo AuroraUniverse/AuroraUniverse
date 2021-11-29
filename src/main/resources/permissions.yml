@@ -25,6 +25,7 @@ groups:
       - auneconomy.pay
       - auneconomy.balance
       - town.teleport.spawn
+      - town.teleport.outpost
     assistant:
       - town.leave
       - town.create
@@ -37,6 +38,7 @@ groups:
       - town.teleport.spawn
       - town.set.spawn
       - town.set.perms
+      - town.teleport.outpost
       - town.set.tax
       - town.set.group
       - town.toggle.*

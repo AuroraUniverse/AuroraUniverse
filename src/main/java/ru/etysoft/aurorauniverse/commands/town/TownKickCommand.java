@@ -19,8 +19,7 @@ public class TownKickCommand {
             if (resident == null) {
                 Messaging.sendPrefixedMessage(Messages.cantConsole(), sender);
             } else {
-                Player de = (Player) Bukkit.getPlayer(args[1]);
-                Resident resident2 = Residents.getResident(de);
+                Resident resident2 = Residents.getResident(args[1]);
                 try {
                     if(resident2 == null) throw new TownNotFoundedException();
                     Town t = resident.getTown();
