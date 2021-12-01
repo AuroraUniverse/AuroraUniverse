@@ -137,6 +137,10 @@ public class AuroraChat {
         if (Permissions.canSendColorCodes(playerSender)) {
             message = ColorCodes.toColor(message);
         }
+        else
+        {
+            message = message.replace("&", "");
+        }
         message = PlaceholderFormatter.process(message, playerSender);
 
         for (Player player : finalRecipients) {
