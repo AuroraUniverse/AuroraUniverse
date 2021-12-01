@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
 import ru.etysoft.aurorauniverse.world.Nation;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -57,8 +58,13 @@ public class Messaging {
     public static void sendResidentInfo(CommandSender p, Resident resident) {
         p.sendMessage(ChatColor.GRAY + "o0o_[" + ChatColor.GOLD + resident.getName() + ChatColor.GRAY + "]_o0o");
 
-        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident.town").replace("%s", resident.getTownName())));
-        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident.balance").replace("%s", String.valueOf(resident.getBalance()))));
+        try {
+            p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident-town").replace("%s", resident.getTown().getName())));
+        } catch (TownNotFoundedException e) {
+            p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident-town").replace("%s",
+                    AuroraUniverse.getLanguage().getString("resident-none"))));
+        }
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident-balance").replace("%s", String.valueOf(resident.getBalance()))));
 
     }
 

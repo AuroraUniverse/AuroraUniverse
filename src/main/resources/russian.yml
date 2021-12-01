@@ -26,6 +26,7 @@ access-denied-message: "&eУ Вас недостаточно прав для в�
 console: "&cВы не можете сделать это из консоли!"
 resident-town: "&7Город: &b%s"
 resident-balance: "&7Баланс: &b%s"
+resident-none: "нет"
 
 prices:
   header: "&7>> &bAurora&fUniverse &aцены &7<<"

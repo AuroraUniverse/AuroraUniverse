@@ -26,6 +26,7 @@ access-denied-message: "&eYou do not have permission to do that!"
 console: "&cYou can't do that from console!"
 resident-town: "&7Town: &b%s"
 resident-balance: "&7Balance: &b%s"
+resident-none: "none"
 
 prices:
   header: "&7>> &bAurora&fUniverse &aprices &7<<"
