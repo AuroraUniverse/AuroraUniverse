@@ -35,7 +35,7 @@ public class TownSpawnCommand extends CommandPattern {
                     if (Permissions.canTeleportOnTowns(pl)) {
                         try
                         {
-                            Town t = Towns.getTown(args[1]);
+                            Town t = Towns.getTown(Messaging.getStringFromArgs(args, 1));
                             t.teleportToTownSpawn(pl);
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-teleported-to-spawn"), sender);
                             pl.playSound(pl.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 100.0f, 1.0f);
