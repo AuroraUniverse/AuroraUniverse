@@ -12,8 +12,11 @@ import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
+import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
+
+import java.security.Permission;
 
 public class TownCommands implements CommandExecutor {
 
@@ -68,8 +71,14 @@ public class TownCommands implements CommandExecutor {
 
                     try
                     {
-                        Town town = Towns.getTown(Messaging.getStringFromArgs(args, 0));
-                       Messaging.sendTownInfo(sender, town);
+                        if(Permissions.canSeeTownInfo(sender)) {
+                            Town town = Towns.getTown(Messaging.getStringFromArgs(args, 0));
+                            Messaging.sendTownInfo(sender, town);
+                        }
+                        else
+                        {
+                            sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.ACCESS_DENIED));
+                        }
                     }
                     catch (TownNotFoundedException ignored)
                     {

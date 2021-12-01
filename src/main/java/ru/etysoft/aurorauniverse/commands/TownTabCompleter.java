@@ -48,7 +48,9 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("accept");
 
         for (Town r : Towns.getTowns()) {
-            firstPossibleArg.add(r.getName());
+            if(Permissions.canSeeTownInfo(sender)) {
+                firstPossibleArg.add(r.getName());
+            }
         }
 
         if (args.length >= 1) {

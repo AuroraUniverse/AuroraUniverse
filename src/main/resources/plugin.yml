@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.3.1.2
+version: 0.3.1.4
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
 depend: [EasyPluginCore]
@@ -38,6 +38,14 @@ permissions:
       aun.info: true
       aun.edittown: true
     description: Allows all commands
+
+  aun.residentinfo:
+    default: op
+    description: Check information about resident
+
+  aun.towninfo:
+    default: op
+    description: Check information about town
 
   aun.info:
     default: op

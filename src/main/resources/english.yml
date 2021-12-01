@@ -8,7 +8,7 @@
 
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
-file-version: 0.1.1.3
+file-version: 0.1.1.4
 
 ########################################
 #                                      #
@@ -24,6 +24,9 @@ reloaded-message: "&aPlugin was successfully reloaded with new params!"
 no-arguments: "&cWrong arguments! "
 access-denied-message: "&eYou do not have permission to do that!"
 console: "&cYou can't do that from console!"
+resident-town: "&7Town: &b%s"
+resident-balance: "&7Balance: &b%s"
+
 prices:
   header: "&7>> &bAurora&fUniverse &aprices &7<<"
   new-town: "&bTown &fprice: &a%s"
@@ -123,6 +126,7 @@ town-withdraw-other: "&fResident &e%r &fwithdrawed &b%s &7from the town bank"
 town-withdraw: "&7Successfully &fwithdrawn &b%s &7from the town bank"
 town-cantwithdraw: "&cCan't withdraw &f%s &cfrom the town bank"
 town-cantdeposit: "&cCan't deposit &f%s &cto the town bank"
+
 
 gui:
   bank: "&7Bank: &b%s"

@@ -8,6 +8,7 @@ import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
 import ru.etysoft.aurorauniverse.world.Nation;
+import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 import ru.etysoft.aurorauniverse.world.WorldTimer;
 
@@ -51,6 +52,14 @@ public class Messaging {
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("nation.members").replace("%s1", String.join(", ", nation.getTownNames())))
                 .replace("%s", String.valueOf(nation.getTownNames().size())));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("nation.tax").replace("%s", String.valueOf(nation.getTax()))));
+    }
+
+    public static void sendResidentInfo(CommandSender p, Resident resident) {
+        p.sendMessage(ChatColor.GRAY + "o0o_[" + ChatColor.GOLD + resident.getName() + ChatColor.GRAY + "]_o0o");
+
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident.town").replace("%s", resident.getTownName())));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident.balance").replace("%s", String.valueOf(resident.getBalance()))));
+
     }
 
 

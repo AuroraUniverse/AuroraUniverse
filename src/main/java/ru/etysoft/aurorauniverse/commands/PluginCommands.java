@@ -17,8 +17,10 @@ import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
+import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +88,30 @@ public class PluginCommands implements CommandExecutor {
                 setDebug(sender, args);
             } else if (args[0].equalsIgnoreCase("prices")) {
                 Messaging.sendPrices(sender);
+            } else if (args[0].equalsIgnoreCase("res")) {
+               if(args.length > 1)
+               {
+
+                   if(Permissions.canSeeResidentInfo(sender)) {
+                       Resident resident = Residents.getResident(args[1]);
+
+                       if (resident != null) {
+                           Messaging.sendResidentInfo(sender, resident);
+                       } else {
+                           sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.NOT_REGISTERED_RESIDENT));
+                       }
+                   }
+                   else
+                   {
+                       sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.ACCESS_DENIED));
+                   }
+
+
+               }
+               else
+               {
+                   sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS));
+               }
             } else if (args[0].equalsIgnoreCase("stalin")) {
                 if (Permissions.isAdmin(sender, true)) {
                     StalinNPC.create(((Player) sender).getLocation());

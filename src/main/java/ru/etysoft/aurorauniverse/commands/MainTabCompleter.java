@@ -28,7 +28,11 @@ public class MainTabCompleter implements TabCompleter {
 
         ArrayList<String> firstPossibleArg = new ArrayList<>();
 
+        if(Permissions.canSeeResidentInfo(sender)) {
+            firstPossibleArg.add("res");
+        }
         firstPossibleArg.add("prices");
+
 
         if(Permissions.isAdmin(sender, false))
         {

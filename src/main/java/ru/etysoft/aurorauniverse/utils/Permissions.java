@@ -121,6 +121,12 @@ public class Permissions {
     public static boolean canInviteResident(CommandSender p) {
         return p.hasPermission("town.residents.invite");
     }
+    public static boolean canSeeResidentInfo(CommandSender p) {
+        return p.hasPermission("aun.residentinfo");
+    }
+    public static boolean canSeeTownInfo(CommandSender p) {
+        return p.hasPermission("aun.towninfo");
+    }
 
     public static boolean canTeleportSpawn(CommandSender p) {
         return p.hasPermission("town.teleport.spawn");
