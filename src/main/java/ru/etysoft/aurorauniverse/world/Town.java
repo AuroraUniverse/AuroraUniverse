@@ -205,12 +205,12 @@ public class Town {
 
         if (mayor != null) {
             mayor.setPermissionGroup("resident");
-            AuroraPermissions.setPermissions(Bukkit.getPlayer(mayor.getName()), AuroraPermissions.getGroup("resident"));
+            AuroraPermissions.setPermissions(mayor.getName(), AuroraPermissions.getGroup("resident"));
 
         }
 
         newMayor.setPermissionGroup("mayor");
-        AuroraPermissions.setPermissions(Bukkit.getPlayer(newMayor.getName()), AuroraPermissions.getGroup("mayor"));
+        AuroraPermissions.setPermissions(mayor.getName(), AuroraPermissions.getGroup("mayor"));
 
 
         this.mayor = newMayor;
@@ -700,7 +700,7 @@ public class Town {
     public boolean addResident(Resident resident) {
         if (!resident.hasTown()) {
             residents.add(resident);
-            AuroraPermissions.setPermissions(Bukkit.getPlayer(resident.getName()), AuroraPermissions.getGroup("resident"));
+            AuroraPermissions.setPermissions(resident.getName(), AuroraPermissions.getGroup("resident"));
             resident.setTown(name);
             Logger.log("Added resident  " + resident.getName() + " to " + getName());
             return true;
@@ -717,8 +717,9 @@ public class Town {
         if (residents.contains(resident)) {
             if (!isMayor(resident)) {
                 residents.remove(resident);
-                AuroraPermissions.setPermissions(Bukkit.getPlayer(resident.getName()), AuroraPermissions.getGroup("newbies"));
+                resident.setPermissionGroup("newbies");
                 resident.setTown(null);
+                AuroraPermissions.setPermissions(resident.getName(), AuroraPermissions.getGroup("newbies"));
                 Logger.log("Kicked resident  " + resident.getName() + " to " + getName());
                 return true;
             }

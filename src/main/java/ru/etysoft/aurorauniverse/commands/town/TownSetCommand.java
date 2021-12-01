@@ -205,7 +205,7 @@ public class TownSetCommand {
                                     .replace("%s", groupName)
                                     .replace("%p", residentNickname), sender);
                             try {
-                                AuroraPermissions.setPermissions(Bukkit.getPlayer(residentNickname), AuroraPermissions.getGroup(groupName));
+                                AuroraPermissions.setPermissions(residentNickname, AuroraPermissions.getGroup(groupName));
                             } catch (Exception ignored) {
                             }
 

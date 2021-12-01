@@ -34,7 +34,7 @@ public class PluginListener implements Listener {
         }
         Residents.createResident(event.getPlayer());
         Group group = AuroraPermissions.getGroup(Residents.getResident(event.getPlayer()).getPermissionGroupName());
-        AuroraPermissions.setPermissions(event.getPlayer(), group);
+        AuroraPermissions.setPermissions(event.getPlayer().getName(), group);
 
     }
 

@@ -9,6 +9,7 @@ import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.exceptions.YamlException;
 import ru.etysoft.aurorauniverse.utils.FileManager;
+import ru.etysoft.aurorauniverse.world.Resident;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,12 +64,20 @@ public class AuroraPermissions {
             if(player != null)
             {
                 Group group = getGroup(resident.getPermissionGroupName());
-                setPermissions(player, group);
+                setPermissions(player.getName(), group);
             }
         });
     }
 
-    public static void setPermissions(Player player, Group group) {
+    public static void setPermissions(String nickname, Group group) {
+
+        Player player = Bukkit.getPlayer(nickname);
+
+        Resident resident = Residents.getResident(nickname);
+        if(resident != null) {
+            resident.setPermissionGroup(group.getName());
+        }
+
         if(player != null) {
             PermissionAttachment attachment = player.addAttachment(AuroraUniverse.getInstance());
             if (permissionDictionary.containsKey(player.getUniqueId())) {
@@ -85,6 +94,8 @@ public class AuroraPermissions {
                 Logger.debug("Set permisson " + permission);
             }
             permissionDictionary.put(player.getUniqueId(), attachment);
+
+
         }
         else
         {

@@ -255,7 +255,7 @@ public class Towns {
             newtown.setSpawn(mayor.getLocation());
             Residents.getResident(mayor).setPermissionGroup("mayor");
 
-            AuroraPermissions.setPermissions(mayor, AuroraPermissions.getGroup("mayor"));
+            AuroraPermissions.setPermissions(mayor.getName(), AuroraPermissions.getGroup("mayor"));
             AuroraUniverse.getTownList().put(newtown.getName(), newtown);
             AuroraUniverse.getTownBlocks().putAll(newtown.getTownChunks());
 
@@ -273,8 +273,8 @@ public class Towns {
 
         mayor.setPermissionGroup("mayor");
 
-        if (Bukkit.getOnlinePlayers().contains(mayor.getName())) {
-            AuroraPermissions.setPermissions(Bukkit.getPlayer(mayor.getName()), AuroraPermissions.getGroup("mayor"));
+        if (Bukkit.getOnlinePlayers().contains(mayor)) {
+            AuroraPermissions.setPermissions(mayor.getName(), AuroraPermissions.getGroup("mayor"));
         }
 
         AuroraUniverse.getTownList().put(newTown.getName(), newTown);
