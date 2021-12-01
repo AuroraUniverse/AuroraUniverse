@@ -8,7 +8,7 @@
 
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
-file-version: 0.1.1.2
+file-version: 0.1.1.3
 
 ########################################
 #                                      #
@@ -118,6 +118,8 @@ town-destroy: "&7>> &eЛомать &fгруппы:  &7%s"
 town-switch: "&7>> &eПереключать &fгруппы:  &7%s"
 town-use: "&7>> &eИспользовать &fгруппы:  &7%s"
 town-deposit: "&fПоложили &b%s &7на счёт города"
+town-deposit-other: "&fГорожанин &e%r &fположил &b%s &7на счёт города"
+town-withdraw-other: "&fГорожанин &e%r &fснял &b%s &7со счёта города"
 town-withdraw: "&fСняли &b%s &7со счёта города"
 town-cantwithdraw: "&cНевозможно снять &f%s &cсо счёта города"
 town-cantdeposit: "&cНевозможно положить &f%s &cна счёт города"

@@ -46,6 +46,8 @@ public class TownWithdrawCommand {
                         if (t.withdrawBank(d)) {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-withdraw").replace("%s", d + ""), sender);
                             resident.giveBalance(d);
+                            t.sendMessage(AuroraLanguage.getColorString("town-withdraw-other").replace("%s", d + "")
+                                    .replace("%r", resident.getName()));
                         } else {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-cantwithdraw").replace("%s", d + ""), sender);
                         }

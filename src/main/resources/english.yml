@@ -8,7 +8,7 @@
 
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
-file-version: 0.1.1.2
+file-version: 0.1.1.3
 
 ########################################
 #                                      #
@@ -118,6 +118,8 @@ town-destroy: "&7>> &eDestroy &fgroups:  &7%s"
 town-switch: "&7>> &eSwitch &fgroups:  &7%s"
 town-use: "&7>> &eUse &fgroups:  &7%s"
 town-deposit: "&7Successfully &fdeposited &b%s &7to the town bank"
+town-deposit-other: "&fResident &e%r &fdeposited &b%s &7to the town bank"
+town-withdraw-other: "&fResident &e%r &fwithdrawed &b%s &7from the town bank"
 town-withdraw: "&7Successfully &fwithdrawn &b%s &7from the town bank"
 town-cantwithdraw: "&cCan't withdraw &f%s &cfrom the town bank"
 town-cantdeposit: "&cCan't deposit &f%s &cto the town bank"

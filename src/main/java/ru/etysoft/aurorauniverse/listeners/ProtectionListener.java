@@ -155,6 +155,7 @@ public class ProtectionListener implements Listener {
                 Block block = event.getClickedBlock();
                 List<Material> materials = new ArrayList<Material>();
                 materials.add(Material.CHEST);
+                materials.add(Material.LIGHT_BLUE_SHULKER_BOX);
                 materials.add(Material.CHEST_MINECART);
                 materials.add(Material.SHULKER_BOX);
                 materials.add(Material.FURNACE);
