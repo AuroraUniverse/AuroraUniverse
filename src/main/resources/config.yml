@@ -9,6 +9,9 @@ debug-mode: false
 # Use prefix in-chat messages
 use-prefix: true
 
+# If you are using ImageOnMap plugin, this option will prevent an experience dupe
+prevent-map-grindstone: true
+
 # Strings in chat messages etc.
 string-regex: '^[аa-яzA-ЯZ0-9 \s._\[\]\#\?\"\!\&\@\/\$\%\^\*\-\;\:\,\*\(\)\{\}Ёё]*$'
 # String in names
