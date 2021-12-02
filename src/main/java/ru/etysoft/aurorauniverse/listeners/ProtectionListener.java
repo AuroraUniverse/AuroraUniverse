@@ -132,6 +132,8 @@ public class ProtectionListener implements Listener {
     @EventHandler
     public void imageOnMapDupePrevent(InventoryClickEvent event) {
 
+        if(event.getClickedInventory() == null) return;
+        if(event.getCurrentItem() == null) return;
         if (event.getClickedInventory().getType() == InventoryType.GRINDSTONE && event.getSlotType() == InventoryType.SlotType.RESULT) {
             if(event.getCurrentItem().getType() == Material.FILLED_MAP && AuroraUniverse.getInstance().getConfig().getBoolean("prevent-map-grindstone"))
             {
