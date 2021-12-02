@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
-import ru.etysoft.aurorauniverse.commands.town.AdminCommands;
+import ru.etysoft.aurorauniverse.commands.town.TownAdminCommands;
 import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
@@ -20,7 +20,6 @@ import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +82,7 @@ public class PluginCommands implements CommandExecutor {
            else if (args[0].equalsIgnoreCase("save-all")) {
                     save(sender, args);
             } else if (args[0].equalsIgnoreCase("town")) {
-                new AdminCommands(sender, Residents.getResident(sender.getName()), args);
+                new TownAdminCommands(sender, Residents.getResident(sender.getName()), args);
             } else if (args[0].equalsIgnoreCase("debug")) {
                 setDebug(sender, args);
             } else if (args[0].equalsIgnoreCase("prices")) {

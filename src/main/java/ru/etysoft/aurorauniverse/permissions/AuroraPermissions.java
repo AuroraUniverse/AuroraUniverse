@@ -17,7 +17,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AuroraPermissions {
-    private static Map<String, Group> groups = new ConcurrentHashMap<>();
+    private static Map<String, Group> groups = new HashMap<>();
     private static boolean isInitialized = false;
     private static HashMap<UUID, PermissionAttachment> permissionDictionary = new HashMap<>();
 
@@ -128,6 +128,10 @@ public class AuroraPermissions {
     }
 
     public static Group getGroup(String name) {
+        if(groups.containsKey(name))
+        {
+            Logger.error("Group " + name + " not found!");
+        }
         return groups.get(name);
     }
 

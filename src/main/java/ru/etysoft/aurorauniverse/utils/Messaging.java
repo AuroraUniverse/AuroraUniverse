@@ -13,6 +13,8 @@ import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 import ru.etysoft.aurorauniverse.world.WorldTimer;
 
+import java.security.Permission;
+
 public class Messaging {
 
     //Send information from plugin
@@ -63,6 +65,10 @@ public class Messaging {
         } catch (TownNotFoundedException e) {
             p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident-town").replace("%s",
                     AuroraUniverse.getLanguage().getString("resident-none"))));
+        }
+        if(Permissions.isAdmin(p, false))
+        {
+            p.sendMessage("[admin info] PERM GROUP: " + resident.getPermissionGroupName());
         }
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident-balance").replace("%s", String.valueOf(resident.getBalance()))));
 

@@ -101,6 +101,7 @@ public class Nation {
         {
             town.setNationName(null);
         }
+        capital.setNationName(null);
         AuroraUniverse.nationList.remove(name);
     }
 
@@ -159,7 +160,7 @@ public class Nation {
     public static class Keys
     {
         private final static String NAME = "NAME";
-        private final static String CAPITAL = "NAME";
+        private final static String CAPITAL = "CAPITAL";
         private final static String TOWNS = "TOWNS";
         private final static String TAX = "TAX";
     }
