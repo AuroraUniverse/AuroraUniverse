@@ -700,7 +700,9 @@ public class Town {
     public boolean addResident(Resident resident) {
         if (!resident.hasTown()) {
             residents.add(resident);
-            AuroraPermissions.setPermissions(resident.getName(), AuroraPermissions.getGroup("resident"));
+            if (resident.getPermissionGroupName().equals("newbies")) {
+                AuroraPermissions.setPermissions(resident.getName(), AuroraPermissions.getGroup("resident"));
+            }
             resident.setTown(name);
             Logger.log("Added resident  " + resident.getName() + " to " + getName());
             return true;

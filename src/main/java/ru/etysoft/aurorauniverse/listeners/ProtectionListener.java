@@ -15,11 +15,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Directional;
@@ -32,18 +35,53 @@ import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.*;
+import sun.applet.Main;
 
 import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class ProtectionListener implements Listener {
 
+    private static HashMap<String, Long> ktList = new HashMap<>();
+
+    public static boolean isInBattle(Player pl)
+    {
+        if(!ktList.containsKey(pl.getName())) return false;
+        long timeLastInBattle = ktList.get(pl.getName());
+        if(System.currentTimeMillis() - timeLastInBattle < 5000)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    @EventHandler()
+    public void enderPearlThrown(PlayerTeleportEvent event) {
+        if (event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) return;
+        Location to = event.getTo();
+        Location from = event.getFrom();
+
+        ChunkPair chunkPair = ChunkPair.fromChunk(event.getTo().getChunk());
+        Town town = Towns.getTown(chunkPair);
+        if(town != null)
+        {
+            if(!town.isPvp(chunkPair) && ProtectionListener.isInBattle(event.getPlayer()))
+            {
+                event.setCancelled(true);
+            }
+        }
+
+
+    }
+
     @EventHandler
     public void PvP(EntityDamageByEntityEvent event) {
-
-
 
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();
@@ -58,6 +96,12 @@ public class ProtectionListener implements Listener {
                 }
             } catch (Exception e) {
                 //can't pass event because null
+                if(event.getDamager() instanceof Player)
+                {
+                    ktList.put(event.getDamager().getName(), System.currentTimeMillis());
+                    ktList.put(p.getName(), System.currentTimeMillis());
+                }
+
             }
         }
         else if(event.getDamager() instanceof Player)
@@ -132,6 +176,9 @@ public class ProtectionListener implements Listener {
     @EventHandler
     public void imageOnMapDupePrevent(InventoryClickEvent event) {
 
+        if(event.getCurrentItem() == null) return;
+        if(event.getClickedInventory() == null) return;
+
         if (event.getClickedInventory().getType() == InventoryType.GRINDSTONE && event.getSlotType() == InventoryType.SlotType.RESULT) {
             if(event.getCurrentItem().getType() == Material.FILLED_MAP && AuroraUniverse.getInstance().getConfig().getBoolean("prevent-map-grindstone"))
             {
@@ -167,6 +214,7 @@ public class ProtectionListener implements Listener {
                 Block block = event.getClickedBlock();
                 List<Material> materials = new ArrayList<Material>();
                 materials.add(Material.CHEST);
+                materials.add(Material.BLAST_FURNACE);
                 materials.add(Material.ENDER_CHEST);
                 materials.add(Material.TRAPPED_CHEST);
                 materials.add(Material.LIGHT_BLUE_SHULKER_BOX);
@@ -452,8 +500,24 @@ public class ProtectionListener implements Listener {
 
 
 
-        if (!canBlockMove(event.getBlock(), event.getBlock().getRelative(((Directional) event.getBlock().getBlockData()).getFacing())))
-            event.setCancelled(true);
+        try {
+            if (!canBlockMove(event.getBlock(), event.getBlock().getRelative(((Directional) event.getBlock().getBlockData()).getFacing())))
+                event.setCancelled(true);
+        }
+        catch (Exception e)
+        {
+            if(AuroraUniverse.debugmode)
+            {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onArrowShoot(ProjectileHitEvent event)
+    {
+        //if(event.get)
     }
 
 

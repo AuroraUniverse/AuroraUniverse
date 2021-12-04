@@ -86,8 +86,14 @@ public class DataManager {
                 }
 
                 for (int i = 0; i < nations.size(); i++) {
-                    JSONObject jsonObject = (JSONObject) towns.get(i);
-                    Nation.loadFromJson(jsonObject);
+                    JSONObject jsonObject = (JSONObject) nations.get(i);
+                    try {
+                        Nation.loadFromJson(jsonObject);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.error("Cannot load nation " + jsonObject);
+                    }
                 }
 
                 Logger.log("Loading finished");

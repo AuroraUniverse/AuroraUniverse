@@ -99,7 +99,7 @@ public class AuroraPermissions {
         }
         else
         {
-            Logger.debug("[Permissions] Player " + " is null!");
+            Logger.debug("[Permissions] Player " + nickname + " is null!");
         }
     }
 
@@ -121,14 +121,19 @@ public class AuroraPermissions {
     }
 
     public static void addGroup(Group group) {
-        Logger.debug("Added " + group.getName() + " permission group...");
+
         if (!groups.containsKey(group.getName())) {
+            Logger.info("Added " + group.getName() + " permission group...");
             groups.put(group.getName(), group);
+        }
+        else
+        {
+            Logger.error("Group " + group.getName() + " already loaded!");
         }
     }
 
     public static Group getGroup(String name) {
-        if(groups.containsKey(name))
+        if(!groups.containsKey(name))
         {
             Logger.error("Group " + name + " not found!");
         }
