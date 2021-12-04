@@ -3,7 +3,7 @@
 # Name of language file: russian.yml, english.yml or {yourlang}.yml (EN and RU are currently translated)
 language-file: "russian.yml"
 # DO NOT EDIT
-file-version: 0.1.0.2
+file-version: 0.1.0.3
 debug-mode: false
 
 # Use prefix in-chat messages
@@ -27,6 +27,9 @@ min-distance-between-towns: 1
 max-outposts-count: 1
 
 chunk-per-resident: 10
+
+# Time of preventing town entering after tagging by player (in ms)
+time-battle: 5000
 
 # TAXES
 

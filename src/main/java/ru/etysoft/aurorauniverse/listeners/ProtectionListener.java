@@ -51,7 +51,7 @@ public class ProtectionListener implements Listener {
     {
         if(!ktList.containsKey(pl.getName())) return false;
         long timeLastInBattle = ktList.get(pl.getName());
-        if(System.currentTimeMillis() - timeLastInBattle < 5000)
+        if(System.currentTimeMillis() - timeLastInBattle < AuroraUniverse.getInstance().getConfig().getInt("time-battle"))
         {
             return true;
         }

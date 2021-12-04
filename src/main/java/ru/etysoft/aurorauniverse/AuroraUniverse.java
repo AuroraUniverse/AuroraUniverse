@@ -57,7 +57,7 @@ public final class AuroraUniverse extends JavaPlugin {
     private static boolean haswarnings = false;
 
     private final static String langver = "0.1.1.4";
-    private final static String confver = "0.1.0.2";
+    private final static String confver = "0.1.0.3";
     private final static String permsver = "0.1.0.0";
 
     public AuroraEconomy getEconomy() {
