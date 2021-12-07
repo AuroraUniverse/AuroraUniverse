@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -122,6 +123,31 @@ public class ProtectionListener implements Listener {
                 }
             }
         }
+        if(event.getDamager() instanceof Arrow)
+        {
+            Arrow arrow = (Arrow) event.getDamager();
+
+
+            if(arrow.getShooter() instanceof Player){
+                Player p = (Player) arrow.getShooter();
+                if(Permissions.isAdmin(p, false)) return;
+                Resident resident = Residents.getResident(p);
+                Town entityTown = Towns.getTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()));
+                if(entityTown != null)
+                {
+                    try {
+                        if(entityTown != resident.getTown())
+                        {
+                            event.setCancelled(true);
+                        }
+                    } catch (TownNotFoundedException e) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+
+
+        }
     }
 
     @EventHandler
@@ -215,6 +241,7 @@ public class ProtectionListener implements Listener {
                 List<Material> materials = new ArrayList<Material>();
                 materials.add(Material.CHEST);
                 materials.add(Material.BLAST_FURNACE);
+                materials.add(Material.SMOKER);
                 materials.add(Material.ENDER_CHEST);
                 materials.add(Material.TRAPPED_CHEST);
                 materials.add(Material.LIGHT_BLUE_SHULKER_BOX);
@@ -234,6 +261,7 @@ public class ProtectionListener implements Listener {
                 materials.add(Material.CYAN_SHULKER_BOX);
                 materials.add(Material.GREEN_SHULKER_BOX);
                 materials.add(Material.GRAY_SHULKER_BOX);
+                materials.add(Material.PURPLE_SHULKER_BOX);
                 materials.add(Material.FURNACE);
                 materials.add(Material.GRINDSTONE);
                 materials.add(Material.ANVIL);
@@ -512,12 +540,6 @@ public class ProtectionListener implements Listener {
             }
         }
 
-    }
-
-    @EventHandler
-    public void onArrowShoot(ProjectileHitEvent event)
-    {
-        //if(event.get)
     }
 
 

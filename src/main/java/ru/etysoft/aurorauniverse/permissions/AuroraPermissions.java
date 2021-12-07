@@ -23,14 +23,17 @@ public class AuroraPermissions {
 
 
     public static void clear() {
-        permissionDictionary.forEach((uuid, attachment) -> {
+        for(UUID uuid : permissionDictionary.keySet())
+        {
+            PermissionAttachment permissionAttachment = permissionDictionary.get(uuid);
             Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
-                player.removeAttachment(attachment);
+                player.removeAttachment(permissionAttachment);
             } else {
-                Logger.debug("Player " + player.getName() + " not found!");
+                Logger.debug("Player " + " not found!");
             }
-        });
+        }
+
         groups.clear();
         permissionDictionary.clear();
     }
@@ -50,7 +53,7 @@ public class AuroraPermissions {
                 parsePlayers();
                 isInitialized = true;
             } else {
-                Logger.debug("Permissions file is null!");
+                Logger.error("Permissions file is null!");
             }
         } catch (YamlException e) {
             Logger.error("Can't initialize permissions file!");
@@ -59,14 +62,13 @@ public class AuroraPermissions {
     }
 
     public static void parsePlayers() {
-        AuroraUniverse.residentlist.forEach((name, resident) -> {
-            Player player = Bukkit.getPlayer(name);
-            if(player != null)
-            {
-                Group group = getGroup(resident.getPermissionGroupName());
-                setPermissions(player.getName(), group);
-            }
-        });
+
+        for(Player player : Bukkit.getOnlinePlayers())
+        {
+            Group group = AuroraPermissions.getGroup(Residents.getResident(player).getPermissionGroupName());
+            AuroraPermissions.setPermissions(player.getName(), group);
+        }
+
     }
 
     public static void setPermissions(String nickname, Group group) {
@@ -91,7 +93,7 @@ public class AuroraPermissions {
             for (String permission :
                     group.getPermissions()) {
                 attachment.setPermission(permission, !permission.startsWith("-"));
-                Logger.debug("Set permisson " + permission);
+                Logger.debug("Set permission " + permission);
             }
             permissionDictionary.put(player.getUniqueId(), attachment);
 

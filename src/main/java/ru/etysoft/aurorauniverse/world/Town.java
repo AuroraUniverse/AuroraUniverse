@@ -902,7 +902,7 @@ public class Town {
     }
 
     public boolean hasNation() {
-        return (nationName != null);
+        return getNation() != null;
     }
 
 
@@ -911,11 +911,11 @@ public class Town {
         boolean success = false;
         boolean far = false;
         boolean isOutpost = true;
-        if (townChunks.size() < getMaxChunks()) {
+        if (townChunks.size() < getMaxChunks() && !townChunks.containsKey(chunk)) {
             for (ChunkPair chunk1 : AuroraUniverse.getTownBlocks().keySet()) {
                 Region region = AuroraUniverse.getTownBlock(chunk1);
                 int m = AuroraUniverse.getMinTownsDistance();
-                if (chunk1 != chunk && !(region instanceof OutpostRegion)) // есть ли чанк, который мы хотим заприватить в городах
+                if (chunk1.equals(chunk) && !(region instanceof OutpostRegion)) // есть ли чанк, который мы хотим заприватить в городах
                 {
                     //такого чанка нет
 
@@ -997,7 +997,7 @@ public class Town {
     }
 
     public boolean unclaimChunk(ChunkPair chunk) {
-        if (townChunks.containsKey(chunk) && mainChunk != chunk) {
+        if (townChunks.containsKey(chunk) && !mainChunk.equals(chunk)) {
             if (townChunks.get(chunk) instanceof OutpostRegion) {
                 outPosts.remove((OutpostRegion) townChunks.get(chunk));
             }
@@ -1040,10 +1040,11 @@ public class Town {
     public void setSpawn(Location location) throws TownException {
         if (hasChunk(location)) {
             townSpawnPoint = location;
+            mainChunk = ChunkPair.fromChunk(location.getChunk());
             if ((getTownChunks().get(ChunkPair.fromChunk(location.getChunk())) instanceof ResidentRegion))
                 throw new TownException(AuroraUniverse.getLanguage().getString("e5"));
 
-            mainChunk = ChunkPair.fromChunk(location.getChunk());
+
             // До лучших времён
 //            Bukkit.getServer().getScheduler().runTaskTimer(AuroraUniverse.getInstance(), new Runnable() {
 //                @Override

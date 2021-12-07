@@ -40,6 +40,7 @@ public class DeleteTownCommand {
         } catch (TownNotFoundedException e) {
             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
         } catch (Exception e) {
+            e.printStackTrace();
             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("admin.town-cantdelete").replace("%s", e.getMessage()), sender);
         }
     }

@@ -8,6 +8,11 @@ public class TownException extends Exception {
         error = message;
     }
 
+    @Override
+    public String getMessage() {
+        return error;
+    }
+
     public String getErrorMessage()
     {
         return  error;
