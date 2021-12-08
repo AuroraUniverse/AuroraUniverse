@@ -239,40 +239,14 @@ public class ProtectionListener implements Listener {
                 ChunkPair chunk = ChunkPair.fromChunk(event.getClickedBlock().getChunk());
                 Block block = event.getClickedBlock();
                 List<Material> materials = new ArrayList<Material>();
-                materials.add(Material.CHEST);
-                materials.add(Material.BLAST_FURNACE);
-                materials.add(Material.SMOKER);
-                materials.add(Material.ENDER_CHEST);
-                materials.add(Material.TRAPPED_CHEST);
-                materials.add(Material.LIGHT_BLUE_SHULKER_BOX);
-                materials.add(Material.CHEST_MINECART);
-                materials.add(Material.SHULKER_BOX);
-                materials.add(Material.RED_SHULKER_BOX);
-                materials.add(Material.WHITE_SHULKER_BOX);
-                materials.add(Material.YELLOW_SHULKER_BOX);
-                materials.add(Material.PINK_SHULKER_BOX);
-                materials.add(Material.ORANGE_SHULKER_BOX);
-                materials.add(Material.MAGENTA_SHULKER_BOX);
-                materials.add(Material.LIME_SHULKER_BOX);
-                materials.add(Material.LIGHT_GRAY_SHULKER_BOX);
-                materials.add(Material.BLACK_SHULKER_BOX);
-                materials.add(Material.BLUE_SHULKER_BOX);
-                materials.add(Material.BROWN_SHULKER_BOX);
-                materials.add(Material.CYAN_SHULKER_BOX);
-                materials.add(Material.GREEN_SHULKER_BOX);
-                materials.add(Material.GRAY_SHULKER_BOX);
-                materials.add(Material.PURPLE_SHULKER_BOX);
-                materials.add(Material.FURNACE);
-                materials.add(Material.GRINDSTONE);
-                materials.add(Material.ANVIL);
-                materials.add(Material.DAMAGED_ANVIL);
-                materials.add(Material.CHIPPED_ANVIL);
-                materials.add(Material.BREWING_STAND);
+
+
                 materials.add(Material.ITEM_FRAME);
+                materials.addAll(MaterialGroups.getContainers());
 
                 // 1.14+
                 try {
-                    materials.add(Material.BARREL);
+
                 } catch (Exception e) {
                     Logger.warning("Can't find Barrel material! Is the server outdated?");
                 }
@@ -325,6 +299,8 @@ public class ProtectionListener implements Listener {
                 materials.add(Material.JUNGLE_DOOR);
                 materials.add(Material.OAK_DOOR);
                 materials.add(Material.SPRUCE_DOOR);
+
+                materials.addAll(MaterialGroups.Switchable.getTrapdoors());
 
                 materials.add(Material.BIRCH_BUTTON);
                 materials.add(Material.ACACIA_BUTTON);

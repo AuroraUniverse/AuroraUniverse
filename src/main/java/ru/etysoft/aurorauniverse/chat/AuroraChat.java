@@ -113,6 +113,14 @@ public class AuroraChat {
 
                     List<Town> towns = resident.getTown().getNation().getTowns();
 
+                    for (Resident townResident : resident.getTown().getNation().getCapital().getResidents()) {
+                        Player player = Bukkit.getPlayer(townResident.getName());
+                        if (player != null) {
+                            recipients.add(Bukkit.getPlayer(townResident.getName()));
+                        }
+
+                    }
+
                     for(Town town : towns) {
 
                         for (Resident townResident : town.getResidents()) {

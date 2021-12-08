@@ -12,10 +12,7 @@ import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
-import ru.etysoft.aurorauniverse.world.Region;
-import ru.etysoft.aurorauniverse.world.Resident;
-import ru.etysoft.aurorauniverse.world.ResidentRegion;
-import ru.etysoft.aurorauniverse.world.Town;
+import ru.etysoft.aurorauniverse.world.*;
 import ru.etysoft.epcore.gui.GUITable;
 import ru.etysoft.epcore.gui.Items;
 import ru.etysoft.epcore.gui.Slot;
@@ -52,7 +49,7 @@ public class TownGuiCommand {
 
 
 
-            if(town.getTownChunks().keySet().contains(chunk))
+            if(town.getTownChunks().keySet().contains(ChunkPair.fromChunk(chunk)))
             {
                 if(Permissions.canUnClaim(sender))
                 {
@@ -91,51 +88,54 @@ public class TownGuiCommand {
 
             Slot standingSlot;
 
-            if (Permissions.canEditTown(sender) | Permissions.canGetRegionInfo(sender)) {
+            if (Permissions.canEditTowns(sender) | Permissions.canGetRegionInfo(sender)) {
+
+
 
                 Town standingTown = Towns.getTown(((Player) sender).getLocation().getChunk());
                 if (standingTown != null) {
-                    Region region = standingTown.getRegion(((Player) sender).getLocation());
+                    if(standingTown == resident.getTown() | Permissions.canEditTowns(sender) ) {
+                        Region region = standingTown.getRegion(((Player) sender).getLocation());
 
-                    if (resident.getTown() == standingTown | Permissions.canEditTown(sender)) {
-                        if (region != null) {
-                            if (region instanceof ResidentRegion) {
-                                ResidentRegion residentRegion = (ResidentRegion) region;
+                        if (resident.getTown() == standingTown | Permissions.canEditTowns(sender)) {
+                            if (region != null) {
+                                if (region instanceof ResidentRegion) {
+                                    ResidentRegion residentRegion = (ResidentRegion) region;
 
-                                String membersString = "";
+                                    String membersString = "";
 
-                                for (String nickname : residentRegion.getMembers()) {
-                                    membersString += nickname + "; ";
-                                }
-                                standingSlot = new Slot(new SlotRunnable() {
-                                    @Override
-                                    public void run() {
-
+                                    for (String nickname : residentRegion.getMembers()) {
+                                        membersString += nickname + "; ";
                                     }
-                                }, Items.createNamedItem(new ItemStack(Material.PODZOL, 1), AuroraLanguage.getColorString("gui.standing"),
-                                        AuroraLanguage.getColorString("gui.has-owner")
-                                                .replace("%s1", String.valueOf(residentRegion.getMembers().size()))
-                                                .replace("%s", residentRegion.getOwner().getName())
-                                ));
-                                matrix.put(54, standingSlot);
-                            } else {
-                                String townBlock = AuroraLanguage.getColorString("gui.standing-town");
-                                if(standingTown.getMainChunk() == ((Player) sender).getLocation().getChunk())
-                                {
-                                    townBlock = AuroraLanguage.getColorString("gui.standing-main-chunk");
-                                }
-                                standingSlot = new Slot(new SlotRunnable() {
-                                    @Override
-                                    public void run() {
+                                    standingSlot = new Slot(new SlotRunnable() {
+                                        @Override
+                                        public void run() {
 
+                                        }
+                                    }, Items.createNamedItem(new ItemStack(Material.PODZOL, 1), AuroraLanguage.getColorString("gui.standing"),
+                                            AuroraLanguage.getColorString("gui.has-owner")
+                                                    .replace("%s1", String.valueOf(residentRegion.getMembers().size()))
+                                                    .replace("%s", residentRegion.getOwner().getName())
+                                    ));
+                                    matrix.put(54, standingSlot);
+                                } else {
+                                    String townBlock = AuroraLanguage.getColorString("gui.standing-town");
+                                    if (standingTown.getMainChunk().equals(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk()))) {
+                                        townBlock = AuroraLanguage.getColorString("gui.standing-main-chunk");
                                     }
-                                }, Items.createNamedItem(new ItemStack(Material.GRASS_BLOCK, 1),  AuroraLanguage.getColorString("gui.standing"),
-                                      townBlock
-                                ));
+                                    standingSlot = new Slot(new SlotRunnable() {
+                                        @Override
+                                        public void run() {
 
-                                matrix.put(54, standingSlot);
+                                        }
+                                    }, Items.createNamedItem(new ItemStack(Material.GRASS_BLOCK, 1), AuroraLanguage.getColorString("gui.standing"),
+                                            townBlock
+                                    ));
+
+                                    matrix.put(54, standingSlot);
 
 
+                                }
                             }
                         }
                     }

@@ -2,7 +2,6 @@ package ru.etysoft.aurorauniverse.commands.town;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import ru.etysoft.aurorauniverse.commands.town.CommandPattern;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
@@ -20,7 +19,7 @@ public class TownAdminCommands extends CommandPattern {
 
         // /aun town(0) action(1) name(2)
 
-        if (Permissions.canEditTown(sender)) {
+        if (Permissions.canEditTowns(sender)) {
             if (args.length < 3) {
                 sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS));
             } else {

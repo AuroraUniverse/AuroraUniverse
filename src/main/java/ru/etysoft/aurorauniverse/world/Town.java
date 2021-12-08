@@ -915,7 +915,7 @@ public class Town {
             for (ChunkPair chunk1 : AuroraUniverse.getTownBlocks().keySet()) {
                 Region region = AuroraUniverse.getTownBlock(chunk1);
                 int m = AuroraUniverse.getMinTownsDistance();
-                if (chunk1.equals(chunk) && !(region instanceof OutpostRegion)) // есть ли чанк, который мы хотим заприватить в городах
+                if (!chunk1.equals(chunk) && !(region instanceof OutpostRegion)) // есть ли чанк, который мы хотим заприватить в городах
                 {
                     //такого чанка нет
 

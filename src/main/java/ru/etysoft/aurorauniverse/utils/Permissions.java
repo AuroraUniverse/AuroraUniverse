@@ -42,8 +42,8 @@ public class Permissions {
         return p.hasPermission("nation.delete");
     }
 
-    public static boolean canEditTown(CommandSender p) {
-        return p.hasPermission("aun.edittown");
+    public static boolean canEditTowns(CommandSender p) {
+        return p.hasPermission("aun.edittowns");
     }
 
     public static boolean canCreateTown(CommandSender p) {
