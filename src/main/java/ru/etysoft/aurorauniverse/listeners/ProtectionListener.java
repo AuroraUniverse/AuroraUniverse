@@ -33,6 +33,7 @@ import ru.etysoft.aurorauniverse.commands.PluginCommands;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.structures.StructurePatterns;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.*;
@@ -362,6 +363,7 @@ public class ProtectionListener implements Listener {
     @EventHandler
     public void BreakBlock(BlockBreakEvent event) {
         if (PluginCommands.debugHand.contains(event.getPlayer().getName())) {
+            StructurePatterns.bufferFrom = event.getBlock().getLocation();
             String infoMessage = "";
             Town town = Towns.getTown(event.getBlock().getChunk());
             if (town != null) {
@@ -446,6 +448,13 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void PlaceBlock(BlockPlaceEvent event) {
+
+        if(PluginCommands.debugHand.contains(event.getPlayer().getName()))
+        {
+            StructurePatterns.bufferTo = event.getBlock().getLocation();
+            event.getPlayer().sendMessage("Second point is selected!");
+            event.setCancelled(true);
+        }
         if (!event.getPlayer().hasPermission("aun.edittowns")) {
             try {
                 if (Towns.hasMyTown(ChunkPair.fromChunk(event.getBlock().getChunk()), Residents.getResident(event.getPlayer()).getTown())) {

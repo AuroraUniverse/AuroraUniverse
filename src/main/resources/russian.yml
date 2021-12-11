@@ -144,6 +144,13 @@ gui:
   toggle-exp: "&fВзрывы (%s)"
   state-on: "&aВКЛ.&f"
   state-off: "&cВЫКЛ.&f"
+  toggles: "Переключатели"
+  toggles-button: "&eПереключатели"
+  toggles-lore: "&7Управление и просмотр переключателей города"
+  trans-history: "&eИстория транзакций"
+  trans-history-lore: "&7Послендие 6 операций"
+  trans-history-withdraw: "&b%s &fснял &e%d"
+  trans-history-deposit: "&b%s &fположил &a%d"
 
 
 not-registered-town: "Города с таким именем не существует"
@@ -291,3 +298,17 @@ placeholders:
   no-town: ""
   nation: "&7[&6%s&7] "
   no-nation: ""
+
+# Added in 0.5.0.0
+
+auction-created: "&fРынок успешно &aсоздан"
+auction-gui:
+  title: "&eРынок"
+  title-bought: "&eРынок &7[&aКуплено&7]"
+  lore: "&fНа рынке вы можете торговать ресурсами с другими &bгородами."
+  lore-2: "&7Нажмите, чтобы разместить"
+  price: "&fЦена &b%s"
+
+auction-error-place: "&cРынок не может быть построен здесь (территория расчищена?)"
+auction-error-replace: "&cРынок не может быть перемещён: недостаточно блоков"
+auction-error-chunk: "&cРынок должен быть размещён только на одном чанке"

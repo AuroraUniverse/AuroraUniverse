@@ -31,6 +31,10 @@ chunk-per-resident: 10
 # Time of preventing town entering after tagging by player (in ms)
 time-battle: 5000
 
+
+auction-price: 5000
+default-auction-structure: "auction"
+
 # TAXES
 
 town-chunk-tax: 15.0

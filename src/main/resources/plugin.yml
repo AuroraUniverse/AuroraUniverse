@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.4.1.7
+version: 0.5.0.0
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
 depend: [EasyPluginCore]
@@ -80,6 +80,9 @@ permissions:
       town.set.*: true
       town.toggle.*: true
       town.region.*: true
+      town.auction.create: true
+      town.auction.buy: true
+      town.auction.sell: true
 
     description: Allows all commands
 
@@ -107,6 +110,8 @@ permissions:
     default: op
     description: Leave town
 
+
+
   town.deposit:
     default: op
     description: Withdraw money into the town's bank
@@ -123,9 +128,29 @@ permissions:
     default: op
     description: Withdraw money from the town's bank
 
+
+  ###############
+  #   Auction   #
+  ###############
+
+  town.auction.create:
+    default: op
+    description: Create a auction
+
+  town.auction.buy:
+    default: op
+    description: Buy items on auction
+
+  town.auction.sell:
+    default: op
+    description: Sell items on auction
+
+
+
   ############
   #   Edit   #
   ############
+
 
   town.edit:
     default: op

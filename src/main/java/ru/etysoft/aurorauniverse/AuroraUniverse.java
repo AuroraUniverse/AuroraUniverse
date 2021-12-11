@@ -23,6 +23,7 @@ import ru.etysoft.aurorauniverse.listeners.PluginListener;
 import ru.etysoft.aurorauniverse.listeners.ProtectionListener;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.placeholders.AuroraPlaceholdersExpansion;
+import ru.etysoft.aurorauniverse.structures.StructurePatterns;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.LanguageSetup;
 import ru.etysoft.aurorauniverse.utils.Metrics;
@@ -99,6 +100,7 @@ public final class AuroraUniverse extends JavaPlugin {
                 addWarning("&eCan't find file-version in config.yml!");
             }
 
+            Logger.info("Initializing AuroraChat...");
             try
             {
                 AuroraChat.initialize();
@@ -106,6 +108,17 @@ public final class AuroraUniverse extends JavaPlugin {
             catch (Exception e)
             {
                 addWarning("&cChat initializing issues occurred!");
+            }
+
+            Logger.info("Loading structure patterns...");
+            try
+            {
+                StructurePatterns.loadPatterns();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                addWarning("&cStructure patterns load issues occurred!");
             }
 
             if (haswarnings) {

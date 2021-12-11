@@ -1,9 +1,15 @@
 package ru.etysoft.aurorauniverse.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONArray;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.commands.town.TownAdminCommands;
@@ -12,8 +18,10 @@ import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.exceptions.WorldNotFoundedException;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
+import ru.etysoft.aurorauniverse.structures.*;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
@@ -46,6 +54,115 @@ public class PluginCommands implements CommandExecutor {
         }
     }
 
+    public void struct(CommandSender sender, String[] args) {
+        if (args.length > 1) {
+            if (Permissions.isAdmin(sender, true)) {
+                if(sender instanceof Player)
+                {
+                    Location location = ((Player) sender).getLocation();
+
+                    Structure structure = new Structure(location.getBlockX(), location.getBlockY(), location.getBlockZ(), args[1], location.getWorld().getName());
+                    try {
+                        structure.build(new Runnable() {
+                            @Override
+                            public void run() {
+                                sender.sendMessage("Successfully built!");
+                            }
+                        });
+                    } catch (WorldNotFoundedException e) {
+                        e.printStackTrace();
+                    } catch (StructureBuildException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    Messaging.sendPrefixedMessage(Messages.Keys.ACCESS_DENIED, sender);
+                }
+            }
+            else
+            {
+                Messaging.sendPrefixedMessage(Messages.Keys.ACCESS_DENIED, sender);
+            }
+        } else {
+            Messaging.sendPrefixedMessage(Messages.Keys.WRONG_ARGS, sender);
+        }
+    }
+
+    public void saveStruct(CommandSender sender, String[] args) {
+        if (args.length > 1) {
+            if (Permissions.isAdmin(sender, true)) {
+                int fromX = StructurePatterns.bufferFrom.getBlockX();
+                int fromY = StructurePatterns.bufferFrom.getBlockY();
+                int fromZ = StructurePatterns.bufferFrom.getBlockZ();
+
+                int toX = StructurePatterns.bufferTo.getBlockX();
+                int toY = StructurePatterns.bufferTo.getBlockY();
+                int toZ = StructurePatterns.bufferTo.getBlockZ();
+
+
+                if(fromX > toX)
+                {
+                    int tempX = toX;
+                    toX = fromX;
+                    fromX = tempX;
+                }
+
+                if(fromY > toY)
+                {
+                    int tempY = toY;
+                    toY = fromY;
+                    fromY = tempY;
+                }
+
+                if(fromZ > toZ)
+                {
+                    int tempZ = toZ;
+                    toZ = fromZ;
+                    fromZ = tempZ;
+                }
+
+                JSONArray jsonArray = new JSONArray();
+
+                World world = StructurePatterns.bufferFrom.getWorld();
+
+                Logger.debug(fromX + "; " + toX + ". " + fromY + "; " + toY + ". " + fromZ + "; " + toZ);
+
+                for(int x = fromX; x <= toX; x++)
+                {
+                    for(int y = fromY; y <= toY; y++)
+                    {
+                        for(int z = fromZ; z <= toZ; z++) {
+
+                            (new Location(world, x, y, z)).getChunk().load();
+                            Block block = world.getBlockAt(x, y, z);
+
+                            if (block.getType() != Material.AIR)
+                            {
+                                try {
+                                    StructBlock structBlock = new StructBlock(x - fromX, y - fromY, z - fromZ, block.getType().name());
+                                    jsonArray.add(structBlock.toJson());
+
+                                } catch (StructureWrongCoordsException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }
+
+                StructurePatterns.savePattern(args[1], jsonArray);
+                sender.sendMessage("Saved structure at structures/" + args[1] + ".json (" + jsonArray.size() + " blocks)");
+            }
+            else
+            {
+                Messaging.sendPrefixedMessage(Messages.Keys.ACCESS_DENIED, sender);
+            }
+        } else {
+            Messaging.sendPrefixedMessage(Messages.Keys.WRONG_ARGS, sender);
+        }
+    }
+
 
     public void save(CommandSender sender, String[] args) {
         if (Permissions.isAdmin(sender, true)) {
@@ -59,6 +176,7 @@ public class PluginCommands implements CommandExecutor {
         if (Permissions.isAdmin(sender, true)) {
             Logger.debug("Reloading configuration...");
             AuroraUniverse.getInstance().reloadConfig();
+            StructurePatterns.loadPatterns();
 
             AuroraUniverse.getInstance().saveDefaultConfig();
             AuroraUniverse.getInstance().setupLanguageFile();
@@ -85,6 +203,10 @@ public class PluginCommands implements CommandExecutor {
                 new TownAdminCommands(sender, Residents.getResident(sender.getName()), args);
             } else if (args[0].equalsIgnoreCase("debug")) {
                 setDebug(sender, args);
+            } else if (args[0].equalsIgnoreCase("struct")) {
+                struct(sender, args);
+            } else if (args[0].equalsIgnoreCase("save-struct")) {
+                saveStruct(sender, args);
             } else if (args[0].equalsIgnoreCase("prices")) {
                 Messaging.sendPrices(sender);
             } else if (args[0].equalsIgnoreCase("res")) {

@@ -45,6 +45,9 @@ public class Permissions {
     public static boolean canEditTowns(CommandSender p) {
         return p.hasPermission("aun.edittowns");
     }
+    public static boolean canCreateAuction(CommandSender p) {
+        return p.hasPermission("town.auction.create");
+    }
 
     public static boolean canCreateTown(CommandSender p) {
         return p.hasPermission("town.create");
