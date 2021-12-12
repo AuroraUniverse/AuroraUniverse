@@ -680,26 +680,25 @@ public class Town {
         townBank.deposit(d);
     }
     public void depositBank(double d, Resident resident) {
-        String deposited = AuroraLanguage.getColorString("gui.trans-history-deposit")
-                .replace("%s", resident.getName()).replace("%d", String.valueOf(d));
+        if(d > AuroraUniverse.getInstance().getConfig().getInt("big-amount-starts-from")) {
+            String deposited = AuroraLanguage.getColorString("gui.trans-history-deposit")
+                    .replace("%s", resident.getName()).replace("%d", String.valueOf(d));
 
-        if(transactionHistory.size() > 5)
-        {
-            ArrayList<String> temp = new ArrayList<>();
-            int i = 0;
-            int start = transactionHistory.size() - 5;
-            for(String info : transactionHistory)
-            {
-                if(i > start)
-                {
-                    temp.add(info);
+            if (transactionHistory.size() > 5) {
+                ArrayList<String> temp = new ArrayList<>();
+                int i = 0;
+                int start = transactionHistory.size() - 5;
+                for (String info : transactionHistory) {
+                    if (i > start) {
+                        temp.add(info);
+                    }
+                    i++;
                 }
-                i++;
-            }
-            transactionHistory = temp;
+                transactionHistory = temp;
 
+            }
+            transactionHistory.add(deposited);
         }
-        transactionHistory.add(deposited);
         townBank.deposit(d);
     }
 
@@ -709,24 +708,23 @@ public class Town {
     public boolean withdrawBank(double d, Resident resident) {
         String withdrawn = AuroraLanguage.getColorString("gui.trans-history-withdraw")
                 .replace("%s", resident.getName()).replace("%d", String.valueOf(d));
+        if(d > AuroraUniverse.getInstance().getConfig().getInt("big-amount-starts-from")) {
 
-        if(transactionHistory.size() > 5)
-        {
-            ArrayList<String> temp = new ArrayList<>();
-            int i = 0;
-            int start = transactionHistory.size() - 5;
-            for(String info : transactionHistory)
-            {
-                if(i > start)
-                {
-                    temp.add(info);
+            if (transactionHistory.size() > 5) {
+                ArrayList<String> temp = new ArrayList<>();
+                int i = 0;
+                int start = transactionHistory.size() - 5;
+                for (String info : transactionHistory) {
+                    if (i > start) {
+                        temp.add(info);
+                    }
+                    i++;
                 }
-                i++;
-            }
-            transactionHistory = temp;
+                transactionHistory = temp;
 
+            }
+            transactionHistory.add(withdrawn);
         }
-        transactionHistory.add(withdrawn);
         return townBank.withdraw(d);
     }
 
@@ -1126,7 +1124,16 @@ public class Town {
 
     public boolean hasAuction()
     {
-        return auctionStructure != null;
+        if(auctionStructure != null)
+        {
+            try {
+                return auctionStructure.isFullBuilt();
+            } catch (WorldNotFoundedException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
     }
 
     public boolean unclaimChunk(ChunkPair chunk) {

@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -124,7 +125,7 @@ public class ProtectionListener implements Listener {
                 }
             }
         }
-        if(event.getDamager() instanceof Arrow)
+        else if(event.getDamager() instanceof Arrow)
         {
             Arrow arrow = (Arrow) event.getDamager();
 
@@ -148,6 +149,19 @@ public class ProtectionListener implements Listener {
             }
 
 
+        }
+        else
+        {
+            Entity entity = event.getEntity();
+            ChunkPair chunkPair = ChunkPair.fromChunk(entity.getLocation().getChunk());
+            Town t = Towns.getTown(chunkPair);
+            if(t != null)
+            {
+                if(!t.isPvp(chunkPair))
+                {
+                    event.setCancelled(true);
+                }
+            }
         }
     }
 

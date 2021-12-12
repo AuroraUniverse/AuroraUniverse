@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.5.0.0
+version: 0.5.0.1
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
 depend: [EasyPluginCore]
@@ -21,6 +21,9 @@ commands:
   auneco:
     description: Town command
     aliases: [money]
+  aunauction:
+    description: Auction command
+    aliases: [ah]
   aunchat:
     description: Chat change command
     aliases: [chat, tc, lc, g, nc, local, global]
@@ -83,6 +86,8 @@ permissions:
       town.auction.create: true
       town.auction.buy: true
       town.auction.sell: true
+      town.auction.remove: true
+      town.auction.use: true
 
     description: Allows all commands
 
@@ -144,6 +149,14 @@ permissions:
   town.auction.sell:
     default: op
     description: Sell items on auction
+
+  town.auction.remove:
+    default: op
+    description: Remove items on auction by your town
+
+  town.auction.use:
+    default: op
+    description: Use auction
 
 
 

@@ -41,12 +41,18 @@ public class Permissions {
     public static boolean canDeleteNation(CommandSender p) {
         return p.hasPermission("nation.delete");
     }
+    public static boolean canRemoveTownListings(CommandSender p) {
+        return p.hasPermission("town.auction.remove");
+    }
 
     public static boolean canEditTowns(CommandSender p) {
         return p.hasPermission("aun.edittowns");
     }
     public static boolean canCreateAuction(CommandSender p) {
         return p.hasPermission("town.auction.create");
+    }
+    public static boolean canUseAuction(CommandSender p) {
+        return p.hasPermission("town.auction.use");
     }
 
     public static boolean canCreateTown(CommandSender p) {

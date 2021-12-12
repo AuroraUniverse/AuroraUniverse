@@ -148,7 +148,7 @@ gui:
   toggles-button: "&eПереключатели"
   toggles-lore: "&7Управление и просмотр переключателей города"
   trans-history: "&eИстория транзакций"
-  trans-history-lore: "&7Послендие 6 операций"
+  trans-history-lore: "&7Последние большие 6 операций"
   trans-history-withdraw: "&b%s &fснял &e%d"
   trans-history-deposit: "&b%s &fположил &a%d"
 
@@ -251,10 +251,10 @@ nation-invitation: "Нация %s приглашает Ваш город. Нап
 ########################################
 
 chat:
-  global: "&3G &7> &f%sender%: &7%message%"
-  local: "&eLC &7>> &f%sender%: &e%message%"
-  town: "&b Город &7>> &f%sender%: &b%message%"
-  nation: "&6 Нация &7>> &f%sender%: &b%message%"
+  global: "&3G &7> %vault_prefix%&f%sender%: &7%luckperms_suffix%%message%"
+  local: "&eLC &7>> %vault_prefix%&f%sender%: &e%luckperms_suffix%%message%"
+  town: "&bГород &7>> %vault_prefix%&f%sender%: &b%luckperms_suffix%%message%"
+  nation: "&6Нация &7>> %vault_prefix%&f%sender%: &b%luckperms_suffix%%message%"
   changed: "&fВы поменяли чат на &b%s"
   ignore: "&fВы игнорируете &b%s &fчат"
   no-ignore: "&fТеперь вы будете получать сообщения из канала &b%s"
@@ -303,12 +303,26 @@ placeholders:
 
 auction-created: "&fРынок успешно &aсоздан"
 auction-gui:
-  title: "&eРынок"
+  title: "&eРынок &7[&cНЕ КУПЛЕН&7]"
   title-bought: "&eРынок &7[&aКуплено&7]"
   lore: "&fНа рынке вы можете торговать ресурсами с другими &bгородами."
-  lore-2: "&7Нажмите, чтобы разместить"
+  lore-2: "&7Нажмите ЛКМ, чтобы разместить, ПКМ для удаления (снова покупать)"
   price: "&fЦена &b%s"
+  title-gui: "Межгородской рынок"
+  item: "&fПродаёт &b%s &7(&b%t&7)"
+  item-exp: "&fБудет удалён через &c%s мин"
+  item-your-lore: "&7Нажмите Shift + ЛКМ, чтобы забрать"
+  next-page: "&eСледующая страница"
+  prev-page: "&eПредыдущая страница"
 
 auction-error-place: "&cРынок не может быть построен здесь (территория расчищена?)"
+auction-sell-need-struct: "&cВы не можете продавать предметы без рынка в городе"
+auction-buy-need-struct: "&cЧтобы покупать так много, Вам нужен рынок в городе"
+auction-buy-no-money: "&cУ Вас недостаточно средств!"
+auction-buy-success: "&fУспешно купили &b%s за &a%p!"
+auction-sell-double: "&cНеверная цена"
+auction-sell-nothing: "&cВ Вашей руке нет предмета!"
+auction-sell-town-max: "&cВаш город достиг макисмального числа активных продаж (%s)"
+auction-sell-success: "&fУспешно выставили &b%s за &a%p"
 auction-error-replace: "&cРынок не может быть перемещён: недостаточно блоков"
 auction-error-chunk: "&cРынок должен быть размещён только на одном чанке"

@@ -1,15 +1,20 @@
 package ru.etysoft.aurorauniverse.commands;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import ru.etysoft.aurorauniverse.Logger;
+import ru.etysoft.aurorauniverse.auction.AuctionItem;
 import ru.etysoft.aurorauniverse.commands.town.*;
+import ru.etysoft.aurorauniverse.data.Auction;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.gui.GUIAuction;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
@@ -65,6 +70,10 @@ public class TownCommands implements CommandExecutor {
                     new TownAcceptCommand(args, resident, sender);
                 } else if (args[0].equalsIgnoreCase("gui")) {
                     new TownGuiCommand(resident, pl, args, sender);
+                } else if (args[0].equalsIgnoreCase("auction")) {
+                        new GUIAuction(resident, pl, sender, 1);
+                } else if (args[0].equalsIgnoreCase("sell")) {
+                    new TownSellCommand(sender, resident, args);
                 } else if (args[0].equalsIgnoreCase("toggle")) {
                     new TownToggleCommand(args, resident, sender, pl);
                 } else {

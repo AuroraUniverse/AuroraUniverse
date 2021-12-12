@@ -16,6 +16,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.commands.*;
+import ru.etysoft.aurorauniverse.data.Auction;
 import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
@@ -100,6 +101,8 @@ public final class AuroraUniverse extends JavaPlugin {
                 addWarning("&eCan't find file-version in config.yml!");
             }
 
+
+
             Logger.info("Initializing AuroraChat...");
             try
             {
@@ -176,6 +179,11 @@ public final class AuroraUniverse extends JavaPlugin {
             addWarning("&cAn error occurred loading data from json!");
         }
 
+        Logger.info("Loading auction...");
+        if(!Auction.loadListings())
+        {
+            addWarning("&cAn error occurred loading auction data from json!");
+        }
         int maxBound = 4;
         String seconds = timer.getStringSeconds();
 
@@ -351,6 +359,7 @@ public final class AuroraUniverse extends JavaPlugin {
         registerCommand("auneco", new EconomyCommands(), new EconomyTabCompleter());
         registerCommand("aunnation", new NationCommands(), new NationTabCompleter());
         registerCommand("aunchat", AuroraChat.getInstance().getChatCommand(), new ChatTabCompleter());
+        registerCommand("aunauction", new AuctionCommands(), new AuctionTabCompleter());
 
     }
 

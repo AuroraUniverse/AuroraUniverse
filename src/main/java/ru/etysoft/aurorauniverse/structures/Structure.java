@@ -115,7 +115,7 @@ public class Structure {
             int x = startX + structBlock.getX();
             int y = startY + structBlock.getY();
             int z = startZ + structBlock.getZ();
-            if(world.getBlockAt(x, y, z).getType() != Material.AIR)
+            if(world.getBlockAt(x, y, z).getType() != Material.AIR && world.getBlockAt(x, y, z).getType() != Material.GRASS)
             {
                 return false;
             }
