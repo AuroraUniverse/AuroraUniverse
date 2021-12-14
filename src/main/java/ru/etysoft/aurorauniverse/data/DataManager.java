@@ -82,12 +82,29 @@ public class DataManager {
 
                 for (int i = 0; i < towns.size(); i++) {
                     JSONObject jsonObject = (JSONObject) towns.get(i);
-                    Town.loadTownFromJSON(jsonObject);
+                    try {
+
+                        Town.loadTownFromJSON(jsonObject);
+                    }
+                    catch (Exception e) {
+                        Logger.error("Error loading town!");
+                        if (e instanceof TownException)
+                        {
+                            Logger.error(((TownException) e).getErrorMessage());
+                        }
+                        e.printStackTrace();
+                    }
                 }
 
                 for (int i = 0; i < nations.size(); i++) {
-                    JSONObject jsonObject = (JSONObject) towns.get(i);
-                    Nation.loadFromJson(jsonObject);
+                    JSONObject jsonObject = (JSONObject) nations.get(i);
+                    try {
+                        Nation.loadFromJson(jsonObject);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.error("Cannot load nation " + jsonObject);
+                    }
                 }
 
                 Logger.log("Loading finished");
@@ -100,7 +117,7 @@ public class DataManager {
                 return true;
 
 
-        } catch (IOException | ParseException | TownException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
             return false;
         }

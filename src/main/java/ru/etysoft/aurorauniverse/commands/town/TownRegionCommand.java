@@ -37,7 +37,7 @@ public class TownRegionCommand {
 
     public void regionInfo(CommandSender sender, Resident resident, String[] args) {
         if (!resident.hasTown()) return;
-        if (Permissions.canEditTown(sender) | Permissions.canGetRegionInfo(sender)) {
+        if (Permissions.canEditTowns(sender) | Permissions.canGetRegionInfo(sender)) {
 
             Town town = Towns.getTown(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk()));
             if (town != null) {

@@ -145,6 +145,13 @@ gui:
   toggle-exp: "&fExplosions (%s)"
   state-on: "&aON&f"
   state-off: "&cOFF&f"
+  toggles: "Toggles"
+  toggles-button: "&eToggles"
+  toggles-lore: "&7Manage town's toggles and view them"
+  trans-history: "&eBank history"
+  trans-history-lore: "&7Last 6 operations"
+  trans-history-withdraw: "&b%s &fdeposited &e%d"
+  trans-history-deposit: "&b%s &fwithdrawn &a%d"
 
 
 not-registered-town: "A town with that name does not exist!"
@@ -288,3 +295,17 @@ placeholders:
   no-town: ""
   nation: "&7[&6%s&7]"
   no-nation: ""
+
+# Added in 0.5.0.0
+
+auction-created: "&fAuction is successfully &acreated"
+auction-gui:
+  title: "&eAuction"
+  title-bought: "&eAuction &7[&aBought&7]"
+  lore: "&7With auction your town can trade blocks and items with others &btowns."
+  lore-2: "&7Click for place it"
+  price: "&fPrice &b%s"
+
+auction-error-place: "&cAuction couldn't be placed here, try to clear this place"
+auction-error-replace: "&cAuction couldn't be replaced because there is not enough blocks"
+auction-error-chunk: "&cAuction must be placed on a single chunk"

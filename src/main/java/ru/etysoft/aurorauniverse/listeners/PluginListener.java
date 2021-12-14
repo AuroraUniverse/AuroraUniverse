@@ -20,6 +20,7 @@ import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.ChunkPair;
 import ru.etysoft.aurorauniverse.world.Resident;
+import ru.etysoft.aurorauniverse.world.Town;
 
 public class PluginListener implements Listener {
 
@@ -74,6 +75,17 @@ public class PluginListener implements Listener {
 
         } else {
 
+
+
+            ChunkPair chunkPair = ChunkPair.fromChunk(event.getTo().getChunk());
+            Town town = Towns.getTown(chunkPair);
+            if(town != null)
+            {
+                if(!town.isPvp(chunkPair) && ProtectionListener.isInBattle(event.getPlayer()))
+                {
+                    event.setCancelled(true);
+                }
+            }
 
             Towns.handleChunkChange(player, ChunkPair.fromChunk(event.getTo().getChunk()));
 

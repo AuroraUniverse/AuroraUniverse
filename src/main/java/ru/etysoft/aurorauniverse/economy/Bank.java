@@ -60,7 +60,7 @@ public class Bank {
     public boolean withdraw(double money)
     {
 
-        if(money > amount)
+        if(money > amount | money <= 0)
         {
             return false;
         }

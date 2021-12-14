@@ -39,7 +39,7 @@ public class WorldTimer {
         Bukkit.getServer().getScheduler().runTaskTimer(AuroraUniverse.getInstance(), new Runnable() {
                 @Override
                 public void run() {
-                    Logger.debug("WorldTimer check...");
+
 
                     StalinNPC.updateTarget();
 

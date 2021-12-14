@@ -62,6 +62,7 @@ public class Messages {
         public static String NOT_REGISTERED_TOWN = "not-registered-town";
         public static String NOT_REGISTERED_RESIDENT = "not-registered-resident";
         public static String TOWN_WELCOME = "town-welcome";
+        public static String TOWN_DONT_BELONG = "town-dont-belong";
         public static String REGION_WELCOME = "region-welcome";
         public static String TOWN_REGION_WELCOME = "town-region-welcome";
 

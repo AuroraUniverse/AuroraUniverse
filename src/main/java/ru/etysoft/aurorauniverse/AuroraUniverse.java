@@ -16,6 +16,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.commands.*;
+import ru.etysoft.aurorauniverse.data.Auction;
 import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
@@ -23,6 +24,7 @@ import ru.etysoft.aurorauniverse.listeners.PluginListener;
 import ru.etysoft.aurorauniverse.listeners.ProtectionListener;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.placeholders.AuroraPlaceholdersExpansion;
+import ru.etysoft.aurorauniverse.structures.StructurePatterns;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.LanguageSetup;
 import ru.etysoft.aurorauniverse.utils.Metrics;
@@ -99,6 +101,9 @@ public final class AuroraUniverse extends JavaPlugin {
                 addWarning("&eCan't find file-version in config.yml!");
             }
 
+
+
+            Logger.info("Initializing AuroraChat...");
             try
             {
                 AuroraChat.initialize();
@@ -106,6 +111,17 @@ public final class AuroraUniverse extends JavaPlugin {
             catch (Exception e)
             {
                 addWarning("&cChat initializing issues occurred!");
+            }
+
+            Logger.info("Loading structure patterns...");
+            try
+            {
+                StructurePatterns.loadPatterns();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                addWarning("&cStructure patterns load issues occurred!");
             }
 
             if (haswarnings) {
@@ -163,6 +179,11 @@ public final class AuroraUniverse extends JavaPlugin {
             addWarning("&cAn error occurred loading data from json!");
         }
 
+        Logger.info("Loading auction...");
+        if(!Auction.loadListings())
+        {
+            addWarning("&cAn error occurred loading auction data from json!");
+        }
         int maxBound = 4;
         String seconds = timer.getStringSeconds();
 
@@ -338,6 +359,7 @@ public final class AuroraUniverse extends JavaPlugin {
         registerCommand("auneco", new EconomyCommands(), new EconomyTabCompleter());
         registerCommand("aunnation", new NationCommands(), new NationTabCompleter());
         registerCommand("aunchat", AuroraChat.getInstance().getChatCommand(), new ChatTabCompleter());
+        registerCommand("aunauction", new AuctionCommands(), new AuctionTabCompleter());
 
     }
 

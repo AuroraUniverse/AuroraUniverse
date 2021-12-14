@@ -141,7 +141,7 @@ public class NationCommands implements CommandExecutor {
 
         int townOnPage = 8;
         int index = 0;
-        double d = Double.parseDouble("" + AuroraUniverse.getTownList().size());
+        double d = Double.parseDouble("" + Nations.getNations().size());
         double maxPage = Math.ceil((double) d / townOnPage);
         int fromIndex = (page - 1) * townOnPage;
         int toIndex = fromIndex + townOnPage;

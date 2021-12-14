@@ -1,6 +1,7 @@
 package ru.etysoft.aurorauniverse.world;
 
 
+import com.mysql.fabric.xmlrpc.base.Array;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -20,11 +21,16 @@ import ru.etysoft.aurorauniverse.economy.Bank;
 import ru.etysoft.aurorauniverse.events.PreTownDeleteEvent;
 import ru.etysoft.aurorauniverse.events.TownDeleteEvent;
 import ru.etysoft.aurorauniverse.events.TownRenameEvent;
+import ru.etysoft.aurorauniverse.exceptions.AuctionPlaceException;
 import ru.etysoft.aurorauniverse.exceptions.RegionException;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
+import ru.etysoft.aurorauniverse.exceptions.WorldNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.permissions.Group;
 import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
+import ru.etysoft.aurorauniverse.structures.Structure;
+import ru.etysoft.aurorauniverse.structures.StructureBuildException;
+import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Numbers;
 
@@ -58,6 +64,8 @@ public class Town {
     private Bank townBank;
     private String nationName;
     private String id;
+    private Structure auctionStructure;
+    private ArrayList<String> transactionHistory = new ArrayList<>();
 
     private ArrayList<Resident> invitedResidents = new ArrayList<>();
 
@@ -100,6 +108,7 @@ public class Town {
 
 
         public static final String MAIN_CHUNK = "MAIN_CHUNK";
+        public static final String AUCTION_STRUCT = "AUCTION_STRUCT";
 
 
         public static final String BUILD_GROUPS = "BUILD_GROUPS";
@@ -142,6 +151,10 @@ public class Town {
 
     public double getResTax() {
         return Numbers.round(resTax);
+    }
+
+    public ArrayList<String> getTransactionHistory() {
+        return transactionHistory;
     }
 
     public void setResTax(double resTax) {
@@ -291,14 +304,11 @@ public class Town {
                         region = Region.fromJSON(regionObj);
                     }
                 }
-                if(region != null)
-                {
+                if (region != null) {
                     town.townChunks.put(chunk, region);
                     AuroraUniverse.addTownBlock(chunk, region);
                     Logger.debug(townName + " > Loaded chunk " + chunk.getX() + ", " + chunk.getZ());
-                }
-                else
-                {
+                } else {
                     Logger.error(townName + " > Chunk " + chunk.getX() + ", " + chunk.getZ() + " is ignored");
                 }
 
@@ -337,13 +347,28 @@ public class Town {
             town.setSwitchGroups(getList((JSONArray) jsonObject.get(JsonKeys.SWITCH_GROUPS)));
             town.setUseGroups(getList((JSONArray) jsonObject.get(JsonKeys.USE_GROUPS)));
 
+            if (jsonObject.containsKey(JsonKeys.AUCTION_STRUCT)) {
+                town.setAuctionStructure(Structure.fromJSON((JSONObject) jsonObject.get(JsonKeys.AUCTION_STRUCT)));
+            }
+
+
             town.setSpawn(spawnLocation);
+
+
         } catch (Exception e) {
             Logger.error("Error loading town " + townName);
             e.printStackTrace();
         }
 
         return town;
+    }
+
+    public Structure getAuctionStructure() {
+        return auctionStructure;
+    }
+
+    public void setAuctionStructure(Structure auctionStructure) {
+        this.auctionStructure = auctionStructure;
     }
 
     private static JSONArray getJsonArrayFromList(Set<String> list) {
@@ -456,6 +481,9 @@ public class Town {
         townJsonObject.put(JsonKeys.NATION_NAME, nationName);
         townJsonObject.put(JsonKeys.ID, id);
         townJsonObject.put(JsonKeys.BONUS_CHUNKS, bonusChunks);
+        if (auctionStructure != null) {
+            townJsonObject.put(JsonKeys.AUCTION_STRUCT, auctionStructure.toJson());
+        }
 
         townJsonObject.put(JsonKeys.BANK, townBank.getBalance());
 
@@ -465,8 +493,7 @@ public class Town {
             jsonArrayResidents.add(resident.toJson());
         }
 
-        if(!townChunks.containsKey(mainChunk))
-        {
+        if (!townChunks.containsKey(mainChunk)) {
             Logger.error("Main chunk not in chunklist!");
         }
 
@@ -494,8 +521,7 @@ public class Town {
 
             regions.add(chunkInfo);
 
-            if(mainChunk.equals(chunk))
-            {
+            if (mainChunk.equals(chunk)) {
                 townJsonObject.put(JsonKeys.MAIN_CHUNK, chunkInfo);
             }
 
@@ -527,6 +553,62 @@ public class Town {
     public Set<String> getSwitchGroups() {
         return switchGroups;
     }
+
+    public void createAuction(Location location, Runnable onBuildFinished, Runnable onFailCreation) throws WorldNotFoundedException, AuctionPlaceException, StructureBuildException {
+        Structure structure = new Structure(location.getBlockX(), location.getBlockY(), location.getBlockZ(),
+                AuroraUniverse.getInstance().getConfig().getString("default-auction-structure"), location.getWorld().getName());
+
+        if (!structure.isInSingleChunk())
+            throw new AuctionPlaceException(AuroraUniverse.getLanguage().getString("auction-error-chunk"));
+        if (!structure.isSpaceClear())
+            throw new AuctionPlaceException(AuroraUniverse.getLanguage().getString("auction-error-place"));
+        if (!hasChunk(ChunkPair.fromChunk(location.getChunk())))
+            throw new AuctionPlaceException(AuroraUniverse.getLanguage().getString("auction-error-place"));
+
+
+        if (hasAuction()) {
+            if (auctionStructure.isFullBuilt()) {
+                auctionStructure.destroy(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            structure.build(onBuildFinished);
+                            auctionStructure = structure;
+                        } catch (WorldNotFoundedException e) {
+                            e.printStackTrace();
+                        } catch (StructureBuildException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Runnable() {
+                    @Override
+                    public void run() {
+                        onFailCreation.run();
+                        auctionStructure = null;
+                    }
+                }, false);
+            } else {
+
+                Logger.debug("Auction is not full built!");
+
+               onFailCreation.run();
+
+            }
+        } else
+        {
+            structure.build(onBuildFinished);
+            auctionStructure = structure;
+        }
+
+
+
+
+
+
+
+    }
+
 
     public ResidentRegion getResidentRegion(ChunkPair chunk) {
         Region region = townChunks.get(chunk);
@@ -597,8 +679,52 @@ public class Town {
     public void depositBank(double d) {
         townBank.deposit(d);
     }
+    public void depositBank(double d, Resident resident) {
+        if(d > AuroraUniverse.getInstance().getConfig().getInt("big-amount-starts-from")) {
+            String deposited = AuroraLanguage.getColorString("gui.trans-history-deposit")
+                    .replace("%s", resident.getName()).replace("%d", String.valueOf(d));
+
+            if (transactionHistory.size() > 5) {
+                ArrayList<String> temp = new ArrayList<>();
+                int i = 0;
+                int start = transactionHistory.size() - 5;
+                for (String info : transactionHistory) {
+                    if (i > start) {
+                        temp.add(info);
+                    }
+                    i++;
+                }
+                transactionHistory = temp;
+
+            }
+            transactionHistory.add(deposited);
+        }
+        townBank.deposit(d);
+    }
 
     public boolean withdrawBank(double d) {
+        return townBank.withdraw(d);
+    }
+    public boolean withdrawBank(double d, Resident resident) {
+        String withdrawn = AuroraLanguage.getColorString("gui.trans-history-withdraw")
+                .replace("%s", resident.getName()).replace("%d", String.valueOf(d));
+        if(d > AuroraUniverse.getInstance().getConfig().getInt("big-amount-starts-from")) {
+
+            if (transactionHistory.size() > 5) {
+                ArrayList<String> temp = new ArrayList<>();
+                int i = 0;
+                int start = transactionHistory.size() - 5;
+                for (String info : transactionHistory) {
+                    if (i > start) {
+                        temp.add(info);
+                    }
+                    i++;
+                }
+                transactionHistory = temp;
+
+            }
+            transactionHistory.add(withdrawn);
+        }
         return townBank.withdraw(d);
     }
 
@@ -700,7 +826,9 @@ public class Town {
     public boolean addResident(Resident resident) {
         if (!resident.hasTown()) {
             residents.add(resident);
-            AuroraPermissions.setPermissions(resident.getName(), AuroraPermissions.getGroup("resident"));
+            if (resident.getPermissionGroupName().equals("newbies")) {
+                AuroraPermissions.setPermissions(resident.getName(), AuroraPermissions.getGroup("resident"));
+            }
             resident.setTown(name);
             Logger.log("Added resident  " + resident.getName() + " to " + getName());
             return true;
@@ -900,7 +1028,7 @@ public class Town {
     }
 
     public boolean hasNation() {
-        return (nationName != null);
+        return getNation() != null;
     }
 
 
@@ -909,11 +1037,11 @@ public class Town {
         boolean success = false;
         boolean far = false;
         boolean isOutpost = true;
-        if (townChunks.size() < getMaxChunks()) {
+        if (townChunks.size() < getMaxChunks() && !townChunks.containsKey(chunk)) {
             for (ChunkPair chunk1 : AuroraUniverse.getTownBlocks().keySet()) {
                 Region region = AuroraUniverse.getTownBlock(chunk1);
                 int m = AuroraUniverse.getMinTownsDistance();
-                if (chunk1 != chunk && !(region instanceof OutpostRegion)) // есть ли чанк, который мы хотим заприватить в городах
+                if (!chunk1.equals(chunk) && !(region instanceof OutpostRegion)) // есть ли чанк, который мы хотим заприватить в городах
                 {
                     //такого чанка нет
 
@@ -994,8 +1122,31 @@ public class Town {
         return null;
     }
 
+    public boolean hasAuction()
+    {
+        if(auctionStructure != null)
+        {
+            try {
+                return auctionStructure.isFullBuilt();
+            } catch (WorldNotFoundedException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
+    }
+
     public boolean unclaimChunk(ChunkPair chunk) {
-        if (townChunks.containsKey(chunk) && mainChunk != chunk) {
+        if(auctionStructure != null)
+        {
+            if(chunk.equals(auctionStructure.getStartChunk()))
+            {
+                return false;
+            }
+        }
+
+
+        if (townChunks.containsKey(chunk) && !mainChunk.equals(chunk)) {
             if (townChunks.get(chunk) instanceof OutpostRegion) {
                 outPosts.remove((OutpostRegion) townChunks.get(chunk));
             }
@@ -1034,14 +1185,15 @@ public class Town {
     }
 
 
-
     public void setSpawn(Location location) throws TownException {
         if (hasChunk(location)) {
             townSpawnPoint = location;
-            if ((getTownChunks().get(ChunkPair.fromChunk(location.getChunk())) instanceof ResidentRegion))
-                throw new TownException(AuroraUniverse.getLanguage().getString("e5"));
-
             mainChunk = ChunkPair.fromChunk(location.getChunk());
+            if ((getTownChunks().get(ChunkPair.fromChunk(location.getChunk())) instanceof ResidentRegion)) {
+                throw new TownException(AuroraUniverse.getLanguage().getString("e5"));
+            }
+
+
             // До лучших времён
 //            Bukkit.getServer().getScheduler().runTaskTimer(AuroraUniverse.getInstance(), new Runnable() {
 //                @Override

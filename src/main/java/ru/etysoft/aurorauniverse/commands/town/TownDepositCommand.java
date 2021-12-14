@@ -42,7 +42,7 @@ public class TownDepositCommand {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), sender);
                         }
                         if (resident.takeBalance(d)) {
-                            t.depositBank(d);
+                            t.depositBank(d, resident);
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-deposit").replace("%s", d + ""), sender);
                             t.sendMessage(AuroraLanguage.getColorString("town-deposit-other").replace("%s", d + "")
                             .replace("%r", resident.getName()));

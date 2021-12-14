@@ -5,8 +5,9 @@
 # Groups are not inherited.
 # Use .* only where a similar permission group is created.
 # If the permission is with .* will not exist, it will not be applied
+# You can use "-" symbol for deny permission
 
-# Permission file for AuroraUniverse 0.1.1.0
+# Permission file from AuroraUniverse 0.4.*
 
 # No town permissions
 newbies:

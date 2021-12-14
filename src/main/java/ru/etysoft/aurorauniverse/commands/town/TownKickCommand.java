@@ -21,7 +21,11 @@ public class TownKickCommand {
             } else {
                 Resident resident2 = Residents.getResident(args[1]);
                 try {
-                    if(resident2 == null) throw new TownNotFoundedException();
+                    if(resident2 == null)
+                    {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("not-registered-resident"), sender);
+                        return;
+                    }
                     Town t = resident.getTown();
                     if (Permissions.canKickResident(sender)) {
                         t.removeResident(resident2);

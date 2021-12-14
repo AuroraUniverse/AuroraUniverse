@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,11 +17,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Directional;
@@ -29,21 +34,57 @@ import ru.etysoft.aurorauniverse.commands.PluginCommands;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.structures.StructurePatterns;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.*;
+import sun.applet.Main;
 
 import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class ProtectionListener implements Listener {
 
+    private static HashMap<String, Long> ktList = new HashMap<>();
+
+    public static boolean isInBattle(Player pl)
+    {
+        if(!ktList.containsKey(pl.getName())) return false;
+        long timeLastInBattle = ktList.get(pl.getName());
+        if(System.currentTimeMillis() - timeLastInBattle < AuroraUniverse.getInstance().getConfig().getInt("time-battle"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    @EventHandler()
+    public void enderPearlThrown(PlayerTeleportEvent event) {
+        if (event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) return;
+        Location to = event.getTo();
+        Location from = event.getFrom();
+
+        ChunkPair chunkPair = ChunkPair.fromChunk(event.getTo().getChunk());
+        Town town = Towns.getTown(chunkPair);
+        if(town != null)
+        {
+            if(!town.isPvp(chunkPair) && ProtectionListener.isInBattle(event.getPlayer()))
+            {
+                event.setCancelled(true);
+            }
+        }
+
+
+    }
+
     @EventHandler
     public void PvP(EntityDamageByEntityEvent event) {
-
-
 
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();
@@ -58,6 +99,12 @@ public class ProtectionListener implements Listener {
                 }
             } catch (Exception e) {
                 //can't pass event because null
+                if(event.getDamager() instanceof Player)
+                {
+                    ktList.put(event.getDamager().getName(), System.currentTimeMillis());
+                    ktList.put(p.getName(), System.currentTimeMillis());
+                }
+
             }
         }
         else if(event.getDamager() instanceof Player)
@@ -74,6 +121,44 @@ public class ProtectionListener implements Listener {
                         event.setCancelled(true);
                     }
                 } catch (TownNotFoundedException e) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+        else if(event.getDamager() instanceof Arrow)
+        {
+            Arrow arrow = (Arrow) event.getDamager();
+
+
+            if(arrow.getShooter() instanceof Player){
+                Player p = (Player) arrow.getShooter();
+                if(Permissions.isAdmin(p, false)) return;
+                Resident resident = Residents.getResident(p);
+                Town entityTown = Towns.getTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()));
+                if(entityTown != null)
+                {
+                    try {
+                        if(entityTown != resident.getTown())
+                        {
+                            event.setCancelled(true);
+                        }
+                    } catch (TownNotFoundedException e) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+
+
+        }
+        else
+        {
+            Entity entity = event.getEntity();
+            ChunkPair chunkPair = ChunkPair.fromChunk(entity.getLocation().getChunk());
+            Town t = Towns.getTown(chunkPair);
+            if(t != null)
+            {
+                if(!t.isPvp(chunkPair))
+                {
                     event.setCancelled(true);
                 }
             }
@@ -132,8 +217,9 @@ public class ProtectionListener implements Listener {
     @EventHandler
     public void imageOnMapDupePrevent(InventoryClickEvent event) {
 
-        if(event.getClickedInventory() == null) return;
         if(event.getCurrentItem() == null) return;
+        if(event.getClickedInventory() == null) return;
+
         if (event.getClickedInventory().getType() == InventoryType.GRINDSTONE && event.getSlotType() == InventoryType.SlotType.RESULT) {
             if(event.getCurrentItem().getType() == Material.FILLED_MAP && AuroraUniverse.getInstance().getConfig().getBoolean("prevent-map-grindstone"))
             {
@@ -168,37 +254,14 @@ public class ProtectionListener implements Listener {
                 ChunkPair chunk = ChunkPair.fromChunk(event.getClickedBlock().getChunk());
                 Block block = event.getClickedBlock();
                 List<Material> materials = new ArrayList<Material>();
-                materials.add(Material.CHEST);
-                materials.add(Material.ENDER_CHEST);
-                materials.add(Material.TRAPPED_CHEST);
-                materials.add(Material.LIGHT_BLUE_SHULKER_BOX);
-                materials.add(Material.CHEST_MINECART);
-                materials.add(Material.SHULKER_BOX);
-                materials.add(Material.RED_SHULKER_BOX);
-                materials.add(Material.WHITE_SHULKER_BOX);
-                materials.add(Material.YELLOW_SHULKER_BOX);
-                materials.add(Material.PINK_SHULKER_BOX);
-                materials.add(Material.ORANGE_SHULKER_BOX);
-                materials.add(Material.MAGENTA_SHULKER_BOX);
-                materials.add(Material.LIME_SHULKER_BOX);
-                materials.add(Material.LIGHT_GRAY_SHULKER_BOX);
-                materials.add(Material.BLACK_SHULKER_BOX);
-                materials.add(Material.BLUE_SHULKER_BOX);
-                materials.add(Material.BROWN_SHULKER_BOX);
-                materials.add(Material.CYAN_SHULKER_BOX);
-                materials.add(Material.GREEN_SHULKER_BOX);
-                materials.add(Material.GRAY_SHULKER_BOX);
-                materials.add(Material.FURNACE);
-                materials.add(Material.GRINDSTONE);
-                materials.add(Material.ANVIL);
-                materials.add(Material.DAMAGED_ANVIL);
-                materials.add(Material.CHIPPED_ANVIL);
-                materials.add(Material.BREWING_STAND);
+
+
                 materials.add(Material.ITEM_FRAME);
+                materials.addAll(MaterialGroups.getContainers());
 
                 // 1.14+
                 try {
-                    materials.add(Material.BARREL);
+
                 } catch (Exception e) {
                     Logger.warning("Can't find Barrel material! Is the server outdated?");
                 }
@@ -251,6 +314,8 @@ public class ProtectionListener implements Listener {
                 materials.add(Material.JUNGLE_DOOR);
                 materials.add(Material.OAK_DOOR);
                 materials.add(Material.SPRUCE_DOOR);
+
+                materials.addAll(MaterialGroups.Switchable.getTrapdoors());
 
                 materials.add(Material.BIRCH_BUTTON);
                 materials.add(Material.ACACIA_BUTTON);
@@ -312,6 +377,7 @@ public class ProtectionListener implements Listener {
     @EventHandler
     public void BreakBlock(BlockBreakEvent event) {
         if (PluginCommands.debugHand.contains(event.getPlayer().getName())) {
+            StructurePatterns.bufferFrom = event.getBlock().getLocation();
             String infoMessage = "";
             Town town = Towns.getTown(event.getBlock().getChunk());
             if (town != null) {
@@ -396,6 +462,13 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void PlaceBlock(BlockPlaceEvent event) {
+
+        if(PluginCommands.debugHand.contains(event.getPlayer().getName()))
+        {
+            StructurePatterns.bufferTo = event.getBlock().getLocation();
+            event.getPlayer().sendMessage("Second point is selected!");
+            event.setCancelled(true);
+        }
         if (!event.getPlayer().hasPermission("aun.edittowns")) {
             try {
                 if (Towns.hasMyTown(ChunkPair.fromChunk(event.getBlock().getChunk()), Residents.getResident(event.getPlayer()).getTown())) {
@@ -454,8 +527,18 @@ public class ProtectionListener implements Listener {
 
 
 
-        if (!canBlockMove(event.getBlock(), event.getBlock().getRelative(((Directional) event.getBlock().getBlockData()).getFacing())))
-            event.setCancelled(true);
+        try {
+            if (!canBlockMove(event.getBlock(), event.getBlock().getRelative(((Directional) event.getBlock().getBlockData()).getFacing())))
+                event.setCancelled(true);
+        }
+        catch (Exception e)
+        {
+            if(AuroraUniverse.debugmode)
+            {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 

@@ -28,6 +28,19 @@ max-outposts-count: 1
 
 chunk-per-resident: 10
 
+# Time of preventing town entering after tagging by player (in ms)
+time-battle: 5000
+
+
+auction-price: 5000
+auction-expired-sec: 50000
+max-listings-per-town: 50
+max-items-without-struct: 10
+
+# Town will remember operations that will be bigger than that number
+big-amount-starts-from: 10
+default-auction-structure: "auction"
+
 # TAXES
 
 town-chunk-tax: 15.0

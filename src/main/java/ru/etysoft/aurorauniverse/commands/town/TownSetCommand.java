@@ -3,6 +3,7 @@ package ru.etysoft.aurorauniverse.commands.town;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.exceptions.TownException;
@@ -11,7 +12,9 @@ import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
+import ru.etysoft.aurorauniverse.world.ChunkPair;
 import ru.etysoft.aurorauniverse.world.Resident;
+import ru.etysoft.aurorauniverse.world.ResidentRegion;
 import ru.etysoft.aurorauniverse.world.Town;
 
 public class TownSetCommand {
@@ -151,8 +154,16 @@ public class TownSetCommand {
             Town t = resident.getTown();
             if (Permissions.canSetSpawn(sender)) {
                 try {
-                    t.setSpawn(player.getLocation());
-                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-setspawn"), sender);
+                    if(t.getTownChunks().get(ChunkPair.fromChunk(player.getLocation().getChunk())) instanceof ResidentRegion)
+                    {
+                        throw new TownException(AuroraUniverse.getLanguage().getString("e5"));
+                    }
+                    else
+                    {
+                        t.setSpawn(player.getLocation());
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-setspawn"), sender);
+                    }
+
                 } catch (TownException e) {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-cantsetspawn").replace("%s", e.getErrorMessage()), player);
 
