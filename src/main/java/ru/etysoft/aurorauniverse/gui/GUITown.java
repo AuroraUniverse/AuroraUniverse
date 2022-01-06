@@ -271,6 +271,7 @@ public class GUITown {
                                                     Logger.error("Error destroying wrong structure!");
                                                 }
                                             }, true);
+                                            town.setAuctionStructure(null);
                                         } catch (WorldNotFoundedException e) {
                                             e.printStackTrace();
                                         } catch (StructureBuildException e) {

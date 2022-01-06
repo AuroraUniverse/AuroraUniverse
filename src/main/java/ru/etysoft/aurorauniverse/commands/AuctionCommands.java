@@ -12,15 +12,11 @@ public class AuctionCommands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
-        if(args.length > 0)
-        {
-            if(args[0].equalsIgnoreCase("sell"))
-            {
+        if (args.length > 0) {
+            if (args[0].equalsIgnoreCase("sell")) {
                 new TownSellCommand(commandSender, Residents.getResident(commandSender.getName()), args);
             }
-        }
-        else
-        {
+        } else {
             new GUIAuction(Residents.getResident(commandSender.getName()), (Player) commandSender, commandSender, 1);
         }
 

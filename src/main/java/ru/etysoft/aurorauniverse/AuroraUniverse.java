@@ -402,11 +402,21 @@ public final class AuroraUniverse extends JavaPlugin {
         return true;
     }
 
+    public boolean isAuctionEnabled(){
+
+        return getConfig().getBoolean("auction-enabled");
+    }
+
+    public boolean isAuctionStructureEnabled(){
+        return getConfig().getBoolean("auction-struct-enabled");
+    }
+
     //Disabling
     @Override
     public void onDisable() {
         Logger.info("Disabling AuroraUniverse...");
         DataManager.saveData();
+        Auction.saveListings();
         try
         {
             StalinNPC.remove();

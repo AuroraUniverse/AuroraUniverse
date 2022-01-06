@@ -1,12 +1,13 @@
 package ru.etysoft.aurorauniverse.listeners;
 
-import com.mysql.jdbc.Buffer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Dispenser;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -528,8 +529,8 @@ public class ProtectionListener implements Listener {
 
 
         try {
-            if (!canBlockMove(event.getBlock(), event.getBlock().getRelative(((Directional) event.getBlock().getBlockData()).getFacing())))
-                event.setCancelled(true);
+         //   if (!canBlockMove(event.getBlock(), event.getBlock().getRelative(((CraftDispenser) event.getBlock().getBlockData()).getFacing())))
+           //     event.setCancelled(true);
         }
         catch (Exception e)
         {
