@@ -1232,6 +1232,7 @@ public class Town {
     }
 
     public void rename(String newName) {
+        if(AuroraUniverse.getTownList().containsKey(newName)) return;
         TownRenameEvent townRenameEvent = new TownRenameEvent(newName, name);
         Bukkit.getPluginManager().callEvent(townRenameEvent);
         AuroraUniverse.getTownList().remove(name);

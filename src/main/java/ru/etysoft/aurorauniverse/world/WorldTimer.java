@@ -7,19 +7,29 @@ import org.bukkit.entity.Monster;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.chat.AuroraChat;
+import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Numbers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+
 
 public class WorldTimer {
 
     private long lastTimeMillis;
+    private long lastTimeSave;
 
     // 24 hours 86400000
     private long delay = 86400000;
+    private long backupDelay = 86400000;
 
     private static WorldTimer instance;
 
@@ -32,6 +42,27 @@ public class WorldTimer {
     {
         long millis = System.currentTimeMillis() - lastTimeMillis;
         return Numbers.round((delay - millis) / 3600000D);
+    }
+
+    public static void copyFile(File sourceFile, File destFile) throws IOException {
+        if(!destFile.exists()) {
+            destFile.createNewFile();
+        }
+        FileChannel source = null;
+        FileChannel destination = null;
+        try {
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            destination.transferFrom(source, 0, source.size());
+        }
+        finally {
+            if(source != null) {
+                source.close();
+            }
+            if(destination != null) {
+                destination.close();
+            }
+        }
     }
 
     private void start()
@@ -61,6 +92,27 @@ public class WorldTimer {
                                }
                             }
                         }
+                    }
+
+                    if(System.currentTimeMillis() - lastTimeSave >= backupDelay)
+                    {
+                        File file = new File("plugins/AuroraUniverse/backups");
+                        File data = new File("plugins/AuroraUniverse/data.json");
+                        File dataCopy = new File("plugins/AuroraUniverse/backups/data_" + System.currentTimeMillis() / 1000 + ".json");
+                        if(!file.exists()) file.mkdirs();
+
+                        try {
+                            Logger.info("Auto-saving and backuping...");
+                            copyFile(data, dataCopy);
+                            DataManager.saveData();
+                            Logger.info("Save and backup successful!");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        lastTimeSave = System.currentTimeMillis();
+
+
                     }
 
                     if(System.currentTimeMillis() - lastTimeMillis >= delay)
