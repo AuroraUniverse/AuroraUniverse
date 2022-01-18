@@ -1,7 +1,7 @@
 package ru.etysoft.aurorauniverse.world;
 
 
-import com.mysql.fabric.xmlrpc.base.Array;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -555,7 +555,7 @@ public class Town {
     }
 
     public void createAuction(Location location, Runnable onBuildFinished, Runnable onFailCreation) throws WorldNotFoundedException, AuctionPlaceException, StructureBuildException {
-        Structure structure = new Structure(location.getBlockX(), location.getBlockY(), location.getBlockZ(),
+        Structure structure = new Structure(location.getChunk().getX() * 16, location.getBlockY(), location.getChunk().getZ() * 16,
                 AuroraUniverse.getInstance().getConfig().getString("default-auction-structure"), location.getWorld().getName());
 
         if (!structure.isInSingleChunk())
@@ -567,12 +567,15 @@ public class Town {
 
 
         if (hasAuction()) {
-            if (auctionStructure.isFullBuilt()) {
+            if (auctionStructure.isFullBuilt() && AuroraUniverse.getInstance().isAuctionStructureEnabled()) {
                 auctionStructure.destroy(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            structure.build(onBuildFinished);
+                            if(AuroraUniverse.getInstance().isAuctionStructureEnabled()){
+                                structure.build(onBuildFinished);
+                            }
+
                             auctionStructure = structure;
                         } catch (WorldNotFoundedException e) {
                             e.printStackTrace();
@@ -597,7 +600,9 @@ public class Town {
             }
         } else
         {
-            structure.build(onBuildFinished);
+            if(AuroraUniverse.getInstance().isAuctionStructureEnabled()) {
+                structure.build(onBuildFinished);
+            }
             auctionStructure = structure;
         }
 
@@ -999,7 +1004,10 @@ public class Town {
             }
 
             if (hasNation()) {
-                getNation().delete();
+                if(getNation().getCapital() == this)
+                {
+                    getNation().delete();
+                }
             }
 
             AuroraUniverse.townList.remove(name);
@@ -1124,8 +1132,12 @@ public class Town {
 
     public boolean hasAuction()
     {
+
+        if(!AuroraUniverse.getInstance().isAuctionEnabled()) return false;
+
         if(auctionStructure != null)
         {
+            if(!AuroraUniverse.getInstance().isAuctionStructureEnabled()) return true;
             try {
                 return auctionStructure.isFullBuilt();
             } catch (WorldNotFoundedException e) {
@@ -1139,9 +1151,10 @@ public class Town {
     public boolean unclaimChunk(ChunkPair chunk) {
         if(auctionStructure != null)
         {
-            if(chunk.equals(auctionStructure.getStartChunk()))
-            {
-                return false;
+            if(AuroraUniverse.getInstance().isAuctionStructureEnabled()) {
+                if (chunk.equals(auctionStructure.getStartChunk())) {
+                    return false;
+                }
             }
         }
 
@@ -1219,6 +1232,7 @@ public class Town {
     }
 
     public void rename(String newName) {
+        if(AuroraUniverse.getTownList().containsKey(newName)) return;
         TownRenameEvent townRenameEvent = new TownRenameEvent(newName, name);
         Bukkit.getPluginManager().callEvent(townRenameEvent);
         AuroraUniverse.getTownList().remove(name);

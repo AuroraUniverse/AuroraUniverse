@@ -1,6 +1,7 @@
 package ru.etysoft.aurorauniverse.commands.town;
 
 import org.bukkit.command.CommandSender;
+import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
@@ -32,7 +33,7 @@ public class TownRenameCommand {
                 }
 
                 String newName = name.toString().replace("&", "").replace("%", "");
-                if(Towns.isNameValid(newName)) {
+                if(Towns.isNameValid(newName) && !AuroraUniverse.getTownList().containsKey(newName)) {
 
 
                    try {

@@ -13,10 +13,7 @@ import org.json.simple.JSONArray;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.commands.town.TownAdminCommands;
-import ru.etysoft.aurorauniverse.data.DataManager;
-import ru.etysoft.aurorauniverse.data.Messages;
-import ru.etysoft.aurorauniverse.data.Residents;
-import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.data.*;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.exceptions.WorldNotFoundedException;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
@@ -167,6 +164,7 @@ public class PluginCommands implements CommandExecutor {
     public void save(CommandSender sender, String[] args) {
         if (Permissions.isAdmin(sender, true)) {
             DataManager.saveData();
+            Auction.saveListings();
         } else {
             Logger.info(sender.getName() + " tried to use SAVE-ALL command. Access denied.");
         }

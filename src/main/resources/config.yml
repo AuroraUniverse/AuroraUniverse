@@ -37,8 +37,11 @@ auction-expired-sec: 50000
 max-listings-per-town: 50
 max-items-without-struct: 10
 
-# Town will remember operations that will be bigger than that number
+# Town will remember deposit and withdraw operations that will be bigger than that number
 big-amount-starts-from: 10
+
+auction-struct-enabled: true
+auction-enabled: true
 default-auction-structure: "auction"
 
 # TAXES

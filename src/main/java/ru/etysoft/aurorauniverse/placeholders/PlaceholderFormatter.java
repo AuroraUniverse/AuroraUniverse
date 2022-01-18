@@ -1,6 +1,6 @@
 package ru.etysoft.aurorauniverse.placeholders;
 
-import com.mysql.jdbc.log.Log;
+
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

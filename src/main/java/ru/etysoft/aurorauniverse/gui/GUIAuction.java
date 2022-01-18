@@ -30,6 +30,12 @@ public class GUIAuction {
     private Player player;
 
     public GUIAuction(Resident resident, Player pl, CommandSender sender, int page) {
+        if(resident == null) return;
+        if(!resident.hasTown())
+        {
+            sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.TOWN_DONT_BELONG));
+            return;
+        }
         if(Permissions.canUseAuction(sender)) {
             try {
                 player = pl;

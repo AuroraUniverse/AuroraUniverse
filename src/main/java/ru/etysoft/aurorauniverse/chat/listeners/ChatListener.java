@@ -14,6 +14,7 @@ public class ChatListener implements Listener {
         String message = event.getMessage();
 
         try {
+            if(event.isCancelled()) return;
 
             Player playerSender = event.getPlayer();
 

@@ -1,6 +1,6 @@
 package ru.etysoft.aurorauniverse.structures;
 
-import com.mysql.fabric.xmlrpc.base.Struct;
+
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.json.simple.JSONObject;

@@ -1,6 +1,7 @@
 package ru.etysoft.aurorauniverse.data;
 
-import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
+
+import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

@@ -1,11 +1,11 @@
 package ru.etysoft.aurorauniverse.structures;
 
-import com.mysql.fabric.xmlrpc.base.Array;
-import com.mysql.fabric.xmlrpc.base.Struct;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Location;
 import org.bukkit.block.banner.Pattern;
-import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
-import org.bukkit.craftbukkit.libs.org.apache.commons.io.FilenameUtils;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
