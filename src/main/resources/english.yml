@@ -8,7 +8,7 @@
 
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
-file-version: 0.1.1.4
+file-version: 0.1.1.5
 
 ########################################
 #                                      #
@@ -192,6 +192,7 @@ town-region-welcome: "&fTown &b%town&7 (%tpvp&7) | &6Region of &b%resident &7(%r
 world: "&eYou have entered the world! &2Be careful!"
 pvp: "&cPvP"
 no-pvp: "&aNo-PvP"
+forced-pvp: "&cForced PvP"
 
 region-info:
   title: "&bo0o_[&fRegion info&b]_o0o"

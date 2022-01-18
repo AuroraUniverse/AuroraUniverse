@@ -89,7 +89,9 @@ public class ChatCommand implements CommandExecutor {
                 {
                     if(!resident.getIgnoreChannels().contains(selectedChat))
                     {
-                        AuroraChat.processMessage(message, Bukkit.getPlayer(sender.getName()), new HashSet<Player>(Bukkit.getOnlinePlayers()), true);
+                        ((Player) sender).chat(message);
+                        // Bypasses mute
+                        // AuroraChat.processMessage(message, Bukkit.getPlayer(sender.getName()), new HashSet<Player>(Bukkit.getOnlinePlayers()), true);
                     }
                 }
             }

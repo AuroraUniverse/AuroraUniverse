@@ -8,7 +8,7 @@
 
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
-file-version: 0.1.1.4
+file-version: 0.1.1.5
 
 ########################################
 #                                      #
@@ -191,6 +191,7 @@ town-region-welcome: "&fГород &b%town&7 (%tpvp&7) | &6Участок &b%res
 world: "&eВы вышли в мир! &2Будьте осторожны!"
 pvp: "&cPvP"
 no-pvp: "&aNo-PvP"
+forced-pvp: "&cОбязательное PvP"
 
 region-info:
   title: "&bo0o_[&fИнформация участка&b]_o0o"

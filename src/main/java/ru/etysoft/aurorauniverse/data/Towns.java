@@ -121,7 +121,14 @@ public class Towns {
     private static void getWelcomeMessage(Player player, Region rg, Town town, boolean notifyRegion, boolean notifyTown) {
         String townPvp = "";
         if (town.isTownPvp()) {
-            townPvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("pvp"));
+            if(town.isForcePvp())
+            {
+                townPvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("forced-pvp"));
+            }
+            else
+            {
+                townPvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("pvp"));
+            }
         } else {
             townPvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("no-pvp"));
         }

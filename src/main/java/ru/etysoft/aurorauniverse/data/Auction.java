@@ -66,8 +66,8 @@ public class Auction {
         {
             try {
                 if(auctionItem.getResident().getTown() == t) count++;
-            } catch (TownNotFoundedException e) {
-                e.printStackTrace();
+            } catch (TownNotFoundedException ignored) {
+
             }
         }
 

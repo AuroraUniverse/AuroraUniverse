@@ -29,7 +29,6 @@ public class WorldTimer {
 
     // 24 hours 86400000
     private long delay = 86400000;
-    private long backupDelay = 86400000;
 
     private static WorldTimer instance;
 
@@ -74,7 +73,7 @@ public class WorldTimer {
 
                     StalinNPC.updateTarget();
 
-
+                    long backupDelay = AuroraUniverse.getInstance().getConfig().getInt("backup-delay") * 60 * 1000;
 
                     for (World world : (Bukkit.getServer().getWorlds())) {
                         for (Entity e : world.getEntities()) {
