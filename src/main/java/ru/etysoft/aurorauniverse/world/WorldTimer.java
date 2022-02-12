@@ -124,7 +124,8 @@ public class WorldTimer {
 
                         for(String townName : AuroraUniverse.getTownList().keySet())
                         {
-                            long townChunkTax = AuroraUniverse.getInstance().getConfig().getLong("town-chunk-tax");
+                            double townChunkTax = AuroraUniverse.getInstance().getConfig().getDouble("town-chunk-tax");
+
 
                             Town town = AuroraUniverse.getTownList().get(townName);
 
@@ -142,7 +143,7 @@ public class WorldTimer {
                                 }
                             }
 
-                            long sum = townChunkTax * town.getChunksCount();
+                            double sum = townChunkTax * town.getChunksCount();
 
                             if(town.getBank().getBalance() < sum)
                             {
