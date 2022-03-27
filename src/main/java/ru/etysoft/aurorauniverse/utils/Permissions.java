@@ -3,7 +3,17 @@ package ru.etysoft.aurorauniverse.utils;
 import org.bukkit.command.CommandSender;
 import ru.etysoft.aurorauniverse.data.Messages;
 
+/**
+ * Этот класс - полный пиздец.
+ * This class is a fucking bullshit.
+ *
+ * Нужно вынести всё в константы
+ * Need to create consts instead of stupid methods
+ */
 public class Permissions {
+
+
+
 
     public static boolean isAdmin(CommandSender sender, boolean sendMessage) {
         if (!sender.hasPermission("aun.admin")) {
@@ -41,6 +51,15 @@ public class Permissions {
     public static boolean canDeleteNation(CommandSender p) {
         return p.hasPermission("nation.delete");
     }
+
+    public static boolean canWithdrawNation(CommandSender p) {
+        return p.hasPermission("nation.withdraw");
+    }
+
+    public static boolean canDepositNation(CommandSender p) {
+        return p.hasPermission("nation.deposit");
+    }
+
     public static boolean canRemoveTownListings(CommandSender p) {
         return p.hasPermission("town.auction.remove");
     }

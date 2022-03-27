@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.5.1.2
+version: 0.5.1.3
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
 depend: [EasyPluginCore]
@@ -352,6 +352,8 @@ permissions:
       nation.delete: true
       nation.tax: true
       nation.teleport: true
+      nation.deposit: true
+      nation.withdraw: true
   nation.create:
     default: op
     description: Create nation
@@ -376,6 +378,12 @@ permissions:
   nation.delete:
     default: op
     description: Delete nation
+  nation.deposit:
+    default: op
+    description: Deposit on the nation's bank
+  nation.withdraw:
+    default: op
+    description: Withdraw from the nation's bank
 
 
     ########################################

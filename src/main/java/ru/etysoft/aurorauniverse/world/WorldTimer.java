@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
+import java.util.ArrayList;
 
 
 public class WorldTimer {
@@ -116,69 +117,80 @@ public class WorldTimer {
 
                     if(System.currentTimeMillis() - lastTimeMillis >= delay)
                     {
-                        Logger.log("New day begins!");
-                        AuroraChat.sendGlobalMessage(AuroraLanguage.getColorString("world-timer"));
-                        lastTimeMillis = System.currentTimeMillis();
-
-
-
-                        for(String townName : AuroraUniverse.getTownList().keySet())
-                        {
-                            double townChunkTax = AuroraUniverse.getInstance().getConfig().getDouble("town-chunk-tax");
-
-
-                            Town town = AuroraUniverse.getTownList().get(townName);
-
-                            for(Resident resident : town.getResidents())
-                            {
-                                if(resident.getBalance() >= town.getResTax())
-                                {
-                                    resident.setBalance(resident.getBalance() - town.getResTax());
-                                    town.getBank().deposit(town.getResTax());
-                                }
-                                else
-                                {
-                                    town.getBank().deposit(resident.getBalance());
-                                    resident.setBalance(0);
-                                }
-                            }
-
-                            double sum = townChunkTax * town.getChunksCount();
-
-                            if(town.getBank().getBalance() < sum)
-                            {
-                                AuroraChat.sendGlobalMessage(AuroraLanguage.getColorString("town-out-money")
-                                .replace("%s", town.getName()));
-                                town.delete();
-                            }
-                            else
-                            {
-                                town.getBank().withdraw(sum);
-                            }
-
-
-                        }
-
-                        try {
-                            for (String nationName : AuroraUniverse.nationList.keySet()) {
-                                Nation nation = Nations.getNation(nationName);
-                                if (nation != null) {
-                                    for (String townName : nation.getTownNames()) {
-                                        Town town = Towns.getTown(townName);
-                                        town.getBank().withdraw(nation.getTax());
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.debug("Error nation taxes!");
-                            e.printStackTrace();
-                        }
+                       initNewDay();
 
                     }
                 }
             }, 20L, 100L);
+    }
+
+    public void initNewDay()
+    {
+        Logger.log("New day begins!");
+        AuroraChat.sendGlobalMessage(AuroraLanguage.getColorString("world-timer"));
+        lastTimeMillis = System.currentTimeMillis();
+
+
+        try {
+
+            for (String townName : new ArrayList<>(AuroraUniverse.getTownList().keySet())) {
+                double townChunkTax = AuroraUniverse.getInstance().getConfig().getDouble("town-chunk-tax");
+
+
+                Town town = AuroraUniverse.getTownList().get(townName);
+
+                for (Resident resident : town.getResidents()) {
+                    if (resident.getBalance() >= town.getResTax()) {
+                        resident.setBalance(resident.getBalance() - town.getResTax());
+                        town.getBank().deposit(town.getResTax());
+                    } else {
+                        town.getBank().deposit(resident.getBalance());
+                        resident.setBalance(0);
+                    }
+                }
+
+                double sum = townChunkTax * town.getChunksCount();
+
+                if (town.getBank().getBalance() < sum) {
+                    AuroraChat.sendGlobalMessage(AuroraLanguage.getColorString("town-out-money")
+                            .replace("%s", town.getName()));
+                    town.delete();
+                    Logger.log("Town " + townName + " has been deleted due taxes");
+                } else {
+                    town.getBank().withdraw(sum);
+                    Logger.log("Town " + townName + " paid " + sum + " for taxes");
+                }
+
+
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.log("Can't pay taxes!");
+            e.printStackTrace();
+        }
+
+        try {
+            for (String nationName : AuroraUniverse.nationList.keySet()) {
+                Nation nation = Nations.getNation(nationName);
+                if (nation != null) {
+                    for (String townName : nation.getTownNames()) {
+                        Town town = Towns.getTown(townName);
+                        double tax = nation.getTax();
+                        if(town.getBank().withdraw(tax))
+                        {
+                            nation.getBank().deposit(tax);
+                        }
+
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.debug("Error nation taxes!");
+            e.printStackTrace();
+        }
     }
 
     public void resetTimer()

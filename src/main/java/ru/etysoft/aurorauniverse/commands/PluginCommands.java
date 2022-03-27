@@ -24,6 +24,7 @@ import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
+import ru.etysoft.aurorauniverse.world.WorldTimer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,6 +235,10 @@ public class PluginCommands implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("stalin")) {
                 if (Permissions.isAdmin(sender, true)) {
                     StalinNPC.create(((Player) sender).getLocation());
+                }
+            } else if (args[0].equalsIgnoreCase("newday")) {
+                if (Permissions.isAdmin(sender, true)) {
+                    WorldTimer.getInstance().initNewDay();
                 }
             } else if (args[0].equalsIgnoreCase("dhand")) {
                 if (AuroraLanguage.getDebugMode()) {

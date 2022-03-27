@@ -15,10 +15,13 @@ public class Bank {
         name = accountName;
         owner = player;
         amount = startBalance;
-        if(player.equals(name))
-        {
-            isPlayerAccount = true;
+        isPlayerAccount = false;
+        if(player != null) {
+            if (player.equals(name)) {
+                isPlayerAccount = true;
+            }
         }
+
     }
 
     public String getOwner()

@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.economy.Bank;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 public class Nation {
     private String name;
     private double tax;
+    private Bank bank;
     private Town capital;
     private ArrayList<Town> towns = new ArrayList<>();
     private ArrayList<Town> invitedTowns = new ArrayList<>();
@@ -21,6 +23,7 @@ public class Nation {
     {
         this.name = name;
         this.capital = owner;
+        this.bank = new Bank("aun.nation." + name, 0, owner.getMayor().getName());
         owner.setNationName(name);
         AuroraUniverse.nationList.put(name, this);
     }
@@ -50,6 +53,10 @@ public class Nation {
             stringList.add(t.getName());
         }
         return stringList;
+    }
+
+    public Bank getBank() {
+        return bank;
     }
 
     public void setCapital(Town capital) {
@@ -135,6 +142,11 @@ public class Nation {
 
             }
         }
+
+        if(jsonObject.containsKey(Keys.BALANCE))
+        {
+            nation.bank.setBalance((double) jsonObject.get(Keys.BALANCE));
+        }
     }
 
     public JSONObject toJSON()
@@ -152,6 +164,7 @@ public class Nation {
 
         nationObj.put(Keys.TOWNS, townsList);
         nationObj.put(Keys.TAX, tax);
+        nationObj.put(Keys.BALANCE, bank.getBalance());
 
         return nationObj;
 
@@ -163,6 +176,7 @@ public class Nation {
         private final static String CAPITAL = "CAPITAL";
         private final static String TOWNS = "TOWNS";
         private final static String TAX = "TAX";
+        private final static String BALANCE = "BALANCE";
     }
 
 }
