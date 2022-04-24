@@ -6,6 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.commands.nation.NationDepositCommand;
+import ru.etysoft.aurorauniverse.commands.nation.NationWithdrawCommand;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
@@ -62,6 +64,10 @@ public class NationCommands implements CommandExecutor {
 
                 } else if (args[0].equalsIgnoreCase("leave")) {
                     leave();
+                } else if (args[0].equalsIgnoreCase("deposit")) {
+                    new NationDepositCommand(resident, args, sender);
+                } else if (args[0].equalsIgnoreCase("withdraw")) {
+                    new NationWithdrawCommand(resident, args, sender);
                 } else if (args[0].equalsIgnoreCase("kick")) {
                     kick();
                 } else if (args[0].equalsIgnoreCase("list")) {
@@ -333,7 +339,7 @@ public class NationCommands implements CommandExecutor {
     }
 
     public void deleteNation() {
-        if (Permissions.canSetTax(player)) {
+        if (Permissions.canDeleteNation(player)) {
             try {
                 if (resident.getTown().getNation() != null) {
                     if (resident.getTown() == resident.getTown().getNation().getCapital()) {

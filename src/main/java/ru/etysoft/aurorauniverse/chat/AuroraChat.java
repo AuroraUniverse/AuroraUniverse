@@ -4,6 +4,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.chat.listeners.ChatListener;
@@ -156,6 +157,17 @@ public class AuroraChat {
             assert resident1 != null;
             if(!resident1.getIgnoreChannels().contains(channel)) {
                 player.spigot().sendMessage(getPreparedChatMessage(message, playerSender));
+                if(AuroraUniverse.getInstance().getConfig().getBoolean("chat-sound-notify"))
+                {
+                    if(channel == Channels.NATION)
+                    {
+                        player.playSound(player.getLocation(), Sound.ITEM_AXE_STRIP, 100.0f, 1.0f);
+                    }
+                    else if(channel == Channels.TOWN)
+                    {
+                        player.playSound(player.getLocation(), Sound.ENTITY_FOX_SNIFF, 100.0f, 1.0f);
+                    }
+                }
             }
         }
         if (sendConsole) {

@@ -225,6 +225,7 @@ nation:
   capital: "Столица: %s"
   members: "Города(%s): %s1"
   tax: "Налог с города: %s"
+  tax-nation: "Содержание нации: %s"
 no-nation: "У Вас нет нации"
 wrong-nation: "Неверное имя нации"
 nation-leave: "Вы покинули свою нацию"
@@ -244,6 +245,10 @@ nation-already: "Вы уже в составе нации"
 nation-teleport: "Вы были телепортированы на спавн нации"
 nation-town-not-registered: "Город не зарегистрирован"
 nation-invitation: "Нация %s приглашает Ваш город. Напишите &b/n accept %s &fчтобы принять приглашение"
+nation-deposit: "Положили %s на счёт нации"
+nation-withdraw: "Сняли %s со счёта нации"
+nation-withdraw-others: "%p снял %s со счёта нации"
+nation-cantdeposit: "Невозможно положить %s на счёт нации"
 
 ########################################
 #                                      #

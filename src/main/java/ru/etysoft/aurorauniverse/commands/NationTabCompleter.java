@@ -31,6 +31,8 @@ public class NationTabCompleter implements TabCompleter {
         firstPossibleArg.add("invite");
         firstPossibleArg.add("kick");
         firstPossibleArg.add("leave");
+        firstPossibleArg.add("withdraw");
+        firstPossibleArg.add("deposit");
         firstPossibleArg.add("spawn");
         firstPossibleArg.add("accept");
         firstPossibleArg.add("tax");

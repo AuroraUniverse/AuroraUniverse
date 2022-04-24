@@ -223,7 +223,7 @@ public class Town {
         }
 
         newMayor.setPermissionGroup("mayor");
-        AuroraPermissions.setPermissions(mayor.getName(), AuroraPermissions.getGroup("mayor"));
+        AuroraPermissions.setPermissions(newMayor.getName(), AuroraPermissions.getGroup("mayor"));
 
 
         this.mayor = newMayor;

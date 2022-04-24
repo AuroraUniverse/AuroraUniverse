@@ -171,7 +171,7 @@ public class WorldTimer {
         }
 
         try {
-            for (String nationName : AuroraUniverse.nationList.keySet()) {
+            for (String nationName : new ArrayList<>(AuroraUniverse.nationList.keySet())) {
                 Nation nation = Nations.getNation(nationName);
                 if (nation != null) {
                     for (String townName : nation.getTownNames()) {
@@ -182,6 +182,11 @@ public class WorldTimer {
                             nation.getBank().deposit(tax);
                         }
 
+                    }
+
+                    if(!nation.getBank().withdraw(nation.getTowns().size() * AuroraUniverse.getInstance().getConfig().getDouble("nation-town-tax")))
+                    {
+                        nation.delete();
                     }
                 }
             }

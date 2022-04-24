@@ -54,8 +54,11 @@ town-new-chunk-tax-mod: 1.4
 town-chunk-price: 10.0
 town-outpost-price: 10.0
 town-outpost-mod-price: 4.0
+nation-town-tax: 20.0
 
 # ECONOMY
 
 start-balance: 0.0
 min-pay-amount: 1.0
+
+chat-sound-notify: true

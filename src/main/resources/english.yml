@@ -226,6 +226,7 @@ nation:
   capital: "Capital town: %s"
   members: "Towns(%s): %s1"
   tax: "Town tax: %s"
+  tax-nation: "Nation tax: %s"
 no-nation: "You do not have a nation"
 wrong-nation: "Wrong nation name"
 nation-leave: "You left your nation"
@@ -245,6 +246,10 @@ nation-already: "You are already in a nation"
 nation-teleport: "You have been teleported to the capital's spawn"
 nation-town-not-registered: "You already in nation"
 nation-invitation: "Nation %s invites your town. Type &b/n accept %s &fto accept request"
+nation-deposit: "Deposited %s on the nation's bank"
+nation-withdraw: "Withdrawn %s from the nation's bank"
+nation-withdraw-others: "%p withdrawn %s from the nation's bank"
+nation-cantdeposit: "Can't deposit %s on the nation's bank"
 
 ########################################
 #                                      #
