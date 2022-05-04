@@ -24,6 +24,7 @@ public class EconomyCommands implements CommandExecutor {
         this.sender = sender;
         this.args = args;
 
+
         if (args.length > 0) {
             if (args[0].equalsIgnoreCase("pay")) {
                 pay();

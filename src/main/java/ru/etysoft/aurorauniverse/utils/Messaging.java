@@ -55,6 +55,7 @@ public class Messaging {
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("nation.members").replace("%s1", String.join(", ", nation.getTownNames())))
                 .replace("%s", String.valueOf(nation.getTownNames().size())));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("nation.tax").replace("%s", String.valueOf(nation.getTax()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("nation.bank").replace("%s", String.valueOf(nation.getBank().getBalance()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("nation.tax-nation").replace("%s", String.valueOf(nation.getTowns().size() *
                 AuroraUniverse.getInstance().getConfig().getDouble("nation-town-tax")))));
     }

@@ -8,7 +8,7 @@
 
 prefix: "&7[&bAuroraUniverse&7]"
 # DO NOT EDIT
-file-version: 0.1.1.5
+file-version: 0.1.1.6
 
 ########################################
 #                                      #
@@ -128,7 +128,6 @@ town-withdraw: "&7Successfully &fwithdrawn &b%s &7from the town bank"
 town-cantwithdraw: "&cCan't withdraw &f%s &cfrom the town bank"
 town-cantdeposit: "&cCan't deposit &f%s &cto the town bank"
 
-
 gui:
   bank: "&7Bank: &b%s"
   mayor: "&7Mayor: &b%s"
@@ -223,10 +222,11 @@ economy:
 ########################################
 
 nation:
-  capital: "Capital town: %s"
-  members: "Towns(%s): %s1"
-  tax: "Town tax: %s"
-  tax-nation: "Nation tax: %s"
+  capital: "&bCapital: &f%s"
+  members: "&bTowns(%s): &7%s1"
+  tax: "&bTown tax: &a%s"
+  tax-nation: "&bNation tax: &e%s"
+  bank: "&bBank: &b%s"
 no-nation: "You do not have a nation"
 wrong-nation: "Wrong nation name"
 nation-leave: "You left your nation"
@@ -330,3 +330,19 @@ auction-sell-town-max: "&cYor town has maximum listings (%s)"
 auction-sell-success: "&fSuccessfully selling &b%s for &a%p"
 auction-error-replace: "&cAuction couldn't be replaced because there is not enough blocks"
 auction-error-chunk: "&cAuction must be placed on a single chunk"
+
+# Added in 0.6.0.0
+
+residents-gui:
+  title: "Residents"
+  info: "&eResidents"
+  lore: "&7Information about town residents"
+  resident-name: "&b%s"
+  resident-perm: "&7Permissions group: &f%s"
+  resident-bal: "&7Babk: &b%s"
+  toggle-online: "&fShow only &aobline"
+  toggle-all: "&fShow &eall"
+  next-page: "&eNext page"
+  prev-page: "&ePrev page"
+  loading-title: "&bLoading..."
+  loading-lore: "&7Looking for residents skins..."

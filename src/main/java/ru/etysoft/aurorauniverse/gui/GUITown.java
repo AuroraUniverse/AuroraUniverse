@@ -183,7 +183,7 @@ public class GUITown {
         lore.addAll(town.getTransactionHistory());
 
 
-        Slot fireToggleSlot = new Slot(new SlotRunnable() {
+        Slot transHistorySlot = new Slot(new SlotRunnable() {
             @Override
             public void run() {
 
@@ -191,13 +191,13 @@ public class GUITown {
         }, Items.createNamedItem(new ItemStack(Material.MAP, 1),  transHistory, lore.toArray(new String[lore.size()])
         ));
 
-        matrix.put(31, fireToggleSlot);
+        matrix.put(41, transHistorySlot);
 
         String toggles = AuroraLanguage.getColorString("gui.toggles-button");
 
 
 
-        Slot mobsToggleSlot = new Slot(new SlotRunnable() {
+        Slot togglesSlot = new Slot(new SlotRunnable() {
             @Override
             public void run() {
                 player.closeInventory();
@@ -206,8 +206,23 @@ public class GUITown {
         }, Items.createNamedItem(new ItemStack(Material.ZOMBIE_HEAD, 1),  toggles, AuroraLanguage.getColorString("gui.toggles-lore")
         ));
 
-        matrix.put(32, mobsToggleSlot);
+        matrix.put(32, togglesSlot);
 
+        Slot residentsSlot = new Slot(new SlotRunnable() {
+            @Override
+            public void run() {
+                player.closeInventory();
+                try {
+                    new GUIResidents(player, Residents.getResident(player.getName()).getTown(), false);
+                } catch (TownNotFoundedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, Items.createNamedItem(new ItemStack(Material.LEATHER_HELMET, 1),  AuroraLanguage.getColorString("residents-gui.info"),
+                AuroraLanguage.getColorString("residents-gui.lore")
+        ));
+
+        matrix.put(31, residentsSlot);
 
         processAuction(matrix);
 

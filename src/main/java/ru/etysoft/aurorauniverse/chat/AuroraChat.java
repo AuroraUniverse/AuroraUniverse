@@ -27,9 +27,6 @@ public class AuroraChat {
     private static AuroraChat instance;
     private static ChatCommand chatCommand;
 
-    private AuroraChat() {
-    }
-
     public static void initialize() {
 
         if (instance == null) {
@@ -47,7 +44,7 @@ public class AuroraChat {
         Resident resident = Residents.getResident(playerSender);
         int channel = Channels.GLOBAL;
         if (resident != null) {
-          channel= resident.getChatMode();
+          channel = resident.getChatMode();
             if (channel == AuroraChat.Channels.GLOBAL) {
                 message = AuroraLanguage.getColorString("chat.global").replace("%sender%", playerSender.getName())
                         .replace("%message%", message);
@@ -133,8 +130,9 @@ public class AuroraChat {
                         }
                     }
                 } catch (TownNotFoundedException e) {
-                    e.printStackTrace();
+
                 }
+
 
                 finalRecipients = recipients;
 

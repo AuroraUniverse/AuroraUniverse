@@ -11,12 +11,7 @@ import java.util.Set;
 
 public class Residents {
     public static boolean createResident(Player pl) {
-        if (AuroraUniverse.residentlist.containsKey(pl.getName())) {
-            return false;
-        } else {
-            AuroraUniverse.residentlist.put(pl.getName(), new Resident(pl.getName()));
-            return true;
-        }
+       return createResident(pl.getName());
     }
 
     public static boolean createResident(String playerName) {
