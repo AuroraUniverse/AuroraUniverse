@@ -13,13 +13,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AuroraEconomy implements Economy {
 
-    private static Map<String, Bank> banklist = new ConcurrentHashMap<>();
+    private static Map<String, Bank> bankList = new HashMap<>();
 
     public boolean addBank(Bank bank)
     {
-        if(!banklist.containsKey(bank.getName()))
+        if(!bankList.containsKey(bank.getName()))
         {
-            banklist.put(bank.getName(), bank);
+            bankList.put(bank.getName(), bank);
             return true;
         }
         else
@@ -42,29 +42,23 @@ public class AuroraEconomy implements Economy {
 
     public Bank getBank(String name)
     {
-        if(banklist.containsKey(name))
-        {
-            return banklist.get(name);
-        }
-        else
-        {
-            return null;
-        }
+        return bankList.getOrDefault(name, null);
     }
 
     public boolean isBankExists(String name)
     {
-        return banklist.containsKey(name);
+        if(name == null) return false;
+        return bankList.containsKey(name);
     }
 
     public void deleteBank(Bank bank)
     {
-        banklist.remove(bank.getName());
+        bankList.remove(bank.getName());
 
     }
     public void deleteBankByName(String name)
     {
-        banklist.remove(name);
+        bankList.remove(name);
 
     }
 
@@ -483,125 +477,12 @@ public class AuroraEconomy implements Economy {
 
     @Override
     public List<String> getBanks() {
-        List<String> list = new List<String>() {
-            @Override
-            public int size() {
-                return 0;
-            }
+        List<String> list = new ArrayList<>();
+        for(Bank bank : bankList.values()) {
+            list.add(bank.getName());
+        }
 
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
 
-            @Override
-            public boolean contains(Object o) {
-                return false;
-            }
-
-            @Override
-            public Iterator<String> iterator() {
-                return null;
-            }
-
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @Override
-            public <T> T[] toArray(T[] ts) {
-                return null;
-            }
-
-            @Override
-            public boolean add(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean remove(Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(Collection<? extends String> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(int i, Collection<? extends String> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public String get(int i) {
-                return null;
-            }
-
-            @Override
-            public String set(int i, String s) {
-                return null;
-            }
-
-            @Override
-            public void add(int i, String s) {
-
-            }
-
-            @Override
-            public String remove(int i) {
-                return null;
-            }
-
-            @Override
-            public int indexOf(Object o) {
-                return 0;
-            }
-
-            @Override
-            public int lastIndexOf(Object o) {
-                return 0;
-            }
-
-            @Override
-            public ListIterator<String> listIterator() {
-                return null;
-            }
-
-            @Override
-            public ListIterator<String> listIterator(int i) {
-                return null;
-            }
-
-            @Override
-            public List<String> subList(int i, int i1) {
-                return null;
-            }
-        };
-        banklist.forEach((name, _bank) -> {
-            list.add(name);
-        });
         return list;
     }
 

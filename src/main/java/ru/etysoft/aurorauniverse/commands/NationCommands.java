@@ -313,7 +313,7 @@ public class NationCommands implements CommandExecutor {
             try {
                 if (resident.getTown().getNation() != null) {
                     try {
-                        double tax = Double.valueOf(args[1]);
+                        double tax = Double.parseDouble(args[1]);
                         if(tax < 0)  Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-tax-error"), player);
                         if (resident.getTown() == resident.getTown().getNation().getCapital()) {
                             resident.getTown().getNation().setTax(tax);

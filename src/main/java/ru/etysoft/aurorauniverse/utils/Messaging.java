@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.placeholders.AuroraPlaceholdersExpansion;
 import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
 import ru.etysoft.aurorauniverse.world.Nation;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -73,8 +74,13 @@ public class Messaging {
         {
             p.sendMessage("[admin info] PERM GROUP: " + resident.getPermissionGroupName());
         }
-        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident-balance").replace("%s", String.valueOf(resident.getBalance()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident-balance")
+                .replace("%s", String.valueOf(resident.getBalance()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident-reputation")
+                .replace("%aurorauniverse_rep%", AuroraPlaceholdersExpansion.getReputationPlaceholder(resident))));
 
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("resident-hours-played")
+                .replace("%s", String.valueOf(resident.getHoursPlayed()))));
     }
 
 

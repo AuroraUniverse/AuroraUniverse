@@ -349,3 +349,14 @@ residents-gui:
   prev-page: "&eПредыдущая страница"
   loading-title: "&bЗагрузка..."
   loading-lore: "&7Вспоминаем скины всех жителей города..."
+
+# Added in 0.6.1.0
+
+rep-cantchange: "&cВы не можете изменять репутацию этого игрока."
+rep-plus: "&cВы повысили репутацию игрока %s (%rep)"
+rep-minus: "&cВы понизили репутацию игрока %s (%rep)"
+resident-reputation: "&7Репутация: &b%aurorauniverse_rep%"
+rep-positive-color: "&a+"
+rep-negative-color: "&c-"
+rep-zero-color: "&7"
+resident-hours-played: "&7Онлайн: &b%s &7часов за всё время"

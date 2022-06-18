@@ -45,6 +45,24 @@ public class AuroraPlaceholdersExpansion extends PlaceholderExpansion {
         return true;
     }
 
+
+    public static String getReputationPlaceholder(Resident resident)
+    {
+        assert resident != null;
+        if(resident.getRep() == 0)
+        {
+            return AuroraLanguage.getColorString("rep-zero-color") + "0";
+        }
+        else if(resident.getRep() > 0)
+        {
+            return AuroraLanguage.getColorString("rep-positive-color") + resident.getRep();
+        }
+        else
+        {
+            return AuroraLanguage.getColorString("rep-negative-color") + resident.getRep();
+        }
+    }
+
     @Override
     public String onRequest(OfflinePlayer player, String params) {
 
@@ -100,6 +118,23 @@ public class AuroraPlaceholdersExpansion extends PlaceholderExpansion {
                 }
             }
             return ColorCodes.toColor("&c[AUN ERROR]");
+        }
+        else if(params.equalsIgnoreCase("rep"))
+        {
+            if(Residents.getResident(player.getName()) != null)
+            {
+                Resident resident = Residents.getResident(player.getName());
+                try
+                {
+                   return getReputationPlaceholder(resident);
+
+                }
+                catch (Exception ignored)
+                {
+
+                }
+            }
+            return null;
         }
         return null;
         // Placeholder is unknown by the Expansion

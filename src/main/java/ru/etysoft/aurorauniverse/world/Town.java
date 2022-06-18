@@ -158,6 +158,7 @@ public class Town {
     }
 
     public void setResTax(double resTax) {
+        if(resTax < 0) return;
         this.resTax = resTax;
     }
 

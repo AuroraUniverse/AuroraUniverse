@@ -346,3 +346,14 @@ residents-gui:
   prev-page: "&ePrev page"
   loading-title: "&bLoading..."
   loading-lore: "&7Looking for residents skins..."
+
+# Added in 0.6.1.0
+
+rep-cantchange: "&cYou can't change reputation of this player."
+rep-plus: "&cYou give reputation to %s (%rep)"
+rep-minus: "&cYou take reputation from %s (%rep)"
+resident-reputation: "&7Reputation: &b%aurorauniverse_rep%"
+rep-positive-color: "&a+"
+rep-negative-color: "&c-"
+rep-zero-color: "&7"
+resident-hours-played: "&7Played: &b%s &7hours"

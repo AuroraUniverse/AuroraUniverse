@@ -62,3 +62,5 @@ start-balance: 0.0
 min-pay-amount: 1.0
 
 chat-sound-notify: true
+
+reputation-min-hours: 24

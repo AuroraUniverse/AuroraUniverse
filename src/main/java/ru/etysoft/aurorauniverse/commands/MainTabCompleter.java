@@ -31,6 +31,9 @@ public class MainTabCompleter implements TabCompleter {
         if(Permissions.canSeeResidentInfo(sender)) {
             firstPossibleArg.add("res");
         }
+
+
+
         firstPossibleArg.add("prices");
 
 
@@ -52,6 +55,7 @@ public class MainTabCompleter implements TabCompleter {
         if (args.length >= 1) {
             if (args.length == 1) {
                 possibleArgs.addAll(firstPossibleArg);
+
             } else if (args.length == 2) {
                 if (args[0].equals("town")) {
                     possibleArgs.add("delete");
@@ -64,10 +68,28 @@ public class MainTabCompleter implements TabCompleter {
                     possibleArgs.add("givebonus");
                 }
 
+                if (args[0].equals("res")) {
+                    for(Resident resident : Residents.getList())
+                    {
+                        if(resident.getName().contains(args[1]))
+                        {
+                            possibleArgs.add(resident.getName());
+                        }
+                    }
+                }
+
             } else if (args.length == 3) {
                 if (args[1].equals("delete")) {
                     for (Town r : Towns.getTowns()) {
                         possibleArgs.add(r.getName());
+                    }
+                }
+
+                if (args[0].equals("res")) {
+                    if(Permissions.canChangeResidentRep(sender))
+                    {
+                        possibleArgs.add("+rep");
+                        possibleArgs.add("-rep");
                     }
                 }
 

@@ -4,11 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
+import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.data.Nations;
+import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
@@ -21,12 +23,15 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class WorldTimer {
 
     private long lastTimeMillis;
     private long lastTimeSave;
+    private long lastTimeTimerCheck = 0;
+    private List<String> lastOnlineList = new ArrayList<>();
 
     // 24 hours 86400000
     private long delay = 86400000;
@@ -71,6 +76,30 @@ public class WorldTimer {
                 @Override
                 public void run() {
 
+
+                    if(lastTimeTimerCheck != 0) {
+
+                        long nowTime = System.currentTimeMillis();
+                        for (String name : lastOnlineList)
+                        {
+                            Resident resident = Residents.getResident(name);
+                            if(resident != null)
+                            {
+                                resident.setMillisPlayed(resident.getMillisPlayed() + (nowTime - lastTimeTimerCheck));
+                            }
+                        }
+
+                        lastOnlineList.clear();
+                        for(Player player : Bukkit.getOnlinePlayers())
+                        {
+                            if(!lastOnlineList.contains(player.getName()))
+                            {
+                                lastOnlineList.add(player.getName());
+                            }
+
+                        }
+                    }
+                    lastTimeTimerCheck = System.currentTimeMillis();
 
                     StalinNPC.updateTarget();
 

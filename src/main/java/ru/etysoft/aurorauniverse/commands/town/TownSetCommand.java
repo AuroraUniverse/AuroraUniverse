@@ -89,8 +89,14 @@ public class TownSetCommand {
             Town t = resident.getTown();
             try {
                 double resTax = Double.parseDouble(args[2]);
-                t.setResTax(resTax);
-                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-settax"), player);
+                if(resTax >= 0) {
+                    t.setResTax(resTax);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-settax"), player);
+                }
+                else
+                {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-tax-error"), player);
+                }
             } catch (Exception e) {
                 Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-tax-error"), player);
             }

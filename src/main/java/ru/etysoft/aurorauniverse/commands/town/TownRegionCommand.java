@@ -157,7 +157,7 @@ public class TownRegionCommand {
                 Region region = town.getRegion(((Player) sender).getLocation());
 
                 if (region != null) {
-                    if (region instanceof ResidentRegion && args.length > 1) {
+                    if (region instanceof ResidentRegion && args.length > 2) {
                         ResidentRegion residentRegion = (ResidentRegion) region;
                         Resident newMember = Residents.getResident(args[1]);
                         if (newMember != null && newMember != resident) {
@@ -177,7 +177,15 @@ public class TownRegionCommand {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-error"), sender);
                         }
                     } else {
-                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-townowned"), sender);
+                        if(!(region instanceof  ResidentRegion))
+                        {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-townowned"), sender);
+                        }
+                        else
+                        {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-error"), sender);
+                        }
+
 
                     }
                 } else {

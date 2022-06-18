@@ -68,6 +68,7 @@ public class Nation {
     }
 
     public void setTax(double tax) {
+        if(tax < 0) return;
         this.tax = tax;
     }
 

@@ -29,6 +29,10 @@ public class Permissions {
         return p.hasPermission("nation.create");
     }
 
+    public static boolean canChangeResidentRep(CommandSender p) {
+        return p.hasPermission("aun.residentrep");
+    }
+
     public static boolean canInviteNation(CommandSender p) {
         return p.hasPermission("nation.invite");
     }

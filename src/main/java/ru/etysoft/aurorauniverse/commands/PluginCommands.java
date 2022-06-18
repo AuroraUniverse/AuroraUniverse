@@ -18,6 +18,7 @@ import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.exceptions.WorldNotFoundedException;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
+import ru.etysoft.aurorauniverse.placeholders.AuroraPlaceholdersExpansion;
 import ru.etysoft.aurorauniverse.structures.*;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
@@ -43,7 +44,7 @@ public class PluginCommands implements CommandExecutor {
                 } else if (args[1].equalsIgnoreCase("off")) {
                     AuroraLanguage.setDebugMode(false);
                     Messaging.sendPrefixedMessage("Now debug mode is &cdisabled", sender);
-                }  else {
+                } else {
                     sender.sendMessage(Messages.wrongArgs());
                 }
             }
@@ -55,8 +56,7 @@ public class PluginCommands implements CommandExecutor {
     public void struct(CommandSender sender, String[] args) {
         if (args.length > 1) {
             if (Permissions.isAdmin(sender, true)) {
-                if(sender instanceof Player)
-                {
+                if (sender instanceof Player) {
                     Location location = ((Player) sender).getLocation();
 
                     Structure structure = new Structure(location.getBlockX(), location.getBlockY(), location.getBlockZ(), args[1], location.getWorld().getName());
@@ -72,14 +72,10 @@ public class PluginCommands implements CommandExecutor {
                     } catch (StructureBuildException e) {
                         e.printStackTrace();
                     }
-                }
-                else
-                {
+                } else {
                     Messaging.sendPrefixedMessage(Messages.Keys.ACCESS_DENIED, sender);
                 }
-            }
-            else
-            {
+            } else {
                 Messaging.sendPrefixedMessage(Messages.Keys.ACCESS_DENIED, sender);
             }
         } else {
@@ -99,22 +95,19 @@ public class PluginCommands implements CommandExecutor {
                 int toZ = StructurePatterns.bufferTo.getBlockZ();
 
 
-                if(fromX > toX)
-                {
+                if (fromX > toX) {
                     int tempX = toX;
                     toX = fromX;
                     fromX = tempX;
                 }
 
-                if(fromY > toY)
-                {
+                if (fromY > toY) {
                     int tempY = toY;
                     toY = fromY;
                     fromY = tempY;
                 }
 
-                if(fromZ > toZ)
-                {
+                if (fromZ > toZ) {
                     int tempZ = toZ;
                     toZ = fromZ;
                     fromZ = tempZ;
@@ -126,17 +119,14 @@ public class PluginCommands implements CommandExecutor {
 
                 Logger.debug(fromX + "; " + toX + ". " + fromY + "; " + toY + ". " + fromZ + "; " + toZ);
 
-                for(int x = fromX; x <= toX; x++)
-                {
-                    for(int y = fromY; y <= toY; y++)
-                    {
-                        for(int z = fromZ; z <= toZ; z++) {
+                for (int x = fromX; x <= toX; x++) {
+                    for (int y = fromY; y <= toY; y++) {
+                        for (int z = fromZ; z <= toZ; z++) {
 
                             (new Location(world, x, y, z)).getChunk().load();
                             Block block = world.getBlockAt(x, y, z);
 
-                            if (block.getType() != Material.AIR)
-                            {
+                            if (block.getType() != Material.AIR) {
                                 try {
                                     StructBlock structBlock = new StructBlock(x - fromX, y - fromY, z - fromZ, block.getType().name());
                                     jsonArray.add(structBlock.toJson());
@@ -151,9 +141,7 @@ public class PluginCommands implements CommandExecutor {
 
                 StructurePatterns.savePattern(args[1], jsonArray);
                 sender.sendMessage("Saved structure at structures/" + args[1] + ".json (" + jsonArray.size() + " blocks)");
-            }
-            else
-            {
+            } else {
                 Messaging.sendPrefixedMessage(Messages.Keys.ACCESS_DENIED, sender);
             }
         } else {
@@ -195,9 +183,8 @@ public class PluginCommands implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("reload")) {
                 reload(sender, args);
-            }
-           else if (args[0].equalsIgnoreCase("save-all")) {
-                    save(sender, args);
+            } else if (args[0].equalsIgnoreCase("save-all")) {
+                save(sender, args);
             } else if (args[0].equalsIgnoreCase("town")) {
                 new TownAdminCommands(sender, Residents.getResident(sender.getName()), args);
             } else if (args[0].equalsIgnoreCase("debug")) {
@@ -209,29 +196,71 @@ public class PluginCommands implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("prices")) {
                 Messaging.sendPrices(sender);
             } else if (args[0].equalsIgnoreCase("res")) {
-               if(args.length > 1)
-               {
+                if (args.length > 1) {
 
-                   if(Permissions.canSeeResidentInfo(sender)) {
-                       Resident resident = Residents.getResident(args[1]);
-
-                       if (resident != null) {
-                           Messaging.sendResidentInfo(sender, resident);
-                       } else {
-                           sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.NOT_REGISTERED_RESIDENT));
-                       }
-                   }
-                   else
-                   {
-                       sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.ACCESS_DENIED));
-                   }
+                    if (args.length > 2) {
+                        if (Permissions.canChangeResidentRep(sender)) {
+                            Resident resident = Residents.getResident(args[1]);
+                            Resident residentSelf = Residents.getResident(sender.getName());
 
 
-               }
-               else
-               {
-                   sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS));
-               }
+                            if (resident != null && residentSelf != null) {
+
+                                if(residentSelf.getHoursPlayed() >
+                                        AuroraUniverse.getInstance().getConfig().getInt("reputation-min-hours"))
+                                {
+                                    if (args[2].equals("+rep")) {
+                                        if (!resident.getRepPlus().contains(sender.getName())) {
+                                            resident.addRepPlus(sender.getName());
+                                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.REP_PLUS).replace("%s", resident.getName())
+                                                    .replace("%rep", String.valueOf(resident.getRep())), sender);
+                                        } else {
+                                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.REP_CANT_CHANGE), sender);
+                                        }
+                                    } else if (args[2].equals("-rep")) {
+                                        if (!resident.getRepMinus().contains(sender.getName())) {
+                                            resident.addRepMinus(sender.getName());
+                                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.REP_MINUS).replace("%s", resident.getName())
+                                                    .replace("%rep", String.valueOf(resident.getRep())), sender);
+                                        } else {
+                                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.REP_CANT_CHANGE),
+                                                    sender);
+                                        }
+                                    } else {
+                                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
+                                    }
+                                }
+                                else
+                                {
+                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.REP_CANT_CHANGE), sender);
+                                }
+
+
+
+                            } else {
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.NOT_REGISTERED_RESIDENT), sender);
+                            }
+                        } else {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.ACCESS_DENIED), sender);
+                        }
+                    } else {
+                        if (Permissions.canSeeResidentInfo(sender)) {
+                            Resident resident = Residents.getResident(args[1]);
+
+                            if (resident != null) {
+                                Messaging.sendResidentInfo(sender, resident);
+                            } else {
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.NOT_REGISTERED_RESIDENT), sender);
+                            }
+                        } else {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.ACCESS_DENIED), sender);
+                        }
+                    }
+
+
+                } else {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
+                }
             } else if (args[0].equalsIgnoreCase("stalin")) {
                 if (Permissions.isAdmin(sender, true)) {
                     StalinNPC.create(((Player) sender).getLocation());
@@ -249,10 +278,8 @@ public class PluginCommands implements CommandExecutor {
                     }
 
                 }
-            }
-            else if (args[0].equalsIgnoreCase("givebonus")) {
-                if(args.length > 2)
-                {
+            } else if (args[0].equalsIgnoreCase("givebonus")) {
+                if (args.length > 2) {
                     if (Permissions.isAdmin(sender, true)) {
                         Town town = null;
                         try {

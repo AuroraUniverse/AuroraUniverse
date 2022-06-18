@@ -65,6 +65,9 @@ public class Messages {
         public final static String TOWN_DONT_BELONG = "town-dont-belong";
         public final static String REGION_WELCOME = "region-welcome";
         public final static String TOWN_REGION_WELCOME = "town-region-welcome";
+        public final static String REP_PLUS = "rep-plus";
+        public final static String REP_MINUS = "rep-minus";
+        public final static String REP_CANT_CHANGE = "rep-cantchange";
 
         public static class Region
         {
