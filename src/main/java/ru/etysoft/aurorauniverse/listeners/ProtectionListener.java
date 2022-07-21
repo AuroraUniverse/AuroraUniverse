@@ -1,6 +1,7 @@
 package ru.etysoft.aurorauniverse.listeners;
 
 
+import javafx.application.Platform;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -9,24 +10,16 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.PistonMoveReaction;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerShearEntityEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.world.PortalCreateEvent;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Directional;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
@@ -42,10 +35,7 @@ import ru.etysoft.aurorauniverse.world.*;
 import sun.applet.Main;
 
 import java.security.Permission;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ProtectionListener implements Listener {
 
@@ -85,11 +75,16 @@ public class ProtectionListener implements Listener {
     }
 
     @EventHandler
+    public void Death(PlayerDeathEvent deathEvent)
+    {
+        ktList.remove(deathEvent.getEntity().getName());
+    }
+    @EventHandler
     public void PvP(EntityDamageByEntityEvent event) {
 
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();
-            if(Permissions.isAdmin(p, false)) return;
+            if(Permissions.isAdmin(event.getDamager(), false)) return;
             Resident resident = Residents.getResident(p);
             try {
                 ChunkPair chunkPair = ChunkPair.fromChunk(p.getLocation().getChunk());
@@ -161,6 +156,41 @@ public class ProtectionListener implements Listener {
                 if(!t.isPvp(chunkPair))
                 {
                     event.setCancelled(true);
+                }
+            }
+        }
+
+         if(event.getEntity() instanceof ItemFrame && event.getDamager() instanceof Player)
+        {
+
+            Player player = (Player) event.getDamager();
+            if (!player.hasPermission("aun.edittowns")) {
+                try {
+                    if (Towns.hasMyTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk())
+                            , Residents.getResident(player).getTown())) {
+                        Town town = Towns.getTown(event.getEntity().getLocation().getChunk());
+                        if (town != null) {
+                            if (!town.canDestroy(Residents.getResident(player), ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()))) {
+                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
+                                Logger.debug("Prevented from block break[1] " +  player.getName());
+                                event.setCancelled(true);
+                            } else {
+
+                            }
+                        }
+                    } else {
+                        if (Towns.hasTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()))) {
+                            Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
+                            event.setCancelled(true);
+                            Logger.debug("Prevented from block break[2] " + player.getName());
+                        }
+                    }
+                } catch (TownNotFoundedException ignored) {
+                    if (Towns.hasTown(ChunkPair.fromChunk(player.getLocation().getChunk()))) {
+                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
+                        event.setCancelled(true);
+                        Logger.debug("Prevented from block break[3] " + player.getName());
+                    }
                 }
             }
         }
@@ -260,13 +290,6 @@ public class ProtectionListener implements Listener {
                 materials.add(Material.ITEM_FRAME);
                 materials.addAll(MaterialGroups.getContainers());
 
-                // 1.14+
-                try {
-
-                } catch (Exception e) {
-                    Logger.warning("Can't find Barrel material! Is the server outdated?");
-                }
-
                 if (materials.contains(block.getType())) {
                     try {
                         if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
@@ -304,43 +327,23 @@ public class ProtectionListener implements Listener {
     public void SwitchEvent(PlayerInteractEvent event) {
         if (!event.getPlayer().hasPermission("aun.edittowns")) {
             if (event.hasBlock()) {
+
                 ChunkPair chunk = ChunkPair.fromChunk(event.getClickedBlock().getChunk());
                 Block block = event.getClickedBlock();
                 List<Material> materials = new ArrayList<Material>();
 
-                materials.add(Material.DARK_OAK_DOOR);
-                materials.add(Material.ACACIA_DOOR);
-                materials.add(Material.BIRCH_DOOR);
-                materials.add(Material.IRON_DOOR);
-                materials.add(Material.JUNGLE_DOOR);
-                materials.add(Material.OAK_DOOR);
-                materials.add(Material.SPRUCE_DOOR);
+                materials.addAll(MaterialGroups.Switchable.getDoors());
 
                 materials.addAll(MaterialGroups.Switchable.getTrapdoors());
+                materials.addAll(MaterialGroups.Switchable.getGates());
+                materials.addAll(MaterialGroups.Switchable.getPlates());
 
-                materials.add(Material.BIRCH_BUTTON);
-                materials.add(Material.ACACIA_BUTTON);
-                materials.add(Material.DARK_OAK_BUTTON);
-                materials.add(Material.JUNGLE_BUTTON);
-                materials.add(Material.OAK_BUTTON);
-                materials.add(Material.SPRUCE_BUTTON);
-                materials.add(Material.STONE_BUTTON);
+                materials.addAll(MaterialGroups.Switchable.getButtons());
 
                 materials.add(Material.LEVER);
+                materials.add(Material.ITEM_FRAME);
 
-                materials.add(Material.ACACIA_PRESSURE_PLATE);
-                materials.add(Material.BIRCH_PRESSURE_PLATE);
-                materials.add(Material.JUNGLE_PRESSURE_PLATE);
-                materials.add(Material.OAK_PRESSURE_PLATE);
-                materials.add(Material.SPRUCE_PRESSURE_PLATE);
-                materials.add(Material.STONE_PRESSURE_PLATE);
-                materials.add(Material.DARK_OAK_PRESSURE_PLATE);
-                materials.add(Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
-                materials.add(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);
-                materials.add(Material.OAK_FENCE_GATE);
-                materials.add(Material.SPRUCE_FENCE_GATE);
-                materials.add(Material.BIRCH_FENCE_GATE);
-                materials.add(Material.JUNGLE_FENCE_GATE);
+
 
                 if (materials.contains(block.getType())) {
                     try {
@@ -373,6 +376,50 @@ public class ProtectionListener implements Listener {
             }
         }
     }
+
+
+    @EventHandler
+    public void SwitchEvent(PlayerInteractEntityEvent event) {
+
+        // Prevent item rotation
+        if (!event.getPlayer().hasPermission("aun.edittowns")) {
+
+            if (event.getRightClicked() instanceof ItemFrame) {
+
+                ChunkPair chunk = ChunkPair.fromChunk(event.getRightClicked().getLocation().getChunk());
+
+
+                    try {
+                        if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
+                            Town town = Towns.getTown(chunk);
+                            if (town != null) {
+                                if (!town.canSwitch(Residents.getResident(event.getPlayer()), chunk)) {
+                                    Logger.debug("Prevented from switch[1] " + event.getPlayer().getName());
+                                    Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
+                                    event.setCancelled(true);
+                                } else {
+
+                                }
+                            }
+                        } else {
+                            if (Towns.hasTown(chunk)) {
+                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
+                                event.setCancelled(true);
+                                Logger.debug("Prevented from switch[2] " + event.getPlayer().getName());
+                            }
+                        }
+                    } catch (TownNotFoundedException ignored) {
+                        if (Towns.hasTown(chunk)) {
+                            Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-switch"), event.getPlayer());
+                            event.setCancelled(true);
+                            Logger.debug("Prevented from switch[3] " + event.getPlayer().getName());
+                        }
+                    }
+                }
+
+        }
+    }
+
 
 
     @EventHandler
@@ -459,6 +506,28 @@ public class ProtectionListener implements Listener {
             }
 
         }
+    }
+
+    @EventHandler
+    public void onStructureGrow(BlockFertilizeEvent  event) {
+
+
+        if (Objects.requireNonNull(event.getPlayer()).hasPermission("aun.edittowns")) return;
+          for(BlockState blockState : event.getBlocks())
+          {
+              if(Towns.hasTown(blockState.getBlock().getLocation()))
+              {
+                  Resident resident = Residents.getResident(event.getPlayer());
+                  try {
+                      if(Towns.getTown(blockState.getBlock().getChunk()) != resident.getTown())
+                      {
+                          event.setCancelled(true);
+                      }
+                  } catch (TownNotFoundedException e) {
+                      event.setCancelled(true);
+                  }
+              }
+          }
     }
 
     @EventHandler

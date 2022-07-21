@@ -39,6 +39,7 @@ public class AuroraChat {
 
     public static String processMessage(String message, Player playerSender, Set<Player> allRecipients, boolean sendConsole) {
         if (!AuroraUniverse.matchesStringRegex(message)) return null;
+        if (message.replace("&", "").length() == 0) return null;
 
         Set<Player> finalRecipients = new HashSet<>(allRecipients);
         Resident resident = Residents.getResident(playerSender);
@@ -63,7 +64,7 @@ public class AuroraChat {
                 if (recipients.size() == 1) {
                     playerSender.sendMessage(AuroraLanguage.getColorString("chat.local-nobody"));
                 }
-                finalRecipients = recipients;
+                finalRecipients = new HashSet<>(recipients);
 
             } else if (channel == AuroraChat.Channels.TOWN) {
 
@@ -86,7 +87,7 @@ public class AuroraChat {
                     e.printStackTrace();
                 }
 
-                finalRecipients = recipients;
+                finalRecipients = new HashSet<>(recipients);
 
 
             } else if (channel == Channels.NATION) {
@@ -134,7 +135,7 @@ public class AuroraChat {
                 }
 
 
-                finalRecipients = recipients;
+                finalRecipients = new HashSet<>(recipients);
 
 
             }

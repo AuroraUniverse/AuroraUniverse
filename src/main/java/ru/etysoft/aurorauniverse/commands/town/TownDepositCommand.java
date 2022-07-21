@@ -18,7 +18,7 @@ public class TownDepositCommand {
                     try {
                        Town town = Towns.getTown(args[1]);
                         try {
-                            double todeposit = Double.valueOf(args[2]);
+                            double todeposit = Double.parseDouble(args[2]);
                             town.depositBank(todeposit);
                         } catch (Exception e) {
                             Messaging.sendPrefixedMessage(Messages.wrongArgs(), sender);
@@ -36,7 +36,7 @@ public class TownDepositCommand {
                         Town t = resident.getTown();
                         double d = 0;
                         try {
-                            d = Double.valueOf(args[1]);
+                            d = Double.parseDouble(args[1]);
 
                         } catch (Exception e) {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), sender);

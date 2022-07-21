@@ -34,6 +34,7 @@ public class AuctionItem {
 
 
     public AuctionItem(ItemStack itemStack, String resident, double price) {
+
         this.resident = resident;
         this.price = price;
         this.time = System.currentTimeMillis();

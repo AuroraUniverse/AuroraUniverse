@@ -48,6 +48,7 @@ public class PluginListener implements Listener {
     public void respawn(PlayerRespawnEvent event) {
         Resident resident = Residents.getResident(event.getPlayer());
 
+
         try {
             event.setRespawnLocation(resident.getTown().townSpawnPoint);
         } catch (TownNotFoundedException ignored) {

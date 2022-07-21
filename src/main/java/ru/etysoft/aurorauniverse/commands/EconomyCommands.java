@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -60,11 +61,21 @@ public class EconomyCommands implements CommandExecutor {
                     Resident to = Residents.getResident(args[1]);
                     if (to != null) {
                         try {
-                            double toPay = Double.valueOf(args[2]);
+                            double toPay = Double.parseDouble(args[2]);
                             if(toPay > AuroraUniverse.getInstance().getConfig().getDouble("min-pay-amount")) {
                                 if (from.takeBalance(toPay)) {
                                     to.giveBalance(toPay);
                                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.success").replace("%s", args[2]).replace("%k", args[1]), sender);
+                                    Player playerTo = Bukkit.getPlayer(to.getName());
+                                    if(playerTo != null)
+                                    {
+                                        Messaging.sendPrefixedMessage(
+                                                AuroraLanguage.getColorString("economy.pay.notification")
+                                                        .replace("%s", from.getName())
+                                                        .replace("%b", args[2]),
+                                                playerTo
+                                        );
+                                    }
                                 } else {
                                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.no-money").replace("%s", toPay + ""), sender);
                                 }

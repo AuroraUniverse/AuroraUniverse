@@ -98,9 +98,16 @@ public class Auction {
                 JSONArray listings = (JSONArray) mainJson.get("listings");
 
                 for (int i = 0; i < listings.size(); i++) {
-                    JSONObject jsonObject = (JSONObject) listings.get(i);
-                    AuctionItem auctionItem = AuctionItem.fromJSON(jsonObject);
-                    addListing(auctionItem);
+                    try {
+                        JSONObject jsonObject = (JSONObject) listings.get(i);
+                        AuctionItem auctionItem = AuctionItem.fromJSON(jsonObject);
+                        addListing(auctionItem);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.error("Can't load auctionItem: ");
+                        e.printStackTrace();
+                    }
 
                 }
 

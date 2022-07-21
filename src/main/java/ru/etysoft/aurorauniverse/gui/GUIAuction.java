@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
+import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.auction.AuctionItem;
 import ru.etysoft.aurorauniverse.commands.town.TownClaimCommand;
 import ru.etysoft.aurorauniverse.commands.town.TownUnclaimCommand;
@@ -15,12 +16,14 @@ import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
+import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
 import ru.etysoft.aurorauniverse.utils.*;
 import ru.etysoft.aurorauniverse.world.*;
 import ru.etysoft.epcore.gui.GUITable;
 import ru.etysoft.epcore.gui.Items;
 import ru.etysoft.epcore.gui.Slot;
 import ru.etysoft.epcore.gui.SlotRunnable;
+import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,86 +53,92 @@ public class GUIAuction {
                 ArrayList<AuctionItem> auctionItems = Auction.getListings();
                 for (int i = startId - 1; i < auctionItems.size(); i++) {
                     if (slotNumber <= 45) {
-                        AuctionItem auctionItem = auctionItems.get(i);
+                        try {
+                            AuctionItem auctionItem = auctionItems.get(i);
 
-                        String yourItem = "";
-                        String townName = "";
+                            String yourItem = "";
+                            String townName = "";
 
-                        if (auctionItem.getResident().hasTown()) {
-                            townName = auctionItem.getResident().getTown().getName();
-                        }
-
-                        if (auctionItem.getResident() == resident) {
-                            yourItem = AuroraLanguage.getColorString("auction-gui.item-your-lore");
-                        }
-
-                        ItemStack itemStack = Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName(),
-                                AuroraLanguage.getColorString("auction-gui.price").replace("%s", String.valueOf(Numbers.round(auctionItem.getPrice()))),
-                                AuroraLanguage.getColorString("auction-gui.item").replace("%s", auctionItem.getResident().getName()).replace("%t", townName),
-                                AuroraLanguage.getColorString("auction-gui.item-exp").replace("%s", String.valueOf(auctionItem.getExpTime() / 1000 / 60)), yourItem);
-
-                        Slot.SlotListener slotListener = new Slot.SlotListener() {
-                            @Override
-                            public void onRightClicked(Player player, GUITable guiTable) {
-
+                            if (auctionItem.getResident().hasTown()) {
+                                townName = auctionItem.getResident().getTown().getName();
                             }
 
-                            @Override
-                            public void onLeftClicked(Player player, GUITable guiTable) {
-                                if (!player.getName().equals(auctionItem.getResident().getName())) {
-                                    Resident client = Residents.getResident(player.getName());
-                                    boolean hasAuction = false;
-                                    try {
-                                        hasAuction = resident.getTown().hasAuction();
-                                    } catch (Exception ignored) {
-                                    }
+                            if (auctionItem.getResident() == resident) {
+                                yourItem = AuroraLanguage.getColorString("auction-gui.item-your-lore");
+                            }
 
-                                    if (!hasAuction) {
-                                        int maxItemsAmount = AuroraUniverse.getInstance().getConfig().getInt("max-items-without-struct");
-                                        if (auctionItem.getItemStack().getAmount() > maxItemsAmount) {
-                                            player.sendMessage(AuroraLanguage.getColorString("auction-buy-need-struct"));
-                                            return;
+                            ItemStack itemStack = Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName(),
+                                    AuroraLanguage.getColorString("auction-gui.price").replace("%s", String.valueOf(Numbers.round(auctionItem.getPrice()))),
+                                    PlaceholderFormatter.process(AuroraLanguage.getColorString("auction-gui.item").replace("%s", auctionItem.getResident().getName()).replace("%t", townName), player),
+                                    AuroraLanguage.getColorString("auction-gui.item-exp").replace("%s", String.valueOf(auctionItem.getExpTime() / 1000 / 60)), yourItem);
+
+                            Slot.SlotListener slotListener = new Slot.SlotListener() {
+                                @Override
+                                public void onRightClicked(Player player, GUITable guiTable) {
+
+                                }
+
+                                @Override
+                                public void onLeftClicked(Player player, GUITable guiTable) {
+                                    if (!player.getName().equals(auctionItem.getResident().getName())) {
+                                        Resident client = Residents.getResident(player.getName());
+                                        boolean hasAuction = false;
+                                        try {
+                                            hasAuction = resident.getTown().hasAuction();
+                                        } catch (Exception ignored) {
+                                        }
+
+                                        if (!hasAuction) {
+                                            int maxItemsAmount = AuroraUniverse.getInstance().getConfig().getInt("max-items-without-struct");
+                                            if (auctionItem.getItemStack().getAmount() > maxItemsAmount) {
+                                                player.sendMessage(AuroraLanguage.getColorString("auction-buy-need-struct"));
+                                                return;
+                                            }
+                                        }
+                                        if (client.getBank().withdraw(auctionItem.getPrice())) {
+                                            if (Auction.removeListing(auctionItem)) {
+                                                auctionItem.getResident().getBank().deposit(auctionItem.getPrice());
+                                                player.sendMessage(AuroraLanguage.getColorString("auction-buy-success").replace("%s",
+                                                        auctionItem.getItemStack().getType().toString()).replace("%p",
+                                                        String.valueOf(Numbers.round(auctionItem.getPrice()))));
+                                                player.getInventory().addItem(Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName()));
+                                                new GUIAuction(resident, pl, sender, page);
+                                            }
+                                        } else {
+                                            player.sendMessage(AuroraLanguage.getColorString("auction-buy-no-money"));
                                         }
                                     }
-                                    if (client.getBank().withdraw(auctionItem.getPrice())) {
+                                }
+
+                                @Override
+                                public void onShiftClicked(Player player, GUITable guiTable) {
+
+                                    boolean hasBypassPerm = false;
+
+                                    try {
+                                        if (Permissions.canRemoveTownListings(player) && auctionItem.getResident().getTown() == Residents.getResident(player.getName()).getTown()) {
+                                            hasBypassPerm = true;
+                                        }
+                                    } catch (Exception ignored) {
+
+                                    }
+                                    if (player.getName().equals(auctionItem.getResident().getName()) | hasBypassPerm) {
                                         if (Auction.removeListing(auctionItem)) {
-                                            auctionItem.getResident().getBank().deposit(auctionItem.getPrice());
-                                            player.sendMessage(AuroraLanguage.getColorString("auction-buy-success").replace("%s",
-                                                    auctionItem.getItemStack().getType().toString()).replace("%p",
-                                                    String.valueOf(Numbers.round(auctionItem.getPrice()))));
                                             player.getInventory().addItem(Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName()));
                                             new GUIAuction(resident, pl, sender, page);
                                         }
-                                    } else {
-                                        player.sendMessage(AuroraLanguage.getColorString("auction-buy-no-money"));
                                     }
                                 }
-                            }
+                            };
 
-                            @Override
-                            public void onShiftClicked(Player player, GUITable guiTable) {
-
-                                boolean hasBypassPerm = false;
-
-                                try {
-                                    if (Permissions.canRemoveTownListings(player) && auctionItem.getResident().getTown() == Residents.getResident(player.getName()).getTown()) {
-                                        hasBypassPerm = true;
-                                    }
-                                } catch (Exception ignored) {
-
-                                }
-                                if (player.getName().equals(auctionItem.getResident().getName()) | hasBypassPerm) {
-                                    if (Auction.removeListing(auctionItem)) {
-                                        player.getInventory().addItem(Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName()));
-                                        new GUIAuction(resident, pl, sender, page);
-                                    }
-                                }
-                            }
-                        };
-
-                        Slot slot = new Slot(slotListener, itemStack);
-                        matrix.put(slotNumber, slot);
-                        slotNumber++;
+                            Slot slot = new Slot(slotListener, itemStack);
+                            matrix.put(slotNumber, slot);
+                            slotNumber++;
+                        }
+                        catch (Exception e){
+                            Logger.error("Can't load auctionItem to GUI: ");
+                            e.printStackTrace();
+                        }
                     }
                 }
 

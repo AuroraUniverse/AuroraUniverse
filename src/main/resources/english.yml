@@ -213,6 +213,8 @@ economy:
     not-found: "&cPlayer %s not found!"
     no-money: "&cYou have not %s!"
     error: "&cCan't pay &6%s &cto &b%k!"
+    # Added in 0.6.2.0
+    notification: "&7Player &b%s &fpays &e%b &7to you"
 
 
 ########################################

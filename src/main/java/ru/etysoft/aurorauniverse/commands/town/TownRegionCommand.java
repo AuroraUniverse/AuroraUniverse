@@ -132,6 +132,10 @@ public class TownRegionCommand {
                             residentRegion.setPvp(false);
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.PVP_OFF), sender);
                         }
+                        else
+                        {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
+                        }
 
 
                     } else {
@@ -159,11 +163,11 @@ public class TownRegionCommand {
                 if (region != null) {
                     if (region instanceof ResidentRegion && args.length > 2) {
                         ResidentRegion residentRegion = (ResidentRegion) region;
-                        Resident newMember = Residents.getResident(args[1]);
+                        Resident newMember = Residents.getResident(args[2]);
                         if (newMember != null && newMember != resident) {
 
                             if (residentRegion.getOwner() == resident | Permissions.canBypassRegion(sender)) {
-                                if (residentRegion.addMember(resident)) {
+                                if (residentRegion.addMember(newMember)) {
                                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-added").replace("%s", args[2]), sender);
                                 } else {
                                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-owner-members"), sender);
@@ -177,7 +181,7 @@ public class TownRegionCommand {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-error"), sender);
                         }
                     } else {
-                        if(!(region instanceof  ResidentRegion))
+                        if(!(region instanceof ResidentRegion))
                         {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-townowned"), sender);
                         }
@@ -209,11 +213,11 @@ public class TownRegionCommand {
                 if (region != null) {
                     if (region instanceof ResidentRegion && args.length > 1) {
                         ResidentRegion residentRegion = (ResidentRegion) region;
-                        Resident newMember = Residents.getResident(args[1]);
+                        Resident newMember = Residents.getResident(args[2]);
                         if (newMember != null && newMember != resident) {
 
                             if (residentRegion.getOwner() == resident | Permissions.canBypassRegion(sender)) {
-                                if (residentRegion.removeMember(resident)) {
+                                if (residentRegion.removeMember(newMember)) {
                                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-kicked").replace("%s", args[1]), sender);
                                 } else {
                                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-owner-members"), sender);

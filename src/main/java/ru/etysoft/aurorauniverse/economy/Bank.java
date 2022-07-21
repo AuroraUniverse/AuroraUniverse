@@ -56,6 +56,7 @@ public class Bank {
 
     public void deposit(double money)
     {
+        if(Double.isNaN(money)) return;
         if(money <= 0) return;
         Logger.log("Deposited  " + money + " to " + getName());
         amount += money;
@@ -64,6 +65,7 @@ public class Bank {
     public boolean withdraw(double money)
     {
 
+        if(Double.isNaN(money)) return false;
         if(money > amount | money <= 0)
         {
             return false;

@@ -42,6 +42,7 @@ public class Residents {
             return AuroraUniverse.residentlist.get(s);
         } else {
 
+            Logger.warning("Resident " + s + " not found");
             return null;
         }
     }
