@@ -23,7 +23,6 @@ import ru.etysoft.epcore.gui.GUITable;
 import ru.etysoft.epcore.gui.Items;
 import ru.etysoft.epcore.gui.Slot;
 import ru.etysoft.epcore.gui.SlotRunnable;
-import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
