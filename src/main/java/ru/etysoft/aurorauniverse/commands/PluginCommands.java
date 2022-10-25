@@ -128,7 +128,7 @@ public class PluginCommands implements CommandExecutor {
 
                             if (block.getType() != Material.AIR) {
                                 try {
-                                    StructBlock structBlock = new StructBlock(x - fromX, y - fromY, z - fromZ, block.getType().name());
+                                    StructBlock structBlock = new StructBlock(x - fromX, y - fromY, z - fromZ, block);
                                     jsonArray.add(structBlock.toJson());
 
                                 } catch (StructureWrongCoordsException e) {

@@ -1,4 +1,4 @@
-#AuroraUniverse configuration file v.1.0
+# AuroraUniverse configuration file v.1.0
 
 # Name of language file: russian.yml, english.yml or {yourlang}.yml (EN and RU are currently translated)
 language-file: "russian.yml"
@@ -46,6 +46,10 @@ big-amount-starts-from: 10
 auction-struct-enabled: true
 auction-enabled: true
 default-auction-structure: "auction"
+embargo-capital-share: true
+
+# Residents can invite residents of other towns to theirs regions
+region-allow-noresidents: true
 
 # TAXES
 

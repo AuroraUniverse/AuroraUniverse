@@ -2,6 +2,7 @@ package ru.etysoft.aurorauniverse.commands.town;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
@@ -164,13 +165,31 @@ public class TownRegionCommand {
                     if (region instanceof ResidentRegion && args.length > 2) {
                         ResidentRegion residentRegion = (ResidentRegion) region;
                         Resident newMember = Residents.getResident(args[2]);
+
+                        if(!AuroraUniverse.getInstance().getConfig().getBoolean("region-allow-noresidents"))
+                        {
+                            if(!town.getResidents().contains(newMember))
+                            {
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-add-noresident-error"), sender);
+                                return;
+                            }
+                        }
+
                         if (newMember != null && newMember != resident) {
 
                             if (residentRegion.getOwner() == resident | Permissions.canBypassRegion(sender)) {
-                                if (residentRegion.addMember(newMember)) {
-                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-added").replace("%s", args[2]), sender);
-                                } else {
-                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-owner-members"), sender);
+                                if(residentRegion.getMembers().contains(newMember.getName()))
+                                {
+                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-add-contains"), sender);
+                                }
+                                else {
+                                    if (residentRegion.addMember(newMember)) {
+                                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-added").replace("%s", args[2]), sender);
+                                    } else {
+                                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-owner-members"), sender);
+
+
+                                    }
                                 }
                             } else {
                                 Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-owner-members"), sender);

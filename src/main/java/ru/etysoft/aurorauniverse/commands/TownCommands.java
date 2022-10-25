@@ -40,6 +40,8 @@ public class TownCommands implements CommandExecutor {
                     new NewTownCommand(sender, args);
                 } else if (args[0].equalsIgnoreCase("delete")) {
                     new DeleteTownCommand(resident, pl, args, sender);
+                } else if (args[0].equalsIgnoreCase("embargo")) {
+                    new TownEmbargoCommand(sender, resident, args);
                 } else if (args[0].equalsIgnoreCase("spawn")) {
                     new TownSpawnCommand(sender, resident, args);
                 } else if (args[0].equalsIgnoreCase("list")) {

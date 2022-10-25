@@ -33,7 +33,7 @@ public class AuroraLanguage {
                     }
                 } catch (Exception e) {
                     Logger.error("Can't find default string with path " + path + " (NullPointerException)");
-                    return ColorCodes.toColor("&cWrong path to String!");
+                    return ColorCodes.toColor("&cWrong path to translation (" + path + ")");
                 }
             }
         }

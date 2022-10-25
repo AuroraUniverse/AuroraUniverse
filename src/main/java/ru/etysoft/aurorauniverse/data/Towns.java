@@ -35,6 +35,23 @@ public class Towns {
         }
     }
 
+    public static Town getTownById(String id) throws TownNotFoundedException {
+        if (AuroraUniverse.townList != null) {
+            if (id == null) throw new TownNotFoundedException();
+            for(Town town : getTowns())
+            {
+                if(town.getId().equals(id))
+                {
+                    return town;
+                }
+            }
+        } else {
+            Logger.warning("Townlist is null!");
+            throw new TownNotFoundedException();
+        }
+
+        return null;
+    }
 
     public static boolean isTownExists(String s) {
         if (AuroraUniverse.townList.containsKey(s)) {
@@ -96,6 +113,7 @@ public class Towns {
         return getTown(ChunkPair.fromChunk(chunk));
     }
 
+
     public static Town getTown(ChunkPair chunk) {
         if (AuroraUniverse.containsChunk(chunk)) {
             return AuroraUniverse.getTownBlocks().get(chunk).getTown();
@@ -118,7 +136,7 @@ public class Towns {
     }
 
 
-    private static void getWelcomeMessage(Player player, Region rg, Town town, boolean notifyRegion, boolean notifyTown) {
+    private static void handleRegionChange(Player player, Region rg, Town town, boolean notifyRegion, boolean notifyTown) {
         String townPvp = "";
         if (town.isTownPvp()) {
             if(town.isForcePvp())
@@ -222,7 +240,7 @@ public class Towns {
                     return;
                 }
 
-                getWelcomeMessage(player, rg, town, notifyRegion, notifyTown);
+                handleRegionChange(player, rg, town, notifyRegion, notifyTown);
             } else {
                 Logger.warning("Can't find Resident with nickname " + player.getName());
             }

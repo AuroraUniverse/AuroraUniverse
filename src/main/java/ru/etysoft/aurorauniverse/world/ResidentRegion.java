@@ -73,16 +73,9 @@ public class ResidentRegion extends Region {
 
             for (int i = 0; i < membersJsonArray.size(); i++) {
                 String memberName = (String) membersJsonArray.get(i);
-                Resident member = Residents.getResident(memberName);
 
-                if(member != null)
-                {
-                    residentRegion.addMember(member);
-                }
-                else
-                {
-                    Logger.debug("Member with name " + memberName + " not found!");
-                }
+
+                residentRegion.members.add(memberName);
 
             }
             try
@@ -129,6 +122,13 @@ public class ResidentRegion extends Region {
     }
 
     public ArrayList<String> getMembers() {
+        for(String memberName : new ArrayList<>(members))
+        {
+            if(Residents.getResident(memberName) == null)
+            {
+                members.remove(memberName);
+            }
+        }
         return members;
     }
 

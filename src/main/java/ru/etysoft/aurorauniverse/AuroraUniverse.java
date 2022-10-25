@@ -197,7 +197,7 @@ public final class AuroraUniverse extends JavaPlugin {
             Logger.info("AuroraUniverse successfully enabled in " + seconds.substring(0, maxBound) + " seconds!");
         } else {
             //Some warnings catched
-            Logger.info("&cAuroraUniverse was enabled with warnings in " + seconds.substring(0, maxBound) + " seconds: &e" + warnings);
+            Logger.info("&cAuroraUniverse enabled with warnings in " + seconds.substring(0, maxBound) + " seconds: &e" + warnings);
         }
         if (AuroraLanguage.getDebugMode()) {
             Logger.debug("You running AuroraUniverse in debug mode (more console messages)");

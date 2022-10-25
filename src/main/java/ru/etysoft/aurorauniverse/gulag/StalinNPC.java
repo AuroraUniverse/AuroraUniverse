@@ -71,8 +71,8 @@ public class StalinNPC {
                         npc.getNavigator().setTarget(target, true);
                         npc.getNavigator().getLocalParameters().attackRange(5D).attackDelayTicks(2).updatePathRate(1).baseSpeed(1.5F).attackStrategy();
 
-                    } else if (randomNum < 60) {
-                        target.sendMessage("STALIN: Работа, работа и ещё раз работа!!!");
+                    } else if (randomNum < 50) {
+                        target.sendMessage("Сталин: только каторга поможет вам поверить в коммунистические идеалы, бездельники!");
                     } else if (randomNum < 80) {
                         target.getWorld().dropItem(npc.getEntity().getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
                     } else {

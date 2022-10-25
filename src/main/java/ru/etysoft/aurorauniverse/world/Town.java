@@ -12,7 +12,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
-import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
@@ -21,10 +20,7 @@ import ru.etysoft.aurorauniverse.economy.Bank;
 import ru.etysoft.aurorauniverse.events.PreTownDeleteEvent;
 import ru.etysoft.aurorauniverse.events.TownDeleteEvent;
 import ru.etysoft.aurorauniverse.events.TownRenameEvent;
-import ru.etysoft.aurorauniverse.exceptions.AuctionPlaceException;
-import ru.etysoft.aurorauniverse.exceptions.RegionException;
-import ru.etysoft.aurorauniverse.exceptions.TownException;
-import ru.etysoft.aurorauniverse.exceptions.WorldNotFoundedException;
+import ru.etysoft.aurorauniverse.exceptions.*;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.permissions.Group;
 import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
@@ -34,6 +30,7 @@ import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Numbers;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -52,6 +49,7 @@ public class Town {
     private boolean mobs = false;
     private boolean explosion = false;
     private boolean forcePvp = false;
+    private boolean forceExplosions = false;
 
     private ArrayList<OutpostRegion> outPosts = new ArrayList<>();
     private boolean fire = false;
@@ -60,6 +58,8 @@ public class Town {
     private Resident mayor;
     private Map<ChunkPair, Region> townChunks = new ConcurrentHashMap<>();
     private ArrayList<Resident> residents = new ArrayList<>();
+
+    private ArrayList<String> embargoList = new ArrayList<>();
     private ChunkPair mainChunk = null;
     private Bank townBank;
     private String nationName;
@@ -82,11 +82,13 @@ public class Town {
         public static final String FIRE = "FIRE";
         public static final String MOBS = "MOBS";
         public static final String EXPLOSION = "EXPLOSION";
+
         public static final String BANK = "BANK";
         public static final String BONUS_CHUNKS = "BONUS_CHUNKS";
         public static final String RESIDENTS = "RESIDENTS";
         public static final String RESIDENT_TAX = "RES_TAX";
         public static final String NATION_NAME = "NATION_NAME";
+        public static final String EMBARGO_LIST = "EMBARGO_LIST";
 
         public static final String REGIONS = "REGIONS";
         public static final String IS_OUTPOST = "IS_OUTPOST";
@@ -138,8 +140,27 @@ public class Town {
     }
 
     public boolean isExplosionEnabled() {
+        if(forceExplosions) return true;
         return explosion;
     }
+
+
+    public void addEmbargoTown(Town town)
+    {
+        if(!embargoList.contains(town.getId()))
+        {
+            embargoList.add(town.getId());
+        }
+    }
+
+    public void removeEmbargoTown(Town town)
+    {
+        if(embargoList.contains(town.getId()))
+        {
+            embargoList.remove(town.getId());
+        }
+    }
+
 
     public void setExplosionEnabled(boolean explosion) {
         this.explosion = explosion;
@@ -161,6 +182,36 @@ public class Town {
         if(resTax < 0) return;
         this.resTax = resTax;
     }
+
+    public ArrayList<Town> getEmbargoList() {
+
+        ArrayList<Town> towns = new ArrayList<>();
+        for(String id : new ArrayList<>(embargoList))
+        {
+            try {
+                Town town = Towns.getTownById(id);
+                if(town == null)
+                {
+                    embargoList.remove(id);
+                }
+                else {
+                    towns.add(town);
+                }
+            } catch (TownNotFoundedException e) {
+                embargoList.remove(id);
+            }
+        }
+
+        return towns;
+    }
+
+
+    public boolean hasEmbargoForTown(Town town)
+    {
+        return embargoList.contains(town.getId());
+    }
+
+
 
     public double getNewChunkPrice() {
         float defPrice = AuroraUniverse.getInstance().getConfig().getLong("town-chunk-price");
@@ -230,7 +281,7 @@ public class Town {
         this.mayor = newMayor;
     }
 
-    public void setId(String id) {
+    private void setId(String id) {
         this.id = id;
     }
 
@@ -315,7 +366,17 @@ public class Town {
 
 
             }
+            JSONArray jsonArrayEmbargo = (JSONArray) jsonObject.get(JsonKeys.EMBARGO_LIST);
+            ArrayList<String> embargoList = new ArrayList<>();
 
+            for (int i = 0; i < jsonArrayEmbargo.size(); i++) {
+                String embargoId = (String) jsonArrayEmbargo.get(i);
+
+                embargoList.add(embargoId);
+
+            }
+
+            town.setEmbargoList(embargoList);
 
             String spawnWorld = (String) jsonObject.get(JsonKeys.SPAWN_WORLD);
             double spawnX = (double) jsonObject.get(JsonKeys.SPAWN_X);
@@ -340,6 +401,7 @@ public class Town {
             town.setExplosionEnabled((boolean) jsonObject.get(JsonKeys.EXPLOSION));
 
 
+
             // spawnLocation.setDirection(new Vector(spawnDirX,spawnDirY,spawnDirZ));
 
 
@@ -356,12 +418,21 @@ public class Town {
             town.setSpawn(spawnLocation);
 
 
+
+
+
+
         } catch (Exception e) {
             Logger.error("Error loading town " + townName);
             e.printStackTrace();
         }
 
         return town;
+    }
+
+
+    public void setEmbargoList(ArrayList<String> embargoList) {
+        this.embargoList = embargoList;
     }
 
     public Structure getAuctionStructure() {
@@ -498,8 +569,17 @@ public class Town {
             Logger.error("Main chunk not in chunklist!");
         }
 
-
         townJsonObject.put(JsonKeys.RESIDENTS, jsonArrayResidents);
+
+        JSONArray jsonArrayEmbargo = new JSONArray();
+
+        for(String id : embargoList)
+        {
+            jsonArrayEmbargo.add(id);
+        }
+
+        townJsonObject.put(JsonKeys.EMBARGO_LIST, embargoList);
+
 
         JSONArray regions = new JSONArray();
 
@@ -950,7 +1030,12 @@ public class Town {
         return residents.contains(resident);
     }
 
-    public boolean isConnected(Chunk chunk, Player player) {
+
+    public void setForceExplosions(boolean forceExplosions) {
+        this.forceExplosions = this.forceExplosions;
+    }
+
+    public boolean isConnected(Chunk chunk, @Nullable Player player) {
         AtomicBoolean connected = new AtomicBoolean(false);
         AuroraUniverse.getTownBlocks().forEach((chunk1, region) -> {
             int m = AuroraUniverse.getMinTownsDistance();
@@ -972,10 +1057,15 @@ public class Town {
                                 connected.set(true);
                             }
                         } else {
-                            Messaging.sendPrefixedMessage(Messages.claimTooClose(), player);
+
+                            if(player != null)
+                            {
+                                Messaging.sendPrefixedMessage(Messages.claimTooClose(), player);
+                            }
+
                         }
                     } else {
-                        if (!region.getTown().getName().equals(name)) {
+                        if (!region.getTown().getName().equals(name) && player != null) {
                             Messaging.sendPrefixedMessage(Messages.claimTooFar(), player);
                         }
 

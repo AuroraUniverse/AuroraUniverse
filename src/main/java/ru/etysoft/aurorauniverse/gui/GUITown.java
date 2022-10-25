@@ -46,6 +46,13 @@ public class GUITown {
 
             HashMap<Integer, Slot> matrix = new HashMap<>();
 
+
+            String embargos = "";
+
+            for(Town townEmbargo : town.getEmbargoList())
+            {
+                embargos += townEmbargo.getName() + "; ";
+            }
             Slot townSlot = new Slot(new SlotRunnable() {
                 @Override
                 public void run() {
@@ -54,6 +61,7 @@ public class GUITown {
             }, Items.createNamedItem(new ItemStack(Material.COBBLESTONE_WALL, 1), resident.getTown().getName(),
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.mayor").replace("%s", town.getMayor().getName())),
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.bank").replace("%s", String.valueOf(town.getBank().getBalance()))),
+                    ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.embargo").replace("%s", embargos)),
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.chunks").replace("%s", String.valueOf(town.getChunksCount()))
                             .replace("%m", String.valueOf(town.getMaxChunks())).replace("%b", String.valueOf(town.getBonusChunks()))).replace("%o", String.valueOf(town.getOutPosts().size()))
                             .replace("%p", String.valueOf(AuroraUniverse.getMaxOutposts()))
@@ -83,6 +91,11 @@ public class GUITown {
 
                 if(Permissions.canClaim(sender))
                 {
+                    double price = town.getNewChunkPrice();
+                    if(!town.isConnected(player.getLocation().getChunk(), null))
+                    {
+                        price = town.getNewOutpostPrice();
+                    }
                     Slot claimSlot = new Slot(new SlotRunnable() {
                         @Override
                         public void run() {
@@ -90,7 +103,7 @@ public class GUITown {
                             pl.closeInventory();
                         }
                     }, Items.createNamedItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1), AuroraLanguage.getColorString("gui.claim")
-                            .replace("%s", String.valueOf(town.getNewChunkPrice()))
+                            .replace("%s", String.valueOf(price))
                     ));
                     matrix.put(46, claimSlot);
                 }

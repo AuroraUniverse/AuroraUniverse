@@ -131,6 +131,7 @@ town-cantdeposit: "&cCan't deposit &f%s &cto the town bank"
 gui:
   bank: "&7Bank: &b%s"
   mayor: "&7Mayor: &b%s"
+  embargo: "&7Embargo towns: &e%s"
   chunks: "&7Chunks: &b%s/%m (%b bonus, %o/%p outposts)"
   standing: "&3You currently standing on"
   standing-town: "&bSimple townblock"
@@ -359,3 +360,14 @@ rep-positive-color: "&a+"
 rep-negative-color: "&c-"
 rep-zero-color: "&7"
 resident-hours-played: "&7Played: &b%s &7hours"
+
+# Added in 0.6.1.4
+
+nation-out-money: "&fNation &b%s &fhas been &cdeleted&f by taxes"
+embargo-auction-error: "&7Your town is in &eembargo list&7 of town &b%s&7, so you can't buy items from this town."
+embargo-add: "&7Now town &b%s &7added to embargo list"
+embargo-remove: "&7Now town &b%s &7removed from embargo list"
+embargo-contains: "&7Embargo list &calready contains&7 this town"
+embargo-not-contains: "&7Embargo list &chave not&7 this town"
+region-add-noresident-error: "&7You can add &conly &7residents of your town"
+region-add-contains: "&7Resident is &calready member"

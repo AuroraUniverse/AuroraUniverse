@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.6.1.2
+version: 0.6.2.0
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
 depend: [EasyPluginCore]
@@ -80,6 +80,7 @@ permissions:
       town.withdraw: true
       town.claim: true
       town.unclaim: true
+      town.embargo: true
       town.edit: true
       town.rename: true
       town.teleport.spawn: true
@@ -94,6 +95,10 @@ permissions:
       town.auction.use: true
 
     description: Allows all commands
+
+  town.embargo:
+    default: op
+    description: Change embargo towns
 
   town.create:
     default: op
@@ -315,7 +320,7 @@ permissions:
 
   town.toggle.explosions:
     default: op
-    description: Toggle explotions in town
+    description: Toggle explosions in town
 
   ########################################
   #                                      #

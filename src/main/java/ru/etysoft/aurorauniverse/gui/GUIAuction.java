@@ -84,8 +84,34 @@ public class GUIAuction {
                                         boolean hasAuction = false;
                                         try {
                                             hasAuction = resident.getTown().hasAuction();
+
+                                            boolean hasEmbargo = false;
+
+                                            if(auctionItem.getResident().getTown().hasEmbargoForTown(town))
+                                            {
+                                                hasEmbargo = true;
+                                            }
+                                            if(AuroraUniverse.getInstance().getConfig().getBoolean("embargo-capital-share") && !hasEmbargo)
+                                            {
+                                                if(auctionItem.getResident().getTown().hasNation())
+                                                {
+                                                    if(auctionItem.getResident().getTown().getNation().getCapital().hasEmbargoForTown(town))
+                                                    {
+                                                        hasEmbargo = true;
+                                                    }
+                                                }
+                                            }
+
+                                            if(hasEmbargo)
+                                            {
+                                                player.sendMessage(AuroraLanguage.getColorString("embargo-auction-error")
+                                                        .replace("%s", auctionItem.getResident().getTown().getName()));
+                                                return;
+                                            }
                                         } catch (Exception ignored) {
                                         }
+
+
 
                                         if (!hasAuction) {
                                             int maxItemsAmount = AuroraUniverse.getInstance().getConfig().getInt("max-items-without-struct");

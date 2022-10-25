@@ -213,8 +213,12 @@ public class WorldTimer {
 
                     }
 
-                    if(!nation.getBank().withdraw(nation.getTowns().size() * AuroraUniverse.getInstance().getConfig().getDouble("nation-town-tax")))
+                    double nationTax = nation.getTowns().size() * AuroraUniverse.getInstance().getConfig().getDouble("nation-town-tax");
+
+                    if(!nation.getBank().withdraw(nationTax) && nationTax != 0)
                     {
+                        AuroraChat.sendGlobalMessage(AuroraLanguage.getColorString("nation-out-money")
+                                .replace("%s", nation.getName()));
                         nation.delete();
                     }
                 }

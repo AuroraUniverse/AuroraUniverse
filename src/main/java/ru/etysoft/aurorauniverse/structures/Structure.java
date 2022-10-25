@@ -2,6 +2,8 @@ package ru.etysoft.aurorauniverse.structures;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 import org.json.simple.JSONObject;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
@@ -184,6 +186,14 @@ public class Structure {
                             Location loc = new Location(Bukkit.getServer().getWorld(world),block.getX() + startX, block.getY() + startY, block.getZ() + startZ);
                             loc.getChunk().load();
                             Bukkit.getServer().getWorld(world).getBlockAt(loc).setType(block.getMaterial());
+                            try {
+                                Bukkit.getServer().getWorld(world).getBlockAt(loc).setBlockData(Bukkit.createBlockData(block.getBlockData()));
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.debug("Can't get block data (" + block.getBlockData() + ")");
+
+                            }
                         }
                     });
                     try {
@@ -220,8 +230,8 @@ public class Structure {
         return true;
     }
 
-    public void addBlock(int localX, int localY, int localZ, String materialName) throws StructureWrongCoordsException {
-        structBlockList.add(new StructBlock(localX, localY, localZ, materialName));
+    public void addBlock(int localX, int localY, int localZ, Block block) throws StructureWrongCoordsException {
+        structBlockList.add(new StructBlock(localX, localY, localZ, block));
     }
 
     public String getPatternName() {

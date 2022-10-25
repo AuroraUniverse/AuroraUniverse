@@ -5,12 +5,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.utils.Permissions;
+import ru.etysoft.aurorauniverse.world.ChunkPair;
 import ru.etysoft.aurorauniverse.world.Resident;
+import ru.etysoft.aurorauniverse.world.ResidentRegion;
 import ru.etysoft.aurorauniverse.world.Town;
 
 import java.security.Permission;
@@ -36,6 +39,7 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("invite");
         firstPossibleArg.add("kick");
         firstPossibleArg.add("list");
+        firstPossibleArg.add("embargo");
         firstPossibleArg.add("leave");
         firstPossibleArg.add("rename");
         firstPossibleArg.add("spawn");
@@ -78,6 +82,9 @@ public class TownTabCompleter implements TabCompleter {
                     for (Town r : Towns.getTowns()) {
                         possibleArgs.add(r.getName());
                     }
+                } else if (args[0].equals("embargo")) {
+                    possibleArgs.add("add");
+                    possibleArgs.add("remove");
                 } else if (args[0].equals("outpost")) {
                     try {
                         Resident resident = Residents.getResident(sender.getName());
@@ -120,13 +127,13 @@ public class TownTabCompleter implements TabCompleter {
                         possibleArgs.add(groupName);
                     }
                 }
-
-                if ((args[0].equals("region") && (args[1].equals("pvp")))) {
-                    possibleArgs.add("on");
-                    possibleArgs.add("off");
+                if ((args[0].equals("embargo") && (args[1].equals("add")))) {
+                    for (Town r : Towns.getTowns()) {
+                        possibleArgs.add(r.getName());
+                    }
                 }
 
-                if ((args[0].equals("region") && (args[1].equals("give") | args[1].equals("add") | args[1].equals("region")))) {
+                if ((args[0].equals("embargo") && (args[1].equals("remove")))) {
                     Player player = (Player) sender;
                     Resident resident = Residents.getResident(player.getName());
                     if (resident != null) {
@@ -134,7 +141,7 @@ public class TownTabCompleter implements TabCompleter {
 
                             try {
                                 Town town = resident.getTown();
-                                for (Resident r : town.getResidents()) {
+                                for (Town r : town.getEmbargoList()) {
                                     possibleArgs.add(r.getName());
                                 }
                             } catch (TownNotFoundedException ignored) {
@@ -142,6 +149,84 @@ public class TownTabCompleter implements TabCompleter {
                             }
 
                         }
+                    }
+
+                }
+                if ((args[0].equals("region") && (args[1].equals("pvp")))) {
+                    possibleArgs.add("on");
+                    possibleArgs.add("off");
+                }
+
+                if ((args[0].equals("region") && (args[1].equals("give") | args[1].equals("add") | args[1].equals("kick")))) {
+                    Player player = (Player) sender;
+                    Resident resident = Residents.getResident(player.getName());
+                    if (resident != null) {
+                        boolean onlyResidents = !AuroraUniverse.getInstance().getConfig().getBoolean("region-allow-noresidents");
+                        if(args[1].equals("give"))
+                        {
+                            if (resident.hasTown()) {
+
+                                try {
+                                    Town town = resident.getTown();
+                                    for (Resident r : town.getResidents()) {
+                                        possibleArgs.add(r.getName());
+                                    }
+                                } catch (TownNotFoundedException ignored) {
+
+                                }
+
+                            }
+                        }
+                        else  if(args[1].equals("add"))
+                        {
+
+                            if (resident.hasTown()) {
+
+                                if(onlyResidents)
+                                {
+                                    try {
+                                        Town town = resident.getTown();
+                                        for (Resident r : town.getResidents()) {
+                                            possibleArgs.add(r.getName());
+                                        }
+                                    } catch (TownNotFoundedException ignored) {
+
+                                    }
+                                }
+                                else
+                                {
+
+                                        for (Resident r : Residents.getList()) {
+                                            possibleArgs.add(r.getName());
+                                        }
+
+                                }
+
+
+                            }
+                        }
+                        else  if(args[1].equals("kick"))
+                        {
+
+                            if (resident.hasTown()) {
+
+
+                                    try {
+
+
+                                        Town town = resident.getTown();
+
+                                        possibleArgs.addAll(((ResidentRegion) town.getTownChunks().get(ChunkPair.fromChunk(player.getLocation().getChunk()))).getMembers());
+                                    } catch (Exception ignored) {
+
+                                    }
+
+
+
+
+                            }
+                        }
+
                     }
                 }
                 if (args[1].equals("group")) {

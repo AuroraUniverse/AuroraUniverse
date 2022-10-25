@@ -14,6 +14,9 @@ public class Permissions {
 
 
 
+    public static final String EMBARGO = "town.embargo";
+
+
 
     public static boolean isAdmin(CommandSender sender, boolean sendMessage) {
         if (!sender.hasPermission("aun.admin")) {

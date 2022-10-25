@@ -34,6 +34,7 @@ public class Auction {
     }
 
     public static boolean removeListing(AuctionItem auctionItem) {
+        if(!listings.contains(auctionItem)) return false;
         return listings.remove(auctionItem);
     }
 

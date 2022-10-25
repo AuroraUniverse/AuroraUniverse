@@ -131,6 +131,7 @@ town-cantdeposit: "&cНевозможно положить &f%s &cна счёт 
 gui:
   bank: "&7Банк города: &b%s"
   mayor: "&7Мэр: &b%s"
+  embargo: "&7Города эмбарго: &e%s"
   chunks: "&7Участки: &b%s/%m (%b бонусных, %o/%p аванпостов)"
   standing: "&3Сейчас Вы стоите на"
   standing-town: "&bОбычный городской участок"
@@ -362,3 +363,15 @@ rep-positive-color: "&a+"
 rep-negative-color: "&c-"
 rep-zero-color: "&7"
 resident-hours-played: "&7Онлайн: &b%s &7часов за всё время"
+
+
+
+# Added in 0.6.1.4
+
+nation-out-money: "&fНация &b%s &fбыла &cудалена&f за неуплату"
+embargo-auction-error: "&7Ваш город находится в &eэмбарго-списке&7 города &b%s&7, поэтому вы не можете покупать товары от этого города."
+embargo-add: "&7Теперь город &b%s &7добавлен в список эмбарго"
+embargo-remove: "&7Теперь город &b%s &7удалён из списка эмбарго"
+embargo-contains: "&7Список эмбарго &cуже содержит&7 этот город"
+embargo-not-contains: "&7Список эмбарго &cне содержит&7 этот город"
+region-add-contains: "&7Горожанин &cуже участник"
