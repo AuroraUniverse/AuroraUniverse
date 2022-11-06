@@ -5,9 +5,9 @@ import ru.etysoft.aurorauniverse.utils.Numbers;
 
 public class Bank {
 
-    private String name;
+    private final String name;
     private double amount;
-    private String owner;
+    private final String owner;
     private boolean isPlayerAccount;
 
     public Bank(String accountName, double startBalance, String player)
@@ -66,6 +66,10 @@ public class Bank {
     {
 
         if(Double.isNaN(money)) return false;
+        if(money == 0)
+        {
+            return true;
+        }
         if(money > amount | money <= 0)
         {
             return false;
@@ -81,6 +85,10 @@ public class Bank {
 
     public boolean withdraw(double money, Bank toBank)
     {
+        if(money == 0)
+        {
+            return true;
+        }
         if(money > amount | money <= 0)
         {
             return false;

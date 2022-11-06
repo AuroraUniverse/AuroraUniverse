@@ -1032,7 +1032,7 @@ public class Town {
 
 
     public void setForceExplosions(boolean forceExplosions) {
-        this.forceExplosions = this.forceExplosions;
+        this.forceExplosions = forceExplosions;
     }
 
     public boolean isConnected(Chunk chunk, @Nullable Player player) {

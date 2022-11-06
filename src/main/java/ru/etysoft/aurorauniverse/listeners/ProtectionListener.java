@@ -12,6 +12,7 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
@@ -55,7 +56,7 @@ public class ProtectionListener implements Listener {
         }
     }
 
-    @EventHandler()
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void enderPearlThrown(PlayerTeleportEvent event) {
         if (event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) return;
         Location to = event.getTo();
@@ -74,12 +75,15 @@ public class ProtectionListener implements Listener {
 
     }
 
-    @EventHandler
+
+
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void Death(PlayerDeathEvent deathEvent)
     {
         ktList.remove(deathEvent.getEntity().getName());
     }
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void PvP(EntityDamageByEntityEvent event) {
 
         if (event.getEntity() instanceof Player) {

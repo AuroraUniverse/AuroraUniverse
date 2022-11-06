@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AuroraEconomy implements Economy {
 
-    private static Map<String, Bank> bankList = new HashMap<>();
+    private static final Map<String, Bank> bankList = new HashMap<>();
 
     public boolean addBank(Bank bank)
     {
@@ -50,6 +50,8 @@ public class AuroraEconomy implements Economy {
         if(name == null) return false;
         return bankList.containsKey(name);
     }
+
+
 
     public void deleteBank(Bank bank)
     {

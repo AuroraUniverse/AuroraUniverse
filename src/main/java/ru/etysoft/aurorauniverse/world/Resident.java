@@ -37,7 +37,10 @@ public class Resident {
         permissonGroup = "newbies";
         chatMode = AuroraChat.Channels.GLOBAL;
         bank = new Bank(nickname, AuroraUniverse.getPlugin(AuroraUniverse.class).getConfig().getDouble("start-balance"), nickname);
-        AuroraUniverse.getInstance().getEconomy().addBank(bank);
+        if(!AuroraUniverse.getInstance().getEconomy().addBank(bank))
+        {
+             bank = AuroraUniverse.getInstance().getEconomy().getBank(nickname);
+        }
     }
 
 
