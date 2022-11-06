@@ -21,8 +21,8 @@ A country is an association of Towns with a capital that collects taxes all othe
 Towns can declare wars to each other. Multiple towns can participate in a war.
 
 Wars come with several features: 
-- Restrictions on Trade
-- Non-aggression Pact
+- GUI town management
+- Trade embargo
 - Forced inclusion in PvP
 - Chose what happens to the defeated Town: (Destroy, Subdue or Plunder.)
 
