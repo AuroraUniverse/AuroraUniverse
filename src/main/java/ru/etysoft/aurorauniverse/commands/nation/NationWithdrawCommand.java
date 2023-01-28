@@ -38,15 +38,25 @@ public class NationWithdrawCommand {
                             try {
                                 d = Double.parseDouble(args[1]);
 
-
-                                if (t.getNation().getBank().withdraw(d, resident.getBank())) {
-                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-withdraw").replace("%s", d + ""), sender);
+                                if (resident.getName().equals(
+                                        resident.getTown().getNation().getCapital().getMayor().getName()))
+                                {
+                                    if (t.getNation().getBank().withdraw(d, resident.getBank())) {
+                                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-withdraw").replace("%s", d + ""), sender);
 //                                t.getNation().sendMessage(AuroraLanguage.getColorString("town-deposit-other").replace("%s", d + "")
 //                                        .replace("%r", resident.getName()));
+                                        resident.getTown().getNation().sendMessage(AuroraLanguage.getColorString("nation-withdraw-others").
+                                                replace("%p", resident.getName()).replace("%s", d + ""));
 
-                                } else {
-                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-cantwithdraw").replace("%s", d + ""), sender);
+                                    } else {
+                                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-cant-withdraw").replace("%s", d + ""), sender);
+                                    }
                                 }
+                                else
+                                {
+                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-not-capital-mayor"), sender);
+                                }
+
                             } catch (Exception e) {
                                 Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-arguments"), sender);
                             }

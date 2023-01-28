@@ -196,4 +196,15 @@ public class Nation {
         }
 
     }
+
+    public void sendMessage(String message)
+    {
+
+        this.getCapital().sendMessage(message);
+
+        for (Town town: this.getTowns())
+        {
+            town.sendMessage(message);
+        }
+    }
 }

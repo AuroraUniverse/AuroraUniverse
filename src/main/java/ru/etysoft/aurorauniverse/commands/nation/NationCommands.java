@@ -48,15 +48,7 @@ public class NationCommands implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("delete")) {
                     deleteNation();
                 } else if (args[0].equalsIgnoreCase("spawn")) {
-                    try {
-                        if (resident.getTown().getNation() != null) {
-                            resident.getTown().getNation().getCapital().teleportToTownSpawn(player);
-                        } else {
-                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("no-nation"), sender);
-                        }
-                    } catch (TownNotFoundedException e) {
-                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), player);
-                    }
+                    new NationTeleportCommand(player, resident, args, sender);
                 } else if (args[0].equalsIgnoreCase("invite")) {
                     inviteTown();
                 } else if (args[0].equalsIgnoreCase("accept")) {

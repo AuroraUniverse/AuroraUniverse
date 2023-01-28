@@ -378,5 +378,12 @@ region-add-contains: "&7Горожанин &cуже участник"
 
 # Added in 0.7.0.3
 
-nation-rename: "&7Ваша нация была переименована"
+nation-rename: "Ваша нация была переименована"
 nation-not-capital-mayor: "&7Вы не являетесь мэром столицы нации"
+
+# Added in 0.7.0.4
+
+nation-cant-withdraw: "&7Недостаточно средств на счёте нации"
+nation-teleport-incorrect: "&7Введите в формате /n spawn, чтобы телепортироваться в столицу нации или /n spawn (имя города, входящего в нацию), чтобы попасть в него"
+nation-teleport-to-city: "Вы были телепортированы на спавн города %t"
+nation-rename-others: "%p переименовал вашу нацию в %n"

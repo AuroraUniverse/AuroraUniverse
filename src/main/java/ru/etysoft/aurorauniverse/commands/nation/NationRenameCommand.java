@@ -54,6 +54,8 @@ public class NationRenameCommand
                             {
                                 nation.rename(newName);
                                 Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-rename"), sender);
+                                resident.getTown().getNation().sendMessage(AuroraLanguage.getColorString("nation-rename-others").
+                                        replace("%p", resident.getName()).replace("%n", newName));
                             }
                             else
                             {
