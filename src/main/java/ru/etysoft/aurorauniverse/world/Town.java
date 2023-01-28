@@ -41,6 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Town {
 
     public String name;
+
     public Chunk homeblock;
     public Location townSpawnPoint;
 

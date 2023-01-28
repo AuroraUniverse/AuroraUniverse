@@ -1,7 +1,6 @@
 package ru.etysoft.aurorauniverse.listeners;
 
 
-import javafx.application.Platform;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -33,7 +32,7 @@ import ru.etysoft.aurorauniverse.structures.StructurePatterns;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.*;
-import sun.applet.Main;
+
 
 import java.security.Permission;
 import java.util.*;

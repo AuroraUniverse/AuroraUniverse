@@ -1,6 +1,5 @@
 package ru.etysoft.aurorauniverse.gui;
 
-import javafx.scene.transform.MatrixType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -13,7 +12,6 @@ import ru.etysoft.aurorauniverse.utils.Numbers;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
 import ru.etysoft.epcore.gui.*;
-
 import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.HashMap;

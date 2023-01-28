@@ -180,4 +180,20 @@ public class Nation {
         private final static String BALANCE = "BALANCE";
     }
 
+    public void rename(String newName)
+    {
+        if(!AuroraUniverse.getNationList().containsKey(name)) return;
+
+        AuroraUniverse.nationList.remove(name);
+        AuroraUniverse.nationList.put(newName, this);
+        name = newName;
+
+        capital.setNationName(newName);
+
+        for (Town town: getTowns())
+        {
+            town.setNationName(newName);
+        }
+
+    }
 }

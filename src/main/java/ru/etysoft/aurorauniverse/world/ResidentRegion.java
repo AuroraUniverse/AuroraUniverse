@@ -8,7 +8,6 @@ import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.Permissions;
-import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 

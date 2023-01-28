@@ -1,4 +1,4 @@
-package ru.etysoft.aurorauniverse.commands;
+package ru.etysoft.aurorauniverse.commands.nation;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -74,8 +74,9 @@ public class NationCommands implements CommandExecutor {
                     list();
                 } else if (args[0].equalsIgnoreCase("tax")) {
                     setTax();
-                }
-                else
+                } else if (args[0].equalsIgnoreCase("rename")) {
+                    new NationRenameCommand(resident, args, sender);
+                } else
                 {
                     Nation nation = Nations.getNation(Messaging.getStringFromArgs(args, 0));
                     if(nation != null)
@@ -359,4 +360,6 @@ public class NationCommands implements CommandExecutor {
             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), player);
         }
     }
+
+
 }

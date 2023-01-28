@@ -1,4 +1,4 @@
-package ru.etysoft.aurorauniverse.commands;
+package ru.etysoft.aurorauniverse.commands.nation;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,6 +37,7 @@ public class NationTabCompleter implements TabCompleter {
         firstPossibleArg.add("accept");
         firstPossibleArg.add("tax");
         firstPossibleArg.add("list");
+        firstPossibleArg.add("rename");
 
         for(Nation nation : Nations.getNations())
         {

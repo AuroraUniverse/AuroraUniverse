@@ -371,3 +371,8 @@ embargo-contains: "&7Embargo list &calready contains&7 this town"
 embargo-not-contains: "&7Embargo list &chave not&7 this town"
 region-add-noresident-error: "&7You can add &conly &7residents of your town"
 region-add-contains: "&7Resident is &calready member"
+
+# Added in 0.7.0.3
+
+nation-rename: "&7Name of your nation has been changed"
+nation-not-capital-mayor: "&7You aren't the mayor of the capital of your nation"

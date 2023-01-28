@@ -4,7 +4,6 @@ package ru.etysoft.aurorauniverse;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -16,6 +15,8 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.etysoft.aurorauniverse.chat.AuroraChat;
 import ru.etysoft.aurorauniverse.commands.*;
+import ru.etysoft.aurorauniverse.commands.nation.NationCommands;
+import ru.etysoft.aurorauniverse.commands.nation.NationTabCompleter;
 import ru.etysoft.aurorauniverse.data.Auction;
 import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.economy.AuroraEconomy;
@@ -37,9 +38,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 public final class AuroraUniverse extends JavaPlugin {
 
@@ -315,6 +314,10 @@ public final class AuroraUniverse extends JavaPlugin {
 
     public static Map<String, Town> getTownList() {
         return townList;
+    }
+
+    public static Map<String, Nation> getNationList() {
+        return nationList;
     }
 
     @Deprecated
