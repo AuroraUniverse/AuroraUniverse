@@ -46,7 +46,7 @@ public final class AuroraUniverse extends JavaPlugin {
     public static Map<String, Nation> nationList = new HashMap<>();
     private static Map<ChunkPair, Region> alltownblocks = new HashMap<>();
     public static Map<String, Resident> residentlist = new HashMap<>();
-   // public static int minTownBlockDistance = 1;
+    // public static int minTownBlockDistance = 1;
     public static boolean debugmode = true;
 
     private static String warnings = "";
@@ -101,24 +101,19 @@ public final class AuroraUniverse extends JavaPlugin {
             }
 
 
-
-            Logger.info("Initializing AuroraChat...");
-            try
-            {
-                AuroraChat.initialize();
-            }
-            catch (Exception e)
-            {
-                addWarning("&cChat initializing issues occurred!");
+            if (getConfig().getBoolean("use-aurora-chat")) {
+                Logger.info("Initializing AuroraChat...");
+                try {
+                    AuroraChat.initialize();
+                } catch (Exception e) {
+                    addWarning("&cChat initializing issues occurred!");
+                }
             }
 
             Logger.info("Loading structure patterns...");
-            try
-            {
+            try {
                 StructurePatterns.loadPatterns();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
                 addWarning("&cStructure patterns load issues occurred!");
             }
@@ -173,22 +168,19 @@ public final class AuroraUniverse extends JavaPlugin {
         }
 
         Logger.info("Loading data...");
-        if(!DataManager.loadData())
-        {
+        if (!DataManager.loadData()) {
             addWarning("&cAn error occurred loading data from json!");
         }
 
         Logger.info("Loading auction...");
-        if(!Auction.loadListings())
-        {
+        if (!Auction.loadListings()) {
             addWarning("&cAn error occurred loading auction data from json!");
         }
         int maxBound = 4;
         String seconds = timer.getStringSeconds();
 
-        if(seconds.length() < 4)
-        {
-            maxBound = seconds.length() -1;
+        if (seconds.length() < 4) {
+            maxBound = seconds.length() - 1;
         }
 
         if (!haswarnings) {
@@ -204,32 +196,27 @@ public final class AuroraUniverse extends JavaPlugin {
 
     }
 
-    public static int getMinTownsDistance()
-    {
+    public static int getMinTownsDistance() {
         int value = AuroraUniverse.getInstance().getConfig().getInt("min-distance-between-towns");
 
-        if(value >= 1)
-        {
-            return  value;
+        if (value >= 1) {
+            return value;
         }
         Logger.warning("Wrong min-distance-between-towns value: " + value);
         return 1;
     }
 
-    public static int getMaxOutposts()
-    {
+    public static int getMaxOutposts() {
         int value = AuroraUniverse.getInstance().getConfig().getInt("max-outposts-count");
 
-        if(value >= 0)
-        {
-            return  value;
+        if (value >= 0) {
+            return value;
         }
         Logger.warning("Wrong max-outposts-count value: " + value);
         return 1;
     }
 
-    public static boolean matchesStringRegex(String toMatch)
-    {
+    public static boolean matchesStringRegex(String toMatch) {
         String regex = AuroraUniverse.getInstance().getConfig().getString("string-regex");
         try {
             Pattern.compile(regex);
@@ -237,20 +224,19 @@ public final class AuroraUniverse extends JavaPlugin {
             Logger.error("String regex is incorrect!");
             return false;
         }
-        return Pattern.matches(regex ,toMatch);
+        return Pattern.matches(regex, toMatch);
     }
 
 
-    public static boolean matchesNameRegex(String toMatch)
-    {
-       String regex = AuroraUniverse.getInstance().getConfig().getString("name-regex");
+    public static boolean matchesNameRegex(String toMatch) {
+        String regex = AuroraUniverse.getInstance().getConfig().getString("name-regex");
         try {
             Pattern.compile(regex);
         } catch (Exception e) {
             Logger.error("Name regex is incorrect!");
-           return false;
+            return false;
         }
-        return Pattern.matches(regex ,toMatch);
+        return Pattern.matches(regex, toMatch);
     }
 
 
@@ -346,6 +332,11 @@ public final class AuroraUniverse extends JavaPlugin {
         return instance;
     }
 
+    public Economy getVaultEconomy() {
+        if(instance.isUsingAuroraEconomy()) return null;
+        return getServer().getServicesManager().getRegistration(Economy.class).getProvider();
+    }
+
     public static FileConfiguration getLanguage() {
         return language;
     }
@@ -405,12 +396,15 @@ public final class AuroraUniverse extends JavaPlugin {
         return true;
     }
 
-    public boolean isAuctionEnabled(){
+    public boolean isUsingAuroraEconomy() {
+        return getConfig().getBoolean("use-aurora-economy");
+    }
+    public boolean isAuctionEnabled() {
 
         return getConfig().getBoolean("auction-enabled");
     }
 
-    public boolean isAuctionStructureEnabled(){
+    public boolean isAuctionStructureEnabled() {
         return getConfig().getBoolean("auction-struct-enabled");
     }
 
@@ -420,12 +414,9 @@ public final class AuroraUniverse extends JavaPlugin {
         Logger.info("Disabling AuroraUniverse...");
         DataManager.saveData();
         Auction.saveListings();
-        try
-        {
+        try {
             StalinNPC.remove();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Logger.info("AuroraUniverse successfully disabled!");

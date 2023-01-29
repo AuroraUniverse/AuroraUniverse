@@ -1,5 +1,7 @@
 package ru.etysoft.aurorauniverse.economy;
 
+import net.milkbowl.vault.economy.Economy;
+import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.utils.Numbers;
 
@@ -20,6 +22,11 @@ public class Bank {
             if (player.equals(name)) {
                 isPlayerAccount = true;
             }
+        }
+        if(!AuroraUniverse.getInstance().isUsingAuroraEconomy())
+        {
+            Economy economy = AuroraUniverse.getInstance().getVaultEconomy();
+           // economy.createBank(name);
         }
 
     }
@@ -58,6 +65,13 @@ public class Bank {
     {
         if(Double.isNaN(money)) return;
         if(money <= 0) return;
+        if(!AuroraUniverse.getInstance().isUsingAuroraEconomy())
+        {
+            Economy economy = AuroraUniverse.getInstance().getVaultEconomy();
+            economy.bankDeposit(name, money);
+            return;
+        }
+
         Logger.log("Deposited  " + money + " to " + getName());
         amount += money;
     }
@@ -77,6 +91,11 @@ public class Bank {
         else
         {
             amount -= money;
+            if(!AuroraUniverse.getInstance().isUsingAuroraEconomy())
+            {
+                Economy economy = AuroraUniverse.getInstance().getVaultEconomy();
+                economy.bankWithdraw(name, money);
+            }
             Logger.log("Withdrawn  " + money + " from " + getName());
             return true;
         }
@@ -97,6 +116,11 @@ public class Bank {
         {
             amount -= money;
             toBank.deposit(money);
+            if(!AuroraUniverse.getInstance().isUsingAuroraEconomy())
+            {
+                Economy economy = AuroraUniverse.getInstance().getVaultEconomy();
+                economy.bankWithdraw(name, money);
+            }
             Logger.log("Withdrawn  " + money + " from " + getName() + " to "+ toBank.getName());
             return true;
         }

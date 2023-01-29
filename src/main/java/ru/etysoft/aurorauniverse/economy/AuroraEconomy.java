@@ -91,12 +91,12 @@ public class AuroraEconomy implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return null;
+        return "";
     }
 
     @Override
     public String currencyNameSingular() {
-        return null;
+        return "";
     }
 
     @Override

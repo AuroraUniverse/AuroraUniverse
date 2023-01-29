@@ -1,4 +1,4 @@
-# AuroraUniverse configuration file v.1.0
+# AuroraUniverse configuration file v.1.1
 
 # Name of language file: russian.yml, english.yml or {yourlang}.yml (EN and RU are currently translated)
 language-file: "russian.yml"
@@ -15,43 +15,46 @@ backup-delay: 120
 # If you are using ImageOnMap plugin, this option will prevent an experience dupe
 prevent-map-grindstone: true
 
-# Strings in chat messages etc.
-string-regex: '^[аa-яzA-ЯZ0-9 \s._\[\]\#\?\"\!\&\@\/\$\%\^\*\-\;\:\,\*\(\)\{\}Ёё]*$'
-# String in names
-name-regex: '^[аa-яzA-ЯZ0-9 \s._\[\]\#\?\"\!\&\@\/\$\%\^\*\-\;\:\,\*\(\)\{\}Ёё]*$'
 #[NO RECOMMENDED] Kick players if they have not a Resident class, setting to false will produce ERRORS!
 kick-noresidents: true
+
+
+####################################################
+# Town
+####################################################
 
 price-new-town: 10.0
 price-new-nation: 20.0
 max-town-name: 10
-max-nation-name: 10
 min-distance-between-towns: 1
 max-outposts-count: 1
-
 chunk-per-resident: 10
 
-# Time of preventing town entering after tagging by player (in ms)
-time-battle: 5000
+####################################################
+# Nation
+####################################################
 
+# Share embargo on the nation's towns
+embargo-capital-share: true
+max-nation-name: 10
+
+####################################################
+# Auction
+####################################################
+
+auction-enabled: true
+
+auction-struct-enabled: true
 
 auction-price: 5000
 auction-expired-sec: 50000
 max-listings-per-town: 50
 max-items-without-struct: 10
-
-# Town will remember deposit and withdraw operations that will be bigger than that number
-big-amount-starts-from: 10
-
-auction-struct-enabled: true
-auction-enabled: true
 default-auction-structure: "auction"
-embargo-capital-share: true
 
-# Residents can invite residents of other towns to theirs regions
-region-allow-noresidents: true
-
-# TAXES
+####################################################
+# Taxes
+####################################################
 
 town-chunk-tax: 15.0
 town-new-chunk-tax-mod: 1.4
@@ -60,11 +63,38 @@ town-outpost-price: 10.0
 town-outpost-mod-price: 4.0
 nation-town-tax: 20.0
 
-# ECONOMY
+####################################################
+# Economy
+####################################################
+
+# beta-feature, set to false on your own risk
+use-aurora-economy: true
 
 start-balance: 0.0
 min-pay-amount: 1.0
 
+# Town will remember deposit and withdraw operations that will be bigger than that number
+big-amount-starts-from: 10
+
+####################################################
+# Chat and formatting
+####################################################
+
+use-aurora-chat: true
+
 chat-sound-notify: true
 
+# Strings in chat messages etc.
+string-regex: '^[аa-яzA-ЯZ0-9 \s._\[\]\#\?\"\!\&\@\/\$\%\^\*\-\;\:\,\*\(\)\{\}Ёё]*$'
+# String in names
+name-regex: '^[аa-яzA-ЯZ0-9 \s._\[\]\#\?\"\!\&\@\/\$\%\^\*\-\;\:\,\*\(\)\{\}Ёё]*$'
+
+####################################################
+# Other
+####################################################
+
+# Time of preventing town entering after tagging by player (in ms)
+time-battle: 5000
+
+# To change other players reputation you might play this amount of time
 reputation-min-hours: 24
