@@ -50,7 +50,7 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("gui");
         firstPossibleArg.add("outpost");
         firstPossibleArg.add("accept");
-        firstPossibleArg.add("townRank");
+        firstPossibleArg.add("rank");
 
         for (Town r : Towns.getTowns()) {
             if(Permissions.canSeeTownInfo(sender)) {

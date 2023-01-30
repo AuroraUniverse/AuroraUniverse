@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
+import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.permissions.AuroraPermissions;
 import ru.etysoft.aurorauniverse.world.Nation;
 import ru.etysoft.aurorauniverse.world.Resident;
@@ -71,6 +72,16 @@ public class NationTabCompleter implements TabCompleter {
                         {
 
                         }
+                    }
+                } else if (args[0].equalsIgnoreCase("spawn")) {
+                    Resident resident = Residents.getResident(sender.getName());
+                    try
+                    {
+                        for (Town town: resident.getTown().getNation().getTowns()) {
+                            possibleArgs.add(town.getName());
+                    }
+                    } catch (TownNotFoundedException e) {
+
                     }
                 }
 

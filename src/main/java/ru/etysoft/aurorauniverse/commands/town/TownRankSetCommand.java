@@ -30,6 +30,8 @@ public class TownRankSetCommand {
                 }
             }
 
+            string = string.replaceAll(AuroraUniverse.getInstance().getConfig().getString("name-regex"), "");
+
             if (string.length() <= AuroraUniverse.getInstance().getConfig().getInt("max-rank-length", 10))
             {
                 if (resident != null)
