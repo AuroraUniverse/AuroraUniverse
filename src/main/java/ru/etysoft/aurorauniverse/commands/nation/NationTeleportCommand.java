@@ -20,21 +20,26 @@ public class NationTeleportCommand {
                     resident.getTown().getNation().getCapital().teleportToTownSpawn(player);
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-teleport"), sender);
                 }
-                else if (args.length == 2)
-                {
-                    if (resident.getTown().getNation().getTownNames().contains(args[1]))
-                    {
-                        AuroraUniverse.getTownList().get(args[1]).teleportToTownSpawn(player);
-                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-teleport-to-city").replace("%t", args[1]), sender);
+                else {
+                    String townName = "";
+
+                    for (int i = 1; i < args.length; i++) {
+                        if (i == args.length - 1)
+                        {
+                            townName += args[i];
+                        }
+                        else
+                        {
+                            townName += args[i] + " ";
+                        }
                     }
-                    else
-                    {
+
+                    if (resident.getTown().getNation().getTownNames().contains(townName)) {
+                        AuroraUniverse.getTownList().get(townName).teleportToTownSpawn(player);
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-teleport-to-city").replace("%t", townName), sender);
+                    } else {
                         Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-teleport-incorrect"), sender);
                     }
-                }
-                else
-                {
-                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-teleport-incorrect"), sender);
                 }
             }
             else

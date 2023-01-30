@@ -127,7 +127,6 @@ public class AuroraPlaceholdersExpansion extends PlaceholderExpansion {
                 try
                 {
                    return getReputationPlaceholder(resident);
-
                 }
                 catch (Exception ignored)
                 {
@@ -135,6 +134,15 @@ public class AuroraPlaceholdersExpansion extends PlaceholderExpansion {
                 }
             }
             return null;
+        }
+        else if (params.equalsIgnoreCase("rank"))
+        {
+            Resident resident = Residents.getResident(player.getName());
+
+            if (resident != null)
+            {
+                return resident.getTownRank();
+            }
         }
         return null;
         // Placeholder is unknown by the Expansion

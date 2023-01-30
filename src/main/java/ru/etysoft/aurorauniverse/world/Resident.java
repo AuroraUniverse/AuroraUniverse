@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.world;
 
+import com.google.common.reflect.TypeToken;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
@@ -121,6 +122,7 @@ public class Resident {
         jsonObject.put(Types.REPUTATION_PLUS,repPlus);
         jsonObject.put(Types.REPUTATION_MINUS,repMinus);
         jsonObject.put(Types.TIME_PLAYED, getMillisPlayed());
+        jsonObject.put(Types.TOWN_RANK, getTownRank());
         return jsonObject;
     }
 
@@ -153,6 +155,11 @@ public class Resident {
                 {
                     resident.setMillisPlayed((long) residentJsonObj.get(Types.TIME_PLAYED));
                 }
+
+                if (residentJsonObj.containsKey(Types.TOWN_RANK))
+                {
+                    resident.setTownRank(residentJsonObj.get(Types.TOWN_RANK).toString());
+                }
                 return resident;
             }
             Logger.error("Resident is null!");
@@ -174,6 +181,7 @@ public class Resident {
         public static final String REPUTATION_PLUS = "REPUTATION_PLUS";
         public static final String REPUTATION_MINUS = "REPUTATION_MINUS";
         public static final String TIME_PLAYED = "TIME_PLAYED";
+        public static final String TOWN_RANK = "TOWN_RANK";
     }
 
     public Player getPlayer() {
@@ -256,4 +264,16 @@ public class Resident {
     public void setLastTown(String name) {
         lasttownname = name;
     }
+
+    private String townRank = "";
+
+    public String getTownRank() {
+        return townRank;
+    }
+
+    public void setTownRank(String townRank) {
+        this.townRank = townRank;
+    }
+
 }
+

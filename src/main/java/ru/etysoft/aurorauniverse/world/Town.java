@@ -947,6 +947,7 @@ public class Town {
                 residents.remove(resident);
                 resident.setPermissionGroup("newbies");
                 resident.setTown(null);
+                resident.setTownRank("");
                 AuroraPermissions.setPermissions(resident.getName(), AuroraPermissions.getGroup("newbies"));
                 Logger.log("Kicked resident  " + resident.getName() + " to " + getName());
                 return true;

@@ -381,5 +381,10 @@ nation-not-capital-mayor: "&7You aren't the mayor of the capital of your nation"
 
 nation-cant-withdraw: "&7There is not enough money on nation bank"
 nation-teleport-incorrect: "&7Enter in the format /n spawn to teleport to the capital of the nation or /n spawn (the name of the city included in the nation) to go to it"
-nation-teleport-to-city: "You have been teleported to spawn of %t"
-nation-rename-others: "%p has renamed your nation to %n"
+nation-teleport-to-city: "&7You have been teleported to spawn of &f%t"
+nation-rename-others: "&7%p has renamed your nation to &b%n"
+
+# Added in 0.8.0.1
+
+town-townrank-command-incorrect: "&7Type /t rank set (player name) (rank)"
+town-resettownrank-incorrect: "&7Enter in the format /t rank reset (player name)"

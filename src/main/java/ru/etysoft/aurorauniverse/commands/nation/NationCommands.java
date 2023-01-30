@@ -53,7 +53,6 @@ public class NationCommands implements CommandExecutor {
                     inviteTown();
                 } else if (args[0].equalsIgnoreCase("accept")) {
                     acceptInvite();
-
                 } else if (args[0].equalsIgnoreCase("leave")) {
                     leave();
                 } else if (args[0].equalsIgnoreCase("deposit")) {

@@ -50,6 +50,7 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("gui");
         firstPossibleArg.add("outpost");
         firstPossibleArg.add("accept");
+        firstPossibleArg.add("townRank");
 
         for (Town r : Towns.getTowns()) {
             if(Permissions.canSeeTownInfo(sender)) {
@@ -115,6 +116,10 @@ public class TownTabCompleter implements TabCompleter {
                         }
                     } catch (Exception ignored) {
                     }
+                } else if (args[0].equals("rank"))
+                {
+                    possibleArgs.add("set");
+                    possibleArgs.add("reset");
                 }
 
             } else if (args.length == 3) {
@@ -155,6 +160,20 @@ public class TownTabCompleter implements TabCompleter {
                 if ((args[0].equals("region") && (args[1].equals("pvp")))) {
                     possibleArgs.add("on");
                     possibleArgs.add("off");
+                }
+
+                if ((args[0].equals("rank") && args[1].equals("set")) | (args[0].equals("rank") && args[1].equals("reset")))
+                {
+                    Player player = (Player) sender;
+                    Resident resident = Residents.getResident(player.getName());
+                    try {
+                        Town town = resident.getTown();
+                        for (Resident r : town.getResidents()) {
+                            possibleArgs.add(r.getName());
+                        }
+                    } catch (TownNotFoundedException ignored) {
+
+                    }
                 }
 
                 if ((args[0].equals("region") && (args[1].equals("give") | args[1].equals("add") | args[1].equals("kick")))) {

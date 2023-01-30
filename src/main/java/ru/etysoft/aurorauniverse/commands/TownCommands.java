@@ -1,15 +1,11 @@
 package ru.etysoft.aurorauniverse.commands;
 
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import ru.etysoft.aurorauniverse.Logger;
-import ru.etysoft.aurorauniverse.auction.AuctionItem;
 import ru.etysoft.aurorauniverse.commands.town.*;
-import ru.etysoft.aurorauniverse.data.Auction;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
@@ -20,8 +16,6 @@ import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
-
-import java.security.Permission;
 
 public class TownCommands implements CommandExecutor {
 
@@ -78,7 +72,12 @@ public class TownCommands implements CommandExecutor {
                     new TownSellCommand(sender, resident, args);
                 } else if (args[0].equalsIgnoreCase("toggle")) {
                     new TownToggleCommand(args, resident, sender, pl);
-                } else {
+                } else if (args[0].equalsIgnoreCase("rank") && args[1].equalsIgnoreCase("set")){
+                    new TownRankSetCommand(resident, args, sender);
+                } else if (args[0].equalsIgnoreCase("rank") && args[1].equalsIgnoreCase("reset")) {
+                    new TownRankResetCommand(resident, args, sender);
+                }
+                else {
 
                     try
                     {
