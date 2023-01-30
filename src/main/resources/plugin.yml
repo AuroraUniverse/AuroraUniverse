@@ -1,5 +1,5 @@
 name: AuroraUniverse
-version: 0.8.0.7
+version: 0.8.0.8
 main: ru.etysoft.aurorauniverse.AuroraUniverse
 softdepend: [PlaceholderAPI, Citizens]
 depend: [EasyPluginCore]
