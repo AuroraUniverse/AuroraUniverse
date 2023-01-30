@@ -18,6 +18,8 @@ public class Permissions {
 
     public static final String TOWN_RANK = "town.rank";
 
+    public static final String AUN_TOWN_RANK = "aun.changerank";
+
 
 
     public static boolean isAdmin(CommandSender sender, boolean sendMessage) {

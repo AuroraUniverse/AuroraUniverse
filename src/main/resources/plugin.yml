@@ -62,6 +62,10 @@ permissions:
     default: op
     description: Bypass every check
 
+  aun.changerank:
+    default: op
+    description: change townrank
+
   ########################################
   #                                      #
   #          Town permissions            #

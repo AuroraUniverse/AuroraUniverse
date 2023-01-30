@@ -43,9 +43,11 @@ public class TownRankSetCommand {
                             try {
                                 if (sender.hasPermission(Permissions.TOWN_RANK))
                                 {
-                                    if (resident.getTown().getResidents().contains(resident1))
+                                    if (sender.hasPermission(Permissions.AUN_TOWN_RANK) | resident.getTown().getResidents().contains(resident1))
                                     {
                                         resident1.setTownRank(string);
+                                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-rank-change-successful")
+                                                .replace("%s", string).replace("%p", args[2]), sender);
                                     }
                                     else
                                     {
@@ -78,7 +80,7 @@ public class TownRankSetCommand {
             }
             else
             {
-
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("name-invalid"), sender);
             }
         }
         else

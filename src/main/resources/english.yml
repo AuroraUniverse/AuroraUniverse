@@ -388,3 +388,8 @@ nation-rename-others: "&7%p has renamed your nation to &b%n"
 
 town-townrank-command-incorrect: "&7Type /t rank set (player name) (rank)"
 town-resettownrank-incorrect: "&7Enter in the format /t rank reset (player name)"
+
+#Added in 0.8.0.5
+
+town-rank-change-successful: "&7You have successfully ranked %s to player %p"
+town-rank-reset-successful: "&7You have successfully removed the rank of player %p"
