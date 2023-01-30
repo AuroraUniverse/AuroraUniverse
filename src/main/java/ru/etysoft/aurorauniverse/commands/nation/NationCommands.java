@@ -232,6 +232,7 @@ public class NationCommands implements CommandExecutor {
                         if (Towns.getTown(townName) != resident.getTown().getNation().getCapital()) {
                             resident.getTown().getNation().getInvitedTowns().add(Towns.getTown(townName));
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-invite-sent").replace("%s", townName), player);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-invitation").replace("%s", townName), resident.getPlayer());
                         } else {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-capital-edit"), player);
                         }
