@@ -6,6 +6,7 @@ import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
+import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Resident;
 
 public class TownRankResetCommand {
@@ -20,7 +21,7 @@ public class TownRankResetCommand {
                 if (resident1 != null)
                     {
                     try {
-                        if (resident.getTown().getMayor().getName().equals(resident.getName()))
+                        if (sender.hasPermission(Permissions.TOWN_RANK))
                         {
                             if (resident.getTown().getResidents().contains(resident1))
                             {
@@ -33,7 +34,7 @@ public class TownRankResetCommand {
                         }
                         else
                         {
-                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-not-capital-mayor"), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
                         }
 
                     } catch (TownNotFoundedException e) {

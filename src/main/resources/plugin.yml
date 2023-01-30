@@ -93,6 +93,7 @@ permissions:
       town.auction.sell: true
       town.auction.remove: true
       town.auction.use: true
+      town.rank: true
 
     description: Allows all commands
 
@@ -124,7 +125,9 @@ permissions:
     default: op
     description: Leave town
 
-
+  town.rank:
+    default: op
+    description: Change and reset town rank
 
   town.deposit:
     default: op

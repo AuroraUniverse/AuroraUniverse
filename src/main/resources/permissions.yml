@@ -47,6 +47,7 @@ groups:
       - town.residents.invite
       - town.residents.kick
       - town.withdraw
+      - town.rank
     mayor:
       - town.*
       - auneconomy.pay

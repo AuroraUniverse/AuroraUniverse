@@ -16,6 +16,8 @@ public class Permissions {
 
     public static final String EMBARGO = "town.embargo";
 
+    public static final String TOWN_RANK = "town.rank";
+
 
 
     public static boolean isAdmin(CommandSender sender, boolean sendMessage) {
