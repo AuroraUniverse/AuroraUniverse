@@ -16,10 +16,9 @@ public class TownRankResetCommand {
         {
             if (resident != null)
             {
-                if (Residents.getList().contains(args[1]))
-                {
-                    Resident resident1 = Residents.getResident(args[1]);
-
+                Resident resident1 = Residents.getResident(args[2]);
+                if (resident1 != null)
+                    {
                     try {
                         if (resident.getTown().getMayor().getName().equals(resident.getName()))
                         {
@@ -43,7 +42,7 @@ public class TownRankResetCommand {
                 }
                 else
                 {
-                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("name-invalid"), sender);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("name-invalid").replace("%s", args[2]), sender);
                 }
             }
             else
