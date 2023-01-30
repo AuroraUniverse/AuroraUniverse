@@ -30,45 +30,50 @@ public class TownRankSetCommand {
                 }
             }
 
-            string = string.replaceAll(AuroraUniverse.getInstance().getConfig().getString("name-regex"), "");
-
-            if (string.length() <= AuroraUniverse.getInstance().getConfig().getInt("max-rank-length", 10))
+            if (AuroraUniverse.matchesNameRegex(string))
             {
-                if (resident != null)
+                if (string.length() <= AuroraUniverse.getInstance().getConfig().getInt("max-rank-length", 10))
                 {
-                    Resident resident1 = Residents.getResident(args[2]);
+                    if (resident != null)
+                    {
+                        Resident resident1 = Residents.getResident(args[2]);
 
-                    if (resident1 != null)
+                        if (resident1 != null)
                         {
-                        try {
-                            if (sender.hasPermission(Permissions.TOWN_RANK))
-                            {
-                                if (resident.getTown().getResidents().contains(resident1))
+                            try {
+                                if (sender.hasPermission(Permissions.TOWN_RANK))
                                 {
-                                    resident1.setTownRank(string);
+                                    if (resident.getTown().getResidents().contains(resident1))
+                                    {
+                                        resident1.setTownRank(string);
+                                    }
+                                    else
+                                    {
+                                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("not-registered-resident"), sender);
+                                    }
                                 }
                                 else
                                 {
-                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("not-registered-resident"), sender);
+                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
                                 }
-                            }
-                            else
-                            {
-                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
-                            }
 
-                        } catch (TownNotFoundedException e) {
-                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
+                            } catch (TownNotFoundedException e) {
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
+                            }
+                        }
+                        else
+                        {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("name-invalid").replace("%s", args[2]), sender);
                         }
                     }
                     else
                     {
-                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("name-invalid").replace("%s", args[2]), sender);
+                        Messaging.sendPrefixedMessage(Messages.cantConsole(), sender);
                     }
                 }
                 else
                 {
-                    Messaging.sendPrefixedMessage(Messages.cantConsole(), sender);
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("name-invalid").replace("%s", string), sender);
                 }
             }
             else
