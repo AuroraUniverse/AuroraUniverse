@@ -23,10 +23,17 @@ public class TownRankResetCommand {
                     try {
                         if (sender.hasPermission(Permissions.TOWN_RANK))
                         {
-                            if (sender.hasPermission(Permissions.AUN_TOWN_RANK) | resident.getTown().getResidents().contains(resident1))
+                            if (resident.getTown().getResidents().contains(resident1))
                             {
                                 resident1.setTownRank("");
-                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-rank-reset-successful").replace("%p", args[2]), sender);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-rank-reset-successful")
+                                        .replace("%p", args[2]), sender);
+                            }
+                            else if (sender.hasPermission(Permissions.AUN_TOWN_RANK))
+                            {
+                                resident1.setTownRank("");
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-rank-reset-successful")
+                                        .replace("%p", args[2]), sender);
                             }
                             else
                             {
