@@ -393,3 +393,7 @@ town-resettownrank-incorrect: "&7Enter in the format /t rank reset (player name)
 
 town-rank-change-successful: "&7You have successfully ranked %s to player %p"
 town-rank-reset-successful: "&7You have successfully removed the rank of player %p"
+
+# Added in 0.8.0.10
+
+region-event-canceled: "&cYou are not in this region"

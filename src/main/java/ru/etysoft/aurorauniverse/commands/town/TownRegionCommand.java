@@ -237,7 +237,7 @@ public class TownRegionCommand {
 
                             if (residentRegion.getOwner() == resident | Permissions.canBypassRegion(sender)) {
                                 if (residentRegion.removeMember(newMember)) {
-                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-kicked").replace("%s", args[1]), sender);
+                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-kicked").replace("%s", args[2]), sender);
                                 } else {
                                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-owner-members"), sender);
                                 }

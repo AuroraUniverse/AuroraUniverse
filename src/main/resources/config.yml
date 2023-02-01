@@ -18,6 +18,8 @@ prevent-map-grindstone: true
 #[NO RECOMMENDED] Kick players if they have not a Resident class, setting to false will produce ERRORS!
 kick-noresidents: true
 
+region-allow-noresidents: true
+
 
 ####################################################
 # Town

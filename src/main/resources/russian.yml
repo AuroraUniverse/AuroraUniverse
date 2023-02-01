@@ -393,8 +393,12 @@ nation-rename-others: "&7%p переименовал вашу нацию в &b%n
 town-townrank-command-incorrect: "&7Введите в формате /t rank set (имя игрока) (ранг)"
 town-resettownrank-incorrect: "&7Введите в формате /t rank reset (имя игрока)"
 
-#Added in 0.8.0.5
+# Added in 0.8.0.5
 
 town-rank-change-successful: "&7Вы успешно поставили ранг %s игроку %p"
 town-rank-reset-successful: "&7Вы успешно удалил ранг игроку %p"
+
+# Added in 0.8.0.10
+
+region-event-canceled: "&cВы не состоите в данном регионе"
 
