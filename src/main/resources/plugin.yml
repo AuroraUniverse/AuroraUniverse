@@ -271,6 +271,7 @@ permissions:
       town.region.bypass: true
       town.region.info: true
       town.region.pvp: true
+      town.region.toggle: true
 
   town.region.give:
     default: op
@@ -288,7 +289,12 @@ permissions:
     default: op
     description: Reset region to town owned
 
+# поменять везде pvp на toggle
   town.region.pvp:
+    default: op
+    description: Toggle pvp in region
+
+  town.region.toggle:
     default: op
     description: Toggle pvp in region
 

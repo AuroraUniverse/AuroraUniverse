@@ -297,10 +297,16 @@ public class ProtectionListener implements Listener {
                     try {
                         if (Towns.getTown(event.getClickedBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getClickedBlock().getChunk())) != null) {
                             ResidentRegion residentRegion = Towns.getTown(event.getClickedBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getClickedBlock().getChunk()));
-                            if ((!residentRegion.getMembers().contains(event.getPlayer().getName())) && (!event.getPlayer().getName().equals(residentRegion.getOwner().getName()))) {
-                                event.setCancelled(true);
-                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("region-event-canceled"), event.getPlayer());
-                                Logger.debug("Prevented from use[1] " + event.getPlayer().getName());
+                            Resident resident = Residents.getResident(event.getPlayer().getName());
+                            if ((!residentRegion.getMembers().contains(resident.getName()))) {
+                                if (!resident.getName().equals(residentRegion.getOwner().getName())) {
+                                    if (!(event.getPlayer().hasPermission("town.region.*") && residentRegion.getTown().getResidents().contains(resident))) {
+
+                                        event.setCancelled(true);
+                                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("region-event-canceled"), event.getPlayer());
+                                        Logger.debug("Prevented from use[1] " + event.getPlayer().getName());
+                                    }
+                                }
                             }
                         }
                         else if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
@@ -360,10 +366,16 @@ public class ProtectionListener implements Listener {
                     try {
                         if (Towns.getTown(event.getClickedBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getClickedBlock().getChunk())) != null) {
                             ResidentRegion residentRegion = Towns.getTown(event.getClickedBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getClickedBlock().getChunk()));
-                            if ((!residentRegion.getMembers().contains(event.getPlayer().getName())) && (!event.getPlayer().getName().equals(residentRegion.getOwner().getName()))) {
-                                event.setCancelled(true);
-                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("region-event-canceled"), event.getPlayer());
-                                Logger.debug("Prevented from switch[1] " + event.getPlayer().getName());
+                            Resident resident = Residents.getResident(event.getPlayer().getName());
+                            if ((!residentRegion.getMembers().contains(resident.getName()))) {
+                                if (!resident.getName().equals(residentRegion.getOwner().getName())) {
+                                    if (!(event.getPlayer().hasPermission("town.region.*") && residentRegion.getTown().getResidents().contains(resident))) {
+
+                                        event.setCancelled(true);
+                                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("region-event-canceled"), event.getPlayer());
+                                        Logger.debug("Prevented from switch[1] " + event.getPlayer().getName());
+                                    }
+                                }
                             }
                         }
                         else if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
@@ -411,10 +423,16 @@ public class ProtectionListener implements Listener {
                     try {
                         if (Towns.getTown(event.getRightClicked().getLocation().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getRightClicked().getLocation().getChunk())) != null) {
                             ResidentRegion residentRegion = Towns.getTown(event.getRightClicked().getLocation().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getRightClicked().getLocation().getChunk()));
-                            if ((!residentRegion.getMembers().contains(event.getPlayer().getName())) && (!event.getPlayer().getName().equals(residentRegion.getOwner().getName()))) {
-                                event.setCancelled(true);
-                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("region-event-canceled"), event.getPlayer());
-                                Logger.debug("Prevented from switch[1] " + event.getPlayer().getName());
+                            Resident resident = Residents.getResident(event.getPlayer().getName());
+                            if ((!residentRegion.getMembers().contains(resident.getName()))) {
+                                if (!resident.getName().equals(residentRegion.getOwner().getName())) {
+                                    if (!(event.getPlayer().hasPermission("town.region.*") && residentRegion.getTown().getResidents().contains(resident))) {
+
+                                        event.setCancelled(true);
+                                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("region-event-canceled"), event.getPlayer());
+                                        Logger.debug("Prevented from switch[1] " + event.getPlayer().getName());
+                                    }
+                                }
                             }
                         }
                         else if (Towns.hasMyTown(chunk, Residents.getResident(event.getPlayer()).getTown())) {
@@ -478,10 +496,16 @@ public class ProtectionListener implements Listener {
             try {
                 if (Towns.getTown(event.getBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getBlock().getChunk())) != null) {
                     ResidentRegion residentRegion = Towns.getTown(event.getBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getBlock().getChunk()));
-                    if ((!residentRegion.getMembers().contains(event.getPlayer().getName())) && (!event.getPlayer().getName().equals(residentRegion.getOwner().getName()))) {
-                        event.setCancelled(true);
-                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("region-event-canceled"), event.getPlayer());
-                        Logger.debug("Prevented from block break[2] " + event.getPlayer().getName());
+                    Resident resident = Residents.getResident(event.getPlayer().getName());
+                    if ((!residentRegion.getMembers().contains(resident.getName()))) {
+                        if (!resident.getName().equals(residentRegion.getOwner().getName())) {
+                            if (!(event.getPlayer().hasPermission("town.region.*") && residentRegion.getTown().getResidents().contains(resident))) {
+
+                                event.setCancelled(true);
+                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("region-event-canceled"), event.getPlayer());
+                                Logger.debug("Prevented from break[1] " + event.getPlayer().getName());
+                            }
+                        }
                     }
                 }
                 else if (Towns.hasMyTown(ChunkPair.fromChunk(event.getBlock().getChunk()), Residents.getResident(event.getPlayer()).getTown())) {
@@ -577,10 +601,16 @@ public class ProtectionListener implements Listener {
             try {
                 if (Towns.getTown(event.getBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getBlock().getChunk())) != null) {
                     ResidentRegion residentRegion = Towns.getTown(event.getBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getBlock().getChunk()));
-                    if ((!residentRegion.getMembers().contains(event.getPlayer().getName())) && (!event.getPlayer().getName().equals(residentRegion.getOwner().getName()))) {
-                        event.setCancelled(true);
-                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("region-event-canceled"), event.getPlayer());
-                        Logger.debug("Prevented from block place[1] " + event.getPlayer().getName());
+                    Resident resident = Residents.getResident(event.getPlayer().getName());
+                    if ((!residentRegion.getMembers().contains(resident.getName()))) {
+                        if (!resident.getName().equals(residentRegion.getOwner().getName())) {
+                            if (!(event.getPlayer().hasPermission("town.region.*") && residentRegion.getTown().getResidents().contains(resident))) {
+
+                                event.setCancelled(true);
+                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("region-event-canceled"), event.getPlayer());
+                                Logger.debug("Prevented from place[1] " + event.getPlayer().getName());
+                            }
+                        }
                     }
                 }
                 else if (Towns.hasMyTown(ChunkPair.fromChunk(event.getBlock().getChunk()), Residents.getResident(event.getPlayer()).getTown())) {

@@ -20,7 +20,6 @@ public class ResidentRegion extends Region {
     public ResidentRegion(Town town, Resident owner) {
         super(town);
         this.owner = owner;
-        members.add(owner.getName());
         isPvp = false;
     }
 
