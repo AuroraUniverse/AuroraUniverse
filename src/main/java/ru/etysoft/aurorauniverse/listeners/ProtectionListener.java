@@ -1,6 +1,7 @@
 package ru.etysoft.aurorauniverse.listeners;
 
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -103,8 +104,31 @@ public class ProtectionListener implements Listener {
             Player p = (Player) event.getDamager();
             if(Permissions.isAdmin(p, false)) return;
             Resident resident = Residents.getResident(p);
-            Town entityTown = Towns.getTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()));
-            if(entityTown != null)
+
+            Chunk chunk = event.getEntity().getLocation().getChunk();
+            Town entityTown = Towns.getTown(ChunkPair.fromChunk(chunk));
+
+            if (entityTown == null)
+            {
+                return;
+            }
+
+            Region region = entityTown.getRegion(p.getLocation());
+
+            if (region instanceof ResidentRegion)
+            {
+
+                if (region instanceof ResidentRegion)
+                {
+                    if (!((ResidentRegion) region).getMembers().contains(p.getName()))
+                    {
+                        if (!(p.hasPermission("town.region.*") && entityTown.getResidents().contains(Residents.getResident(p.getName())))) {
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+            }
+            else
             {
                 try {
                     if(entityTown != resident.getTown())
@@ -115,6 +139,7 @@ public class ProtectionListener implements Listener {
                     event.setCancelled(true);
                 }
             }
+
         }
         else if(event.getDamager() instanceof Arrow)
         {
@@ -125,8 +150,26 @@ public class ProtectionListener implements Listener {
                 Player p = (Player) arrow.getShooter();
                 if(Permissions.isAdmin(p, false)) return;
                 Resident resident = Residents.getResident(p);
-                Town entityTown = Towns.getTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()));
-                if(entityTown != null)
+                Chunk chunk = event.getEntity().getLocation().getChunk();
+                Town entityTown = Towns.getTown(ChunkPair.fromChunk(chunk));
+
+                if (entityTown == null)
+                {
+                    return;
+                }
+
+                Region region = entityTown.getRegion(event.getEntity().getLocation());
+
+                if (region instanceof ResidentRegion)
+                {
+                    if (!((ResidentRegion) region).getMembers().contains(p.getName()))
+                    {
+                        if (!(p.hasPermission("town.region.*") && entityTown.getResidents().contains(Residents.getResident(p.getName())))) {
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+                else
                 {
                     try {
                         if(entityTown != resident.getTown())
@@ -155,38 +198,71 @@ public class ProtectionListener implements Listener {
             }
         }
 
-         if(event.getEntity() instanceof ItemFrame && event.getDamager() instanceof Player)
+         if(event.getEntity() instanceof ItemFrame  && event.getDamager() instanceof Player)
         {
 
             Player player = (Player) event.getDamager();
             if (!player.hasPermission("aun.edittowns")) {
-                try {
-                    if (Towns.hasMyTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk())
-                            , Residents.getResident(player).getTown())) {
-                        Town town = Towns.getTown(event.getEntity().getLocation().getChunk());
-                        if (town != null) {
-                            if (!town.canDestroy(Residents.getResident(player), ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()))) {
-                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
-                                Logger.debug("Prevented from block break[1] " +  player.getName());
-                                event.setCancelled(true);
-                            } else {
+                Location location = event.getEntity().getLocation();
 
+                Town town = Towns.getTown(location.getChunk());
+
+                if (town != null)
+                {
+                    Region region = town.getRegion(location);
+
+                    if (region instanceof ResidentRegion)
+                    {
+                        if (!((ResidentRegion) region).getMembers().contains(player.getName()))
+                        {
+                            if (!(player.hasPermission("town.region.*") && town.getResidents().contains(Residents.getResident(player.getName()))))
+                            {
+                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
+                                Logger.debug("Prevented from block break[100] " +  player.getName());
+                                event.setCancelled(true);
                             }
                         }
-                    } else {
-                        if (Towns.hasTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()))) {
-                            Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
+                    }
+                    else
+                    {
+                        Resident resident = Residents.getResident(player.getName());
+                        try {
+                            if(town != resident.getTown())
+                            {
+                                event.setCancelled(true);
+                            }
+                        } catch (TownNotFoundedException e) {
                             event.setCancelled(true);
-                            Logger.debug("Prevented from block break[2] " + player.getName());
                         }
                     }
-                } catch (TownNotFoundedException ignored) {
-                    if (Towns.hasTown(ChunkPair.fromChunk(player.getLocation().getChunk()))) {
-                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
-                        event.setCancelled(true);
-                        Logger.debug("Prevented from block break[3] " + player.getName());
-                    }
                 }
+
+//                    try {
+//                    if (Towns.hasMyTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk())
+//                            , Residents.getResident(player).getTown())) {
+//                        Town town = Towns.getTown(event.getEntity().getLocation().getChunk());
+//                        if (town != null) {
+//                            if (!town.canDestroy(Residents.getResident(player), ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()))) {
+//                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
+//                                Logger.debug("Prevented from block break[1] " +  player.getName());
+//                                event.setCancelled(true);
+//                            } else {
+//
+//                            }
+//                        }
+//                    } else {
+//                        if (Towns.hasTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()))) {
+//                            Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
+//                            event.setCancelled(true);
+//                            Logger.debug("Prevented from block break[2] " + player.getName());
+//                        }
+//                    }
+//                } catch (TownNotFoundedException ignored) {
+//                    if (Towns.hasTown(ChunkPair.fromChunk(player.getLocation().getChunk()))) {
+//                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
+//                        event.setCancelled(true);
+//                        Logger.debug("Prevented from block break[3] " + player.getName());
+//                    }
             }
         }
     }

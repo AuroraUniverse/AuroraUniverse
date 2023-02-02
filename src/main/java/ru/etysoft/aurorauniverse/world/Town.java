@@ -279,7 +279,7 @@ public class Town {
         this.mobs = mobs;
     }
 
-    public boolean isTownMobs() {
+    public boolean isMobs() {
         return mobs;
     }
 

@@ -94,7 +94,7 @@ public class GUITownToggles {
 
         String mobsToggle = AuroraLanguage.getColorString("gui.state-off");
 
-        if(town.isTownMobs())
+        if(town.isMobs())
         {
             mobsToggle = AuroraLanguage.getColorString("gui.state-on");
         }
@@ -103,7 +103,7 @@ public class GUITownToggles {
             @Override
             public void run() {
                 String suffix = "on";
-                if(town.isTownMobs())
+                if(town.isMobs())
                 {
                     suffix = "off";
                 }
