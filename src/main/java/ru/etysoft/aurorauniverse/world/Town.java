@@ -787,19 +787,22 @@ public class Town {
         return residents;
     }
 
-    public void isFireAllowed(Boolean enableFireSpreading) {
+    public void setFireAllowed(boolean enableFireSpreading) {
         fire = enableFireSpreading;
     }
 
-    public boolean isFireAllowed(Block block) {
-//        if (forceFire) return true; Мама! Почему нет такого поля!
+    public boolean setFireAllowed(Block block) {
         Region region = this.getRegion(block.getLocation());
         if (region instanceof ResidentRegion) {
             return ((ResidentRegion) region).isFire();
         }
-        return this.fire;
+        return fire;
     }
 
+    public boolean isFire()
+    {
+        return fire;
+    }
     public Bank getBank() {
         return townBank;
     }
