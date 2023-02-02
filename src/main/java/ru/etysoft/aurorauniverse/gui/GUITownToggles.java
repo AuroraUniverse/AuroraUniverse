@@ -143,7 +143,7 @@ public class GUITownToggles {
 
         String expToggle = AuroraLanguage.getColorString("gui.state-off");
 
-        if(town.isTownExplosion())
+        if(town.isExplosionEnabled())
         {
             expToggle = AuroraLanguage.getColorString("gui.state-on");
         }
@@ -152,7 +152,7 @@ public class GUITownToggles {
             @Override
             public void run() {
                 String suffix = "on";
-                if(town.isTownExplosion())
+                if(town.isExplosionEnabled())
                 {
                     suffix = "off";
                 }
