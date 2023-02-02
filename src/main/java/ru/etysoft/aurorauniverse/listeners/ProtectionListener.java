@@ -306,7 +306,7 @@ public class ProtectionListener implements Listener {
             if (Towns.getTown(block.getChunk()) == null) {
                 finalBlockList.add(block);
             } else {
-                if (Towns.getTown(block.getChunk()).isExplosion(ChunkPair.fromChunk(block.getChunk()))) {
+                if (Towns.getTown(block.getChunk()).isExplosionEnabled(ChunkPair.fromChunk(block.getChunk()))) {
                     finalBlockList.add(block);
                 }
             }

@@ -154,12 +154,12 @@ public class Town {
         return bonusChunks;
     }
 
-    public boolean isTownExplosion() {
+    public boolean isExplosionEnabled() {
         if(forceExplosions) return true;
         return explosion;
     }
 
-    public boolean isExplosion(ChunkPair chunk)
+    public boolean isExplosionEnabled(ChunkPair chunk)
     {
         if (forceExplosions) return true;
         Region region = townChunks.get(chunk);
