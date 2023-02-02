@@ -20,6 +20,8 @@ public class Permissions {
 
     public static final String AUN_TOWN_RANK = "aun.changerank";
 
+    public static final String TOWN_REGION_TOGGLE = "town.region.toggle";
+
 
 
     public static boolean isAdmin(CommandSender sender, boolean sendMessage) {
@@ -210,9 +212,6 @@ public class Permissions {
 
     public static boolean canKickMemberRegion(CommandSender p) {
         return p.hasPermission("town.region.kick");
-    }
-    public static boolean canTogglePvpRegion(CommandSender p) {
-        return p.hasPermission("town.region.pvp");
     }
 
     public static boolean canBypassRegion(CommandSender p) {

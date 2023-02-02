@@ -30,6 +30,12 @@ public class TownRegionCommand {
                 removeMember(sender, resident, args);
             } else if (arg2.equals("pvp") && args.length > 2) {
                 togglePvp(sender, resident, args);
+            } else if (arg2.equals("fire") && args.length > 2) {
+                toggleFire(sender, resident, args);
+            } else if (arg2.equals("explosions") && args.length > 2) {
+                toggleExplosions(sender, resident, args);
+            } else if (arg2.equals("mobs") && args.length > 2) {
+                toggleMobs(sender, resident, args);
             }
         } else {
             regionInfo(sender, resident, args);
@@ -45,7 +51,7 @@ public class TownRegionCommand {
                 Region region = town.getRegion(((Player) sender).getLocation());
 
                 try {
-                    if (resident.getTown() == town) {
+                    if (resident.getTown() == town | sender.hasPermission("aun.admin")) {
                         if (region != null) {
                             if (region instanceof ResidentRegion) {
                                 ResidentRegion residentRegion = (ResidentRegion) region;
@@ -57,6 +63,16 @@ public class TownRegionCommand {
                                 }
 
                                 sender.sendMessage(AuroraLanguage.getColorString("region-info.title"));
+
+                                sender.sendMessage(AuroraLanguage.getColorString("region-info.toggle-pvp").
+                                        replace("%s", String.valueOf(residentRegion.isPvp())));
+                                sender.sendMessage(AuroraLanguage.getColorString("region-info.toggle-fire").
+                                        replace("%s", String.valueOf(residentRegion.isFire())));
+                                sender.sendMessage(AuroraLanguage.getColorString("region-info.toggle-explosions").
+                                        replace("%s", String.valueOf(residentRegion.isExplosions())));
+                                sender.sendMessage(AuroraLanguage.getColorString("region-info.toggle-mobs").
+                                        replace("%s", String.valueOf(residentRegion.isMobs())));
+
                                 sender.sendMessage(AuroraLanguage.getColorString("region-info.members")
                                         .replace("%s2", membersString)
                                         .replace("%s1", String.valueOf(residentRegion.getMembers().size()))
@@ -115,27 +131,40 @@ public class TownRegionCommand {
     }
 
     public static void togglePvp(CommandSender sender, Resident resident, String[] args) {
-        if (Permissions.canTogglePvP(sender)) {
+        if (sender.hasPermission(Permissions.TOWN_REGION_TOGGLE)) {
 
-            try {
-                Town town = resident.getTown();
-                Region region = town.getRegion(((Player) sender).getLocation());
+//                Town town = resident.getTown();
+//                Region region = town.getRegion(((Player) sender).getLocation());
+                if (!(sender instanceof Player)) {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("console"), sender);
+                    return;
+                }
+                Player player = (Player) sender;
+                Region region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
 
                 if (region != null) {
                     if (region instanceof ResidentRegion && args.length > 1) {
-                        ResidentRegion residentRegion = (ResidentRegion) region;
-                        String status = args[2];
+                        if (((ResidentRegion) region).getMembers().contains(resident.getName()) | region.getTown().getMayor().getName().equals(sender.getName())
+                        | sender.hasPermission("aun.admin"))
+                        {
+                            ResidentRegion residentRegion = (ResidentRegion) region;
+                            String status = args[2];
 
-                        if (status.equalsIgnoreCase("on")) {
-                            residentRegion.setPvp(true);
-                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.PVP_ON), sender);
-                        } else if (status.equalsIgnoreCase("off")) {
-                            residentRegion.setPvp(false);
-                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.PVP_OFF), sender);
+                            if (status.equalsIgnoreCase("on")) {
+                                residentRegion.setPvp(true);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.PVP_ON), sender);
+                            } else if (status.equalsIgnoreCase("off")) {
+                                residentRegion.setPvp(false);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.PVP_OFF), sender);
+                            }
+                            else
+                            {
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
+                            }
                         }
                         else
                         {
-                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-event-canceled"), sender);
                         }
 
 
@@ -146,9 +175,154 @@ public class TownRegionCommand {
                 } else {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
                 }
-            } catch (TownNotFoundedException ignored) {
-                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
-            }
+
+        } else {
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
+        }
+    }
+
+    public static void toggleFire(CommandSender sender, Resident resident, String[] args) {
+        if (sender.hasPermission(Permissions.TOWN_REGION_TOGGLE)) {
+
+                if (!(sender instanceof Player)) {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("console"), sender);
+                    return;
+                }
+                Player player = (Player) sender;
+                Region region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+
+                if (region != null) {
+                    if (region instanceof ResidentRegion && args.length > 1) {
+                        if (((ResidentRegion) region).getMembers().contains(resident.getName()) | region.getTown().getMayor().getName().equals(sender.getName())
+                                | sender.hasPermission("aun.admin"))
+                        {
+                            ResidentRegion residentRegion = (ResidentRegion) region;
+                            String status = args[2];
+
+                            if (status.equalsIgnoreCase("on")) {
+                                residentRegion.setFire(true);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.FIRE_ON), sender);
+                            } else if (status.equalsIgnoreCase("off")) {
+                                residentRegion.setFire(false);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.FIRE_OFF), sender);
+                            }
+                            else
+                            {
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
+                            }
+                        }
+                        else
+                        {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-event-canceled"), sender);
+                        }
+
+
+                    } else {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-townowned"), sender);
+
+                    }
+                } else {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
+                }
+
+        } else {
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
+        }
+    }
+
+    public static void toggleExplosions(CommandSender sender, Resident resident, String[] args) {
+        if (sender.hasPermission(Permissions.TOWN_REGION_TOGGLE)) {
+
+                if (!(sender instanceof Player)) {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("console"), sender);
+                    return;
+                }
+                Player player = (Player) sender;
+                Region region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+
+                if (region != null) {
+                    if (region instanceof ResidentRegion && args.length > 1) {
+                        if (((ResidentRegion) region).getMembers().contains(resident.getName()) | region.getTown().getMayor().getName().equals(sender.getName())
+                                | sender.hasPermission("aun.admin"))
+                        {
+                            ResidentRegion residentRegion = (ResidentRegion) region;
+                            String status = args[2];
+
+                            if (status.equalsIgnoreCase("on")) {
+                                residentRegion.setExplosions(true);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.EXPLOSIONS_ON), sender);
+                            } else if (status.equalsIgnoreCase("off")) {
+                                residentRegion.setExplosions(false);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.EXPLOSIONS_OFF), sender);
+                            }
+                            else
+                            {
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
+                            }
+                        }
+                        else
+                        {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-event-canceled"), sender);
+                        }
+
+
+                    } else {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-townowned"), sender);
+
+                    }
+                } else {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
+                }
+
+        } else {
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
+        }
+    }
+
+    public static void toggleMobs(CommandSender sender, Resident resident, String[] args) {
+        if (sender.hasPermission(Permissions.TOWN_REGION_TOGGLE)) {
+
+                if (!(sender instanceof Player)) {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("console"), sender);
+                    return;
+                }
+                Player player = (Player) sender;
+                Region region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+
+                if (region != null) {
+                    if (region instanceof ResidentRegion && args.length > 1) {
+                        if (((ResidentRegion) region).getMembers().contains(resident.getName()) | region.getTown().getMayor().getName().equals(sender.getName())
+                                | sender.hasPermission("aun.admin"))
+                        {
+                            ResidentRegion residentRegion = (ResidentRegion) region;
+                            String status = args[2];
+
+                            if (status.equalsIgnoreCase("on")) {
+                                residentRegion.setMobs(true);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.MOBS_ON), sender);
+                            } else if (status.equalsIgnoreCase("off")) {
+                                residentRegion.setMobs(false);
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.Region.MOBS_OFF), sender);
+                            }
+                            else
+                            {
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
+                            }
+                        }
+                        else
+                        {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-event-canceled"), sender);
+                        }
+
+
+                    } else {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-townowned"), sender);
+
+                    }
+                } else {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
+                }
+
         } else {
             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
         }

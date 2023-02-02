@@ -7,6 +7,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Warning;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -153,8 +154,18 @@ public class Town {
         return bonusChunks;
     }
 
-    public boolean isExplosionEnabled() {
+    public boolean isTownExplosion() {
         if(forceExplosions) return true;
+        return explosion;
+    }
+
+    public boolean isExplosion(ChunkPair chunk)
+    {
+        if (forceExplosions) return true;
+        Region region = townChunks.get(chunk);
+        if (region instanceof ResidentRegion) {
+            return ((ResidentRegion) region).isExplosions();
+        }
         return explosion;
     }
 
@@ -268,8 +279,20 @@ public class Town {
         this.mobs = mobs;
     }
 
-    public boolean isMobs() {
+    public boolean isTownMobs() {
         return mobs;
+    }
+
+    public boolean isMobs(Region region)
+    {
+        if (region instanceof ResidentRegion)
+        {
+            return ((ResidentRegion) region).isMobs();
+        }
+        else
+        {
+            return mobs;
+        }
     }
 
     public void setFire(boolean fire) {
@@ -535,7 +558,7 @@ public class Town {
     }
 
 
-    public boolean isFire() {
+    public boolean isTownFire() {
         return fire;
     }
 
@@ -768,8 +791,13 @@ public class Town {
         fire = enableFireSpreading;
     }
 
-    public boolean isFireAllowed(Chunk chunk) {
-        return fire;
+    public boolean isFireAllowed(Block block) {
+//        if (forceFire) return true; Мама! Почему нет такого поля!
+        Region region = this.getRegion(block.getLocation());
+        if (region instanceof ResidentRegion) {
+            return ((ResidentRegion) region).isFire();
+        }
+        return this.fire;
     }
 
     public Bank getBank() {

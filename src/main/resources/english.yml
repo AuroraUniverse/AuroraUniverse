@@ -197,6 +197,10 @@ forced-pvp: "&cForced PvP"
 region-info:
   title: "&bo0o_[&fRegion info&b]_o0o"
   town-owned: "&7> This region is townwoned"
+  toggle-pvp: "&7> Pvp: %s"
+  toggle-fire: "&7> Fire: %s"
+  toggle-explosions: "&7> Explosions: %s"
+  toggle-mobs: "&7> Mobs: %s"
   members: "&7> Owner %s, members(%s1): %s2"
 
 ########################################
@@ -397,3 +401,12 @@ town-rank-reset-successful: "&7You have successfully removed the rank of player 
 # Added in 0.8.0.10
 
 region-event-canceled: "&cYou are not in this region"
+
+# Added in 0.8.0.11
+
+region-fire-off: "&7You turned off the fire in this region"
+region-fire-on: "&7You turned on the fire in this region"
+region-explosions-off: "&7You turned off the explosions in this region"
+region-explosions-on: "&7You turned on the explosions in this region"
+region-mobs-off: "&7You turned off the mobs in this region"
+region-mobs-on: "&7You turned on the mobs in this region"

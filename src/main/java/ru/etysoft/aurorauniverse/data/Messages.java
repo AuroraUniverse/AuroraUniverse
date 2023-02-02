@@ -73,6 +73,18 @@ public class Messages {
         {
             public static String PVP_OFF = "region-pvp-off";
             public static String PVP_ON = "region-pvp-on";
+
+            public static String FIRE_OFF = "region-fire-off";
+
+            public static String FIRE_ON = "region-fire-on";
+
+            public static String EXPLOSIONS_OFF = "region-explosions-off";
+
+            public static String EXPLOSIONS_ON = "region-explosions-on";
+
+            public static String MOBS_OFF = "region-mobs-off";
+
+            public static String MOBS_ON = "region-mobs-on";
         }
 
         public static class Admin

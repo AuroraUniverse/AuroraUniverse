@@ -79,6 +79,9 @@ public class TownTabCompleter implements TabCompleter {
                     possibleArgs.add("give");
                     possibleArgs.add("reset");
                     possibleArgs.add("pvp");
+                    possibleArgs.add("fire");
+                    possibleArgs.add("explosions");
+                    possibleArgs.add("mobs");
                 } else if (args[0].equals("accept")) {
                     for (Town r : Towns.getTowns()) {
                         possibleArgs.add(r.getName());
@@ -157,7 +160,7 @@ public class TownTabCompleter implements TabCompleter {
                     }
 
                 }
-                if ((args[0].equals("region") && (args[1].equals("pvp")))) {
+                if (args[0].equals("region") && (args[1].equals("pvp") | args[1].equals("fire") | args[1].equals("explosions") | args[1].equals("mobs"))) {
                     possibleArgs.add("on");
                     possibleArgs.add("off");
                 }

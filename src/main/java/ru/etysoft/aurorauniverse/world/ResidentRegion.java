@@ -17,6 +17,12 @@ public class ResidentRegion extends Region {
     private ArrayList<String> members = new ArrayList<>();
     private boolean isPvp;
 
+    private boolean isFire;
+
+    private boolean isExplosions;
+
+    private boolean isMobs;
+
     public ResidentRegion(Town town, Resident owner) {
         super(town);
         this.owner = owner;
@@ -27,8 +33,32 @@ public class ResidentRegion extends Region {
         isPvp = pvp;
     }
 
+    public void setFire(boolean fire) {
+        isFire = fire;
+    }
+
+    public void setExplosions(boolean explosions) {
+        isExplosions = explosions;
+    }
+
+    public void setMobs(boolean mobs) {
+        isMobs = mobs;
+    }
+
     public boolean isPvp() {
         return isPvp;
+    }
+
+    public boolean isFire() {
+        return isFire;
+    }
+
+    public boolean isExplosions() {
+        return isExplosions;
+    }
+
+    public boolean isMobs() {
+        return isMobs;
     }
 
     public boolean addMember(Resident resident)
@@ -56,6 +86,9 @@ public class ResidentRegion extends Region {
         }
         regionObj.put(JsonKeys.MEMBERS, jsonArray);
         regionObj.put(JsonKeys.PVP, isPvp);
+        regionObj.put(JsonKeys.FIRE, isFire);
+        regionObj.put(JsonKeys.EXPLOSIONS, isExplosions);
+        regionObj.put(JsonKeys.MOBS, isMobs);
 
         return regionObj;
     }
@@ -86,6 +119,49 @@ public class ResidentRegion extends Region {
                 Logger.warning("Cannot read property PvP of region of " + residentRegion.getOwner().getName());
             }
 
+
+            // Хмхмхмхмхмххм, наверно можно будет убрать потом (Хотя всё равно не очень понимаю нахуй оно нужно, если вайп)
+            if (!regionObj.containsKey(JsonKeys.FIRE)) {
+                residentRegion.setFire(false);
+                residentRegion.setExplosions(false);
+                residentRegion.setMobs(false);
+            }
+            else
+            {
+                try
+                {
+                    boolean isFire = (boolean) regionObj.get(JsonKeys.FIRE);
+                    residentRegion.setFire(isFire);
+                }
+                catch (Exception e)
+                {
+                    Logger.warning("Cannot read property FIRE of region of " + residentRegion.getOwner().getName());
+                }
+
+                try
+                {
+                    boolean isExplosions = (boolean) regionObj.get(JsonKeys.EXPLOSIONS);
+                    residentRegion.setExplosions(isExplosions);
+                }
+                catch (Exception e)
+                {
+                    Logger.warning("Cannot read property EXPLOSIONS of region of " + residentRegion.getOwner().getName());
+                }
+
+                try
+                {
+                    boolean isMobs = (boolean) regionObj.get(JsonKeys.MOBS);
+                    residentRegion.setMobs(isMobs);
+                }
+                catch (Exception e)
+                {
+                    Logger.warning("Cannot read property MOBS of region of " + residentRegion.getOwner().getName());
+                }
+            }
+
+
+
+
             return residentRegion;
 
         }
@@ -102,6 +178,12 @@ public class ResidentRegion extends Region {
         public static final String OWNER = "OWNER";
         public static final String MEMBERS = "MEMBERS";
         public static final String PVP = "PVP";
+
+        public static final String FIRE = "FIRE";
+
+        public static final String EXPLOSIONS = "EXPLOSIONS";
+
+        public static final String MOBS = "MOBS";
 
     }
 

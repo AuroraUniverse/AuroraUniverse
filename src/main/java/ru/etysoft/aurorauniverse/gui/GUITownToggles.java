@@ -1,20 +1,13 @@
 package ru.etysoft.aurorauniverse.gui;
 
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
-import ru.etysoft.aurorauniverse.commands.town.TownClaimCommand;
-import ru.etysoft.aurorauniverse.commands.town.TownGuiCommand;
-import ru.etysoft.aurorauniverse.commands.town.TownUnclaimCommand;
-import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
-import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.utils.Messaging;
-import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.*;
 import ru.etysoft.epcore.gui.GUITable;
 import ru.etysoft.epcore.gui.Items;
@@ -77,7 +70,7 @@ public class GUITownToggles {
     {
         String fireToggle = AuroraLanguage.getColorString("gui.state-off");
 
-        if(town.isFire())
+        if(town.isTownFire())
         {
             fireToggle = AuroraLanguage.getColorString("gui.state-on");
         }
@@ -86,7 +79,7 @@ public class GUITownToggles {
             @Override
             public void run() {
                 String suffix = "on";
-                if(town.isFire())
+                if(town.isTownFire())
                 {
                     suffix = "off";
                 }
@@ -101,7 +94,7 @@ public class GUITownToggles {
 
         String mobsToggle = AuroraLanguage.getColorString("gui.state-off");
 
-        if(town.isMobs())
+        if(town.isTownMobs())
         {
             mobsToggle = AuroraLanguage.getColorString("gui.state-on");
         }
@@ -110,7 +103,7 @@ public class GUITownToggles {
             @Override
             public void run() {
                 String suffix = "on";
-                if(town.isMobs())
+                if(town.isTownMobs())
                 {
                     suffix = "off";
                 }
@@ -150,7 +143,7 @@ public class GUITownToggles {
 
         String expToggle = AuroraLanguage.getColorString("gui.state-off");
 
-        if(town.isExplosionEnabled())
+        if(town.isTownExplosion())
         {
             expToggle = AuroraLanguage.getColorString("gui.state-on");
         }
@@ -159,7 +152,7 @@ public class GUITownToggles {
             @Override
             public void run() {
                 String suffix = "on";
-                if(town.isExplosionEnabled())
+                if(town.isTownExplosion())
                 {
                     suffix = "off";
                 }

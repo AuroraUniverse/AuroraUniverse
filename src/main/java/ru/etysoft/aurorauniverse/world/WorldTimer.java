@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,7 +111,7 @@ public class WorldTimer {
                                Region region = AuroraUniverse.getTownBlock(ChunkPair.fromChunk(e.getLocation().getChunk()));
                                if(region != null)
                                {
-                                   if(!region.getTown().isMobs())
+                                   if(!region.getTown().isMobs(region))
                                    {
                                        Logger.debug("Removing monster at " + e.getLocation());
                                        e.remove();

@@ -27,6 +27,10 @@ groups:
       - auneconomy.balance
       - town.teleport.spawn
       - town.teleport.outpost
+      - town.region.info
+      - town.region.toggle
+      - town.region.addmember
+      - town.region.kick
     assistant:
       - town.leave
       - town.create
