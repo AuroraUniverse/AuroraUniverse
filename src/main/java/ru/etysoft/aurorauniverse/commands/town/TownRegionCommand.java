@@ -108,18 +108,21 @@ public class TownRegionCommand {
                 if (region != null) {
                     if (region instanceof ResidentRegion) {
                         Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-already-owned"), sender);
+                    } else if (region instanceof OutpostRegion) {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-is-outpost"), sender);
                     } else {
-                        Resident receiver = Residents.getResident(args[2]);
-                        if (receiver != null) {
-                            try {
-                                town.createPlayerRegion(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk()), receiver);
-                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-success"), sender);
-                            } catch (RegionException e) {
-                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-error"), sender);
+                            Resident receiver = Residents.getResident(args[2]);
+                            if (receiver != null) {
+                                try {
+                                    town.createPlayerRegion(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk()), receiver);
+                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-success"), sender);
+                                } catch (RegionException e) {
+                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-error"), sender);
+                                }
                             }
                         }
                     }
-                } else {
+                else {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
                 }
             } catch (TownNotFoundedException ignored) {
