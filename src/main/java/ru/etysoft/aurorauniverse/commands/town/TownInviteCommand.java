@@ -1,8 +1,14 @@
 package ru.etysoft.aurorauniverse.commands.town;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.w3c.dom.Text;
+import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
@@ -28,7 +34,18 @@ public class TownInviteCommand {
                             t.getInvitedResidents().add(resident2);
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-invite").replace("%s", resident2.getName()), sender);
                             if (Bukkit.getPlayer(sender.getName()) != null) {
-                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-request").replace("%s", t.getName()), Bukkit.getPlayer(resident2.getName()));
+                                TextComponent msgJSON = new TextComponent(AuroraLanguage.getColorString("accept"));
+                                msgJSON.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(AuroraLanguage.getColorString("town-accept-json")).create()));
+                                msgJSON.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/t accept " + t.getName()));
+
+                                TextComponent msg = new TextComponent(AuroraUniverse.getPrefix() + " " + AuroraLanguage.getColorString("town-request").replace("%s", t.getName()));
+                                ComponentBuilder builder = new ComponentBuilder();
+
+                                builder.append(msg);
+                                builder.append("\n");
+                                builder.append(msgJSON);
+
+                                resident2.getPlayer().spigot().sendMessage(builder.create());
                             }
                         } else {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-accept-err"), sender);

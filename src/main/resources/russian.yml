@@ -90,7 +90,7 @@ town-kick: "&fГорожанин &b%s &fбыл выгнан из города"
 town-invite: "&fГорожанин &b%s &fбыл приглашён в город"
 town-accepted: "&fГорожанин &b%s &fприсоединился к городу"
 town-accepted-nothing: "&fВы не получали приглашения от этого города"
-town-request: "&fГород %s предлагает Вам присоединиться. Напишите &b/t accept %s &fчтобы принять приглашение"
+town-request: "&fГород %s предлагает вам присоединиться."
 town-accept-err: "&cНеверный запрос!"
 town-pvpon: "Теперь &fPvP в городе &aвключено"
 town-mobson: "Теперь &fмонстры на территории &aвключены"
@@ -252,7 +252,7 @@ nation-deleted: "Ваша нация была удалена"
 nation-already: "Вы уже в составе нации"
 nation-teleport: "Вы были телепортированы на спавн нации"
 nation-town-not-registered: "Город не зарегистрирован"
-nation-invitation: "Нация %s приглашает Ваш город. Напишите &b/n accept %s &fчтобы принять приглашение"
+nation-invitation: "Нация %s приглашает ваш город."
 nation-deposit: "Положили %s на счёт нации"
 nation-withdraw: "Сняли %s со счёта нации"
 nation-withdraw-others: "%p снял %s со счёта нации"
@@ -418,3 +418,9 @@ region-mobs-on: "&fВы включили &cмобов &fв данном реги
 # Added in 0.8.1.1
 
 region-is-outpost: "&7Данный регион является аванпостом!"
+
+# Added in 0.8.1.2
+
+accept: "&b[Принять]"
+town-accept-json: "&fНажмите, чтобы принять приглашение в город."
+nation-accept-json: "&fНажмите, чтобы принять приглашение в нацию."

@@ -1,5 +1,9 @@
 package ru.etysoft.aurorauniverse.commands.nation;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -233,8 +237,21 @@ public class NationCommands implements CommandExecutor {
                             resident.getTown().getNation().getInvitedTowns().add(Towns.getTown(townName));
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-invite-sent").
                                     replace("%s", townName), player);
-                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-invitation").
-                                    replace("%s", resident.getTown().getNationName()), Towns.getTown(townName).getMayor().getPlayer());
+
+                            TextComponent msgJSON = new TextComponent(AuroraLanguage.getColorString("accept"));
+                            msgJSON.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(AuroraLanguage.getColorString("nation-accept-json")).create()));
+                            msgJSON.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/n accept " + resident.getTown().getNationName()));
+
+                            TextComponent msg = new TextComponent(AuroraUniverse.getPrefix() + " " + AuroraLanguage.getColorString("nation-invitation").replace("%s", resident.getTown().getNationName()));
+
+                            ComponentBuilder builder = new ComponentBuilder();
+
+                            builder.append(msg);
+                            builder.append("\n");
+                            builder.append(msgJSON);
+
+                            Towns.getTown(townName).getMayor().getPlayer().spigot().sendMessage(builder.create());
+
                         } else {
                             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("nation-capital-edit"), player);
                         }

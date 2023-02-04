@@ -410,3 +410,13 @@ region-explosions-off: "&7You turned off the explosions in this region"
 region-explosions-on: "&7You turned on the explosions in this region"
 region-mobs-off: "&7You turned off the mobs in this region"
 region-mobs-on: "&7You turned on the mobs in this region"
+
+# Added in 0.8.1.1
+
+region-is-outpost: "&7This region is an outpost!"
+
+# Added in 0.8.1.2
+
+accept: "&b[Accept]"
+town-accept-json: "&fClick to accept an invitation to the town."
+nation-accept-json: "&fClick to accept the invitation to the nation."

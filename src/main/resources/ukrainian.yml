@@ -1,0 +1,426 @@
+# Language configuration file
+
+########################################
+#                                      #
+#            General params            #
+#                                      #
+########################################
+
+prefix: "&7[&bAuroraUniverse&7]"
+# DO NOT EDIT
+file-version: 0.1.1.5
+
+########################################
+#                                      #
+#        Aurora Plugin Messages        #
+#                                      #
+########################################
+
+authors-string: "Автори: "
+version-string: "Версія: "
+apiversion-string: "API Version: "
+
+reloaded-message: "&aПлагін успішно перезавантажено з новими параметрами!"
+no-arguments: "&cНеверные аргументы команды!"
+access-denied-message: "&eУ вас недостатньо прав для цієї дії!"
+console: "&cВы не можете сделать это из консоли!"
+resident-town: "&7Місто: &b%s"
+resident-balance: "&7Баланс: &b%s"
+resident-none: "ні"
+
+prices:
+  header: "&7>> &bAurora&fUniverse &aціни &7<<"
+  new-town: "&bМісто: &a%s"
+  chunk-price: "&bПриват &fчанку: &a%s"
+  outpost-price: "&bАванпост: &a%s"
+  chunk-mod: "&bЗбільшення &fвартості чанку: &a%s"
+  outpost-mod: "&bЗбільшення &fвартості аванпосту: &a%s"
+  nation-price: "&bНація: &a%s"
+  new-day: "&eЧас до нового дня&f: &a%s"
+
+########################################
+#                                      #
+#            Towns messages            #
+#                                      #
+########################################
+# %s - is a variable (example: town name, error message etc.)
+
+world-timer: "&eНовий день настав! Збір податків..."
+price-error: "&eВам треба %s щоб це зробити!"
+name-invalid: "&eИм'я %s некоректно!"
+
+town-created-message: "Ви створили місто з назвою %s. Збір податків настане через %h годин"
+town-cantcreate-message: "&cПомилка створення міста: %s "
+town-deleted-message: "Ваше місто було успішно видалено"
+town-delete-confirm: "&fНапишіть &b/t delete confirm &fякщо Ви дійсно хочете видалити своє місто"
+town-teleported-to-spawn: "Ви були телепортовані на спавн міста"
+town-teleported-to-outpost: "Ви були телепортовані на аванпост"
+town-no-outpost: "&cТакого аванпоста немає"
+town-dont-belong: "У Вас немає міста!"
+town-claim: "&fНовий чанк &aуспішно &fприєднано!"
+town-claim-outpost: "&fУспішно &aприєднали &fновыи &6аванпост!"
+town-cant-withdraw-outpost: "&cНеможливо сплатити аванпост!"
+town-cantclaim: "&cНеможливо приєднати новий чанк!"
+town-unclaim: "&fЧанк успішно &розпривачен!"
+town-cantunclaim: "&cНеможливо розприватити &fчанк міста!"
+town-leave: "&fВи &eзалишили &fмісто %s"
+town-list: "&7>> &bПерелік міст"
+town-rename: "&fВи &eперейменували&f місто на &b%s"
+town-setspawn: "Нова точка появи встановлено!"
+town-settax: "Ви встановили нові податки на городян!"
+town-setmayor: "Нового мера встановлено!"
+town-cantsetmayor: "&cЦей гравець не може бути мером."
+town-tax-error: "Невірний податок!"
+town-delete-canceled: "Вилучення міста було скасовано"
+town-cantsetspawn: "&cНеможливо встановити точку  спавна!"
+town-cantcreateportal: "&cСтворення порталу заборонено"
+town-group-mayor: "&cВи не можете редагувати &eгрупу прав мера"
+town-group-does-not-exists: "&cЦя група прав не існує!"
+town-group-set: "Група прав &f%s &7застосована до городянина &b%p"
+town-out-money: "&fМісто &b%s &fбуло &cвидалено&f через брак коштів на податки"
+town-resident-not-in-town: "&cЦей городянин не належить місту"
+
+
+town-enperm: "&fДозволили &a%s &fгрупі &b%k!"
+town-disperm: "&fЗаборонили &e%s групі &b%k!"
+town-cantsetperm: "&cНеможливо встановити дозвіл &f%s &cгрупі &f%k"
+
+
+town-kick: "&fГородянин &b%s &fбув вигнаний із міста"
+town-invite: "&fГородянин &b%s &fбув запрошений до міста"
+town-accepted: "&fГородянин &b%s &fприєднався до міста"
+town-accepted-nothing: "&fВи не отримували запрошень від цього міста"
+town-request: "&fМісто %s пропонує вам приєднатися."
+town-accept-err: "&cНеправильний запит!"
+town-pvpon: "Тепер &fPvP у місті &aвключено"
+town-mobson: "Тепер &fмонстри на території &aвключені"
+town-mobsoff: "Тепер &fмонстри на території міста &aвимкнені"
+town-pvpoff: "Тепер &fPvP у місті &aвимкнено"
+town-pvp: "&cВи не можете боротися тут!"
+town-fireon: "Тепер вогонь у місті &aувімкнено"
+town-expon: "Тепер вибухи у місті&aдозволені"
+town-expoff: "Тепер вибухи у місті &aзаборонені"
+town-fireoff: "Тепер вогонь у місті &aвимкнено"
+
+
+town-block-place: "&cВи не можете ставити блоки тут!"
+town-block-break: "&cВи не можете ламати блоки тут!"
+town-block-switch: "&cВи не можете перемикати тут!"
+town-block-use: "&cВи не можете використовувати тут!"
+
+town-mayor: "&7> &bМер: &f%s"
+town-residents: "&7> &bГородяни&7(%s1): &f%s2"
+town-chunks: "&7> &bДілянки: &f%s/%m (%b бонусних, %o/%p аванпостів)"
+town-chunk-price: "&7> &bЦіна ділянки: &f%s"
+town-outpost-price: "&7> &bЦіна аванпосту: &f%s"
+town-tax: "&7> &bЩоденний податок: &e%s"
+town-res-tax: "&7> &bПодаток з городян: &e%s"
+town-pages: "Показано &f%s &7сторінку з &f%y"
+town-balance: "&7> &bБанк міста: &a%s"
+town-build: "&7>> &eБудувати &fгрупи: &7%s"
+town-destroy: "&7>> &eЛамати &fгрупи: &7%s"
+town-switch: "&7>> &eПеремикати &fгрупи: &7%s"
+town-use: "&7>> &eВикористати &fгрупи: &7%s"
+town-deposit: "&fПоклали&b%s &7на рахунок міста"
+town-deposit-other: "&fГородянин &e%r &fпоклал &b%s &7на рахунок міста"
+town-withdraw-other: "&fГородянин &e%r &fзнял &b%s &7з рахунку міста"
+town-withdraw: "&fЗняли &b%s &7з рахунку міста"
+town-cantwithdraw: "&cНеможливо зняти &f%s &cз рахунку міста"
+town-cantdeposit: "&cНеможливо покласти &f%s &cна рахунок міста"
+
+gui:
+  bank: "&7Банк міста: &b%s"
+  mayor: "&7Мер: &b%s"
+  embargo: "&7Міста ембарго: &e%s"
+  chunks: "&7Ділянки: &b%s/%m (%b бонусних, %o/%p аванпостів)"
+  standing: "&3Зараз ви стоїте на"
+  standing-town: "&bЗвичайна міська ділянка"
+  standing-main-chunk: "&bГоловна міська ділянка"
+  has-owner: "&fДілянка гравця &b%s, &a%s1 &fучасників"
+  claim: "&fЗаприватити цю ділянку (&a%s$&f)"
+  unclaim: "&fРозприватити цю ділянку"
+  toggle-fire: "&fВогонь (%s)"
+  toggle-mobs: "&fМонстри (%s)"
+  toggle-pvp: "&fPvP (%s)"
+  toggle-exp: "&fВибухи (%s)"
+  state-on: "&aУВІМК.&f"
+  state-off: "&cВИМК.&f"
+  toggles: "Перемикачі"
+  toggles-button: "&eПеремикачі"
+  toggles-lore: "&7Управління та перегляд перемикачів міста"
+  trans-history: "&eІсторія транзакцій"
+  trans-history-lore: "&7Останні великі 6 операцій"
+  trans-history-withdraw: "&b%s &fзнял &e%d"
+  trans-history-deposit: "&b%s &fпоклал &a%d"
+
+
+not-registered-town: "Міста з таким ім'ям не існує"
+not-registered-resident: "Городянина з таким ім'ям не існує"
+
+########################################
+#                                      #
+#           Regions messages           #
+#                                      #
+########################################
+
+region-already-owned: "&cЦя ділянка вже належить городянину"
+region-unowned: "&cЦя ділянка не завалена"
+region-error: "&cПомилка ділянки: неправильна дія"
+region-success: "&fУспішно &aпередали ділянку&f городянину"
+region-reset-success: "&fУспішно скинули ділянку"
+region-townowned: "&cЦе ділянка міста!"
+region-owner-members: "&cЛише власник ділянки може редагувати її учасників!"
+region-added: "&fУспішно &aдодали гравця &b%s &fу ділянку"
+region-kicked: "&eВигнали гравця &b%s &fз цієї ділянки"
+region-pvp-on: "&fТепер pvp &aувімкнено &fна цій ділянці"
+region-pvp-off: "&fТепер pvp &cвимкнено &fна цій ділянці"
+
+# [Town errors]
+e1: "місто на цій ділянці вже існує"
+e2: "неправильне ім'я"
+e3: "місто з ім'ям %s вже існує"
+e4: "вже в місті"
+e5: "ділянка не належить місту"
+too-close: "&cЦя ділянка надто близько до іншого міста!"
+too-far: "&cЦя ділянка надто далеко від вашого міста!"
+
+# [Chunk notifications]
+town-welcome: "&fЛаскаво просимо до міста &b%s &7(%p&7)"
+region-welcome: "&fДілянка гравця &b%s &7(%p&7)"
+outpost-welcome: "&fАванпост номер &6%n &fміста &b%s"
+town-region-welcome: "&fМісто &b%town&7 (%tpvp&7) | &6Ділянка &b%resident &7(%rpvp&7)"
+world: "&eВи вийшли у світ! &2Будьте обережні!"
+pvp: "&cPvP"
+no-pvp: "&aNo-PvP"
+forced-pvp: "&cОбов'язкове PvP"
+
+region-info:
+  title: "&bo0o_[&fІнформація ділянки&b]_o0o"
+  town-owned: "&7> Ділянка під володінням міста"
+  toggle-pvp: "&7> Pvp: %s"
+  toggle-fire: "&7> Fire: %s"
+  toggle-explosions: "&7> Explosions: %s"
+  toggle-mobs: "&7> Mobs: %s"
+  members: "&7> Власник %s, учасники(%s1): %s2"
+
+########################################
+#                                      #
+#           Economy messages           #
+#                                      #
+########################################
+
+economy:
+  give: "&fУспішно &aвидали &f%s &fгравцю &b%k"
+  take: "&fУспішно &eзабрали &f%s &fу &b%k"
+  balance: "&fВаш баланс &b%s$"
+  pay:
+    success: "&fУспішно &bпередали &e%s &fгравцю &b%k"
+    not-found: "&cГравця %s не знайдено!"
+    no-money: "&cУ вас немає %s!"
+    error: "&cНеможливо сплатити &6%s &cгравцю &b%k!"
+    # Added in 0.6.2.0
+    notification: "&7Гравець &b%s &fпередав &e%b &7вам"
+
+
+########################################
+#                                      #
+#                Nation                #
+#                                      #
+########################################
+
+nation:
+  capital: "&bСтолиця: &f%s"
+  members: "&bМіста(%s): &7%s1"
+  tax: "&bПодаток з міста: &a%s"
+  tax-nation: "&bПодатки нації: &e%s"
+  bank: "&bБанк нації: &b%s"
+no-nation: "У вас немає нації"
+wrong-nation: "Неправильне ім'я нації"
+nation-leave: "Ви покинули свою націю"
+nation-kick: "Ви вигнали %s зі складу нації"
+nation-list: "&7>> &bПерелік націй"
+nation-tax: "Ви встановили податок з міста на %s"
+nation-tax-error: "Невірний податок!"
+nation-wrong-town: "Міста %s не існує або він уже запрошений"
+nation-no-capital: "Лише столиця може змінювати міста у складі нації."
+nation-capital-edit: "Ви не можете редагувати столицю"
+nation-no-invite: "Ви не були запрошені"
+nation-invite-sent: "Ви надіслали запрошення місту %s"
+nation-accepted: "Ви успішно прийняли запрошення на вступ до нації."
+nation-created: "Нова нація %s створена"
+nation-deleted: "Вашу націю було видалено"
+nation-already: "Ви вже у складі нації"
+nation-teleport: "Ви були телепортовані на спавн нації"
+nation-town-not-registered: "Місто не зареєстроване"
+nation-invitation: "Нація %s запрошує ваше місто."
+nation-deposit: "Поклали %s на рахунок нації"
+nation-withdraw: "Зняли %s з рахунку нації"
+nation-withdraw-others: "%p знял %s з рахунку нації"
+nation-cantdeposit: "Неможливо покласти%s на рахунок нації"
+
+########################################
+#                                      #
+#                 Chat                 #
+#                                      #
+########################################
+
+chat:
+  global: "&3G &7> %vault_prefix%&f%sender%: &7%luckperms_suffix%%message%"
+  local: "&eLC &7>> %vault_prefix%&f%sender%: &e%luckperms_suffix%%message%"
+  town: "&bМісто &7>> %vault_prefix%&f%sender%: &b%luckperms_suffix%%message%"
+  nation: "&6Нація &7>> %vault_prefix%&f%sender%: &b%luckperms_suffix%%message%"
+  changed: "&fВи поміняли чат на &b%s"
+  ignore: "&fВи ігноруєте &b%s &fчат"
+  no-ignore: "&fТепер ви отримуватимете повідомлення з каналу &b%s"
+  local-nobody: "&7Вас ніхто не чує!"
+  hover-text: "%aurorauniverse_town% %aurorauniverse_nation%"
+  channels:
+    town: "міський"
+    local: "локальний"
+    global: "глобальний"
+    nation: "нації"
+
+
+########################################
+#                                      #
+#            Admin messages            #
+#                                      #
+########################################
+admin:
+  town-gave-bonus: "Видали &b%s &fбонусні чанки місту &b%t"
+  town-cant-give-bonus: "&cНеможливо видати &fбонусні чанки місту &b%t"
+  town-deleted: "Місто &b%s &cвидаено&fуспішно"
+  town-cantdelete: "Неможливо видалити місто &b%s"
+  town-cant-add: "Неможливо додати городянина &b%s"
+  town-added: "Додали городянина &b%s &fдо міста &b%t"
+  town-removed: "Виключили городянина &b%s &fз міста &b%t"
+  town-cant-remove: "Неможливо видалити городянина &b%s"
+  town-cant-deposit: "Неможливо покласти кошти"
+  town-deposited: "Поклали &b%s &fна рахунок міста &b%t"
+  town-cant-withdraw: "Неможливо зняти!"
+  town-withdraw: "Зняли &b%s &fз рахунку міста &b%t"
+
+
+########################################
+#                                      #
+#             Placeholders             #
+#                                      #
+########################################
+
+placeholders:
+  town: "&7[&b%s&7] "
+  no-town: ""
+  nation: "&7[&6%s&7] "
+  no-nation: ""
+
+# Added in 0.5.0.0
+
+auction-created: "&fРинок успішно &aстворений"
+auction-gui:
+  title: "&eРинок &7[&cНЕ КУПЛЕНО&7]"
+  title-bought: "&eРинок &7[&aКуплено&7]"
+  lore: "&fНа ринку ви можете торгувати ресурсами з іншими &bмістами."
+  lore-2: "&7Натисніть ЛКМ, щоб розмістити, ПКМ для видалення (знову купувати)"
+  price: "&fЦіна &b%s"
+  title-gui: "Міжміський ринок"
+  item: "&fПродає &b%s &7(&b%t&7)"
+  item-exp: "&fБуде видалено через &c%s хвилин"
+  item-your-lore: "&7Натисніть Shift+ЛКМ, щоб забрати"
+  next-page: "&eНаступна сторінка"
+  prev-page: "&eПопередня сторінка"
+
+auction-error-place: "&cРинок не може бути побудований тут (територія розчищена?)"
+auction-sell-need-struct: "&cВы не можете продавать предметы без рынка в городе"
+auction-buy-need-struct: "&cЩоб купувати так багато, вам потрібен ринок у місті"
+auction-buy-no-money: "&cУ вас недостатньо коштів!"
+auction-buy-success: "&fУспішно купили &b%s за &a%p!"
+auction-sell-double: "&cНевірна ціна"
+auction-sell-nothing: "&cУ Вашій руці немає предмета!"
+auction-sell-town-max: "&cВаше місто досягло максимальної кількості активних продажів (%s)"
+auction-sell-success: "&fУспішно виставили &b%s за &a%p"
+auction-error-replace: "&cРинок не може бути переміщений: недостатньо блоків"
+auction-error-chunk: "&cРинок має бути розміщений тільки на одному чанці"
+
+# Added in 0.6.0.0
+
+residents-gui:
+  title: "Городяни"
+  info: "&eГородяни"
+  lore: "&7Перегляд та керування городянами"
+  resident-name: "&b%s"
+  resident-perm: "&7Група дозволів: &f%s"
+  resident-bal: "&7Баланс: &b%s"
+  toggle-online: "&fПоказати городян які &aонлайн"
+  toggle-all: "&fПоказати &eвсіх"
+  next-page: "&eНаступна сторінка"
+  prev-page: "&eПопередня сторінка"
+  loading-title: "&bЗавантаження..."
+  loading-lore: "&7Згадуємо скіни всіх мешканців міста..."
+
+# Added in 0.6.1.0
+
+rep-cantchange: "&cВи не можете змінити репутацію цього гравця."
+rep-plus: "&cВи підвищили репутацію гравця %s (%rep)"
+rep-minus: "&cВи зменшили репутацію гравця %s (%rep)"
+resident-reputation: "&7Репутація: &b%aurorauniverse_rep%"
+rep-positive-color: "&a+"
+rep-negative-color: "&c-"
+rep-zero-color: "&7"
+resident-hours-played: "&7Онлайн: &b%s &7годин за весь час"
+
+
+
+# Added in 0.6.1.4
+
+nation-out-money: "&fНація &b%s &fбула &cвидалена&f за несплату"
+embargo-auction-error: "&7Ваше місто знаходиться в &eембарго-переліку&7 міста &b%s&7, тому ви не можете купувати товари від цього міста."
+embargo-add: "&7Тепер місто &b%s &7додане у перелік ембарго"
+embargo-remove: "&7Тепер місто &b%s &7видалено з переліку ембарго"
+embargo-contains: "&7Перелік ембарго &cвже містить&7 це місто"
+embargo-not-contains: "&7Перелік ембарго&cне містить&7 це місто"
+region-add-contains: "&7Городянин &cвже учасник"
+
+# Added in 0.7.0.3
+
+nation-rename: "Вашу націю було перейменовано"
+nation-not-capital-mayor: "&7Ви не є мером столиці нації"
+
+# Added in 0.7.0.4
+
+nation-cant-withdraw: "&7Недостатньо коштів на рахунку нації"
+nation-teleport-incorrect: "&7Введіть у форматі /n spawn, щоб телепортуватися до столиці нації або /n spawn (ім'я міста, що входить до нації), щоб потрапити до нього"
+nation-teleport-to-city: "&7Ви були телепортовані на спавн міста &f%t"
+nation-rename-others: "&7%p переименовав вашу націю на &b%n"
+
+# Added in 0.8.0.1
+
+town-townrank-command-incorrect: "&7Введіть у форматі /t rank set (ім'я гравця) (ранг)"
+town-resettownrank-incorrect: "&7Введіть у форматі /t rank reset (ім'я гравця)"
+
+# Added in 0.8.0.5
+
+town-rank-change-successful: "&7Ви успішно поставили ранг %s гравцю%p"
+town-rank-reset-successful: "&7Ви успішно видалили ранг гравцю %p"
+
+# Added in 0.8.0.10
+
+region-event-canceled: "&cВи не перебуваєте у цьому регіоні!"
+
+# Added in 0.8.0.11
+
+region-fire-off: "&fВи вимкнули &aвогонь &fу цьому регіоні"
+region-fire-on: "&fВи ввімкнули &cвогонь &fу цьому регіоні"
+region-explosions-off: "&fВи вимкнули &aвибухи &fу цьому регіоні"
+region-explosions-on: "&fВи ввімкнули &cвибухи &fу цьому регіоні"
+region-mobs-off: "&fВи вимкнули &aмобів &fу цьому регіоні"
+region-mobs-on: "&fВи ввімкнули &cмобів &fу цьому регіоні"
+
+# Added in 0.8.1.1
+
+region-is-outpost: "&7Цей регіон являється аванпостом!"
+
+# Added in 0.8.1.2
+
+accept: "&b[Прийняти]"
+town-accept-json: "&fНатисніть, щоб прийняти запрошення до міста."
+nation-accept-json: "&fНатисніть, щоб прийняти запрошення до нації."
