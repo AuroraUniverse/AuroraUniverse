@@ -32,13 +32,12 @@ public class GUIAuction {
     private Player player;
 
     public GUIAuction(Resident resident, Player pl, CommandSender sender, int page) {
-        if(resident == null) return;
-        if(!resident.hasTown())
-        {
+        if (resident == null) return;
+        if (!resident.hasTown()) {
             sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.TOWN_DONT_BELONG));
             return;
         }
-        if(Permissions.canUseAuction(sender)) {
+        if (Permissions.canUseAuction(sender)) {
             try {
                 player = pl;
                 town = resident.getTown();
@@ -87,30 +86,24 @@ public class GUIAuction {
 
                                             boolean hasEmbargo = false;
 
-                                            if(auctionItem.getResident().getTown().hasEmbargoForTown(town))
-                                            {
+                                            if (auctionItem.getResident().getTown().hasEmbargoForTown(town)) {
                                                 hasEmbargo = true;
                                             }
-                                            if(AuroraUniverse.getInstance().getConfig().getBoolean("embargo-capital-share") && !hasEmbargo)
-                                            {
-                                                if(auctionItem.getResident().getTown().hasNation())
-                                                {
-                                                    if(auctionItem.getResident().getTown().getNation().getCapital().hasEmbargoForTown(town))
-                                                    {
+                                            if (AuroraUniverse.getInstance().getConfig().getBoolean("embargo-capital-share") && !hasEmbargo) {
+                                                if (auctionItem.getResident().getTown().hasNation()) {
+                                                    if (auctionItem.getResident().getTown().getNation().getCapital().hasEmbargoForTown(town)) {
                                                         hasEmbargo = true;
                                                     }
                                                 }
                                             }
 
-                                            if(hasEmbargo)
-                                            {
+                                            if (hasEmbargo) {
                                                 player.sendMessage(AuroraLanguage.getColorString("embargo-auction-error")
                                                         .replace("%s", auctionItem.getResident().getTown().getName()));
                                                 return;
                                             }
                                         } catch (Exception ignored) {
                                         }
-
 
 
                                         if (!hasAuction) {
@@ -122,12 +115,29 @@ public class GUIAuction {
                                         }
                                         if (client.getBank().withdraw(auctionItem.getPrice())) {
                                             if (Auction.removeListing(auctionItem)) {
-                                                auctionItem.getResident().getBank().deposit(auctionItem.getPrice());
+
+
+                                                try {
+                                                    if (auctionItem.getResident() != auctionItem.getResident().getTown().getMayor()) {
+                                                        double tax = auctionItem.getResident().getTown().getAuctionTax() / 100;
+
+                                                        auctionItem.getResident().getBank().deposit(auctionItem.getPrice() * (1 - tax));
+                                                        auctionItem.getResident().getTown().getBank().deposit(auctionItem.getPrice() * tax);
+
+                                                    } else {
+                                                        auctionItem.getResident().getBank().deposit(auctionItem.getPrice());
+                                                    }
+                                                } catch (TownNotFoundedException e) {
+                                                    auctionItem.getResident().getBank().deposit(auctionItem.getPrice());
+                                                }
+
+
                                                 player.sendMessage(AuroraLanguage.getColorString("auction-buy-success").replace("%s",
                                                         auctionItem.getItemStack().getType().toString()).replace("%p",
                                                         String.valueOf(Numbers.round(auctionItem.getPrice()))));
                                                 player.getInventory().addItem(Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName()));
                                                 new GUIAuction(resident, pl, sender, page);
+
                                             }
                                         } else {
                                             player.sendMessage(AuroraLanguage.getColorString("auction-buy-no-money"));
@@ -159,8 +169,7 @@ public class GUIAuction {
                             Slot slot = new Slot(slotListener, itemStack);
                             matrix.put(slotNumber, slot);
                             slotNumber++;
-                        }
-                        catch (Exception e){
+                        } catch (Exception e) {
                             Logger.error("Can't load auctionItem to GUI: ");
                             e.printStackTrace();
                         }
@@ -216,9 +225,7 @@ public class GUIAuction {
             } catch (TownNotFoundedException ignored) {
                 Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
             }
-        }
-        else
-        {
+        } else {
             sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.ACCESS_DENIED));
         }
     }

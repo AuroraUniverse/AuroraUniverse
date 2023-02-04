@@ -66,7 +66,7 @@ public class TownCommands implements CommandExecutor {
                     new TownAcceptCommand(args, resident, sender);
                 } else if (args[0].equalsIgnoreCase("gui")) {
                     new TownGuiCommand(resident, pl, args, sender);
-                } else if (args[0].equalsIgnoreCase("auction")) {
+                } else if (args[0].equalsIgnoreCase("auction") && args.length == 1) {
                         new GUIAuction(resident, pl, sender, 1);
                 } else if (args[0].equalsIgnoreCase("sell")) {
                     new TownSellCommand(sender, resident, args);
@@ -76,6 +76,8 @@ public class TownCommands implements CommandExecutor {
                     new TownRankSetCommand(resident, args, sender);
                 } else if (args[0].equalsIgnoreCase("rank") && args[1].equalsIgnoreCase("reset")) {
                     new TownRankResetCommand(resident, args, sender);
+                } else if (args[0].equalsIgnoreCase("auction") && args[1].equalsIgnoreCase("tax")) {
+                    new TownAuctionTax(sender, resident, args);
                 }
                 else {
 

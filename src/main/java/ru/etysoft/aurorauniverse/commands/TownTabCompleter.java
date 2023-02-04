@@ -51,6 +51,7 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("outpost");
         firstPossibleArg.add("accept");
         firstPossibleArg.add("rank");
+        firstPossibleArg.add("auction");
 
         for (Town r : Towns.getTowns()) {
             if(Permissions.canSeeTownInfo(sender)) {
@@ -123,6 +124,8 @@ public class TownTabCompleter implements TabCompleter {
                 {
                     possibleArgs.add("set");
                     possibleArgs.add("reset");
+                } else if (args[0].equals("auction")) {
+                    possibleArgs.add("tax");
                 }
 
             } else if (args.length == 3) {

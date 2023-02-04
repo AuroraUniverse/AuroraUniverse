@@ -52,6 +52,7 @@ groups:
       - town.residents.kick
       - town.withdraw
       - town.rank
+      - town.auction.edittax
     mayor:
       - town.*
       - auneconomy.pay

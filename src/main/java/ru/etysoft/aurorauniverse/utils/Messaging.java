@@ -40,6 +40,7 @@ public class Messaging {
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-outpost-price").replace("%s", String.valueOf(town.getNewOutpostPrice()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-tax").replace("%s", String.valueOf(town.getTownTax()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-res-tax").replace("%s", String.valueOf(town.getResTax()))));
+        p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-auction-tax").replace("%s", String.valueOf(town.getAuctionTax()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-balance").replace("%s",
                 String.valueOf(town.getBank().getBalance()))));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-build").replace("%s", String.join(", ", town.getBuildGroups()))));

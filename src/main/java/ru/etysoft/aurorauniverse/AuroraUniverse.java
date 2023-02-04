@@ -57,7 +57,7 @@ public final class AuroraUniverse extends JavaPlugin {
     private static FileConfiguration language;
     private static boolean haswarnings = false;
 
-    private final static String langver = "0.1.1.5";
+    private final static String langver = "0.1.1.6";
     private final static String confver = "0.1.0.4";
     private final static String permsver = "0.1.0.0";
 

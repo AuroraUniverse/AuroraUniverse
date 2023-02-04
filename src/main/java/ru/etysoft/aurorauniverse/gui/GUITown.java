@@ -62,6 +62,7 @@ public class GUITown {
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.mayor").replace("%s", town.getMayor().getName())),
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.bank").replace("%s", String.valueOf(town.getBank().getBalance()))),
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.embargo").replace("%s", embargos)),
+                    ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.auction-tax").replace("%s", String.valueOf(town.getAuctionTax()))),
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.chunks").replace("%s", String.valueOf(town.getChunksCount()))
                             .replace("%m", String.valueOf(town.getMaxChunks())).replace("%b", String.valueOf(town.getBonusChunks()))).replace("%o", String.valueOf(town.getOutPosts().size()))
                             .replace("%p", String.valueOf(AuroraUniverse.getMaxOutposts()))
@@ -337,11 +338,16 @@ public class GUITown {
             }
         };
 
-        Slot fireToggleSlot = new Slot(slotListener, Items.createNamedItem(new ItemStack(Material.EMERALD, 1), title,
-                AuroraLanguage.getColorString("auction-gui.lore"), AuroraLanguage.getColorString("auction-gui.lore-2"), AuroraLanguage.getColorString("auction-gui.price").replace("%s",
-                        String.valueOf(AuroraUniverse.getInstance().getConfig().getDouble("auction-price")))));
+        try {
+            Slot fireToggleSlot = new Slot(slotListener, Items.createNamedItem(new ItemStack(Material.EMERALD, 1), title,
+                    AuroraLanguage.getColorString("auction-gui.lore"), AuroraLanguage.getColorString("auction-gui.lore-2"),
+                    AuroraLanguage.getColorString("auction-gui.price").replace("%s",
+                            String.valueOf(AuroraUniverse.getInstance().getConfig().getDouble("auction-price")))));
 
-        matrix.put(33, fireToggleSlot);
+            matrix.put(33, fireToggleSlot);
+        } catch (Exception e) {
+
+        }
 
 
     }

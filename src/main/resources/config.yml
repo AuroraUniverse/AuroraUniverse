@@ -65,6 +65,9 @@ town-outpost-price: 10.0
 town-outpost-mod-price: 4.0
 nation-town-tax: 20.0
 
+# Tax for auction (should be <= 100)
+town-auction-tax-max: 100.0
+
 ####################################################
 # Economy
 ####################################################

@@ -22,6 +22,8 @@ public class Permissions {
 
     public static final String TOWN_REGION_TOGGLE = "town.region.toggle";
 
+    public static final String TOWN_AUCTION_EDITTAX = "town.auction.edittax";
+
 
 
     public static boolean isAdmin(CommandSender sender, boolean sendMessage) {

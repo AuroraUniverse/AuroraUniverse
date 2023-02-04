@@ -84,6 +84,8 @@ public class Town {
 
     private ArrayList<Resident> invitedResidents = new ArrayList<>();
 
+    private double auctionTax = 0;
+
     // Permission type -> list of groups with permission
     private Set<String> buildGroups = new HashSet<String>();
     private Set<String> destroyGroups = new HashSet<String>();
@@ -104,6 +106,8 @@ public class Town {
         public static final String RESIDENT_TAX = "RES_TAX";
         public static final String NATION_NAME = "NATION_NAME";
         public static final String EMBARGO_LIST = "EMBARGO_LIST";
+
+        public static final String AUCTION_TAX = "AUCTION_TAX";
 
         public static final String REGIONS = "REGIONS";
         public static final String IS_OUTPOST = "IS_OUTPOST";
@@ -152,6 +156,14 @@ public class Town {
 
     public int getBonusChunks() {
         return bonusChunks;
+    }
+
+    public double getAuctionTax() {
+        return auctionTax;
+    }
+
+    public void setAuctionTax(double auctionTax) {
+        this.auctionTax = auctionTax;
     }
 
     public boolean isExplosionEnabled() {
@@ -454,6 +466,16 @@ public class Town {
 
             town.setSpawn(spawnLocation);
 
+            if (jsonObject.containsKey(JsonKeys.AUCTION_TAX))
+            {
+                double auctionTax = Double.parseDouble(jsonObject.get(JsonKeys.AUCTION_TAX).toString());
+                town.setAuctionTax(auctionTax);
+            }
+            else
+            {
+                town.setAuctionTax(0);
+            }
+
 
 
 
@@ -595,6 +617,7 @@ public class Town {
         }
 
         townJsonObject.put(JsonKeys.BANK, townBank.getBalance());
+        townJsonObject.put(JsonKeys.AUCTION_TAX, this.auctionTax);
 
         JSONArray jsonArrayResidents = new JSONArray();
 
