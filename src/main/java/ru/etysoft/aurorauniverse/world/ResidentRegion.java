@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class ResidentRegion extends Region {
 
-    private Resident owner;
+    private String owner;
     private ArrayList<String> members = new ArrayList<>();
     private boolean isPvp;
 
@@ -23,7 +23,7 @@ public class ResidentRegion extends Region {
 
     private boolean isMobs;
 
-    public ResidentRegion(Town town, Resident owner) {
+    public ResidentRegion(Town town, String owner) {
         super(town);
         this.owner = owner;
         isPvp = false;
@@ -78,7 +78,7 @@ public class ResidentRegion extends Region {
     @Override
     public JSONObject toJson() {
         JSONObject regionObj = super.toJson();
-        regionObj.put(JsonKeys.OWNER, owner.getName());
+        regionObj.put(JsonKeys.OWNER, owner);
         JSONArray jsonArray = new JSONArray();
         for(String member : members)
         {
@@ -95,10 +95,9 @@ public class ResidentRegion extends Region {
 
     public static ResidentRegion fromJSON(JSONObject regionObj) throws TownNotFoundedException {
         String ownerName = (String) regionObj.get(JsonKeys.OWNER);
-        Resident ownerResident = Residents.getResident(ownerName);
 
-        if(ownerResident != null) {
-            ResidentRegion residentRegion = new ResidentRegion(Towns.getTown((String) regionObj.get(Region.JsonKeys.TOWN_NAME)), ownerResident);
+        if(ownerName != null) {
+            ResidentRegion residentRegion = new ResidentRegion(Towns.getTown((String) regionObj.get(Region.JsonKeys.TOWN_NAME)), ownerName);
 
             JSONArray membersJsonArray = (JSONArray) regionObj.get(JsonKeys.MEMBERS);
 
@@ -116,7 +115,7 @@ public class ResidentRegion extends Region {
             }
             catch (Exception e)
             {
-                Logger.warning("Cannot read property PvP of region of " + residentRegion.getOwner().getName());
+                Logger.warning("Cannot read property PvP of region of " + residentRegion.getOwnerName());
             }
 
 
@@ -135,7 +134,7 @@ public class ResidentRegion extends Region {
                 }
                 catch (Exception e)
                 {
-                    Logger.warning("Cannot read property FIRE of region of " + residentRegion.getOwner().getName());
+                    Logger.warning("Cannot read property FIRE of region of " + residentRegion.getOwnerName());
                 }
 
                 try
@@ -145,7 +144,7 @@ public class ResidentRegion extends Region {
                 }
                 catch (Exception e)
                 {
-                    Logger.warning("Cannot read property EXPLOSIONS of region of " + residentRegion.getOwner().getName());
+                    Logger.warning("Cannot read property EXPLOSIONS of region of " + residentRegion.getOwnerName());
                 }
 
                 try
@@ -155,7 +154,7 @@ public class ResidentRegion extends Region {
                 }
                 catch (Exception e)
                 {
-                    Logger.warning("Cannot read property MOBS of region of " + residentRegion.getOwner().getName());
+                    Logger.warning("Cannot read property MOBS of region of " + residentRegion.getOwnerName());
                 }
             }
 
@@ -236,6 +235,10 @@ public class ResidentRegion extends Region {
     }
 
     public Resident getOwner() {
+        return Residents.getResident(owner);
+    }
+
+    public String getOwnerName() {
         return owner;
     }
 }

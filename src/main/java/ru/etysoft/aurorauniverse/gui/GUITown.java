@@ -141,7 +141,7 @@ public class GUITown {
                                     }, Items.createNamedItem(new ItemStack(Material.PODZOL, 1), AuroraLanguage.getColorString("gui.standing"),
                                             AuroraLanguage.getColorString("gui.has-owner")
                                                     .replace("%s1", String.valueOf(residentRegion.getMembers().size()))
-                                                    .replace("%s", residentRegion.getOwner().getName())
+                                                    .replace("%s", residentRegion.getOwnerName())
                                     ));
                                     matrix.put(54, standingSlot);
                                 } else {

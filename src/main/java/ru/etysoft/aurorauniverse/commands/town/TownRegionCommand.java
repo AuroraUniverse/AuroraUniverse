@@ -43,7 +43,10 @@ public class TownRegionCommand {
     }
 
     public void regionInfo(CommandSender sender, Resident resident, String[] args) {
-        if (!resident.hasTown()) return;
+        if (!resident.hasTown()) {
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
+            return;
+        }
         if (Permissions.canEditTowns(sender) | Permissions.canGetRegionInfo(sender)) {
 
             Town town = Towns.getTown(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk()));
@@ -51,9 +54,9 @@ public class TownRegionCommand {
                 Region region = town.getRegion(((Player) sender).getLocation());
 
                 try {
-                    if (resident.getTown() == town | sender.hasPermission("aun.admin")) {
                         if (region != null) {
                             if (region instanceof ResidentRegion) {
+                                if (resident.getTown() == town | sender.hasPermission("aun.admin") | ((ResidentRegion) region).getMembers().contains(resident.getName())) {
                                 ResidentRegion residentRegion = (ResidentRegion) region;
 
                                 String membersString = "";
@@ -78,14 +81,14 @@ public class TownRegionCommand {
                                         .replace("%s1", String.valueOf(residentRegion.getMembers().size()))
                                         .replace("%s", residentRegion.getOwner().getName()));
                             } else {
-                                sender.sendMessage(AuroraLanguage.getColorString("region-info.title"));
-                                sender.sendMessage(AuroraLanguage.getColorString("region-info.town-owned"));
+                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
                             }
                         } else {
-                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
+                                sender.sendMessage(AuroraLanguage.getColorString("region-info.title"));
+                                sender.sendMessage(AuroraLanguage.getColorString("region-info.town-owned"));
                         }
                     } else {
-                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
                     }
                 } catch (TownNotFoundedException e) {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("access-denied-message"), sender);
@@ -115,6 +118,7 @@ public class TownRegionCommand {
                             if (receiver != null) {
                                 try {
                                     town.createPlayerRegion(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk()), receiver);
+                                    town.getResidentRegion(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk())).addMember(receiver);
                                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-success"), sender);
                                 } catch (RegionException e) {
                                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-error"), sender);
@@ -142,8 +146,18 @@ public class TownRegionCommand {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("console"), sender);
                     return;
                 }
-                Player player = (Player) sender;
-                Region region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+
+
+                Player player;
+                Region region;
+                try {
+                    player = (Player) sender;
+                    region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+                }  catch (Exception e)
+                {
+                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
+                    return;
+                }
 
                 if (region != null) {
                     if (region instanceof ResidentRegion && args.length > 1) {
@@ -191,8 +205,17 @@ public class TownRegionCommand {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("console"), sender);
                     return;
                 }
-                Player player = (Player) sender;
-                Region region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+
+            Player player;
+            Region region;
+            try {
+                player = (Player) sender;
+                region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+            }  catch (Exception e)
+            {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
+                return;
+            }
 
                 if (region != null) {
                     if (region instanceof ResidentRegion && args.length > 1) {
@@ -240,8 +263,17 @@ public class TownRegionCommand {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("console"), sender);
                     return;
                 }
-                Player player = (Player) sender;
-                Region region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+
+            Player player;
+            Region region;
+            try {
+                player = (Player) sender;
+                region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+            }  catch (Exception e)
+            {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
+                return;
+            }
 
                 if (region != null) {
                     if (region instanceof ResidentRegion && args.length > 1) {
@@ -289,8 +321,17 @@ public class TownRegionCommand {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("console"), sender);
                     return;
                 }
-                Player player = (Player) sender;
-                Region region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+
+            Player player;
+            Region region;
+            try {
+                player = (Player) sender;
+                region = Towns.getTown(player.getLocation().getChunk()).getRegion(player.getLocation());
+            }  catch (Exception e)
+            {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-unowned"), sender);
+                return;
+            }
 
                 if (region != null) {
                     if (region instanceof ResidentRegion && args.length > 1) {

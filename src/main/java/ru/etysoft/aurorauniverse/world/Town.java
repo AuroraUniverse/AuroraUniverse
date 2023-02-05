@@ -767,14 +767,14 @@ public class Town {
 
 
     public void createPlayerRegion(ChunkPair originalLocation, Resident resident) throws RegionException {
-        if (residents.contains(resident)) {
+//        if (residents.contains(resident)) {
             if (townChunks.containsKey(originalLocation)) {
                 if (originalLocation != mainChunk) {
                     townChunks.remove(originalLocation);
 
-                    townChunks.put(originalLocation, new ResidentRegion(this, resident));
+                    townChunks.put(originalLocation, new ResidentRegion(this, resident.getName()));
                     AuroraUniverse.removeTownBlock(originalLocation);
-                    AuroraUniverse.addTownBlock(originalLocation, new ResidentRegion(this, resident));
+                    AuroraUniverse.addTownBlock(originalLocation, new ResidentRegion(this, resident.getName()));
                 } else {
                     throw new RegionException("Unable to remove town's main chunk");
                 }
@@ -782,9 +782,9 @@ public class Town {
                 throw new RegionException("Chunk don't belong to town");
             }
 
-        } else {
-            throw new RegionException("Resident don't belong to town");
-        }
+//        } else {
+//            throw new RegionException("Resident don't belong to town");
+//        }
     }
 
     public void resetRegion(ChunkPair originalLocation) throws RegionException {

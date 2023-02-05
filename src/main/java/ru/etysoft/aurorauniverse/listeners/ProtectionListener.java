@@ -369,7 +369,7 @@ public class ProtectionListener implements Listener {
                                 ResidentRegion residentRegion = Towns.getTown(event.getClickedBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getClickedBlock().getChunk()));
                                 Resident resident = Residents.getResident(event.getPlayer().getName());
                                 if ((!residentRegion.getMembers().contains(resident.getName()))) {
-                                    if (!resident.getName().equals(residentRegion.getOwner().getName())) {
+                                    if (!resident.getName().equals(residentRegion.getOwnerName())) {
                                         if (!(event.getPlayer().hasPermission("town.region.*") && residentRegion.getTown().getResidents().contains(resident))) {
 
                                             event.setCancelled(true);
@@ -439,7 +439,7 @@ public class ProtectionListener implements Listener {
                                 ResidentRegion residentRegion = Towns.getTown(event.getClickedBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getClickedBlock().getChunk()));
                                 Resident resident = Residents.getResident(event.getPlayer().getName());
                                 if ((!residentRegion.getMembers().contains(resident.getName()))) {
-                                    if (!resident.getName().equals(residentRegion.getOwner().getName())) {
+                                    if (!resident.getName().equals(residentRegion.getOwnerName())) {
                                         if (!(event.getPlayer().hasPermission("town.region.*") && residentRegion.getTown().getResidents().contains(resident))) {
 
                                             event.setCancelled(true);
@@ -497,7 +497,7 @@ public class ProtectionListener implements Listener {
                                 ResidentRegion residentRegion = Towns.getTown(event.getRightClicked().getLocation().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getRightClicked().getLocation().getChunk()));
                                 Resident resident = Residents.getResident(event.getPlayer().getName());
                                 if ((!residentRegion.getMembers().contains(resident.getName()))) {
-                                    if (!resident.getName().equals(residentRegion.getOwner().getName())) {
+                                    if (!resident.getName().equals(residentRegion.getOwnerName())) {
                                         if (!(event.getPlayer().hasPermission("town.region.*") && residentRegion.getTown().getResidents().contains(resident))) {
 
                                             event.setCancelled(true);
@@ -552,7 +552,7 @@ public class ProtectionListener implements Listener {
 
                 if (region instanceof ResidentRegion) {
                     infoMessage = "[!] RESIDENT REGION \nName: " + region.getRegionName() + "\n" +
-                            "TownName: " + region.getTown().getName() + " (" + region.getTown().getChunksCount() + ") + \n" + ((ResidentRegion) region).getOwner().getName();
+                            "TownName: " + region.getTown().getName() + " (" + region.getTown().getChunksCount() + ") + \n" + ((ResidentRegion) region).getOwnerName();
                 }
             } else {
                 infoMessage = "Unowned";
@@ -571,7 +571,7 @@ public class ProtectionListener implements Listener {
                         ResidentRegion residentRegion = Towns.getTown(event.getBlock().getChunk()).getResidentRegion(ChunkPair.fromChunk(event.getBlock().getChunk()));
                         Resident resident = Residents.getResident(event.getPlayer().getName());
                         if ((!residentRegion.getMembers().contains(resident.getName()))) {
-                            if (!resident.getName().equals(residentRegion.getOwner().getName())) {
+                            if (!resident.getName().equals(residentRegion.getOwnerName())) {
                                 if (!(event.getPlayer().hasPermission("town.region.*") && residentRegion.getTown().getResidents().contains(resident))) {
 
                                     event.setCancelled(true);
@@ -686,7 +686,7 @@ public class ProtectionListener implements Listener {
                         ResidentRegion residentRegion = Towns.getTown(block.getChunk()).getResidentRegion(ChunkPair.fromChunk(block.getChunk()));
                         Resident resident = Residents.getResident(player.getName());
                         if ((!residentRegion.getMembers().contains(resident.getName()))) {
-                            if (!resident.getName().equals(residentRegion.getOwner().getName())) {
+                            if (!resident.getName().equals(residentRegion.getOwnerName())) {
                                 if (!(player.hasPermission("town.region.*") && residentRegion.getTown().getResidents().contains(resident))) {
 
 

@@ -159,7 +159,7 @@ public class Towns {
                 rpvp = ColorCodes.toColor(AuroraUniverse.getLanguage().getString("no-pvp"));
             }
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorCodes.toColor(AuroraUniverse.getLanguage().getString(Messages.Keys.REGION_WELCOME)
-                    .replace("%s", residentRegion.getOwner().getName()))
+                    .replace("%s", residentRegion.getOwnerName()))
                     .replace("%p", rpvp)));
         }
         if (!notifyRegion && notifyTown) {
