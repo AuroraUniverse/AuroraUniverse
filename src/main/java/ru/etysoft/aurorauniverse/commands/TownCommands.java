@@ -67,33 +67,27 @@ public class TownCommands implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("gui")) {
                     new TownGuiCommand(resident, pl, args, sender);
                 } else if (args[0].equalsIgnoreCase("auction") && args.length == 1) {
-                        new GUIAuction(resident, pl, sender, 1);
+                    new GUIAuction(resident, pl, sender, 1);
                 } else if (args[0].equalsIgnoreCase("sell")) {
                     new TownSellCommand(sender, resident, args);
                 } else if (args[0].equalsIgnoreCase("toggle")) {
                     new TownToggleCommand(args, resident, sender, pl);
-                } else if (args[0].equalsIgnoreCase("rank") && args[1].equalsIgnoreCase("set")){
+                } else if (args[0].equalsIgnoreCase("rank") && (args.length > 1) && args[1].equalsIgnoreCase("set")) {
                     new TownRankSetCommand(resident, args, sender);
-                } else if (args[0].equalsIgnoreCase("rank") && args[1].equalsIgnoreCase("reset")) {
+                } else if (args[0].equalsIgnoreCase("rank") && (args.length > 1) && args[1].equalsIgnoreCase("reset")) {
                     new TownRankResetCommand(resident, args, sender);
                 } else if (args[0].equalsIgnoreCase("auction") && args[1].equalsIgnoreCase("tax")) {
                     new TownAuctionTax(sender, resident, args);
-                }
-                else {
+                } else {
 
-                    try
-                    {
-                        if(Permissions.canSeeTownInfo(sender)) {
+                    try {
+                        if (Permissions.canSeeTownInfo(sender)) {
                             Town town = Towns.getTown(Messaging.getStringFromArgs(args, 0));
                             Messaging.sendTownInfo(sender, town);
-                        }
-                        else
-                        {
+                        } else {
                             sender.sendMessage(AuroraLanguage.getColorString(Messages.Keys.ACCESS_DENIED));
                         }
-                    }
-                    catch (TownNotFoundedException ignored)
-                    {
+                    } catch (TownNotFoundedException ignored) {
                         Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.WRONG_ARGS), sender);
                     }
                 }
@@ -109,9 +103,7 @@ public class TownCommands implements CommandExecutor {
                 }
             }
             return true;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Logger.error("Error processing command!");
             e.printStackTrace();
             return true;
