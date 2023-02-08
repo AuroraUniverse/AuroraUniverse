@@ -1,13 +1,11 @@
 package ru.etysoft.aurorauniverse.listeners;
 
 
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,6 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.PortalCreateEvent;
+import org.bukkit.potion.PotionEffect;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.commands.PluginCommands;
@@ -69,6 +68,35 @@ public class ProtectionListener implements Listener {
     }
 
 
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void EntityPotionEffectEvent(EntityPotionEffectEvent event)
+    {
+
+        Entity entity = event.getEntity();
+
+        PotionEffect effect = event.getNewEffect();
+        if (effect != null)
+        {
+            if (effect.getType().getName().equals("POISON"))
+            {
+                if (event.getCause().name().equals("POTION_SPLASH"))
+                {
+                    Chunk chunk = entity.getLocation().getChunk();
+                    Town town = Towns.getTown(chunk);
+
+                    if (town != null) {
+
+                        if (!town.isPvp(ChunkPair.fromChunk(chunk)))
+                        {
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -119,13 +147,10 @@ public class ProtectionListener implements Listener {
             if (region instanceof ResidentRegion)
             {
 
-                if (region instanceof ResidentRegion)
+                if (!((ResidentRegion) region).getMembers().contains(p.getName()))
                 {
-                    if (!((ResidentRegion) region).getMembers().contains(p.getName()))
-                    {
-                        if (!(p.hasPermission("town.region.*") && entityTown.getResidents().contains(Residents.getResident(p.getName())))) {
-                            event.setCancelled(true);
-                        }
+                    if (!(p.hasPermission("town.region.*") && entityTown.getResidents().contains(Residents.getResident(p.getName())))) {
+                        event.setCancelled(true);
                     }
                 }
             }
