@@ -4,6 +4,7 @@ package ru.etysoft.aurorauniverse.listeners;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -68,7 +69,8 @@ public class ProtectionListener implements Listener {
     }
 
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void EntityPotionEffectEvent(EntityPotionEffectEvent event)
     {
@@ -325,6 +327,25 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
+
+        List<Block> finalBlockList = new ArrayList<>();
+
+        for (Block block : event.blockList().toArray(new Block[event.blockList().size()])) {
+            if (Towns.getTown(block.getChunk()) == null) {
+                finalBlockList.add(block);
+            } else {
+                if (Towns.getTown(block.getChunk()).isExplosionEnabled(ChunkPair.fromChunk(block.getChunk()))) {
+                    finalBlockList.add(block);
+                }
+            }
+        }
+        event.blockList().clear();
+        event.blockList().addAll(finalBlockList);
+
+    }
+
+    @EventHandler
+    public void onBlockExplode(BlockExplodeEvent event) {
 
         List<Block> finalBlockList = new ArrayList<>();
 
