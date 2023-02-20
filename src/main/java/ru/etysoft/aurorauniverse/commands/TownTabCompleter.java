@@ -191,15 +191,7 @@ public class TownTabCompleter implements TabCompleter {
                         {
                             if (resident.hasTown()) {
 
-                                try {
-                                    Town town = resident.getTown();
-                                    for (Resident r : town.getResidents()) {
-                                        possibleArgs.add(r.getName());
-                                    }
-                                } catch (TownNotFoundedException ignored) {
-
-                                }
-
+                                possibleArgs.addAll(AuroraUniverse.residentlist.keySet());
                             }
                         }
                         else  if(args[1].equals("add"))
@@ -209,21 +201,14 @@ public class TownTabCompleter implements TabCompleter {
 
                                 if(onlyResidents)
                                 {
-                                    try {
-                                        Town town = resident.getTown();
-                                        for (Resident r : town.getResidents()) {
-                                            possibleArgs.add(r.getName());
-                                        }
-                                    } catch (TownNotFoundedException ignored) {
-
-                                    }
+                                    possibleArgs.addAll(AuroraUniverse.residentlist.keySet());
                                 }
                                 else
                                 {
 
-                                        for (Resident r : Residents.getList()) {
-                                            possibleArgs.add(r.getName());
-                                        }
+                                    for (Resident r : Residents.getList()) {
+                                        possibleArgs.add(r.getName());
+                                    }
 
                                 }
 

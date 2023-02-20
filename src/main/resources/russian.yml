@@ -329,6 +329,9 @@ auction-gui:
   item-your-lore: "&7Нажмите Shift + ЛКМ, чтобы забрать"
   next-page: "&eСледующая страница"
   prev-page: "&eПредыдущая страница"
+  expired-of-player: "Инвентарь игрока %s"
+  expired-inventory: "&eОткрыть список просроченных предметов"
+  open-auction: "&eОткрыть межгородской рынок"
 
 auction-error-place: "&cРынок не может быть построен здесь (территория расчищена?)"
 auction-sell-need-struct: "&cВы не можете продавать предметы без рынка в городе"

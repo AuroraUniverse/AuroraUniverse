@@ -3,6 +3,7 @@ package ru.etysoft.aurorauniverse.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import ru.etysoft.aurorauniverse.AuroraUniverse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,20 @@ public class AuctionTabCompleter implements TabCompleter {
 
         ArrayList<String> firstPossibleArg = new ArrayList<>();
 
-        possibleArgs.add("sell");
+        firstPossibleArg.add("sell");
+        firstPossibleArg.add("inv");
+
+        if (args.length == 1)
+        {
+            possibleArgs.addAll(firstPossibleArg);
+        }
+        else if (args.length == 2)
+        {
+            if (args[0].equalsIgnoreCase("inv"))
+            {
+                possibleArgs.addAll(AuroraUniverse.residentlist.keySet());
+            }
+        }
 
         for (String arg : possibleArgs) {
             if (arg.contains(args[args.length - 1])) {

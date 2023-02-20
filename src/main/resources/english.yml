@@ -325,6 +325,9 @@ auction-gui:
   item-your-lore: "&7Press Shift + Left Click for cancel"
   next-page: "&eNext page"
   prev-page: "&ePrev. page"
+  expired-of-player: "Inventory of player %s"
+  expired-inventory: "&eOpen list of expired items"
+  open-auction: "&eOpen towns market"
 
 
 auction-error-place: "&cAuction couldn't be placed here, try to clear this place"
@@ -354,6 +357,7 @@ residents-gui:
   prev-page: "&ePrev page"
   loading-title: "&bLoading..."
   loading-lore: "&7Looking for residents skins..."
+
 
 # Added in 0.6.1.0
 

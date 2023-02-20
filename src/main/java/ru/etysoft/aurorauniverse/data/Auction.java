@@ -9,11 +9,10 @@ import org.json.simple.parser.ParseException;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.auction.AuctionItem;
-import ru.etysoft.aurorauniverse.exceptions.TownException;
+import ru.etysoft.aurorauniverse.auction.AuctionExpiredItems;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
-import ru.etysoft.aurorauniverse.world.Nation;
-import ru.etysoft.aurorauniverse.world.Resident;
 import ru.etysoft.aurorauniverse.world.Town;
+import ru.etysoft.epcore.gui.Items;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,9 +20,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Auction {
 
@@ -82,6 +78,8 @@ public class Auction {
             if(isExpired(auctionItem))
             {
                 toRemove.add(auctionItem);
+                AuctionExpiredItems.addItemToAuctionExpiredInventory(Items.createNamedItem(auctionItem.getItemStack(),
+                        auctionItem.getItemStack().getItemMeta().getDisplayName()), auctionItem.getResident().getName());
             }
         }
         listings.removeAll(toRemove);
@@ -108,6 +106,25 @@ public class Auction {
                     {
                         Logger.error("Can't load auctionItem: ");
                         e.printStackTrace();
+                    }
+
+                }
+
+
+                if (mainJson.containsKey("INVENTORIES_OF_PLAYERS"))
+                {
+                    JSONArray Inventories = (JSONArray) mainJson.get("INVENTORIES_OF_PLAYERS");
+
+                    for (int i =0; i < Inventories.size(); i++) {
+                        try {
+                            JSONObject jsonObject = (JSONObject) Inventories.get(i);
+                            AuctionExpiredItems playerItems = AuctionExpiredItems.fromJSON(jsonObject);
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.error("Can't load AuctionPlayerItems ");
+                            e.printStackTrace();
+                        }
                     }
 
                 }
@@ -149,7 +166,14 @@ public class Auction {
             listingsArray.add(auctionItem.toJSON());
         }
 
+        JSONArray InventoriesOfPlayersArray = new JSONArray();
+        for (AuctionExpiredItems auctionPlayerItems: AuctionExpiredItems.getExpiredInventories()) {
+            JSONObject object = auctionPlayerItems.toJson();
+            InventoriesOfPlayersArray.add(object);
+        }
+
         jsonObject.put("listings", listingsArray);
+        jsonObject.put("INVENTORIES_OF_PLAYERS", InventoriesOfPlayersArray);
         saveStringToFile(jsonObject.toJSONString());
     }
 }

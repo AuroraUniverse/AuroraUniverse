@@ -69,7 +69,7 @@ public class AuctionItem {
         return time;
     }
 
-    private static ItemStack itemStackFromString(String itemStackString) throws IOException {
+    public static ItemStack itemStackFromString(String itemStackString) throws IOException {
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(itemStackString));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
@@ -92,7 +92,7 @@ public class AuctionItem {
         }
     }
 
-    private static String itemStackToString(ItemStack itemStack) {
+    public static String itemStackToString(ItemStack itemStack) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);

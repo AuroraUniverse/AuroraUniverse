@@ -3,6 +3,7 @@ package ru.etysoft.aurorauniverse.gui;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
@@ -49,132 +50,145 @@ public class GUIAuction {
                 int maxId = 45 * page;
                 int slotNumber = 1;
                 ArrayList<AuctionItem> auctionItems = Auction.getListings();
-                for (int i = startId - 1; i < auctionItems.size(); i++) {
-                    if (slotNumber <= 45) {
-                        try {
-                            AuctionItem auctionItem = auctionItems.get(i);
+                for (int i = startId - 1; (i < maxId) && i < (auctionItems.size()); i++) {
 
-                            String yourItem = "";
-                            String townName = "";
+                    try {
+                        AuctionItem auctionItem = auctionItems.get(i);
 
-                            if (auctionItem.getResident().hasTown()) {
-                                townName = auctionItem.getResident().getTown().getName();
+                        String yourItem = "";
+                        String townName = "";
+
+                        if (auctionItem.getResident().hasTown()) {
+                            townName = auctionItem.getResident().getTown().getName();
+                        }
+
+                        if (auctionItem.getResident() == resident) {
+                            yourItem = AuroraLanguage.getColorString("auction-gui.item-your-lore");
+                        }
+
+                        ItemStack itemStack = Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName(),
+                                AuroraLanguage.getColorString("auction-gui.price").replace("%s", String.valueOf(Numbers.round(auctionItem.getPrice()))),
+                                PlaceholderFormatter.process(AuroraLanguage.getColorString("auction-gui.item").replace("%s", auctionItem.getResident().getName()).replace("%t", townName), player),
+                                AuroraLanguage.getColorString("auction-gui.item-exp").replace("%s", String.valueOf(auctionItem.getExpTime() / 1000 / 60)), yourItem);
+
+                        Slot.SlotListener slotListener = new Slot.SlotListener() {
+                            @Override
+                            public void onRightClicked(Player player, GUITable guiTable) {
+
                             }
 
-                            if (auctionItem.getResident() == resident) {
-                                yourItem = AuroraLanguage.getColorString("auction-gui.item-your-lore");
-                            }
-
-                            ItemStack itemStack = Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName(),
-                                    AuroraLanguage.getColorString("auction-gui.price").replace("%s", String.valueOf(Numbers.round(auctionItem.getPrice()))),
-                                    PlaceholderFormatter.process(AuroraLanguage.getColorString("auction-gui.item").replace("%s", auctionItem.getResident().getName()).replace("%t", townName), player),
-                                    AuroraLanguage.getColorString("auction-gui.item-exp").replace("%s", String.valueOf(auctionItem.getExpTime() / 1000 / 60)), yourItem);
-
-                            Slot.SlotListener slotListener = new Slot.SlotListener() {
-                                @Override
-                                public void onRightClicked(Player player, GUITable guiTable) {
-
-                                }
-
-                                @Override
-                                public void onLeftClicked(Player player, GUITable guiTable) {
-                                    if (!player.getName().equals(auctionItem.getResident().getName())) {
-                                        Resident client = Residents.getResident(player.getName());
-                                        boolean hasAuction = false;
-                                        try {
-                                            hasAuction = resident.getTown().hasAuction();
-
-                                            boolean hasEmbargo = false;
-
-                                            if (auctionItem.getResident().getTown().hasEmbargoForTown(town)) {
-                                                hasEmbargo = true;
-                                            }
-                                            if (AuroraUniverse.getInstance().getConfig().getBoolean("embargo-capital-share") && !hasEmbargo) {
-                                                if (auctionItem.getResident().getTown().hasNation()) {
-                                                    if (auctionItem.getResident().getTown().getNation().getCapital().hasEmbargoForTown(town)) {
-                                                        hasEmbargo = true;
-                                                    }
-                                                }
-                                            }
-
-                                            if (hasEmbargo) {
-                                                player.sendMessage(AuroraLanguage.getColorString("embargo-auction-error")
-                                                        .replace("%s", auctionItem.getResident().getTown().getName()));
-                                                return;
-                                            }
-                                        } catch (Exception ignored) {
-                                        }
-
-
-                                        if (!hasAuction) {
-                                            int maxItemsAmount = AuroraUniverse.getInstance().getConfig().getInt("max-items-without-struct");
-                                            if (auctionItem.getItemStack().getAmount() > maxItemsAmount) {
-                                                player.sendMessage(AuroraLanguage.getColorString("auction-buy-need-struct"));
-                                                return;
-                                            }
-                                        }
-                                        if (client.getBank().withdraw(auctionItem.getPrice())) {
-                                            if (Auction.removeListing(auctionItem)) {
-
-
-                                                try {
-                                                    if (auctionItem.getResident() != auctionItem.getResident().getTown().getMayor()) {
-                                                        double tax = auctionItem.getResident().getTown().getAuctionTax() / 100;
-
-                                                        auctionItem.getResident().getBank().deposit(auctionItem.getPrice() * (1 - tax));
-                                                        auctionItem.getResident().getTown().getBank().deposit(auctionItem.getPrice() * tax);
-
-                                                    } else {
-                                                        auctionItem.getResident().getBank().deposit(auctionItem.getPrice());
-                                                    }
-                                                } catch (TownNotFoundedException e) {
-                                                    auctionItem.getResident().getBank().deposit(auctionItem.getPrice());
-                                                }
-
-
-                                                player.sendMessage(AuroraLanguage.getColorString("auction-buy-success").replace("%s",
-                                                        auctionItem.getItemStack().getType().toString()).replace("%p",
-                                                        String.valueOf(Numbers.round(auctionItem.getPrice()))));
-                                                player.getInventory().addItem(Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName()));
-                                                new GUIAuction(resident, pl, sender, page);
-
-                                            }
-                                        } else {
-                                            player.sendMessage(AuroraLanguage.getColorString("auction-buy-no-money"));
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onShiftClicked(Player player, GUITable guiTable) {
-
-                                    boolean hasBypassPerm = false;
-
+                            @Override
+                            public void onLeftClicked(Player player, GUITable guiTable) {
+                                if (!player.getName().equals(auctionItem.getResident().getName())) {
+                                    Resident client = Residents.getResident(player.getName());
+                                    boolean hasAuction = false;
                                     try {
-                                        if (Permissions.canRemoveTownListings(player) && auctionItem.getResident().getTown() == Residents.getResident(player.getName()).getTown()) {
-                                            hasBypassPerm = true;
+                                        hasAuction = resident.getTown().hasAuction();
+
+                                        boolean hasEmbargo = false;
+
+                                        if (auctionItem.getResident().getTown().hasEmbargoForTown(town)) {
+                                            hasEmbargo = true;
+                                        }
+                                        if (AuroraUniverse.getInstance().getConfig().getBoolean("embargo-capital-share") && !hasEmbargo) {
+                                            if (auctionItem.getResident().getTown().hasNation()) {
+                                                if (auctionItem.getResident().getTown().getNation().getCapital().hasEmbargoForTown(town)) {
+                                                    hasEmbargo = true;
+                                                }
+                                            }
+                                        }
+
+                                        if (hasEmbargo) {
+                                            player.sendMessage(AuroraLanguage.getColorString("embargo-auction-error")
+                                                    .replace("%s", auctionItem.getResident().getTown().getName()));
+                                            return;
                                         }
                                     } catch (Exception ignored) {
-
                                     }
-                                    if (player.getName().equals(auctionItem.getResident().getName()) | hasBypassPerm) {
-                                        if (Auction.removeListing(auctionItem)) {
-                                            player.getInventory().addItem(Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName()));
-                                            new GUIAuction(resident, pl, sender, page);
+
+
+                                    if (!hasAuction) {
+                                        int maxItemsAmount = AuroraUniverse.getInstance().getConfig().getInt("max-items-without-struct");
+                                        if (auctionItem.getItemStack().getAmount() > maxItemsAmount) {
+                                            player.sendMessage(AuroraLanguage.getColorString("auction-buy-need-struct"));
+                                            return;
                                         }
                                     }
-                                }
-                            };
+                                    if (client.getBank().withdraw(auctionItem.getPrice())) {
+                                        if (Auction.removeListing(auctionItem)) {
 
-                            Slot slot = new Slot(slotListener, itemStack);
-                            matrix.put(slotNumber, slot);
-                            slotNumber++;
-                        } catch (Exception e) {
-                            Logger.error("Can't load auctionItem to GUI: ");
-                            e.printStackTrace();
-                        }
+
+                                            try {
+                                                if (auctionItem.getResident() != auctionItem.getResident().getTown().getMayor()) {
+                                                    double tax = auctionItem.getResident().getTown().getAuctionTax() / 100;
+
+                                                    auctionItem.getResident().getBank().deposit(auctionItem.getPrice() * (1 - tax));
+                                                    auctionItem.getResident().getTown().getBank().deposit(auctionItem.getPrice() * tax);
+
+                                                } else {
+                                                    auctionItem.getResident().getBank().deposit(auctionItem.getPrice());
+                                                }
+                                            } catch (TownNotFoundedException e) {
+                                                auctionItem.getResident().getBank().deposit(auctionItem.getPrice());
+                                            }
+
+
+                                            player.sendMessage(AuroraLanguage.getColorString("auction-buy-success").replace("%s",
+                                                    auctionItem.getItemStack().getType().toString()).replace("%p",
+                                                    String.valueOf(Numbers.round(auctionItem.getPrice()))));
+                                            player.getInventory().addItem(Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName()));
+                                            new GUIAuction(resident, pl, sender, page);
+
+                                        }
+                                    } else {
+                                        player.sendMessage(AuroraLanguage.getColorString("auction-buy-no-money"));
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onShiftClicked(Player player, GUITable guiTable) {
+
+                                boolean hasBypassPerm = false;
+
+                                try {
+                                    if (Permissions.canRemoveTownListings(player) && auctionItem.getResident().getTown() == Residents.getResident(player.getName()).getTown()) {
+                                        hasBypassPerm = true;
+                                    }
+                                } catch (Exception ignored) {
+
+                                }
+                                if (player.getName().equals(auctionItem.getResident().getName()) | hasBypassPerm) {
+                                    if (Auction.removeListing(auctionItem)) {
+                                        player.getInventory().addItem(Items.createNamedItem(auctionItem.getItemStack(), auctionItem.getItemStack().getItemMeta().getDisplayName()));
+                                        new GUIAuction(resident, pl, sender, page);
+                                    }
+                                }
+                            }
+                        };
+
+                        Slot slot = new Slot(slotListener, itemStack);
+                        matrix.put(slotNumber, slot);
+                        slotNumber++;
+                    } catch (Exception e) {
+                        Logger.error("Can't load auctionItem to GUI: ");
+                        e.printStackTrace();
                     }
+
                 }
+
+                ItemStack web = Items.createNamedItem(new ItemStack(Material.COBWEB, 1), AuroraLanguage.getColorString("auction-gui.expired-inventory"));
+                SlotRunnable slotRunnableWeb = new SlotRunnable() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        GUIAuctionExpiredInventory.processInventory(player.getName(), player, getSender(), 1);
+                    }
+                };
+
+                Slot slotWeb = new Slot(slotRunnableWeb, web);
+
+                matrix.put(46, slotWeb);
 
                 if ((auctionItems.size() - startId) > 44) {
                     // Has next page
