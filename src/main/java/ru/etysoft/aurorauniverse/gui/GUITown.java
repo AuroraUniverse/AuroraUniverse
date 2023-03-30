@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.gui;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -12,6 +13,7 @@ import ru.etysoft.aurorauniverse.commands.town.TownUnclaimCommand;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.events.GUITownOpenEvent;
 import ru.etysoft.aurorauniverse.exceptions.AuctionPlaceException;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.exceptions.WorldNotFoundedException;
@@ -175,6 +177,10 @@ public class GUITown {
 //            processToggles(matrix);
 
             matrix.put(23, townSlot);
+
+            GUITownOpenEvent guiTownOpenEvent = new GUITownOpenEvent(town, matrix, resident, pl, sender);
+            Bukkit.getPluginManager().callEvent(guiTownOpenEvent);
+
             try {
                 GUITable guiTable = new GUITable(resident.getTown().getName(), 6, matrix, AuroraUniverse.getInstance(), Material.GRAY_STAINED_GLASS_PANE, true);
                 guiTable.open(pl);

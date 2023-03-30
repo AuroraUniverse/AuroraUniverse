@@ -162,10 +162,10 @@ public class WorldTimer {
         try {
 
             for (String townName : new ArrayList<>(AuroraUniverse.getTownList().keySet())) {
-                double townChunkTax = AuroraUniverse.getInstance().getConfig().getDouble("town-chunk-tax");
-
 
                 Town town = AuroraUniverse.getTownList().get(townName);
+
+                double townChunkTax = town.getTownChunkTax();
 
                 for (Resident resident : town.getResidents()) {
                     if (resident.getBalance() >= town.getResTax()) {
@@ -177,7 +177,7 @@ public class WorldTimer {
                     }
                 }
 
-                double sum = townChunkTax * town.getChunksCount();
+                double sum = townChunkTax * town.getChunksCount() * town.getTownChunkTaxMultiplier();
 
                 if (town.getBank().getBalance() < sum) {
                     AuroraChat.sendGlobalMessage(AuroraLanguage.getColorString("town-out-money")

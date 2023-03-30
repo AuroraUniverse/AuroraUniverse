@@ -19,6 +19,7 @@ import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.Bank;
 import ru.etysoft.aurorauniverse.events.PreTownDeleteEvent;
+import ru.etysoft.aurorauniverse.events.PreTownGetTaxEvent;
 import ru.etysoft.aurorauniverse.events.TownDeleteEvent;
 import ru.etysoft.aurorauniverse.events.TownRenameEvent;
 import ru.etysoft.aurorauniverse.exceptions.*;
@@ -70,6 +71,9 @@ public class Town {
     private boolean fire = false;
     private double resTax = 0;
     private int bonusChunks = 0;
+
+    private double townChunkTaxMultiplier = 1;
+
     private Resident mayor;
     private Map<ChunkPair, Region> townChunks = new ConcurrentHashMap<>();
     private ArrayList<Resident> residents = new ArrayList<>();
@@ -539,6 +543,13 @@ public class Town {
         return chunk;
     }
 
+    public double getTownChunkTaxMultiplier() {
+        return townChunkTaxMultiplier;
+    }
+
+    public void setTownChunkTaxMultiplier(double townChunkTaxMultiplier) {
+        this.townChunkTaxMultiplier = townChunkTaxMultiplier;
+    }
 
     public void setBuildGroups(Set<String> buildGroups) {
         this.buildGroups = buildGroups;
@@ -1385,10 +1396,15 @@ public class Town {
 
     }
 
-    public double getTownTax() {
-        double townChunkTax = AuroraUniverse.getInstance().getConfig().getDouble("town-chunk-tax");
+    public double getTownChunkTax()
+    {
+        return AuroraUniverse.getInstance().getConfig().getDouble("town-chunk-tax");
+    }
 
-        return Numbers.round(townChunkTax * (double) getChunksCount());
+    public double getTownTax() {
+        double townChunkTax = getTownChunkTax();
+
+        return Numbers.round(townChunkTax * (double) getChunksCount() * townChunkTaxMultiplier);
     }
 
     public void rename(String newName) {
