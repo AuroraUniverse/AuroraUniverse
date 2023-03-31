@@ -49,6 +49,10 @@ public class GUITown {
             HashMap<Integer, Slot> matrix = new HashMap<>();
 
 
+            GUITownOpenEvent guiTownOpenEvent = new GUITownOpenEvent(town, matrix, resident, pl, sender);
+            Bukkit.getPluginManager().callEvent(guiTownOpenEvent);
+
+
             String embargos = "";
 
             for(Town townEmbargo : town.getEmbargoList())
@@ -177,9 +181,6 @@ public class GUITown {
 //            processToggles(matrix);
 
             matrix.put(23, townSlot);
-
-            GUITownOpenEvent guiTownOpenEvent = new GUITownOpenEvent(town, matrix, resident, pl, sender);
-            Bukkit.getPluginManager().callEvent(guiTownOpenEvent);
 
             try {
                 GUITable guiTable = new GUITable(resident.getTown().getName(), 6, matrix, AuroraUniverse.getInstance(), Material.GRAY_STAINED_GLASS_PANE, true);

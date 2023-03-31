@@ -437,4 +437,8 @@ auction-tax-incorrect-value: "&7Налог должен быть от 0 до %s%
 auction-tax-change: "&fВы установили налог на продажу аукционе в вашем городе равным %s%"
 town-auction-tax: "&7> &bНалог на аукционе: &e%s%"
 
+# Added in 0.8.3.1
+
+region-main-chunk: "&fВы не можете выдать главый чанк"
+
 

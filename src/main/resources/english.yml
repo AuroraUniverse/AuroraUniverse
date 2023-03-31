@@ -432,3 +432,7 @@ nation-accept-json: "&fClick to accept the invitation to the nation."
 auction-tax-incorrect-value: "&7Tax should be more then 0 and less then %s%"
 auction-tax-change: "&fTown auction tax now is %s%"
 town-auction-tax: "&7> &bTax on auction: &e%s%"
+
+# Added in 0.8.3.1
+
+region-main-chunk: "&fYou can't give main chunk"

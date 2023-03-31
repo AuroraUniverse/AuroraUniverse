@@ -33,10 +33,7 @@ import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Numbers;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -72,7 +69,7 @@ public class Town {
     private double resTax = 0;
     private int bonusChunks = 0;
 
-    private double townChunkTaxMultiplier = 1;
+    private HashMap<String, Double> townChunkTaxMultipliers = new HashMap<String, Double>();
 
     private Resident mayor;
     private Map<ChunkPair, Region> townChunks = new ConcurrentHashMap<>();
@@ -543,12 +540,13 @@ public class Town {
         return chunk;
     }
 
-    public double getTownChunkTaxMultiplier() {
-        return townChunkTaxMultiplier;
-    }
-
-    public void setTownChunkTaxMultiplier(double townChunkTaxMultiplier) {
-        this.townChunkTaxMultiplier = townChunkTaxMultiplier;
+    public void setTownChunkTaxMultiplier(String pluginName, double multiplier) {
+        if (townChunkTaxMultipliers.containsKey(pluginName)) {
+            townChunkTaxMultipliers.remove(pluginName);
+            townChunkTaxMultipliers.put(pluginName, multiplier);
+        } else {
+            townChunkTaxMultipliers.put(pluginName, multiplier);
+        }
     }
 
     public void setBuildGroups(Set<String> buildGroups) {
@@ -1404,7 +1402,12 @@ public class Town {
     public double getTownTax() {
         double townChunkTax = getTownChunkTax();
 
-        return Numbers.round(townChunkTax * (double) getChunksCount() * townChunkTaxMultiplier);
+        double multiplier = 1;
+        for (double d: townChunkTaxMultipliers.values()) {
+            multiplier *= d;
+        }
+
+        return Numbers.round(townChunkTax * (double) getChunksCount() * multiplier);
     }
 
     public void rename(String newName) {

@@ -113,6 +113,8 @@ public class TownRegionCommand {
                         Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-already-owned"), sender);
                     } else if (region instanceof OutpostRegion) {
                         Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-is-outpost"), sender);
+                    } else if (town.getMainChunk().equals(ChunkPair.fromChunk(((Player) sender).getLocation().getChunk()))){
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("region-main-chunk"), sender);
                     } else {
                             Resident receiver = Residents.getResident(args[2]);
                             if (receiver != null) {

@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
 import ru.etysoft.aurorauniverse.Logger;
+import ru.etysoft.aurorauniverse.events.SendTownInfoEvent;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.placeholders.AuroraPlaceholdersExpansion;
 import ru.etysoft.aurorauniverse.placeholders.PlaceholderFormatter;
@@ -29,6 +30,9 @@ public class Messaging {
 
 
     public static void sendTownInfo(CommandSender p, Town town) {
+        SendTownInfoEvent event = new SendTownInfoEvent(p, town);
+        AuroraUniverse.callEvent(event);
+
         p.sendMessage(ChatColor.GRAY + "o0o_[" + ChatColor.AQUA + town.getName() + ChatColor.GRAY + "]_o0o");
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-mayor").replace("%s", town.getMayor().getName())));
         p.sendMessage(ColorCodes.toColor(AuroraUniverse.getLanguage().getString("town-residents").replace("%s1",
