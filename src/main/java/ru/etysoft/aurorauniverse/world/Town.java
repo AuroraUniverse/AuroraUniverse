@@ -19,7 +19,6 @@ import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
 import ru.etysoft.aurorauniverse.economy.Bank;
 import ru.etysoft.aurorauniverse.events.PreTownDeleteEvent;
-import ru.etysoft.aurorauniverse.events.PreTownGetTaxEvent;
 import ru.etysoft.aurorauniverse.events.TownDeleteEvent;
 import ru.etysoft.aurorauniverse.events.TownRenameEvent;
 import ru.etysoft.aurorauniverse.exceptions.*;

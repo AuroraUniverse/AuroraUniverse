@@ -5,23 +5,11 @@ import org.bukkit.event.HandlerList;
 import ru.etysoft.aurorauniverse.world.Town;
 
 public class PreTownGetTaxEvent extends Event {
-
-    private double tax;
-
     private final Town town;
 
-    public PreTownGetTaxEvent(double tax, Town town)
+    public PreTownGetTaxEvent(Town town)
     {
         this.town = town;
-        this.tax = tax;
-    }
-
-    public double getTax() {
-        return tax;
-    }
-
-    public void setTax(double tax) {
-        this.tax = tax;
     }
 
     public Town getTown() {
@@ -29,9 +17,12 @@ public class PreTownGetTaxEvent extends Event {
     }
 
     private static final HandlerList HANDLERS = new HandlerList();
-
     @Override
     public HandlerList getHandlers() {
+        return HANDLERS;
+    }
+
+    public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 }

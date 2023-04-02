@@ -12,6 +12,7 @@ import ru.etysoft.aurorauniverse.data.DataManager;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
+import ru.etysoft.aurorauniverse.events.PreTownGetTaxEvent;
 import ru.etysoft.aurorauniverse.gulag.StalinNPC;
 import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Numbers;
@@ -164,6 +165,9 @@ public class WorldTimer {
             for (String townName : new ArrayList<>(AuroraUniverse.getTownList().keySet())) {
 
                 Town town = AuroraUniverse.getTownList().get(townName);
+
+                PreTownGetTaxEvent preTownGetTaxEvent = new PreTownGetTaxEvent(town);
+                AuroraUniverse.callEvent(preTownGetTaxEvent);
 
                 for (Resident resident : town.getResidents()) {
                     if (resident.getBalance() >= town.getResTax()) {
