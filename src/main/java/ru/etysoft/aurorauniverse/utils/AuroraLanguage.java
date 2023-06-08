@@ -56,4 +56,8 @@ public class AuroraLanguage {
 
     }
 
+    public static boolean hasString(String path) {
+        return AuroraUniverse.getLanguage().get(path) != null;
+    }
+
 }

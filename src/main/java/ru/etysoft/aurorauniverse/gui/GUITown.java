@@ -1,5 +1,6 @@
 package ru.etysoft.aurorauniverse.gui;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -28,8 +29,6 @@ import ru.etysoft.epcore.gui.Items;
 import ru.etysoft.epcore.gui.Slot;
 import ru.etysoft.epcore.gui.SlotRunnable;
 
-import java.lang.reflect.Array;
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,8 +37,7 @@ public class GUITown {
     private Town town;
     private Player player;
 
-    public GUITown(Resident resident, Player pl, CommandSender sender)
-    {
+    public GUITown(Resident resident, Player pl, CommandSender sender) {
         try {
             player = pl;
             town = resident.getTown();
@@ -55,8 +53,7 @@ public class GUITown {
 
             String embargos = "";
 
-            for(Town townEmbargo : town.getEmbargoList())
-            {
+            for (Town townEmbargo : town.getEmbargoList()) {
                 embargos += townEmbargo.getName() + "; ";
             }
             Slot townSlot = new Slot(new SlotRunnable() {
@@ -70,16 +67,13 @@ public class GUITown {
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.embargo").replace("%s", embargos)),
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.auction-tax").replace("%s", String.valueOf(town.getAuctionTax()))),
                     ColorCodes.toColor(AuroraUniverse.getLanguage().getString("gui.chunks").replace("%s", String.valueOf(town.getChunksCount()))
-                            .replace("%m", String.valueOf(town.getMaxChunks())).replace("%b", String.valueOf(town.getBonusChunks()))).replace("%o", String.valueOf(town.getOutPosts().size()))
+                                    .replace("%m", String.valueOf(town.getMaxChunks())).replace("%b", String.valueOf(town.getBonusChunks()))).replace("%o", String.valueOf(town.getOutPosts().size()))
                             .replace("%p", String.valueOf(AuroraUniverse.getMaxOutposts()))
             ));
 
 
-
-            if(town.getTownChunks().keySet().contains(ChunkPair.fromChunk(chunk)))
-            {
-                if(Permissions.canUnClaim(sender))
-                {
+            if (town.getTownChunks().keySet().contains(ChunkPair.fromChunk(chunk))) {
+                if (Permissions.canUnClaim(sender)) {
                     Slot unclaimSlot = new Slot(new SlotRunnable() {
                         @Override
                         public void run() {
@@ -92,15 +86,11 @@ public class GUITown {
 
                     matrix.put(46, unclaimSlot);
                 }
-            }
-            else
-            {
+            } else {
 
-                if(Permissions.canClaim(sender))
-                {
+                if (Permissions.canClaim(sender)) {
                     double price = town.getNewChunkPrice();
-                    if(!town.isConnected(player.getLocation().getChunk(), null))
-                    {
+                    if (!town.isConnected(player.getLocation().getChunk(), null)) {
                         price = town.getNewOutpostPrice();
                     }
                     Slot claimSlot = new Slot(new SlotRunnable() {
@@ -123,10 +113,9 @@ public class GUITown {
             if (Permissions.canEditTowns(sender) | Permissions.canGetRegionInfo(sender)) {
 
 
-
                 Town standingTown = Towns.getTown(((Player) sender).getLocation().getChunk());
                 if (standingTown != null) {
-                    if(standingTown == resident.getTown() | Permissions.canEditTowns(sender) ) {
+                    if (standingTown == resident.getTown() | Permissions.canEditTowns(sender)) {
                         Region region = standingTown.getRegion(((Player) sender).getLocation());
 
                         if (resident.getTown() == standingTown | Permissions.canEditTowns(sender)) {
@@ -188,13 +177,12 @@ public class GUITown {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } catch (TownNotFoundedException ignored){
+        } catch (TownNotFoundedException ignored) {
             Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("town-dont-belong"), sender);
         }
     }
 
-    private void processMenu(HashMap<Integer, Slot> matrix)
-    {
+    private void processMenu(HashMap<Integer, Slot> matrix) {
         String transHistory = AuroraLanguage.getColorString("gui.trans-history");
         String transLore = AuroraLanguage.getColorString("gui.trans-history-lore");
 
@@ -209,7 +197,7 @@ public class GUITown {
             public void run() {
 
             }
-        }, Items.createNamedItem(new ItemStack(Material.MAP, 1),  transHistory, lore.toArray(new String[lore.size()])
+        }, Items.createNamedItem(new ItemStack(Material.MAP, 1), transHistory, lore.toArray(new String[lore.size()])
         ));
 
         matrix.put(41, transHistorySlot);
@@ -217,14 +205,13 @@ public class GUITown {
         String toggles = AuroraLanguage.getColorString("gui.toggles-button");
 
 
-
         Slot togglesSlot = new Slot(new SlotRunnable() {
             @Override
             public void run() {
                 player.closeInventory();
-               new GUITownToggles(Residents.getResident(player.getName()), player, player);
+                new GUITownToggles(Residents.getResident(player.getName()), player, player);
             }
-        }, Items.createNamedItem(new ItemStack(Material.ZOMBIE_HEAD, 1),  toggles, AuroraLanguage.getColorString("gui.toggles-lore")
+        }, Items.createNamedItem(new ItemStack(Material.ZOMBIE_HEAD, 1), toggles, AuroraLanguage.getColorString("gui.toggles-lore")
         ));
 
         matrix.put(32, togglesSlot);
@@ -239,7 +226,7 @@ public class GUITown {
                     e.printStackTrace();
                 }
             }
-        }, Items.createNamedItem(new ItemStack(Material.LEATHER_HELMET, 1),  AuroraLanguage.getColorString("residents-gui.info"),
+        }, Items.createNamedItem(new ItemStack(Material.LEATHER_HELMET, 1), AuroraLanguage.getColorString("residents-gui.info"),
                 AuroraLanguage.getColorString("residents-gui.lore")
         ));
 
@@ -250,91 +237,61 @@ public class GUITown {
 
     }
 
-    private void processAuction(HashMap<Integer, Slot> matrix)
-    {
+    private void processAuction(HashMap<Integer, Slot> matrix) {
 
-        String title =  AuroraLanguage.getColorString("auction-gui.title");
+        String title = AuroraLanguage.getColorString("auction-gui.title");
 
-        if(town.hasAuction())
-        {
-            title =  AuroraLanguage.getColorString("auction-gui.title-bought");
+        if (town.hasAuction()) {
+            title = AuroraLanguage.getColorString("auction-gui.title-bought");
         }
 
 
         Slot.SlotListener slotListener = new Slot.SlotListener() {
             @Override
             public void onRightClicked(Player player, GUITable guiTable) {
-                if(Permissions.canCreateAuction(player)) {
-                    if (town.hasAuction()) {
+                if (Permissions.canCreateAuction(player)) {
+                    if (town.getAuctionStructure() != null) {
+                        try {
+                            town.getAuctionStructure().destroy(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-structure-destroy-finished"), player);
+                                    town.setAuctionStructure(null);
+                                }
+                            }, new Runnable() {
+                                @Override
+                                public void run() {
+                                    Logger.error("Error destroying structure!");
+                                }
+                            }, true);
+                        } catch (WorldNotFoundedException | StructureBuildException e) {
+                            e.printStackTrace();
+                        }
+
                         town.setAuctionStructure(null);
+                        player.closeInventory();
                     }
-                }
-                else
-                {
+                } else {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.ACCESS_DENIED), player);
                 }
             }
 
             @Override
             public void onLeftClicked(Player player, GUITable guiTable) {
-                if(Permissions.canCreateAuction(player)) {
+                if (Permissions.canCreateAuction(player)) {
                     double price = AuroraUniverse.getInstance().getConfig().getDouble("auction-price");
-                    try {
-                        if (!town.hasAuction()) {
 
-                            if (!town.getBank().hasAmount(price)) {
-                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.no-money")
-                                        .replace("%s", String.valueOf(price)), player);
-                                return;
-                            }
+                    if (!town.hasAuction()) {
+
+                        if (!town.getBank().hasAmount(price)) {
+                            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("economy.pay.no-money")
+                                    .replace("%s", String.valueOf(price)), player);
+                            return;
                         }
-                        town.createAuction(player.getLocation(), new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!town.hasAuction()) {
-                                    if (town.withdrawBank(price)) {
-                                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-created"), player);
-                                    } else {
-                                        try {
-                                            town.getAuctionStructure().destroy(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-error-place"), player);
-                                                }
-                                            }, new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Logger.error("Error destroying wrong structure!");
-                                                }
-                                            }, true);
-                                            town.setAuctionStructure(null);
-                                        } catch (WorldNotFoundedException e) {
-                                            e.printStackTrace();
-                                        } catch (StructureBuildException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                } else {
-                                    Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-created"), player);
-                                }
-
-                            }
-                        }, new Runnable() {
-                            @Override
-                            public void run() {
-                                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-error-replace"), player);
-                            }
-                        });
-                    } catch (WorldNotFoundedException e) {
-                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-error-place"), player);
-                    } catch (AuctionPlaceException e) {
-                        Messaging.sendPrefixedMessage(e.getMessage(), player);
-                    } catch (StructureBuildException e) {
-                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-error-place"), player);
                     }
-                }
-                else
-                {
+                    guiAuctionSelect(price);
+
+                } else {
                     Messaging.sendPrefixedMessage(AuroraLanguage.getColorString(Messages.Keys.ACCESS_DENIED), player);
                 }
             }
@@ -357,6 +314,117 @@ public class GUITown {
         }
 
 
+    }
+
+    private void guiAuctionSelect(double price) {
+
+        HashMap<Integer, Slot> matrix = new HashMap<>();
+
+        for (int i = 1; i < 10; i++) {
+            String newPath = "auction-selector.select." + i;
+
+            if (!AuroraLanguage.hasString(newPath)) {
+                break;
+            }
+
+            ItemStack item = Items.createNamedItem(new ItemStack(
+                    Material.getMaterial(AuroraUniverse.getInstance().getConfig().getString("auction-gui-materials." + i)), 1),
+                    AuroraLanguage.getColorString(newPath));
+
+            int finalI = i;
+
+            Slot slot = new Slot(new SlotRunnable() {
+                @Override
+                public void run() {
+                    createAuction(price, finalI);
+                    player.closeInventory();
+
+                }
+            }, item);
+
+            matrix.put(i, slot);
+        }
+
+        try {
+            GUITable guiTable = new GUITable(AuroraLanguage.getColorString("auction-selector.selector-title"), 1, matrix,
+                    AuroraUniverse.getInstance(), Material.AIR, true);
+            guiTable.open(player);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.error(player.getName() + " can't open GUIAuctionSelect");
+        }
+
+    }
+
+    private void createAuction(double price, int numberOfSelected) {
+
+        if (town.getAuctionStructure() == null) {
+            if (!town.getBank().hasAmount(price)) {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-buy-no-money"), player);
+                town.setAuctionStructure(null);
+                return;
+            }
+
+            createAuctionWithWithdrawing(town, price, numberOfSelected, player);
+        } else {
+            try {
+                town.createAuction(player.getLocation(), numberOfSelected, new Runnable() {
+                    @Override
+                    public void run() {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-replaced"), player);
+                    }
+                }, new Runnable() {
+                    @Override
+                    public void run() {
+                        town.setAuctionStructure(null);
+
+                        createAuctionWithWithdrawing(town, price, numberOfSelected, player);
+                    }
+                });
+            } catch (WorldNotFoundedException | StructureBuildException e) {
+                Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-error-place"), player);
+            } catch (AuctionPlaceException e) {
+                Messaging.sendPrefixedMessage(e.getMessage(), player);
+            }
+        }
+
+    }
+
+    public static void createAuctionWithWithdrawing(Town town, double price, int structureId, Player player) {
+        try {
+            town.createAuction(player.getLocation(), structureId, new Runnable() {
+                @Override
+                public void run() {
+                    if (town.withdrawBank(price)) {
+                        Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-created"), player);
+                    } else {
+                        try {
+                            town.getAuctionStructure().destroy(new Runnable() {
+                                @Override
+                                public void run() {
+                                }
+                            }, new Runnable() {
+                                @Override
+                                public void run() {
+                                    Logger.error("Error destroying structure!");
+                                }
+                            }, true);
+                        } catch (WorldNotFoundedException | StructureBuildException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }, new Runnable() {
+                @Override
+                public void run() {
+                    Logger.error("Error destroying wrong structure!");
+                }
+            });
+        } catch (WorldNotFoundedException | StructureBuildException e) {
+            Messaging.sendPrefixedMessage(AuroraLanguage.getColorString("auction-error-place"), player);
+        } catch (AuctionPlaceException e) {
+            Messaging.sendPrefixedMessage(e.getMessage(), player);
+        }
     }
 
 }

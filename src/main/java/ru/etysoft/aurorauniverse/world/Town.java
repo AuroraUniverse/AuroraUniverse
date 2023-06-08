@@ -703,9 +703,9 @@ public class Town {
         return switchGroups;
     }
 
-    public void createAuction(Location location, Runnable onBuildFinished, Runnable onFailCreation) throws WorldNotFoundedException, AuctionPlaceException, StructureBuildException {
+    public void createAuction(Location location, int numberOfSelected, Runnable onBuildFinished, Runnable onFailCreation) throws WorldNotFoundedException, AuctionPlaceException, StructureBuildException {
         Structure structure = new Structure(location.getChunk().getX() * 16, location.getBlockY(), location.getChunk().getZ() * 16,
-                AuroraUniverse.getInstance().getConfig().getString("default-auction-structure"), location.getWorld().getName());
+                AuroraUniverse.getInstance().getConfig().getString("auction-structures." + numberOfSelected), location.getWorld().getName());
 
         if (!structure.isInSingleChunk())
             throw new AuctionPlaceException(AuroraUniverse.getLanguage().getString("auction-error-chunk"));
@@ -715,7 +715,7 @@ public class Town {
             throw new AuctionPlaceException(AuroraUniverse.getLanguage().getString("auction-error-place"));
 
 
-        if (hasAuction()) {
+        if (auctionStructure != null) {
             if (auctionStructure.isFullBuilt() && AuroraUniverse.getInstance().isAuctionStructureEnabled()) {
                 auctionStructure.destroy(new Runnable() {
                     @Override
@@ -744,7 +744,7 @@ public class Town {
 
                 Logger.debug("Auction is not full built!");
 
-               onFailCreation.run();
+                onFailCreation.run();
 
             }
         } else

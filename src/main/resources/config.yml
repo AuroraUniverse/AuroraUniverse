@@ -52,7 +52,14 @@ auction-price: 5000
 auction-expired-sec: 50000
 max-listings-per-town: 50
 max-items-without-struct: 10
-default-auction-structure: "auction"
+
+auction-structures:
+  1: "auction"
+  2: "auction-2"
+
+auction-gui-materials:
+  1: "LAPIS_BLOCK"
+  2: "GLASS"
 
 ####################################################
 # Taxes

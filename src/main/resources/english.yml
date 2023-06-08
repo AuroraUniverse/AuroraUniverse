@@ -436,3 +436,14 @@ town-auction-tax: "&7> &bTax on auction: &e%s%"
 # Added in 0.8.3.1
 
 region-main-chunk: "&fYou can't give main chunk"
+
+# Added in 0.8.3.3
+
+auction-selector:
+  selector-title: "Auction selector"
+  select:
+    1: "&fFirst auction"
+    2: "&fSecond auction"
+
+auction-structure-destroy-finished: "&fStructure has been deleted!"
+auction-replaced: "&fAuction replaced successfully"
