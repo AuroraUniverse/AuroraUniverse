@@ -5,7 +5,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,7 +20,7 @@ import ru.etysoft.aurorauniverse.Logger;
 import ru.etysoft.aurorauniverse.commands.PluginCommands;
 import ru.etysoft.aurorauniverse.data.Residents;
 import ru.etysoft.aurorauniverse.data.Towns;
-import ru.etysoft.aurorauniverse.events.InTownBlockBrakeEvent;
+import ru.etysoft.aurorauniverse.events.InTownBlockBreakEvent;
 import ru.etysoft.aurorauniverse.events.InTownBlockPlaceEvent;
 import ru.etysoft.aurorauniverse.exceptions.TownNotFoundedException;
 import ru.etysoft.aurorauniverse.structures.StructurePatterns;
@@ -223,33 +222,6 @@ public class ProtectionListener implements Listener {
                         }
                     }
                 }
-
-//                    try {
-//                    if (Towns.hasMyTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk())
-//                            , Residents.getResident(player).getTown())) {
-//                        Town town = Towns.getTown(event.getEntity().getLocation().getChunk());
-//                        if (town != null) {
-//                            if (!town.canDestroy(Residents.getResident(player), ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()))) {
-//                                Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
-//                                Logger.debug("Prevented from block break[1] " +  player.getName());
-//                                event.setCancelled(true);
-//                            } else {
-//
-//                            }
-//                        }
-//                    } else {
-//                        if (Towns.hasTown(ChunkPair.fromChunk(event.getEntity().getLocation().getChunk()))) {
-//                            Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
-//                            event.setCancelled(true);
-//                            Logger.debug("Prevented from block break[2] " + player.getName());
-//                        }
-//                    }
-//                } catch (TownNotFoundedException ignored) {
-//                    if (Towns.hasTown(ChunkPair.fromChunk(player.getLocation().getChunk()))) {
-//                        Messaging.sendPrefixedMessage(AuroraUniverse.getLanguage().getString("town-block-break"), player);
-//                        event.setCancelled(true);
-//                        Logger.debug("Prevented from block break[3] " + player.getName());
-//                    }
             }
         }
     }
@@ -285,18 +257,18 @@ public class ProtectionListener implements Listener {
 
         for (Block block : event.blockList().toArray(new Block[event.blockList().size()])) {
             Town town = Towns.getTown(block.getChunk());
-
+            Logger.error("huy");
             if (town == null) {
                 finalBlockList.add(block);
             } else {
                 if (town.isExplosionEnabled(ChunkPair.fromChunk(block.getChunk()))) {
-                    finalBlockList.add(block);
-                } else {
-                    InTownBlockBrakeEvent blockBrake = new InTownBlockBrakeEvent(town, block);
+                    InTownBlockBreakEvent blockBrake = new InTownBlockBreakEvent(town, block);
                     Bukkit.getPluginManager().callEvent(blockBrake);
+                    Logger.error("aaaaaaa");
 
                     if (!blockBrake.isCancelled()) {
                         finalBlockList.add(block);
+                        Logger.error("hello!");
                     }
                 }
             }
@@ -317,13 +289,13 @@ public class ProtectionListener implements Listener {
                 finalBlockList.add(block);
             } else {
                 if (town.isExplosionEnabled(ChunkPair.fromChunk(block.getChunk()))) {
-                    finalBlockList.add(block);
-                } else {
-                    InTownBlockBrakeEvent blockBrake = new InTownBlockBrakeEvent(town, block);
+                    InTownBlockBreakEvent blockBrake = new InTownBlockBreakEvent(town, block);
                     Bukkit.getPluginManager().callEvent(blockBrake);
+                    Logger.error("aaaaaaa");
 
                     if (!blockBrake.isCancelled()) {
                         finalBlockList.add(block);
+                        Logger.error("hello!");
                     }
                 }
             }
@@ -605,7 +577,7 @@ public class ProtectionListener implements Listener {
                 }
 
                 if (!event.isCancelled()) {
-                    InTownBlockBrakeEvent blockBrake = new InTownBlockBrakeEvent(town, event.getBlock());
+                    InTownBlockBreakEvent blockBrake = new InTownBlockBreakEvent(town, event.getBlock());
                     Bukkit.getPluginManager().callEvent(blockBrake);
 
                     if (blockBrake.isCancelled()) {
@@ -619,7 +591,7 @@ public class ProtectionListener implements Listener {
             Town town = Towns.getTown(event.getBlock().getChunk());
 
             if (town != null) {
-                InTownBlockBrakeEvent blockBrake = new InTownBlockBrakeEvent(town, event.getBlock());
+                InTownBlockBreakEvent blockBrake = new InTownBlockBreakEvent(town, event.getBlock());
                 Bukkit.getPluginManager().callEvent(blockBrake);
             }
         }
@@ -658,12 +630,13 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void onStructureGrow(BlockFertilizeEvent event) {
-
-
-        if (Objects.requireNonNull(event.getPlayer()).hasPermission("aun.edittowns")) return;
+        if (event.getPlayer() != null) {
+            if (event.getPlayer().hasPermission("aun.edittowns")) return;
+        }
         for (BlockState blockState : event.getBlocks()) {
             if (Towns.hasTown(blockState.getBlock().getLocation())) {
                 Resident resident = Residents.getResident(event.getPlayer());
+                if (resident == null) return;
                 try {
                     if (Towns.getTown(blockState.getBlock().getChunk()) != resident.getTown()) {
                         event.setCancelled(true);

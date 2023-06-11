@@ -6,7 +6,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import ru.etysoft.aurorauniverse.world.Town;
 
-public class InTownBlockBrakeEvent extends Event implements Cancellable {
+public class InTownBlockBreakEvent extends Event implements Cancellable {
 
     private Town town;
 
@@ -14,7 +14,7 @@ public class InTownBlockBrakeEvent extends Event implements Cancellable {
 
     private boolean cancelled = false;
 
-    public InTownBlockBrakeEvent(Town town, Block block) {
+    public InTownBlockBreakEvent(Town town, Block block) {
         this.town = town;
         this.block = block;
     }
