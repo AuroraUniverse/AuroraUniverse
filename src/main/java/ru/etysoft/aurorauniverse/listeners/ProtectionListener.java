@@ -257,18 +257,15 @@ public class ProtectionListener implements Listener {
 
         for (Block block : event.blockList().toArray(new Block[event.blockList().size()])) {
             Town town = Towns.getTown(block.getChunk());
-            Logger.error("huy");
             if (town == null) {
                 finalBlockList.add(block);
             } else {
                 if (town.isExplosionEnabled(ChunkPair.fromChunk(block.getChunk()))) {
                     InTownBlockBreakEvent blockBrake = new InTownBlockBreakEvent(town, block);
                     Bukkit.getPluginManager().callEvent(blockBrake);
-                    Logger.error("aaaaaaa");
 
                     if (!blockBrake.isCancelled()) {
                         finalBlockList.add(block);
-                        Logger.error("hello!");
                     }
                 }
             }
@@ -291,11 +288,9 @@ public class ProtectionListener implements Listener {
                 if (town.isExplosionEnabled(ChunkPair.fromChunk(block.getChunk()))) {
                     InTownBlockBreakEvent blockBrake = new InTownBlockBreakEvent(town, block);
                     Bukkit.getPluginManager().callEvent(blockBrake);
-                    Logger.error("aaaaaaa");
 
                     if (!blockBrake.isCancelled()) {
                         finalBlockList.add(block);
-                        Logger.error("hello!");
                     }
                 }
             }
