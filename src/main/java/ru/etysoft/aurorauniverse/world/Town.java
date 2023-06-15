@@ -31,7 +31,7 @@ import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Numbers;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -167,12 +167,11 @@ public class Town {
     }
 
     public boolean isExplosionEnabled() {
-        if(forceExplosions) return true;
+        if (forceExplosions) return true;
         return explosion;
     }
 
-    public boolean isExplosionEnabled(ChunkPair chunk)
-    {
+    public boolean isExplosionEnabled(ChunkPair chunk) {
         if (forceExplosions) return true;
         Region region = townChunks.get(chunk);
         if (region instanceof ResidentRegion) {
@@ -182,18 +181,14 @@ public class Town {
     }
 
 
-    public void addEmbargoTown(Town town)
-    {
-        if(!embargoList.contains(town.getId()))
-        {
+    public void addEmbargoTown(Town town) {
+        if (!embargoList.contains(town.getId())) {
             embargoList.add(town.getId());
         }
     }
 
-    public void removeEmbargoTown(Town town)
-    {
-        if(embargoList.contains(town.getId()))
-        {
+    public void removeEmbargoTown(Town town) {
+        if (embargoList.contains(town.getId())) {
             embargoList.remove(town.getId());
         }
     }
@@ -216,22 +211,19 @@ public class Town {
     }
 
     public void setResTax(double resTax) {
-        if(resTax < 0) return;
+        if (resTax < 0) return;
         this.resTax = resTax;
     }
 
     public ArrayList<Town> getEmbargoList() {
 
         ArrayList<Town> towns = new ArrayList<>();
-        for(String id : new ArrayList<>(embargoList))
-        {
+        for (String id : new ArrayList<>(embargoList)) {
             try {
                 Town town = Towns.getTownById(id);
-                if(town == null)
-                {
+                if (town == null) {
                     embargoList.remove(id);
-                }
-                else {
+                } else {
                     towns.add(town);
                 }
             } catch (TownNotFoundedException e) {
@@ -243,11 +235,9 @@ public class Town {
     }
 
 
-    public boolean hasEmbargoForTown(Town town)
-    {
+    public boolean hasEmbargoForTown(Town town) {
         return embargoList.contains(town.getId());
     }
-
 
 
     public double getNewChunkPrice() {
@@ -295,14 +285,10 @@ public class Town {
         return mobs;
     }
 
-    public boolean isMobs(Region region)
-    {
-        if (region instanceof ResidentRegion)
-        {
+    public boolean isMobs(Region region) {
+        if (region instanceof ResidentRegion) {
             return ((ResidentRegion) region).isMobs();
-        }
-        else
-        {
+        } else {
             return mobs;
         }
     }
@@ -450,7 +436,6 @@ public class Town {
             town.setExplosionEnabled((boolean) jsonObject.get(JsonKeys.EXPLOSION));
 
 
-
             // spawnLocation.setDirection(new Vector(spawnDirX,spawnDirY,spawnDirZ));
 
 
@@ -466,19 +451,12 @@ public class Town {
 
             town.setSpawn(spawnLocation);
 
-            if (jsonObject.containsKey(JsonKeys.AUCTION_TAX))
-            {
+            if (jsonObject.containsKey(JsonKeys.AUCTION_TAX)) {
                 double auctionTax = Double.parseDouble(jsonObject.get(JsonKeys.AUCTION_TAX).toString());
                 town.setAuctionTax(auctionTax);
-            }
-            else
-            {
+            } else {
                 town.setAuctionTax(0);
             }
-
-
-
-
 
 
         } catch (Exception e) {
@@ -641,8 +619,7 @@ public class Town {
 
         JSONArray jsonArrayEmbargo = new JSONArray();
 
-        for(String id : embargoList)
-        {
+        for (String id : embargoList) {
             jsonArrayEmbargo.add(id);
         }
 
@@ -721,7 +698,7 @@ public class Town {
                     @Override
                     public void run() {
                         try {
-                            if(AuroraUniverse.getInstance().isAuctionStructureEnabled()){
+                            if (AuroraUniverse.getInstance().isAuctionStructureEnabled()) {
                                 structure.build(onBuildFinished);
                             }
 
@@ -747,18 +724,12 @@ public class Town {
                 onFailCreation.run();
 
             }
-        } else
-        {
-            if(AuroraUniverse.getInstance().isAuctionStructureEnabled()) {
+        } else {
+            if (AuroraUniverse.getInstance().isAuctionStructureEnabled()) {
                 structure.build(onBuildFinished);
             }
             auctionStructure = structure;
         }
-
-
-
-
-
 
 
     }
@@ -776,19 +747,19 @@ public class Town {
 
     public void createPlayerRegion(ChunkPair originalLocation, Resident resident) throws RegionException {
 //        if (residents.contains(resident)) {
-            if (townChunks.containsKey(originalLocation)) {
-                if (originalLocation != mainChunk) {
-                    townChunks.remove(originalLocation);
+        if (townChunks.containsKey(originalLocation)) {
+            if (originalLocation != mainChunk) {
+                townChunks.remove(originalLocation);
 
-                    townChunks.put(originalLocation, new ResidentRegion(this, resident.getName()));
-                    AuroraUniverse.removeTownBlock(originalLocation);
-                    AuroraUniverse.addTownBlock(originalLocation, new ResidentRegion(this, resident.getName()));
-                } else {
-                    throw new RegionException("Unable to remove town's main chunk");
-                }
+                townChunks.put(originalLocation, new ResidentRegion(this, resident.getName()));
+                AuroraUniverse.removeTownBlock(originalLocation);
+                AuroraUniverse.addTownBlock(originalLocation, new ResidentRegion(this, resident.getName()));
             } else {
-                throw new RegionException("Chunk don't belong to town");
+                throw new RegionException("Unable to remove town's main chunk");
             }
+        } else {
+            throw new RegionException("Chunk don't belong to town");
+        }
 
 //        } else {
 //            throw new RegionException("Resident don't belong to town");
@@ -830,10 +801,10 @@ public class Town {
         return fire;
     }
 
-    public boolean isFire()
-    {
+    public boolean isFire() {
         return fire;
     }
+
     public Bank getBank() {
         return townBank;
     }
@@ -841,8 +812,9 @@ public class Town {
     public void depositBank(double d) {
         townBank.deposit(d);
     }
+
     public void depositBank(double d, Resident resident) {
-        if(d > AuroraUniverse.getInstance().getConfig().getInt("big-amount-starts-from")) {
+        if (d > AuroraUniverse.getInstance().getConfig().getInt("big-amount-starts-from")) {
             String deposited = AuroraLanguage.getColorString("gui.trans-history-deposit")
                     .replace("%s", resident.getName()).replace("%d", String.valueOf(d));
 
@@ -867,10 +839,11 @@ public class Town {
     public boolean withdrawBank(double d) {
         return townBank.withdraw(d);
     }
+
     public boolean withdrawBank(double d, Resident resident) {
         String withdrawn = AuroraLanguage.getColorString("gui.trans-history-withdraw")
                 .replace("%s", resident.getName()).replace("%d", String.valueOf(d));
-        if(d > AuroraUniverse.getInstance().getConfig().getInt("big-amount-starts-from")) {
+        if (d > AuroraUniverse.getInstance().getConfig().getInt("big-amount-starts-from")) {
 
             if (transactionHistory.size() > 5) {
                 ArrayList<String> temp = new ArrayList<>();
@@ -1135,8 +1108,7 @@ public class Town {
                             }
                         } else {
 
-                            if(player != null)
-                            {
+                            if (player != null) {
                                 Messaging.sendPrefixedMessage(Messages.claimTooClose(), player);
                             }
 
@@ -1172,8 +1144,7 @@ public class Town {
             }
 
             if (hasNation()) {
-                if(getNation().getCapital() == this)
-                {
+                if (getNation().getCapital() == this) {
                     getNation().delete();
                 }
             }
@@ -1298,14 +1269,12 @@ public class Town {
         return null;
     }
 
-    public boolean hasAuction()
-    {
+    public boolean hasAuction() {
 
-        if(!AuroraUniverse.getInstance().isAuctionEnabled()) return false;
+        if (!AuroraUniverse.getInstance().isAuctionEnabled()) return false;
 
-        if(auctionStructure != null)
-        {
-            if(!AuroraUniverse.getInstance().isAuctionStructureEnabled()) return true;
+        if (auctionStructure != null) {
+            if (!AuroraUniverse.getInstance().isAuctionStructureEnabled()) return true;
             try {
                 return auctionStructure.isFullBuilt();
             } catch (WorldNotFoundedException e) {
@@ -1317,9 +1286,8 @@ public class Town {
     }
 
     public boolean unclaimChunk(ChunkPair chunk) {
-        if(auctionStructure != null)
-        {
-            if(AuroraUniverse.getInstance().isAuctionStructureEnabled()) {
+        if (auctionStructure != null) {
+            if (AuroraUniverse.getInstance().isAuctionStructureEnabled()) {
                 if (chunk.equals(auctionStructure.getStartChunk())) {
                     return false;
                 }
@@ -1393,8 +1361,7 @@ public class Town {
 
     }
 
-    public double getTownChunkTax()
-    {
+    public double getTownChunkTax() {
         return AuroraUniverse.getInstance().getConfig().getDouble("town-chunk-tax");
     }
 
@@ -1402,7 +1369,7 @@ public class Town {
         double townChunkTax = getTownChunkTax();
 
         double multiplier = 1;
-        for (double d: townChunkTaxMultipliers.values()) {
+        for (double d : townChunkTaxMultipliers.values()) {
             multiplier *= d;
         }
 
@@ -1410,7 +1377,7 @@ public class Town {
     }
 
     public void rename(String newName) {
-        if(AuroraUniverse.getTownList().containsKey(newName)) return;
+        if (AuroraUniverse.getTownList().containsKey(newName)) return;
         TownRenameEvent townRenameEvent = new TownRenameEvent(newName, name);
         Bukkit.getPluginManager().callEvent(townRenameEvent);
         AuroraUniverse.getTownList().remove(name);
@@ -1430,5 +1397,25 @@ public class Town {
 
     public Resident getMayor() {
         return mayor;
+    }
+
+    public int getOnline() {
+        int online = 0;
+        for (Resident resident : residents) {
+            if (resident.getPlayer() != null) {
+                online = online + 1;
+            }
+        }
+        return online;
+    }
+
+    public ArrayList getResidentsOnline() {
+        ArrayList<String> online = new ArrayList<>();
+        for (Resident resident : residents) {
+            if (resident.getPlayer() != null) {
+                online.add(resident.getName());
+            }
+        }
+        return online;
     }
 }

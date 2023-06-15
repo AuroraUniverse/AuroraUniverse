@@ -207,4 +207,27 @@ public class Nation {
             town.sendMessage(message);
         }
     }
+    public int getOnline() {
+        int online = 0;
+        for (Town town : getTowns()) {
+            for (Resident resident : town.getResidents()) {
+                if (resident.getPlayer() != null) {
+                    online = online + 1;
+                }
+            }
+        }
+        return online;
+    }
+
+    public ArrayList getResidentsOnline() {
+        ArrayList<String> online = new ArrayList<>();
+        for (Town town : getTowns()) {
+            for (Resident resident : town.getResidents()) {
+                if (resident.getPlayer() != null) {
+                    online.add(resident.getName());
+                }
+            }
+        }
+        return online;
+    }
 }

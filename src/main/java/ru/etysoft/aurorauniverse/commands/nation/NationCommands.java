@@ -10,8 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.etysoft.aurorauniverse.AuroraUniverse;
-import ru.etysoft.aurorauniverse.commands.nation.NationDepositCommand;
-import ru.etysoft.aurorauniverse.commands.nation.NationWithdrawCommand;
 import ru.etysoft.aurorauniverse.data.Messages;
 import ru.etysoft.aurorauniverse.data.Nations;
 import ru.etysoft.aurorauniverse.data.Residents;
@@ -24,7 +22,6 @@ import ru.etysoft.aurorauniverse.utils.Messaging;
 import ru.etysoft.aurorauniverse.utils.Permissions;
 import ru.etysoft.aurorauniverse.world.Nation;
 import ru.etysoft.aurorauniverse.world.Resident;
-import ru.etysoft.aurorauniverse.world.Town;
 
 public class NationCommands implements CommandExecutor {
 
@@ -59,6 +56,12 @@ public class NationCommands implements CommandExecutor {
                     acceptInvite();
                 } else if (args[0].equalsIgnoreCase("leave")) {
                     leave();
+                } else if (args[0].equalsIgnoreCase("online")) {
+                    try {
+                        new NationOnlineCommand(resident, args, sender);
+                    } catch (TownNotFoundedException e) {
+                        throw new RuntimeException(e);
+                    }
                 } else if (args[0].equalsIgnoreCase("deposit")) {
                     new NationDepositCommand(resident, args, sender);
                 } else if (args[0].equalsIgnoreCase("withdraw")) {

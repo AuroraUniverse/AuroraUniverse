@@ -40,6 +40,8 @@ public class TownCommands implements CommandExecutor {
                     new TownSpawnCommand(sender, resident, args);
                 } else if (args[0].equalsIgnoreCase("list")) {
                     new TownListCommand(sender, args);
+                } else if (args[0].equalsIgnoreCase("online")) {
+                    new TownOnlineCommand(resident, args, sender);
                 } else if (args[0].equalsIgnoreCase("rename")) {
                     new TownRenameCommand(resident, args, sender);
                 } else if (args[0].equalsIgnoreCase("claim")) {

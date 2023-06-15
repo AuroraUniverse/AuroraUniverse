@@ -39,6 +39,7 @@ public class NationTabCompleter implements TabCompleter {
         firstPossibleArg.add("tax");
         firstPossibleArg.add("list");
         firstPossibleArg.add("rename");
+        firstPossibleArg.add("online");
 
         for(Nation nation : Nations.getNations())
         {
@@ -54,6 +55,10 @@ public class NationTabCompleter implements TabCompleter {
                     for (String t : AuroraUniverse.getTownList().keySet()) {
                         possibleArgs.add(t);
                     }
+                } else if (args[0].equals("online")) {
+                    for (Nation nation : Nations.getNations()) {
+                        possibleArgs.add(nation.getName());
+                    }
                 } else if (args[0].equals("accept")) {
                     for (String t : AuroraUniverse.nationList.keySet()) {
                         possibleArgs.add(t);
@@ -67,19 +72,16 @@ public class NationTabCompleter implements TabCompleter {
                                     possibleArgs.add(t);
                                 }
                             }
-                        }
-                        catch (Exception ignored)
-                        {
+                        } catch (Exception ignored) {
 
                         }
                     }
                 } else if (args[0].equalsIgnoreCase("spawn")) {
                     Resident resident = Residents.getResident(sender.getName());
-                    try
-                    {
-                        for (Town town: resident.getTown().getNation().getTowns()) {
+                    try {
+                        for (Town town : resident.getTown().getNation().getTowns()) {
                             possibleArgs.add(town.getName());
-                    }
+                        }
                     } catch (TownNotFoundedException e) {
 
                     }

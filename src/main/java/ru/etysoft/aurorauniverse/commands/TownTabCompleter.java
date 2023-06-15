@@ -52,6 +52,7 @@ public class TownTabCompleter implements TabCompleter {
         firstPossibleArg.add("accept");
         firstPossibleArg.add("rank");
         firstPossibleArg.add("auction");
+        firstPossibleArg.add("online");
 
         for (Town r : Towns.getTowns()) {
             if(Permissions.canSeeTownInfo(sender)) {
@@ -74,6 +75,10 @@ public class TownTabCompleter implements TabCompleter {
                     possibleArgs.add("fire");
                     possibleArgs.add("mobs");
                     possibleArgs.add("explosions");
+                } else if (args[0].equals("online")) {
+                    for (Town r : Towns.getTowns()) {
+                        possibleArgs.add(r.getName());
+                    }
                 } else if (args[0].equals("region")) {
                     possibleArgs.add("add");
                     possibleArgs.add("kick");
