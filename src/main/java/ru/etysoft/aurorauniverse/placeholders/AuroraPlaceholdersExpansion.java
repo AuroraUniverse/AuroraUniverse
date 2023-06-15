@@ -9,8 +9,6 @@ import ru.etysoft.aurorauniverse.utils.AuroraLanguage;
 import ru.etysoft.aurorauniverse.utils.ColorCodes;
 import ru.etysoft.aurorauniverse.world.Resident;
 
-import java.util.concurrent.ExecutionException;
-
 public class AuroraPlaceholdersExpansion extends PlaceholderExpansion {
 
     private AuroraUniverse plugin;

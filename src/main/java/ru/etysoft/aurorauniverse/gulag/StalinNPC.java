@@ -1,7 +1,6 @@
 package ru.etysoft.aurorauniverse.gulag;
 
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.ai.AttackStrategy;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
