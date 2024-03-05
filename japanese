@@ -1,0 +1,507 @@
+# Language configuration file
+
+########################################
+#                                      #
+#            General params            #
+#                                      #
+########################################
+
+prefix: "&7[&bAuroraUniverse&7]"
+# DO NOT EDIT
+file-version: 0.1.1.6
+
+########################################
+#                                      #
+#        Aurora Plugin Messages        #
+#                                      #
+########################################
+
+authors-string: "作者: "
+version-string: "バージョン: "
+apiversion-string: "APIバージョン: "
+
+reloaded-message: "&aプラグインが新しいパラメータで正常にリロードされました！"
+no-arguments: "&cコマンドの引数が間違っています！"
+access-denied-message: "&eこの操作を実行する権限がありません！"
+console: "&cコンソールからはできません！"
+resident-town: "&7街: &b%s"
+resident-balance: "&7残高: &b%s"
+resident-none: "なし"
+
+prices:
+  header: "&7>> &bAurora&fUniverse &a価格 &7<<"
+  new-town: "&b街: &a%s"
+  chunk-price: "&bチャンクの保護: &a%s"
+  outpost-price: "&b前哨地: &a%s"
+  chunk-mod: "&bチャンクの価格増加: &a%s"
+  outpost-mod: "&b前哨地の価格増加: &a%s"
+  nation-price: "&b国: &a%s"
+  new-day: "&e新しい日までの時間&f: &a%s"
+
+########################################
+#                                      #
+#            Towns messages            #
+#                                      #
+########################################
+# %s - is a variable (example: town name, error message etc.)
+
+world-timer: "&e新しい日が始まりました！税金の徴収..."
+price-error: "&eこれをするには %s が必要です！"
+name-invalid: "&e名前 %s は無効です！"
+
+town-created-message: "%s という名前の街を作りました。税金の徴収は %h 時間後に始まります"
+town-cantcreate-message: "&c街の作成エラー: %s "
+town-deleted-message: "あなたの街は正常に削除されました"
+town-delete-confirm: "&f本当に街を削除したい場合は、&b/t delete confirm &fと入力してください"
+town-teleported-to-spawn: "街のスポーンにテレポートされました"
+town-teleported-to-outpost: "前哨地にテレポートされました"
+town-no-outpost: "&cその前哨地はありません"
+town-dont-belong: "あなたは街に所属していません！"
+town-claim: "&f新しいチャンクが &a正常に &f獲得されました！"
+town-claim-outpost: "&f新しい &6前哨地 &fが &a正常に &f獲得されました！"
+town-cant-withdraw-outpost: "&c前哨地を支払うことができません！"
+town-cantclaim: "&c新しいチャンクを獲得することができません！"
+town-unclaim: "&fチャンクが &e正常に &f解放されました！"
+town-cantunclaim: "&c街のチャンクを解放することができません！"
+town-leave: "&fあなたは &e街 %s を &f去りました"
+town-list: "&7>> &b街の一覧"
+town-rename: "&fあなたは街の名前を &e変更しました&f &b%s に"
+town-setspawn: "新しいスポーン地点が設定されました！"
+town-settax: "街民に対する新しい税金を設定しました！"
+town-setmayor: "新しい市長が設定されました！"
+town-cantsetmayor: "&cこのプレイヤーは市長になれません。"
+town-tax-error: "無効な税金です！"
+town-delete-canceled: "街の削除がキャンセルされました"
+town-cantsetspawn: "&cスポーン地点を設定することができません！"
+town-cantcreateportal: "&cポータルの作成は禁止されています"
+town-group-mayor: "&cあなたは &e市長の権限グループ &cを編集することができません"
+town-group-does-not-exists: "&cその権限グループは存在しません！"
+town-group-set: "権限グループ &f%s &7が街民 &b%p に適用されました"
+town-out-money: "&f街 &b%s &fは維持費不足で &c削除されました&f"
+town-resident-not-in-town: "&cこの街民は街に所属していません"
+town-online: "&b街のオンライン &7(%n)&b: &f%res "
+
+
+town-enperm: "&f権限グループ &b%k &fに &a%s &fを許可しました！"
+town-disperm: "&f権限グループ &b%k &fに &e%s &fを禁止しました！"
+town-cantsetperm: "&c権限グループ &f%k &cに &f%s &cを設定することができません！"
+
+
+town-kick: "&f街民 &b%s &fが街から追放されました"
+town-invite: "&f街民 &b%s &fが街に招待されました"
+town-accepted: "&f街民 &b%s &fが街に加わりました"
+town-accepted-nothing: "&fあなたはこの街から招待を受けていませんでした"
+town-request: "&f街 %s があなたに加入を提案しています。"
+town-accept-err: "&c無効なリクエストです！"
+town-pvpon: "街での &fPvP が &a有効に &fなりました"
+town-mobson: "街の領域での &fモンスター が &a有効に &fなりました"
+town-mobsoff: "街の領域での &fモンスター が &a無効に &fなりました"
+town-pvpoff: "街での &fPvP が &a無効に &fなりました"
+town-pvp: "&cここでは戦闘できません！"
+town-fireon: "街での &f火災 が &a有効に &fなりました"
+town-expon: "街での &f爆発 が &a許可されました"
+town-expoff: "街での &f爆発 が &a禁止されました"
+town-fireoff: "街での &f火災 が &a無効に &fなりました"
+
+
+town-block-place: "&cここにブロックを置くことはできません！"
+town-block-break: "&cここでブロックを壊すことはできません！"
+town-block-switch: "&cここでスイッチを操作することはできません！"
+town-block-use: "&cここでアイテムを使用することはできません！"
+
+town-mayor: "&7> &b市長: &f%s"
+town-residents: "&7> &b街民&7(%s1): &f%s2"
+town-chunks: "&7> &bチャンク: &f%s/%m (%b ボーナス, %o/%p 前哨地)"
+town-chunk-price: "&7> &bチャンクの価格: &f%s"
+town-outpost-price: "&7> &b前哨地の価格: &f%s"
+town-tax: "&7> &b毎日の維持費: &e%s"
+town-res-tax: "&7> &b街民からの税金: &e%s"
+town-pages: "&f%s &7ページ目を表示中 &f%y"
+town-balance: "&7> &b街の銀行: &a%s"
+town-build: "&7>> &e建築 &f権限グループ: &7%s"
+town-destroy: "&7>> &e破壊 &f権限グループ:  &7%s"
+town-switch: "&7>> &e切り替え &f権限グループ:  &7%s"
+town-use: "&7>> &e使用 &f権限グループ:  &7%s"
+town-deposit: "&f街の銀行に &b%s &7を預けました"
+town-deposit-other: "&f街民 &e%r &fが街の銀行に &b%s &7を預けました"
+town-withdraw-other: "&f街民 &e%r &fが街の銀行から &b%s &7を引き出しました"
+town-withdraw: "&f街の銀行から &b%s &7を引き出しました"
+town-cantwithdraw: "&c街の銀行から &f%s &cを引き出すことができません"
+town-cantdeposit: "&c街の銀行に &f%s &cを預けることができません"
+
+gui:
+  bank: "&7街の銀行: &b%s"
+  mayor: "&7市長: &b%s"
+  embargo: "&7エンバーゴされた街: &e%s"
+  auction-tax: "&7オークションの税金: &b%s%"
+  chunks: "&7チャンク: &b%s/%m (%b ボーナス, %o/%p 前哨地)"
+  standing: "&3あなたは今"
+  standing-town: "&b通常の街のチャンク"
+  standing-main-chunk: "&bメインの街のチャンク"
+  has-owner: "&fプレイヤー &b%s のチャンク, &a%s1 &f人のメンバー"
+  claim: "&fこのチャンクを獲得する (&a%s$&f)"
+  unclaim: "&fこのチャンクを解放する"
+  toggle-fire: "&f火災 (%s)"
+  toggle-mobs: "&fモンスター (%s)"
+  toggle-pvp: "&fPvP (%s)"
+  toggle-exp: "&f爆発 (%s)"
+  state-on: "&a有効.&f"
+  state-off: "&c無効.&f"
+  toggles: "トグル"
+  toggles-button: "&eトグル"
+  toggles-lore: "&7街のトグルの管理と確認"
+  trans-history: "&e取引履歴"
+  trans-history-lore: "&7最新の6件の大きな取引"
+  trans-history-withdraw: "&b%s &fが &e%d &fを引き出しました"
+  trans-history-deposit: "&b%s &fが &a%d &fを預けました"
+
+
+not-registered-town: "その名前の街は存在しません"
+not-registered-resident: "その名前の街民は存在しません"
+
+########################################
+#                                      #
+#           Regions messages           #
+#                                      #
+########################################
+
+region-already-owned: "&cこのチャンクはすでに街民に所有されています"
+region-unowned: "&cこのチャンクは所有されていません"
+region-error: "&cチャンクのエラー: 無効な操作"
+region-success: "&f正常に &aチャンクを譲渡しました&f 街民に"
+region-reset-success: "&f正常にチャンクをリセットしました"
+region-townowned: "&cこれは街のチャンクです！"
+region-owner-members: "&cチャンクの所有者だけがメンバーを編集できます！"
+region-added: "&f正常に &aプレイヤー &b%s &fをチャンクに追加しました"
+region-kicked: "&eプレイヤー &b%s &fをチャンクから追放しました"
+region-pvp-on: "&fこのチャンクでの pvp が &a有効に &fなりました"
+region-pvp-off: "&fこのチャンクでの pvp が &c無効に &fなりました"
+
+# [Town errors]
+e1: "このチャンクにはすでに街が存在します"
+e2: "無効な名前です"
+e3: "%s という名前の街はすでに存在します"
+e4: "すでに街に所属しています"
+e5: "このチャンクは街に属していません"
+too-close: "&cこのチャンクは他の街に近すぎます！"
+too-far: "&cこのチャンクはあなたの街から遠すぎます！"
+# [Chunk notifications]
+town-welcome: "&f街 &b%s &7(%p&7) にようこそ"
+region-welcome: "&fプレイヤー &b%s &7(%p&7) のチャンク"
+outpost-welcome: "&f街 &b%s &fの前哨地番号 &6%n"
+town-region-welcome: "&f街 &b%town&7 (%tpvp&7) | &6プレイヤー &b%resident &7(%rpvp&7) のチャンク"
+world: "&e世界に出ました！ &2気をつけて！"
+pvp: "&cPvP"
+no-pvp: "&aNo-PvP"
+forced-pvp: "&c強制的な PvP"
+
+region-info:
+  title: "&bo0o_[&fチャンク情報&b]_o0o"
+  town-owned: "&7> 街の所有するチャンク"
+  toggle-pvp: "&7> Pvp: %s"
+  toggle-fire: "&7> 火災: %s"
+  toggle-explosions: "&7> 爆発: %s"
+  toggle-mobs: "&7> モンスター: %s"
+  members: "&7> 所有者 %s, メンバー(%s1): %s2"
+
+########################################
+#                                      #
+#           Economy messages           #
+#                                      #
+########################################
+
+economy:
+  give: "&f正常に &a与えました &f%s &fプレイヤー &b%k に"
+  take: "&f正常に &e取り上げました &f%s &fプレイヤー &b%k から"
+  balance: "&fあなたの残高 &b%s$"
+  pay:
+    success: "&f正常に &b支払いました &e%s &fプレイヤー &b%k に"
+    not-found: "&cプレイヤー %s が見つかりません！"
+    no-money: "&cあなたは %s がありません！"
+    error: "&cプレイヤー &b%k に &6%s &cを支払うことができません！"
+    # Added in 0.6.2.0
+    notification: "&7プレイヤー &b%s &fが &e%b &7をあなたに送りました"
+
+
+########################################
+#                                      #
+#                Nation                #
+#                                      #
+########################################
+
+nation:
+  capital: "&b首都: &f%s"
+  members: "&b街(%s): &7%s1"
+  tax: "&b街からの税金: &a%s"
+  tax-nation: "&b国の維持費: &e%s"
+  bank: "&b国の銀行: &b%s"
+no-nation: "あなたは国に所属していません"
+wrong-nation: "無効な国の名前です"
+nation-leave: "あなたは国を去りました"
+nation-kick: "あなたは %s を国から追放しました"
+nation-list: "&7>> &b国の一覧"
+nation-tax: "あなたは街からの税金を %s に設定しました"
+nation-tax-error: "無効な税金です！"
+nation-wrong-town: "街 %s は存在しないか、すでに招待されています"
+nation-no-capital: "首都だけが国の構成を変更できます"
+nation-capital-edit: "あなたは首都を編集できません"
+nation-no-invite: "あなたは招待されていません"
+nation-invite-sent: "あなたは街 %s に招待を送りました"
+nation-accepted: "あなたは国への加入の招待を正常に受け入れました。"
+nation-created: "新しい国 %s が作成されました"
+nation-deleted: "あなたの国は削除されました"
+nation-already: "あなたはすでに国に所属しています"
+nation-teleport: "あなたは国のスポーンにテレポートされました"
+nation-town-not-registered: "街は登録されていません"
+nation-invitation: "国 %s があなたの街に加入を提案しています。"
+nation-deposit: "国の銀行に %s を預けました"
+nation-withdraw: "国の銀行から %s を引き出しました"
+nation-withdraw-others: "%p が国の銀行から %s を引き出しました"
+nation-cantdeposit: "国の銀行に %s を預けることができません"
+nation-online: "&b国のオンライン &7(%n)&b: &f%res "
+
+########################################
+#                                      #
+#                 Chat                 #
+#                                      #
+########################################
+
+chat:
+  global: "&3G &7> %vault_prefix%&f%sender%: &7%luckperms_suffix%%message%"
+  local: "&eLC &7>> %vault_prefix%&f%sender%: &e%luckperms_suffix%%message%"
+  town: "&b街 &7>> %vault_prefix%&f%sender%: &b%luckperms_suffix%%message%"
+  nation: "&6国 &7>> %vault_prefix%&f%sender%: &b%luckperms_suffix%%message%"
+  changed: "&fあなたはチャットを &b%s &fに変更しました"
+  ignore: "&fあなたは &b%s &fチャットを無視しています"
+  no-ignore: "&fあなたは &b%s &fチャンネルのメッセージを受け取るようになりました"
+  local-nobody: "&7あなたの声は誰にも聞こえません！"
+  hover-text: "%aurorauniverse_town% %aurorauniverse_nation%"
+  channels:
+    town: "街の"
+    local: "ローカルの"
+    global: "グローバルの"
+    nation: "国の"
+
+########################################
+#                                      #
+#            Admin messages            #
+#                                      #
+########################################
+admin:
+  town-gave-bonus: "&b%t &fの街に &b%s &fのボーナスチャンクを与えました"
+  town-cant-give-bonus: "&b%t &fの街に &fボーナスチャンクを与えることができません"
+  town-deleted: "街 &b%s &fが &c削除されました"
+  town-cantdelete: "街 &b%s &fを削除することができません"
+  town-cant-add: "街民 &b%s &fを追加することができません"
+  town-added: "街民 &b%s &fを街 &b%t &fに追加しました"
+  town-removed: "街民 &b%s &fを街 &b%t &fから除外しました"
+  town-cant-remove: "街民 &b%s &fを削除することができません"
+  town-cant-deposit: "資金を預けることができません"
+  town-deposited: "街 &b%t &fの銀行に &b%s &fを預けました"
+  town-cant-withdraw: "引き出すことができません！"
+  town-withdraw: "街 &b%t &fの銀行から &b%s &fを引き出しました"
+
+
+########################################
+#                                      #
+#             Placeholders             #
+#                                      #
+########################################
+
+placeholders:
+  town: "&7[&b%s&7] "
+  no-town: ""
+  nation: "&7[&6%s&7] "
+  no-nation: ""
+
+# Added in 0.5.0.0
+
+auction-created: "&f市場が &a作成されました"
+auction-gui:
+  title: "&e市場 &7[&c未購入&7]"
+  title-bought: "&e市場 &7[&a購入済み&7]"
+  lore: "&f市場では他の &b街 &fと資源を取引できます。"
+
+  lore-2: "&7左クリックで出品、右クリックで削除（再購入）"
+  price: "&f価格 &b%s"
+  title-gui: "街間市場"
+  item: "&f売り物 &b%s &7(&b%t&7)"
+  item-exp: "&fあと &c%s 分 &fで削除されます"
+  item-your-lore: "&7Shift + 左クリックで回収"
+  next-page: "&e次のページ"
+  prev-page: "&e前のページ"
+  expired-of-player: "プレイヤー %s のインベントリ"
+  expired-inventory: "&e期限切れのアイテムのリストを開く"
+  open-auction: "&e街間市場を開く"
+
+auction-error-place: "&c市場はここに建てることができません（領域は整地されていますか？）"
+auction-sell-need-struct: "&c市場がないとアイテムを売ることができません"
+auction-buy-need-struct: "&cそんなに買うには市場が必要です"
+auction-buy-no-money: "&cお金が足りません！"
+auction-buy-success: "&f正常に &b%s &fを &a%p &fで購入しました！"
+auction-sell-double: "&c無効な価格です"
+auction-sell-nothing: "&c手にアイテムがありません！"
+auction-sell-town-max: "&cあなたの街はアクティブな販売の最大数（%s）に達しました"
+auction-sell-success: "&f正常に &b%s &fを &a%p &fで出品しました"
+auction-error-replace: "&c市場は移動できません：ブロックが足りません"
+auction-error-chunk: "&c市場は一つのチャンクにのみ配置できます"
+
+# Added in 0.6.0.0
+
+residents-gui:
+  title: "街民"
+  info: "&e街民"
+  lore: "&7街民の閲覧と管理"
+  resident-name: "&b%s"
+  resident-perm: "&7権限グループ: &f%s"
+  resident-bal: "&7残高: &b%s"
+  toggle-online: "&fオンラインの街民を &a表示"
+  toggle-all: "&f &e全て &fの街民を表示"
+  next-page: "&e次のページ"
+  prev-page: "&e前のページ"
+  loading-title: "&b読み込み中..."
+  loading-lore: "&7街の全ての街民のスキンを思い出しています..."
+
+# Added in 0.6.1.0
+
+rep-cantchange: "&cあなたはこのプレイヤーの評判を変えることができません。"
+rep-plus: "&cあなたはプレイヤー %s の評判を上げました (%rep)"
+rep-minus: "&cあなたはプレイヤー %s の評判を下げました (%rep)"
+resident-reputation: "&7評判: &b%aurorauniverse_rep%"
+rep-positive-color: "&a+"
+rep-negative-color: "&c-"
+rep-zero-color: "&7"
+resident-hours-played: "&7オンライン: &b%s &7時間（総計）"
+
+
+
+# Added in 0.6.1.4
+
+nation-out-money: "&f国 &b%s &fは支払いができず &c削除されました"
+embargo-auction-error: "&7あなたの街は街 &b%s &7の &eエンバーゴリスト &7に入っているので、この街の商品を買うことができません。"
+embargo-add: "&7街 &b%s &7をエンバーゴリストに &a追加しました"
+embargo-remove: "&7街 &b%s &7をエンバーゴリストから &c削除しました"
+embargo-contains: "&7エンバーゴリストは &cすでに &7この街を含んでいます"
+########################################
+#                                      #
+#            Admin messages            #
+#                                      #
+########################################
+admin:
+  town-gave-bonus: "&b%t &fの街に &b%s &fのボーナスチャンクを与えました"
+  town-cant-give-bonus: "&b%t &fの街に &fボーナスチャンクを与えることができません"
+  town-deleted: "街 &b%s &fが &c削除されました"
+  town-cantdelete: "街 &b%s &fを削除することができません"
+  town-cant-add: "街民 &b%s &fを追加することができません"
+  town-added: "街民 &b%s &fを街 &b%t &fに追加しました"
+  town-removed: "街民 &b%s &fを街 &b%t &fから除外しました"
+  town-cant-remove: "街民 &b%s &fを削除することができません"
+  town-cant-deposit: "資金を預けることができません"
+  town-deposited: "街 &b%t &fの銀行に &b%s &fを預けました"
+  town-cant-withdraw: "引き出すことができません！"
+  town-withdraw: "街 &b%t &fの銀行から &b%s &fを引き出しました"
+
+
+########################################
+#                                      #
+#             Placeholders             #
+#                                      #
+########################################
+
+placeholders:
+  town: "&7[&b%s&7] "
+  no-town: ""
+  nation: "&7[&6%s&7] "
+  no-nation: ""
+
+# Added in 0.5.0.0
+
+auction-created: "&f市場が &a作成されました"
+auction-gui:
+  title: "&e市場 &7[&c未購入&7]"
+  title-bought: "&e市場 &7[&a購入済み&7]"
+  lore: "&f市場では他の &b街 &fと資源を取引できます。"
+
+  lore-2: "&7左クリックで出品、右クリックで削除（再購入）"
+  price: "&f価格 &b%s"
+  title-gui: "街間市場"
+  item: "&f売り物 &b%s &7(&b%t&7)"
+  item-exp: "&fあと &c%s 分 &fで削除されます"
+  item-your-lore: "&7Shift + 左クリックで回収"
+  next-page: "&e次のページ"
+  prev-page: "&e前のページ"
+  expired-of-player: "プレイヤー %s のインベントリ"
+  expired-inventory: "&e期限切れのアイテムのリストを開く"
+  open-auction: "&e街間市場を開く"
+
+auction-error-place: "&c市場はここに建てることができません（領域は整地されていますか？）"
+auction-sell-need-struct: "&c市場がないとアイテムを売ることができません"
+auction-buy-need-struct: "&cそんなに買うには市場が必要です"
+auction-buy-no-money: "&cお金が足りません！"
+auction-buy-success: "&f正常に &b%s &fを &a%p &fで購入しました！"
+auction-sell-double: "&c無効な価格です"
+auction-sell-nothing: "&c手にアイテムがありません！"
+auction-sell-town-max: "&cあなたの街はアクティブな販売の最大数（%s）に達しました"
+auction-sell-success: "&f正常に &b%s &fを &a%p &fで出品しました"
+auction-error-replace: "&c市場は移動できません：ブロックが足りません"
+auction-error-chunk: "&c市場は一つのチャンクにのみ配置できます"
+
+# Added in 0.6.0.0
+
+residents-gui:
+  title: "街民"
+  info: "&e街民"
+  lore: "&7街民の閲覧と管理"
+  resident-name: "&b%s"
+  resident-perm: "&7権限グループ: &f%s"
+  resident-bal: "&7残高: &b%s"
+  toggle-online: "&fオンラインの街民を &a表示"
+  toggle-all: "&f &e全て &fの街民を表示"
+  next-page: "&e次のページ"
+  prev-page: "&e前のページ"
+  loading-title: "&b読み込み中..."
+  loading-lore: "&7街の全ての街民のスキンを思い出しています..."
+
+# Added in 0.6.1.0
+
+rep-cantchange: "&cあなたはこのプレイヤーの評判を変えることができません。"
+rep-plus: "&cあなたはプレイヤー %s の評判を上げました (%rep)"
+rep-minus: "&cあなたはプレイヤー %s の評判を下げました (%rep)"
+resident-reputation: "&7評判: &b%aurorauniverse_rep%"
+rep-positive-color: "&a+"
+rep-negative-color: "&c-"
+rep-zero-color: "&7"
+resident-hours-played: "&7オンライン: &b%s &7時間（総計）"
+
+
+
+# Added in 0.6.1.4
+
+nation-out-money: "&f国 &b%s &fは支払いができず &c削除されました"
+embargo-auction-error: "&7あなたの街は街 &b%s &7の &eエンバーゴリスト &7に入っているので、この街の商品を買うことができません。"
+embargo-add: "&7街 &b%s &7をエンバーゴリストに &a追加しました"
+embargo-remove: "&7街 &b%s &7をエンバーゴリストから &c削除しました"
+embargo-contains: "&7エンバーゴリストは &cすでに &7この街を含んでいます"
+embargo-not-contains: "&7エンバーゴリストは &cこの街を含んでいません"
+region-add-contains: "&7街民は &cすでにメンバーです"
+
+# Added in 0.7.0.3
+
+nation-rename: "あなたの国は &b%n &fに改名されました"
+nation-not-capital-mayor: "&7あなたは首都の市長ではありません"
+
+# Added in 0.7.0.4
+
+nation-cant-withdraw: "&7国の銀行に十分な資金がありません"
+nation-teleport-incorrect: "&7/n spawn と入力して国の首都にテレポートするか、/n spawn (国に属する街の名前) と入力してその街に移動してください"
+nation-teleport-to-city: "&7街 &f%t &7のスポーンにテレポートされました"
+nation-rename-others: "&7%p があなたの国を &b%n &7に改名しました"
+
+# Added in 0.8.0.1
+
+town-townrank-command-incorrect: "&7/t rank set (プレイヤーの名前) (ランク) と入力してください"
+town-resettownrank-incorrect: "&7/t rank reset (プレイヤーの名前) と入力してください"
+
+# Added in 0.8.0.5
+
+town-rank-change-successful: "&
